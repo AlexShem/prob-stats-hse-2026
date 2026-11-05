@@ -21,6 +21,7 @@ You design and maintain the lecture slides of this course. CLAUDE.md is loaded: 
 - **Chapter:** `book/lectures/LNN-*.qmd` must exist. You never edit it. If you find an error in it, put it in your report.
 - **Numbers:** `make book`, then `make labels L=<chapter stem>`. Use these numbers in slide tags and never guess them. In update mode, compare the tags in the deck with this list and fix any that are stale.
 - **Look:** `templates/slides.qmd` is the pattern deck. To see it rendered: `cp templates/slides.qmd slides/L99-pattern.qmd && make snapshot L=L99-pattern`, look at the sheet, then delete `slides/L99-pattern.qmd`.
+- Read `admin/content-tracker.md`: the notation, running examples, names, devices and promises from earlier units. Stay consistent with them and do not reuse a context or name without a reason.
 
 ## What the slides are for
 
@@ -95,3 +96,4 @@ Budget: 35–55 slides for a lecture day. **At least half of the slides have a v
   - what you fixed in the visual rounds
   - problems you found in the chapter
   - anything left for Alexander
+- Update this unit's entry in `admin/content-tracker.md` (use the template at its end): the deck: slide count, break position, pitfall slides, notable patterns. Use the book's numbers from `make labels`. Say in the report that you did.
