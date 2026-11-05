@@ -23,8 +23,8 @@ Keep entries short. Numbers (Def 1.4, Ex 1.7) are the book's numbers, taken from
 
 ## L01: Events, probability and counting
 
-Files: `book/lectures/L01-probability-basics.qmd`, `slides/L01-probability-basics.qmd` (45 slides), `book/seminars/S01-counting.qmd` (10 problems).
-Status: on `main`. A terminology change for counting is on `fix/L01-counting-terms`; check whether it is merged before relying on L01's wording.
+Files: `book/lectures/L01-probability-basics.qmd`, `slides/L01-probability-basics.qmd` (49 slides), `book/seminars/S01-counting.qmd` (10 problems).
+Status: merged (PR #1, counting terminology). Permutation, arrangement and combination are separate definitions; the numbers below are the current ones.
 
 **Chapter.** Opens with Ilya's croissants ("will he sell at least 25?"). Order of sections:
 
@@ -34,10 +34,12 @@ Status: on `main`. A terminology change for counting is on `fix/L01-counting-ter
 | 1.2 Events and set operations | Def 1.2 event; Table 1.1 operations; Fig 1.1 Venn; Ex 1.2 promo code and app; Def 1.3 mutually exclusive, partition; Thm 1.1 De Morgan |
 | 1.3 Axioms | Def 1.4 probability (three axioms); Thm 1.2 consequences (empty set, complement, monotonicity, union); Eq 1.1 inclusion-exclusion for three events; Ex 1.3 promo/app with numbers |
 | 1.4 Classical probability | Def 1.5; Ex 1.4 two dice (Fig 1.2) |
-| 1.5 Counting | Thm 1.3 product rule; Ex 1.5 PIN codes; Thm 1.4 orderings and selections; Eq 1.2 binomial coefficient; Ex 1.6 6-from-45 lottery; Ex 1.7 expired packs |
-| 1.6 Geometric probability | Def 1.6; Ex 1.8 courier; Ex 1.9 meeting in a café (Fig 1.3) |
+| 1.5 Counting | Thm 1.3 product rule; Ex 1.5 PIN codes; Def 1.6 permutation; Def 1.7 arrangement ($k$ of $n$, ordered); Def 1.8 combination ($0\le k\le n$, $\binom nk$); Thm 1.4 orderings and selections; Eq 1.2 binomial coefficient; Ex 1.6 6-from-45 lottery; Ex 1.7 expired packs |
+| 1.6 Geometric probability | Def 1.9; Ex 1.8 courier; Ex 1.9 meeting in a café (Fig 1.3) |
 
 **Facts L02 and later can use.** The promo/app store: $\Prob(\text{promo})=0.40$, $\Prob(\text{app})=0.55$, both $0.20$ (Ex 1.3). A partition $H_1,\dots,H_n$ is defined in Def 1.3, and the text promises its use in the law of total probability (Lecture 2). The complement rule is presented as the tool for "at least one" questions. Probability zero is not the same as impossible (geometric probability).
+
+**Counting vocabulary.** Permutation = ordering of all $n$; arrangement = ordered selection of $k$ from $n$ (also called $k$-permutation or variation, $A_n^k$); combination = unordered selection, $\binom nk$ (also $C_n^k$). The chapter warns that English books use "arrangement" loosely. Test used throughout: swap two chosen items, is it a different outcome?
 
 **Slides.** Break after classical probability. Tags give chapter numbers. Pitfall slides: forgetting the overlap, too coarse an $\Omega$, "at least one is 1 minus none", unequal sums of two dice.
 
