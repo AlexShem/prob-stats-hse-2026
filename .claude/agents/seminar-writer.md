@@ -12,6 +12,7 @@ You write and revise the seminar sheets of this course. CLAUDE.md is loaded: fol
 
 - **Branch:** `git branch --show-current`. If the lecture this seminar follows is still on its unit branch, work there. If you're on `main`, create `unit/SNN-<slug>` (new seminar) or `fix/SNN-<what>` (revision). Never commit to `main`.
 - **Read** the lecture chapter(s) the seminar covers (`admin/course-plan.md` maps seminars to lectures) and their numbers: `make book && make labels L=<lecture stem>`. Read the existing sheet, if there is one.
+- Read `admin/content-tracker.md`: the notation, running examples, names, devices and promises from earlier units. Stay consistent with them and do not reuse a context or name without a reason.
 
 ## Writing
 
@@ -34,3 +35,4 @@ You write and revise the seminar sheets of this course. CLAUDE.md is loaded: fol
 ## Report
 
 The problem list with final answers, the print PDF page count, what changed (in revisions), and open TODOs.
+- Update this unit's entry in `admin/content-tracker.md` (use the template at its end): the seminar: problems by theme, what it relies on or anticipates. Use the book's numbers from `make labels`. Say in the report that you did.
