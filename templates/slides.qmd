@@ -7,18 +7,105 @@ date: "[TODO: YYYY-MM-DD]"
 {{< include ../_shared/_macros.qmd >}}
 {{< include ../_shared/_setup.qmd >}}
 
-<!-- Copy to slides/LNN-<slug>.qmd (same stem as book/lectures/LNN-<slug>.qmd; that is how
-     the chapter finds its slides link). Shorter version of the chapter: same section order,
-     and notes numbers on every definition, theorem and example. 25–35 slides, break at the midpoint. -->
+<!-- Pattern deck. Copy to slides/LNN-<slug>.qmd (same stem as the chapter), keep the
+     patterns you need and replace the content. The rules are in .claude/skills/slides/SKILL.md.
+     Look at it rendered: make snapshot L=<stem>. -->
 
-# [TODO: Section title, same as in the chapter]
+## Why a bakery owner cares about probability
 
-## [TODO: Definition name] (Def N.1)
+:::: {.columns}
+::: {.column width="55%"}
+Ilya bakes 30 croissants a day. Unsold ones go in the bin at 20:00.
 
-::: {.notes}
-Speaker notes.
+. . .
+
+He can't know tomorrow's demand. He *can* know how often demand beats 25.
+
+. . .
+
+That number is what he plans with.
 :::
+::: {.column width="45%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.6
+import numpy as np, matplotlib.pyplot as plt
+rng = np.random.default_rng(2026)
+demand = rng.poisson(24, 60)
+plt.bar(range(1, 61), demand, color="#9bb8d6")
+plt.axhline(25, color="#b4542a", lw=2)
+plt.xlabel("day"); plt.ylabel("croissants wanted");
+```
+:::
+::::
+
+## Complement rule [Thm N.2]{.tag}
+
+::: {.box-thm}
+For any event $A$:
+$$\Prob(A^c) = 1 - \Prob(A)$$
+:::
+
+. . .
+
+Use it when "not $A$" is easier to count than $A$.
+
+. . .
+
+"At least one" questions are almost always "1 minus none".
+
+## At least one defective box [Ex N.3]{.tag}
+
+Each box is defective with probability $0.02$, independently. A shop gets 40 boxes.
+
+. . .
+
+$$\Prob(\text{at least one defective}) = 1 - \Prob(\text{none}) = 1 - 0.98^{40}$$
+
+. . .
+
+$$= 1 - 0.446 = 0.554$$
+
+. . .
+
+[More likely than not]{.answer}, even though each box is 98% fine.
+
+## Your turn {.yourturn}
+
+A website has 3 independent servers. Each is down with probability $0.05$.
+
+What is the probability that **at least one** is up?
+
+. . .
+
+$1 - 0.05^3 = 0.999875$
+
+## Two ways to count [Def N.4, Def N.5]{.tag}
+
+:::: {.columns}
+::: {.column width="50%"}
+::: {.box-def}
+**Permutations**: order matters
+$$n(n-1)\cdots(n-k+1)$$
+:::
+:::
+::: {.column width="50%"}
+::: {.box-def}
+**Combinations**: order ignored
+$$\binom{n}{k}=\frac{n!}{k!\,(n-k)!}$$
+:::
+:::
+::::
+
+| Choose 3 of 10 people for… | Count |
+|---|---|
+| CEO, CFO, CTO | $10\cdot 9\cdot 8 = 720$ |
+| a 3-person committee | $\binom{10}{3} = 120$ |
 
 ## Break
 
-# [TODO: Second-half section]
+Back in 10 minutes.
+
+::: {.notes}
+Halfway point. Second half starts with Section N.4.
+:::

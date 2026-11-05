@@ -1,12 +1,26 @@
-# reveal.js slides, one file per lecture (LNN-<slug>.qmd, same stem as book/lectures/).
-# `make book` renders them and copies them into the book output, where chapters link to them.
+# reveal.js slides, one deck per lecture (LNN-<slug>.qmd, same stem as book/lectures/).
+# Write them with /slides LNN after the chapter is final. `make book` renders them, exports a PDF
+# of each deck and copies both into the book output, where the chapter links to them.
 project:
   output-dir: _output
+filters:
+  - ../_shared/slides.lua
 execute:
   freeze: auto
   echo: false
 format:
   revealjs:
     theme: [default, ../_shared/slides.scss]
-    slide-number: true
+    width: 1280
+    height: 720
+    margin: 0.06
+    center: false
+    slide-number: c/t
+    transition: none
     html-math-method: mathjax
+    chalkboard:
+      buttons: false
+    pdf-separate-fragments: false
+    footer: "Probability Theory and Mathematical Statistics · HSE 2026/27"
+    fig-width: 9
+    fig-height: 4.6

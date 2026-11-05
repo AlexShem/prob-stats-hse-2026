@@ -5,6 +5,7 @@
 --   ::: lecturer ... :::   board/timing cue, only in the lecturer copy.
 --   HTML only: a download line (PDF, slides) under each lecture/seminar title.
 -- Only files named LNN-*.qmd / SNN-*.qmd get the download line.
+-- Line for a lecture: "PDF · Slides (PDF)"; for a seminar: "PDF".
 
 local lecturer_copy = false
 local released = {}
@@ -59,6 +60,9 @@ local function add_downloads(doc)
   if kind == "L" and root and file_exists(root .. "/slides/" .. stem .. ".qmd") then
     links:insert(pandoc.Str(" · "))
     links:insert(pandoc.Link("Slides", "../slides/" .. stem .. ".html"))
+    links:insert(pandoc.Str(" ("))
+    links:insert(pandoc.Link("PDF", "../slides/" .. stem .. ".pdf"))
+    links:insert(pandoc.Str(")"))
   end
   if kind == "S" and not is_released() then
     links:insert(pandoc.Str(" · Solutions appear here after the seminar."))
