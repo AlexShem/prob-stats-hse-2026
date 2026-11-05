@@ -38,22 +38,26 @@ PLAN  NN | title | pattern | chapter item | visual
 27 | Your turn: sum at least 10 | yourturn | Exercise 1 | grid after pause
 28 | Break | break | cue |
 29 | Product rule | item | Thm 1.3 | tree
-30 | PIN codes | worked | Ex 1.5 | table
-31 | Orderings and selections | compare | Thm 1.4 | two boxes
-32 | Does order matter? | explain | after Thm 1.4 | table gold vs team
-33 | Binomial coefficient facts | explain | after Thm 1.4 | Pascal-like row bar
-34 | Lottery | worked | Ex 1.6 | number grid 45
-35 | Expired packs: set-up | worked | Ex 1.7 | 20 packs picture
-36 | Expired packs (a), (b) | worked | Ex 1.7 | steps
-37 | Expired packs (c) | worked | Ex 1.7 | bar of three answers
-38 | Your turn: repeated letters | yourturn | Exercise 4 | none
-39 | Geometric probability | item | Def 1.6 | segment, region
-40 | Courier | worked | Ex 1.8 | timeline
-41 | Two people, one cafe: set-up | worked | Ex 1.9 | square + band
-42 | Two people: solution | worked | Ex 1.9 | steps
-43 | Probability zero, not impossible | explain | closing remark | point on interval
-44 | Your turn: circle in square | yourturn | Exercise 5 | figure after pause
-45 | Your turn: the manager's claim | yourturn | Exercise 2 | none
+30 | PIN codes | worked | Ex 1.5 | table, n^k vs no repetition
+31 | Permutation | item | Def 1.6 | van route with 5 numbered stops
+32 | Arrangement | item | Def 1.7 | shelf with 12/11/10 choices
+33 | Combination | item | Def 1.8 | 12 tea boxes, 3 picked
+34 | Other names and symbols | explain | text after Def 1.8 | table of names and symbols
+35 | Orderings and selections | compare | Thm 1.4 | table perm / arr / comb
+36 | Binomial coefficient facts | explain | after Thm 1.4 | Pascal-like row bar
+37 | Does order matter? | explain | after Thm 1.4 | table gold vs team
+38 | Lottery | worked | Ex 1.6 | number grid 45
+39 | Expired packs: set-up | worked | Ex 1.7 | 20 packs picture
+40 | Expired packs (a), (b) | worked | Ex 1.7 | steps
+41 | Expired packs (c) | worked | Ex 1.7 | bar of three answers
+42 | Your turn: repeated letters | yourturn | Exercise 4 | none
+43 | Geometric probability | item | Def 1.9 | segment, region
+44 | Courier | worked | Ex 1.8 | timeline
+45 | Two people, one cafe: set-up | worked | Ex 1.9 | square + band
+46 | Two people: solution | worked | Ex 1.9 | steps
+47 | Probability zero, not impossible | explain | closing remark | point on interval
+48 | Your turn: circle in square | yourturn | Exercise 5 | figure after pause
+49 | Your turn: the manager's claim | yourturn | Exercise 2 | none
 
 CUT: proofs of Thm 1.1, 1.3 (one line of idea each); proof of Thm 1.2 shortened to the key step; the remark on
 restricting events in infinite spaces; the check that classical probability satisfies the axioms (notes);
@@ -881,10 +885,10 @@ ax.set_xlim(-0.2, 3.1); ax.set_ylim(-3, 3.2); ax.axis("off"); plt.tight_layout()
 
 A bank card has a four-digit PIN.
 
-| Rule | Choices per position | Count |
-|---|---|---|
-| any digits | $10\cdot10\cdot10\cdot10$ | $10^4=10\,000$ |
-| all digits different | $10\cdot9\cdot8\cdot7$ | $5040$ |
+| Rule | Choices per position | Count | Kind of count |
+|---|---|---|---|
+| any digits | $10\cdot10\cdot10\cdot10$ | $10^4=10\,000$ | ordered, with repetition |
+| all digits different | $10\cdot9\cdot8\cdot7$ | $5040$ | ordered, no repetition |
 
 . . .
 
@@ -892,46 +896,157 @@ A thief who guesses one PIN at random hits it with probability [$1/10\,000$]{.an
 
 . . .
 
-The second count is an ordered selection without repetition. It has a name and a formula, next.
+With repeats, each digit is chosen afresh and the product rule alone gives $n^k$, here $10^4$. Without repeats the choices shrink by one at each step. That case, and two related ones, have classical names.
 
-## Orderings and selections [Thm 1.4]{.tag}
-
-From $n$ distinct objects, with $n!=n(n-1)\cdots2\cdot1$ and $0!=1$:
+## Permutation [Def 1.6]{.tag} {.smaller}
 
 :::: {.columns}
-::: {.column width="50%"}
-::: {.box-thm}
-**All $n$ in a row:** $n!$
+::: {.column width="52%"}
+::: {.box-def}
+A **permutation** of $n$ distinct objects is an ordering of all of them in a row. There are $n!$ permutations, read "$n$ factorial":
+$$n!=n(n-1)\cdots2\cdot1,\qquad 0!=1.$$
+:::
 
-**$k$ of them in order:**
-$$\frac{n!}{(n-k)!}=n(n-1)\cdots(n-k+1)$$
+. . .
+
+Kemal drives a delivery van and has 5 shops to visit this morning. Each route is a permutation of the 5 shops:
+$$5!=5\cdot4\cdot3\cdot2\cdot1=\color{#b4542a}{\mathbf{120}}\ \text{routes.}$$
 :::
-:::
-::: {.column width="50%"}
-::: {.box-thm}
-**$k$ of them, order ignored** (a subset):
-$$\binom{n}{k}=\frac{n!}{k!\,(n-k)!}$$
-the **binomial coefficient**
-:::
+::: {.column width="48%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.8
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots(figsize=(5, 3.8))
+pts = [(0.2, 0.3), (1.0, 2.3), (2.6, 2.9), (4.2, 2.0), (3.6, 0.5), (1.9, 1.1)]
+names = ["van", "shop 1", "shop 2", "shop 3", "shop 4", "shop 5"]
+for (x0, y0), (x1, y1) in zip(pts[:-1], pts[1:]):
+    ax.annotate("", xy=(x1, y1), xytext=(x0, y0),
+                arrowprops=dict(arrowstyle="-|>", color="#1f5c99", lw=2, shrinkA=14, shrinkB=14))
+ax.scatter(*pts[0], s=380, marker="s", color="#5b6b7c")
+for i, (x, y) in enumerate(pts[1:], start=1):
+    ax.scatter(x, y, s=520, color="#b4542a", zorder=3)
+    ax.text(x, y, str(i), color="white", ha="center", va="center", fontsize=14, fontweight="bold", zorder=4)
+ax.text(0.2, -0.25, "van", ha="center", fontsize=12, color="#5b6b7c")
+ax.set_title("one route: 5, 4, 3, 2, 1 choices for the stops", fontsize=13)
+ax.set_xlim(-0.4, 4.8); ax.set_ylim(-0.55, 3.35); ax.axis("off"); plt.tight_layout()
+```
 :::
 ::::
 
+## Arrangement [Def 1.7]{.tag} {.smaller}
+
+:::: {.columns}
+::: {.column width="42%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.4
+import matplotlib.pyplot as plt
+from matplotlib.patches import Rectangle
+fig, ax = plt.subplots(figsize=(5, 3.4))
+ax.add_patch(Rectangle((0, 0.9), 6, 0.12, color="#5b6b7c"))
+for i, (slot, n) in enumerate(zip(["left", "middle", "right"], [12, 11, 10])):
+    x = 0.35 + 2 * i
+    ax.add_patch(Rectangle((x, 1.02), 1.3, 1.5, facecolor="#9bb8d6", edgecolor="#1f5c99", lw=2))
+    ax.text(x + 0.65, 1.77, "tea", ha="center", va="center", fontsize=13, color="#173a63")
+    ax.text(x + 0.65, 2.85, f"{n} choices", ha="center", fontsize=13, color="#b4542a", fontweight="bold")
+    ax.text(x + 0.65, 0.55, slot, ha="center", fontsize=13)
+ax.text(3, -0.25, r"$12\cdot 11\cdot 10=1320$", ha="center", fontsize=16, color="#b4542a")
+ax.set_xlim(-0.1, 6.1); ax.set_ylim(-0.5, 3.3); ax.axis("off"); plt.tight_layout()
+```
+:::
+::: {.column width="58%"}
+::: {.box-def}
+An **arrangement** of $k$ objects from $n$ distinct objects ($k\le n$) is an ordered selection without repetition. The number of arrangements is
+$$\frac{n!}{(n-k)!}=n(n-1)\cdots(n-k+1).$$
+:::
+
 . . .
 
-Why divide by $k!$: each subset of size $k$ appears in the ordered count exactly $k!$ times, once for each way of ordering it.
+A supermarket puts 3 of its 12 tea brands into the eye-level slots: [1320]{.answer} arrangements. The PINs with four different digits are arrangements of 4 from 10: $10!/6!=5040$.
 
-## Does order matter? [Thm 1.4]{.tag}
+. . .
 
-Swap two chosen items. If the result is a different outcome, count **ordered**. If it is the same outcome, count **unordered**.
+[With $k=n$ we get a permutation, and the formula gives $n!/0!=n!$. That is one reason to set $0!=1$.]{.muted}
+:::
+::::
 
-| Choose 3 of 10 candidates for… | Order | Count |
+## Combination [Def 1.8]{.tag}
+
+::: {.box-def}
+A **combination** of $k$ objects from $n$ distinct objects is an unordered selection without repetition, that is, a subset of size $k$. Their number is written $\binom{n}{k}$. We read it "$n$ choose $k$" and call it the binomial coefficient.
+:::
+
+:::: {.columns}
+::: {.column width="50%"}
+. . .
+
+The same supermarket picks 3 of its 12 tea brands for a weekend discount. Now the three brands form a set, and nothing is first or last: $\binom{12}{3}=220$ ways.
+
+. . .
+
+The lottery and the inspector's sample, coming up, are combinations too.
+:::
+::: {.column width="50%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 2.8
+import matplotlib.pyplot as plt
+from matplotlib.patches import Rectangle
+fig, ax = plt.subplots(figsize=(5, 2.8))
+letters = "ABCDEFGHIJKL"; picked = set("CHK")
+for j, b in enumerate(letters):
+    x, y = 0.15 + (j % 6) * 1.0, 1.2 - (j // 6) * 1.15
+    on = b in picked
+    ax.add_patch(Rectangle((x, y), 0.75, 0.9, facecolor="#b4542a" if on else "#9bb8d6",
+                           edgecolor="#173a63" if on else "#1f5c99", lw=2))
+    ax.text(x + 0.375, y + 0.45, b, ha="center", va="center", fontsize=14,
+            color="white" if on else "#173a63", fontweight="bold")
+ax.set_title("discount set {C, H, K} = {K, C, H}", fontsize=13)
+ax.set_xlim(0, 6.1); ax.set_ylim(-0.05, 2.2); ax.axis("off"); plt.tight_layout()
+```
+:::
+::::
+
+## Other names and symbols
+
+Other textbooks use other words and symbols for the same things, and you should recognise them.
+
+| In this course | Also called | Symbols in other books |
 |---|---|---|
-| gold, silver, bronze | matters | $10\cdot9\cdot8=720$ |
-| a project team | does not matter | $\binom{10}{3}=120$ |
+| arrangement of $k$ from $n$ | $k$-permutation, partial permutation, variation | $A_n^k$, $P(n,k)$, ${}_nP_k$ |
+| combination, $\binom{n}{k}$ | subset of size $k$ | $C_n^k$, ${}_nC_k$ |
 
 . . .
 
-Check: $720/3!=120$. Every team of 3 can be arranged in $3!=6$ medal orders.
+::: {.box-ex}
+Be careful with the word "arrangement" in English books. Many of them use it loosely for any ordering, a full permutation included. In this course it always means an ordered selection of $k$ from $n$.
+:::
+
+::: {.notes}
+Mention $A_n^k$ and $C_n^k$ out loud for students who did school maths in Russian.
+:::
+
+## Orderings and selections [Thm 1.4]{.tag}
+
+::: {.box-thm}
+From $n$ distinct objects:
+
+|  | permutation | arrangement | combination |
+|:----------|:-----:|:-----:|:-------:|
+| order matters? | yes | yes | no |
+| how many used? | all $n$ | $k$ | $k$ |
+| number | $n!$ | $\dfrac{n!}{(n-k)!}$ | $\dbinom{n}{k}=\dfrac{n!}{k!\,(n-k)!}$ |
+:::
+
+. . .
+
+Each combination appears $k!$ times among the arrangements, once for each order:
+$$\frac{n!}{(n-k)!}=k!\binom{n}{k},\qquad\text{tea: } 1320=3!\cdot220.$$
+
+::: {.notes}
+Board: three columns headed permutation, arrangement, combination. Under each write "order matters?" (yes, yes, no), "how many used?" (n, k, k) and the formula. Leave it up for the rest of the counting section.
+:::
 
 ## Two facts about $\binom{n}{k}$ [Thm 1.4]{.tag}
 
@@ -960,9 +1075,40 @@ ax.set_xlabel("k (people chosen out of 10)"); ax.set_ylabel(r"$\binom{10}{k}$");
 :::
 ::::
 
+## Does order matter? [Thm 1.4]{.tag}
+
+Swap two chosen items. If the result is a different outcome, count arrangements. If it is the same outcome, count combinations.
+
+| Choose 3 of 10 candidates for… | Order | Count |
+|---|---|---|
+| gold, silver, bronze | matters: arrangements | $10\cdot9\cdot8=720$ |
+| a project team | does not matter: combinations | $\binom{10}{3}=120$ |
+
+. . .
+
+Check: $720/3!=120$. Every team of 3 can be arranged in $3!=6$ medal orders.
+
+```{python}
+#| fig-width: 9
+#| fig-height: 1.75
+import matplotlib.pyplot as plt
+from itertools import permutations
+fig, ax = plt.subplots(figsize=(9, 1.75))
+ax.text(0.3, 1.0, "team\n{K, P, Z}", ha="center", va="center", fontsize=15, color="white",
+        bbox=dict(boxstyle="round,pad=0.5", fc="#b4542a", ec="none"))
+ax.annotate("", xy=(1.55, 1.0), xytext=(0.95, 1.0), arrowprops=dict(arrowstyle="-|>", color="#1f5c99", lw=2))
+for i, order in enumerate(permutations("KPZ")):
+    x = 2.2 + 1.15 * i
+    for j, (who, medal) in enumerate(zip(order, ["G", "S", "B"])):
+        ax.text(x, 1.6 - 0.55 * j, f"{medal}: {who}", ha="center", va="center", fontsize=13,
+                bbox=dict(boxstyle="round,pad=0.25", fc="#eaf1f8", ec="#9bb8d6"))
+ax.text(5.1, 2.15, "6 medal orders (G gold, S silver, B bronze)", ha="center", fontsize=13)
+ax.set_xlim(-0.3, 9.2); ax.set_ylim(0.2, 2.4); ax.axis("off"); plt.tight_layout()
+```
+
 ## A 6-from-45 lottery [Ex 1.6]{.tag}
 
-You pick 6 different numbers from 1 to 45. Order is irrelevant.
+You pick 6 different numbers from 1 to 45. Order is irrelevant, so a ticket is a combination of 6 from 45.
 
 . . .
 
@@ -991,7 +1137,7 @@ A warehouse shelf holds 20 packs of yoghurt, 3 of them past their date. An inspe
 
 . . .
 
-Order does not matter, so
+Order does not matter: a sample is a combination of 4 from 20, so
 $$|\Omega|=\binom{20}{4}=4845.$$
 :::
 ::: {.column width="48%"}
@@ -1067,7 +1213,7 @@ All four different: $26\cdot25\cdot24\cdot23=358\,800$. All passwords: $26^4=456
 
 $$456\,976-358\,800= \color{#b4542a}{\mathbf{98\,176}}$$
 
-## Geometric probability [Def 1.6]{.tag} {.smaller}
+## Geometric probability [Def 1.9]{.tag} {.smaller}
 
 :::: {.columns}
 ::: {.column width="52%"}
