@@ -140,7 +140,11 @@ For any events $A$ and $B$:
 :::
 
 ::: proof
+For (1): take $A_1=\Omega$ and $A_2=A_3=\dots=\varnothing$ in axiom 3. They are mutually exclusive and their union is $\Omega$, so $\Prob(\Omega)=\Prob(\Omega)+\Prob(\varnothing)+\Prob(\varnothing)+\dots$ The left side is finite, and every term on the right is non-negative, so $\Prob(\varnothing)=0$.
+
 For (2): $A$ and $A^c$ are mutually exclusive and $A\cup A^c=\Omega$, so by axioms 3 and 2, $\Prob(A)+\Prob(A^c)=\Prob(\Omega)=1$.
+
+For (3): if $A\subseteq B$, then $B$ is the union of the mutually exclusive events $A$ and $B\cap A^c$. So $\Prob(B)=\Prob(A)+\Prob(B\cap A^c)\ge\Prob(A)$, since the last term is non-negative. Taking $B=\Omega$ gives $\Prob(A)\le 1$.
 
 For (4): write $A\cup B$ as two mutually exclusive pieces, $A$ and $B\cap A^c$. Then $\Prob(A\cup B)=\Prob(A)+\Prob(B\cap A^c)$. Also $B$ splits into $B\cap A$ and $B\cap A^c$, so $\Prob(B\cap A^c)=\Prob(B)-\Prob(A\cap B)$. Substitute.
 :::
