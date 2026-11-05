@@ -1,1 +1,7 @@
 .chapter-downloads { font-size: 0.9rem; color: #555; margin: -0.5rem 0 1.5rem; }
+
+/* Proofs: end mark on every proof; lesser proofs sit in a closed dropdown (see course.lua). */
+.proof::after, .proof-fold .proof-body::after { content: "\25A1"; display: block; text-align: right; }
+details.proof-fold { margin: 0.5rem 0 1rem; }
+details.proof-fold > summary { cursor: pointer; font-style: italic; color: #555; }
+details.proof-fold .proof-body { margin-top: 0.5rem; padding-left: 1rem; border-left: 2px solid #ddd; }
