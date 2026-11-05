@@ -7,56 +7,289 @@ date: "2026-11-07"
 {{< include ../_shared/_macros.qmd >}}
 {{< include ../_shared/_setup.qmd >}}
 
-# Experiments and outcomes
+<!--
+PLAN  NN | title | pattern | chapter item | visual
+01 | Will Ilya sell 25 croissants? | hook | intro | number line 0-30, "at least 25" shaded
+02 | Random experiment, sample space | item | Def 1.1 | outcomes inside Omega
+03 | Four sample spaces | worked | Ex 1.1 | table
+04 | Two customers in order | picture | Ex 1.1(2) | tree diagram
+05 | A list or an interval | explain | after Ex 1.1 | dots vs interval
+06 | Coarse sample space | pitfall | Sec 1.1 | wrong vs right columns
+07 | Event | item | Def 1.2 | Omega with A
+08 | Set operations | item | Table 1.1 | table
+09 | The four operations | picture | Fig 1.1 | venn panels
+10 | Promo code and app | worked | Ex 1.2 | venn
+11 | Mutually exclusive, partition | item | Def 1.3 | disjoint sets, partition
+12 | De Morgan | item | Thm 1.1 | two venn panels
+13 | Your turn: A^c u B^c | yourturn | notes cue | venn after pause
+14 | Where the axioms come from | explain | Sec 1.3 | box with 3 axioms
+15 | Consequences | item | Thm 1.2 | nested sets picture
+16 | Why the consequences hold | explain | proof of Thm 1.2 | short steps
+17 | Inclusion-exclusion | item | Thm 1.2(4), Eq 1.1 | venn double counted
+18 | Three events | item | Eq 1.1 | formula, 3-circle venn
+19 | Promo and app with numbers | worked | Ex 1.3 | venn with numbers
+20 | Ex 1.3 solution | worked | Ex 1.3 | steps
+21 | Pitfall: forget the overlap | pitfall | after Thm 1.2 | wrong vs right
+22 | At least one: complement | explain | complement rule | none/at least one bar
+23 | Classical probability | item | Def 1.5 | box + grid
+24 | Two dice | worked | Ex 1.4, Fig 1.2 | grid
+25 | Sums are not equally likely | pitfall | Sec 1.4 | bar chart of ways
+26 | Coin twice, and "buys or not" | pitfall | Sec 1.4 | table
+27 | Your turn: sum at least 10 | yourturn | Exercise 1 | grid after pause
+28 | Break | break | cue |
+29 | Product rule | item | Thm 1.3 | tree
+30 | PIN codes | worked | Ex 1.5 | table
+31 | Orderings and selections | compare | Thm 1.4 | two boxes
+32 | Does order matter? | explain | after Thm 1.4 | table gold vs team
+33 | Binomial coefficient facts | explain | after Thm 1.4 | Pascal-like row bar
+34 | Lottery | worked | Ex 1.6 | number grid 45
+35 | Expired packs: set-up | worked | Ex 1.7 | 20 packs picture
+36 | Expired packs (a), (b) | worked | Ex 1.7 | steps
+37 | Expired packs (c) | worked | Ex 1.7 | bar of three answers
+38 | Your turn: repeated letters | yourturn | Exercise 4 | none
+39 | Geometric probability | item | Def 1.6 | segment, region
+40 | Courier | worked | Ex 1.8 | timeline
+41 | Two people, one cafe: set-up | worked | Ex 1.9 | square + band
+42 | Two people: solution | worked | Ex 1.9 | steps
+43 | Probability zero, not impossible | explain | closing remark | point on interval
+44 | Your turn: circle in square | yourturn | Exercise 5 | figure after pause
+45 | Your turn: the manager's claim | yourturn | Exercise 2 | none
 
-## Ilya's croissants
+CUT: proofs of Thm 1.1, 1.3 (one line of idea each); proof of Thm 1.2 shortened to the key step; the remark on
+restricting events in infinite spaces; the check that classical probability satisfies the axioms (notes);
+Exercise 3 (Ilya before Priya); the closing pointer to Seminar 1 goes in notes.
+-->
 
-Ilya bakes 30 croissants every morning.
+## Will Ilya sell at least 25 croissants?
 
-- Will he sell all of them? Nobody knows.
-- How likely is it that he sells at least 25? He can plan around that.
+:::: {.columns}
+::: {.column width="52%"}
+Ilya opens a coffee stand near Paveletskaya station and bakes **30 croissants** every morning.
+
+. . .
+
+Some days he sells 22. Some days all 30 by ten o'clock.
+
+. . .
+
+"How many will he sell?" has no certain answer. [How likely is at least 25?]{.answer} That he can plan around: dough, a second person for the rush.
+:::
+::: {.column width="48%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.4
+import numpy as np, matplotlib.pyplot as plt
+plt.rcParams.update({"font.size": 14})
+fig, ax = plt.subplots(figsize=(5, 3.4))
+ks = np.arange(0, 31)
+ax.bar(ks, np.ones_like(ks), color=np.where(ks >= 25, "#b4542a", "#9bb8d6"), width=0.8)
+ax.set_yticks([])
+ax.set_xlabel("croissants sold in a day")
+ax.set_xticks([0, 5, 10, 15, 20, 25, 30])
+ax.set_title("the event 'at least 25' (orange)", fontsize=12)
+ax.grid(False); ax.spines["left"].set_visible(False)
+plt.tight_layout()
+```
+:::
+::::
 
 ::: {.notes}
-Ask the room for a number for tomorrow. Write three answers on the board. None is "the" answer.
+Ask the room for a number for tomorrow and write three different answers on the board. None is "the" answer. Timing: 0:00-0:35 sections 1.1-1.2, 0:35-1:05 axioms, 1:05-1:20 classical probability. Break at 1:20. Second slot: counting 50 min, geometric 20 min, exercises 10 min.
 :::
 
-## Random experiment and sample space (Def 1.1)
+## Random experiment and sample space [Def 1.1]{.tag}
 
-A **random experiment**: the result is not certain in advance, but the possible results can be listed.
+:::: {.columns}
+::: {.column width="55%"}
+::: {.box-def}
+A **random experiment** is a procedure whose result we cannot predict with certainty, but whose possible results we can list in advance.
 
-The set of all outcomes is the **sample space** $\Omega$.
+Each possible result is an **outcome**. The set of all outcomes is the **sample space** $\Omega$.
+:::
 
-## Four sample spaces (Ex 1.1)
+. . .
 
-- One customer: $\Omega=\{\text{buys},\text{leaves}\}$
-- Two customers, in order: $\{BB, BL, LB, LL\}$
-- Croissants sold: $\{0,1,\dots,30\}$
-- Waiting time in minutes: $[0,\infty)$
+The list is something you **choose**. It depends on what you decide to record.
+:::
+::: {.column width="45%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.6
+import numpy as np, matplotlib.pyplot as plt
+from matplotlib.patches import Ellipse
+fig, ax = plt.subplots(figsize=(5, 3.6))
+ax.add_patch(Ellipse((0, 0), 4, 2.8, fill=False, lw=2, color="#1f5c99"))
+rng = np.random.default_rng(2026)
+pts = rng.uniform(-1, 1, (9, 2)) * [1.5, 0.9]
+ax.scatter(pts[:, 0], pts[:, 1], s=60, color="#1f5c99")
+ax.text(0, 1.6, r"$\Omega$: all outcomes", ha="center", fontsize=14, color="#1f5c99")
+ax.annotate("one outcome", pts[0], xytext=(1.3, -1.6), fontsize=12,
+            arrowprops=dict(arrowstyle="->", color="#b4542a"), color="#b4542a")
+ax.set_xlim(-2.4, 2.4); ax.set_ylim(-2, 2); ax.axis("off")
+plt.tight_layout()
+```
+:::
+::::
 
-$\Omega$ is your choice. It depends on what you record.
+## Four experiments, four sample spaces [Ex 1.1]{.tag}
 
-# Events and set operations
-
-## Event (Def 1.2)
-
-An **event** is a subset $A\subseteq\Omega$. It **occurs** if the outcome is in $A$.
-
-- $\Omega$: the sure event
-- $\varnothing$: the impossible event
-
-## Set operations (Table 1.1)
-
-| Notation | Reads as |
+| Experiment | Sample space $\Omega$ |
 |---|---|
-| $A\cup B$ | $A$ or $B$ (at least one) |
-| $A\cap B$ | $A$ and $B$ (both) |
-| $A^c$ | not $A$ |
-| $A\cap B^c$ | $A$ but not $B$ |
+| One customer buys ($B$) or leaves ($L$) | $\{B,\ L\}$ |
+| Two customers, in order | $\{BB,\ BL,\ LB,\ LL\}$ |
+| Croissants sold in a day | $\{0,1,2,\dots,30\}$ |
+| Minutes a customer waits in the queue | $[0,\infty)$ |
 
-## Venn pictures (Fig 1.1)
+. . .
+
+$BL$ is not the same outcome as $LB$: we record **both** customers, in order.
+
+. . .
+
+The last space is not a list at all. It is a whole interval of numbers.
+
+## Two customers in order [Ex 1.1]{.tag}
+
+:::: {.columns}
+::: {.column width="45%"}
+Each customer is $B$ or $L$. Record the first, then the second.
+
+. . .
+
+Two stages, two choices each: **four** outcomes.
+
+. . .
+
+[$\Omega=\{BB,\ BL,\ LB,\ LL\}$]{.answer}
+:::
+::: {.column width="55%"}
+```{python}
+#| fig-width: 6
+#| fig-height: 3.6
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots(figsize=(6, 3.6))
+ax.plot([0, 1], [0, 1], color="#1f5c99"); ax.plot([0, 1], [0, -1], color="#1f5c99")
+for y0, y in [(1, 1.5), (1, 0.5), (-1, -0.5), (-1, -1.5)]:
+    ax.plot([1, 2], [y0, y], color="#1f5c99")
+ax.text(0.5, 0.75, "B", fontsize=15, color="#b4542a"); ax.text(0.5, -0.9, "L", fontsize=15, color="#b4542a")
+for (x, y, s) in [(1.5, 1.4, "B"), (1.5, 0.45, "L"), (1.5, -0.45, "B"), (1.5, -1.45, "L")]:
+    ax.text(x, y, s, fontsize=15, color="#b4542a")
+for y, s in [(1.5, "BB"), (0.5, "BL"), (-0.5, "LB"), (-1.5, "LL")]:
+    ax.text(2.1, y, s, fontsize=17, va="center", fontweight="bold")
+ax.text(0.6, 2.1, "customer 1", ha="center", fontsize=12); ax.text(1.5, 2.1, "customer 2", ha="center", fontsize=12)
+ax.set_xlim(-0.1, 2.6); ax.set_ylim(-2, 2.4); ax.axis("off")
+plt.tight_layout()
+```
+:::
+::::
+
+## A list or an interval
+
+:::: {.columns}
+::: {.column width="48%"}
+Croissants sold: $\{0,1,2,\dots,30\}$. Even without a limit, $\{0,1,2,\dots\}$ is an infinite **list**.
+
+. . .
+
+Waiting time: $[0,\infty)$. You cannot number the possible waiting times one by one. This is a different kind of infinity.
+
+. . .
+
+[We keep this difference until Lecture 4.]{.muted}
+:::
+::: {.column width="52%"}
+```{python}
+#| fig-width: 5.5
+#| fig-height: 3.6
+import numpy as np, matplotlib.pyplot as plt
+fig, (a, b) = plt.subplots(2, 1, figsize=(5.5, 3.6))
+a.scatter(range(0, 12), np.zeros(12), color="#1f5c99", s=50); a.text(12.2, 0, r"$\ldots$", fontsize=18, va="center")
+a.set_title("a list: 0, 1, 2, ...", fontsize=12); a.set_xlim(-1, 14)
+b.plot([0, 12], [0, 0], color="#b4542a", lw=6, solid_capstyle="butt"); b.text(12.3, 0, r"$\to\infty$", fontsize=14, va="center")
+b.set_title("an interval: [0, ...)", fontsize=12); b.set_xlim(-1, 14); b.set_xlabel("minutes")
+for ax in (a, b): ax.set_yticks([]); ax.grid(False); ax.spines["left"].set_visible(False)
+plt.tight_layout()
+```
+:::
+::::
+
+## A habit to avoid: too coarse an $\Omega$ [Sec 1.1]{.tag}
+
+:::: {.columns}
+::: {.column width="50%"}
+::: {.box-ex}
+**Wrong.** Record only how many of two customers bought: $\{0,1,2\}$.
+:::
+
+We lose the difference between $BL$ and $LB$.
+
+. . .
+
+The three remaining outcomes are [no longer equally likely]{.answer}.
+:::
+::: {.column width="50%"}
+::: {.box-def}
+**Right.** Keep the finest description: $\{BB, BL, LB, LL\}$.
+:::
+
+"One bought" is the event $\{BL, LB\}$: two outcomes out of four.
+
+. . .
+
+[We meet this trap again with dice.]{.muted}
+:::
+::::
+
+## Event [Def 1.2]{.tag}
+
+:::: {.columns}
+::: {.column width="52%"}
+::: {.box-def}
+An **event** is a set of outcomes, a subset $A\subseteq\Omega$.
+
+$A$ **occurs** if the outcome of the experiment belongs to $A$.
+:::
+
+. . .
+
+- $\Omega$: the **sure event**, something always happens
+- $\varnothing$: the **impossible event**
+:::
+::: {.column width="48%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.6
+import numpy as np, matplotlib.pyplot as plt
+from matplotlib.patches import Rectangle, Ellipse
+fig, ax = plt.subplots(figsize=(5, 3.6))
+ax.add_patch(Rectangle((0, 0), 6, 4, fill=False, lw=2))
+ax.add_patch(Ellipse((2.2, 2), 3.2, 2.4, color="#9bb8d6", alpha=0.7))
+rng = np.random.default_rng(3)
+p = rng.uniform([0.4, 0.4], [5.6, 3.6], (14, 2)); ins = ((p[:, 0] - 2.2) / 1.6) ** 2 + ((p[:, 1] - 2) / 1.2) ** 2 < 0.8
+ax.scatter(p[ins, 0], p[ins, 1], color="#1f5c99", s=40); ax.scatter(p[~ins, 0], p[~ins, 1], color="#8a97a5", s=40)
+ax.text(2.2, 3.35, "A", fontsize=16, color="#1f5c99", ha="center"); ax.text(5.5, 3.5, r"$\Omega$", fontsize=16, ha="right")
+ax.set_xlim(-0.2, 6.2); ax.set_ylim(-0.2, 4.2); ax.axis("off")
+plt.tight_layout()
+```
+:::
+::::
+
+## Set operations on events [Table 1.1]{.tag}
+
+Events are sets, so we combine them with set operations. You should be able to go both ways without thinking.
+
+| Notation | Reads as | Occurs when |
+|---|---|---|
+| $A\cup B$ | $A$ or $B$ | at least one of them occurs |
+| $A\cap B$ | $A$ and $B$ | both occur |
+| $A^c$ | not $A$ | $A$ does not occur |
+| $A\cap B^c$ | $A$ but not $B$ | $A$ occurs and $B$ does not |
+
+## The four operations as regions [Fig 1.1]{.tag}
 
 ```{python}
-#| fig-alt: "Four Venn diagrams with the union, intersection, complement of A and difference shaded."
+#| fig-width: 10
+#| fig-height: 2.9
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.patches import Circle, Rectangle
@@ -64,239 +297,941 @@ from matplotlib.patches import Circle, Rectangle
 xs, ys = np.meshgrid(np.linspace(-2, 2, 400), np.linspace(-1.4, 1.4, 280))
 in_a = (xs + 0.55) ** 2 + ys ** 2 < 1
 in_b = (xs - 0.55) ** 2 + ys ** 2 < 1
-panels = [
-    ("$A\\cup B$", in_a | in_b),
-    ("$A\\cap B$", in_a & in_b),
-    ("$A^c$", ~in_a),
-    ("$A\\cap B^c$", in_a & ~in_b),
-]
-fig, axes = plt.subplots(1, 4, figsize=(10, 2.8))
+panels = [("$A\\cup B$", in_a | in_b), ("$A\\cap B$", in_a & in_b),
+          ("$A^c$", ~in_a), ("$A\\cap B^c$", in_a & ~in_b)]
+fig, axes = plt.subplots(1, 4, figsize=(10, 2.9))
 for ax, (title, region) in zip(axes, panels):
     ax.contourf(xs, ys, region.astype(float), levels=[0.5, 1.5], colors=["#4c8cc9"], alpha=0.6)
     ax.add_patch(Circle((-0.55, 0), 1, fill=False, lw=1.2))
     ax.add_patch(Circle((0.55, 0), 1, fill=False, lw=1.2))
     ax.add_patch(Rectangle((-2, -1.4), 4, 2.8, fill=False, lw=1.2))
-    ax.text(-1.05, 0, "A", ha="center", va="center")
-    ax.text(1.05, 0, "B", ha="center", va="center")
-    ax.set_title(title, fontsize=13)
-    ax.set_aspect("equal")
-    ax.axis("off")
+    ax.text(-1.05, 0, "A", ha="center", va="center", fontsize=13)
+    ax.text(1.05, 0, "B", ha="center", va="center", fontsize=13)
+    ax.set_title(title, fontsize=15)
+    ax.set_aspect("equal"); ax.axis("off")
 plt.tight_layout()
-plt.show()
 ```
 
-## Promo code and mobile app (Ex 1.2)
+The rectangle is $\Omega$. The shaded region is the event named above each panel.
 
-$A$ = promo code, $B$ = mobile app.
+::: {.notes}
+Draw the two circles on the board and shade each row of the table.
+:::
 
-- $A\cap B^c$: promo code, not in the app
-- $(A\cup B)^c$ and $A^c\cap B^c$: the same event
+## Promo code and mobile app [Ex 1.2]{.tag}
 
-## Mutually exclusive events, partition (Def 1.3)
+:::: {.columns}
+::: {.column width="55%"}
+::: {.box-ex}
+One customer is picked at random from yesterday's orders.
 
-- $A\cap B=\varnothing$: **mutually exclusive**
-- $H_1,\dots,H_n$ pairwise exclusive with union $\Omega$: a **partition**
+$A$: used a promo code. $B$: ordered through the app.
+:::
 
-## De Morgan's laws (Thm 1.1)
+. . .
 
-$$
-(A\cup B)^c = A^c\cap B^c,\qquad (A\cap B)^c = A^c\cup B^c
-$$
+$A\cap B^c$: promo code, placed on the website.
 
-"Not (promo or app)" is "no promo and no app".
+. . .
 
-# The axioms of probability
+$(A\cup B)^c$: no promo code, not in the app.
 
-## Probability (Def 1.4)
+. . .
 
-1. $\Prob(A)\ge 0$
-2. $\Prob(\Omega)=1$
-3. Pairwise exclusive $A_1,A_2,\dots$: $\Prob(\bigcup A_i)=\sum \Prob(A_i)$
+$A^c\cap B^c$ reads the same way. [The two events are equal.]{.answer}
+:::
+::: {.column width="45%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.6
+import numpy as np, matplotlib.pyplot as plt
+from matplotlib.patches import Circle, Rectangle
+xs, ys = np.meshgrid(np.linspace(-2, 2, 400), np.linspace(-1.4, 1.4, 280))
+in_a = (xs + 0.55) ** 2 + ys ** 2 < 1; in_b = (xs - 0.55) ** 2 + ys ** 2 < 1
+fig, ax = plt.subplots(figsize=(5, 3.6))
+ax.contourf(xs, ys, (~(in_a | in_b)).astype(float), levels=[0.5, 1.5], colors=["#b4542a"], alpha=0.5)
+ax.add_patch(Circle((-0.55, 0), 1, fill=False, lw=1.5)); ax.add_patch(Circle((0.55, 0), 1, fill=False, lw=1.5))
+ax.add_patch(Rectangle((-2, -1.4), 4, 2.8, fill=False, lw=1.5))
+ax.text(-1.0, 0, "promo\nA", ha="center", va="center", fontsize=12); ax.text(1.0, 0, "app\nB", ha="center", va="center", fontsize=12)
+ax.set_title(r"$(A\cup B)^c$ shaded", fontsize=14); ax.set_aspect("equal"); ax.axis("off")
+plt.tight_layout()
+```
+:::
+::::
 
-## Consequences (Thm 1.2)
+## Mutually exclusive events, partition [Def 1.3]{.tag}
+
+:::: {.columns}
+::: {.column width="55%"}
+::: {.box-def}
+$A$ and $B$ are **mutually exclusive** (disjoint) if $A\cap B=\varnothing$: they cannot occur together.
+
+$H_1,\dots,H_n$ form a **partition** of $\Omega$ if they are pairwise mutually exclusive and $H_1\cup\dots\cup H_n=\Omega$. Exactly one of them occurs.
+:::
+
+. . .
+
+The simplest partition: $A$ and $A^c$. [It returns in Lecture 2.]{.muted}
+:::
+::: {.column width="45%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.3
+import matplotlib.pyplot as plt
+from matplotlib.patches import Rectangle
+fig, ax = plt.subplots(figsize=(5, 3.3))
+cols = ["#9bb8d6", "#1f5c99", "#c9d6e3", "#b4542a"]
+xs = [0, 2.2, 3.6, 5.0, 6.0]
+polys = [[(0, 0), (2.2, 0), (1.6, 4), (0, 4)], [(2.2, 0), (4.5, 0), (3.6, 4), (1.6, 4)],
+         [(4.5, 0), (6, 0), (6, 2.2), (4.2, 2.2)], [(4.2, 2.2), (6, 2.2), (6, 4), (3.6, 4)]]
+for poly, c, n in zip(polys, cols, ["H1", "H2", "H3", "H4"]):
+    ax.add_patch(plt.Polygon(poly, color=c, alpha=0.8, ec="white", lw=3))
+    cx = sum(p[0] for p in poly) / 4; cy = sum(p[1] for p in poly) / 4
+    ax.text(cx, cy, n.replace("H", "$H_") + "$", ha="center", va="center", fontsize=16, color="black")
+ax.set_xlim(-0.1, 6.1); ax.set_ylim(-0.1, 4.1); ax.set_aspect("equal"); ax.axis("off")
+plt.tight_layout()
+```
+:::
+::::
+
+## De Morgan's laws [Thm 1.1]{.tag}
+
+::: {.box-thm}
+$$(A\cup B)^c = A^c\cap B^c,\qquad (A\cap B)^c = A^c\cup B^c$$
+:::
+
+. . .
+
+:::: {.columns}
+::: {.column width="50%"}
+"Not (promo or app)" is "no promo and no app."
+
+An outcome is outside $A\cup B$ exactly when it is outside $A$ and outside $B$. The second law swaps "and" with "or".
+
+[Proof: see the book, Section 1.2.]{.muted}
+:::
+::: {.column width="50%"}
+```{python}
+#| fig-width: 6
+#| fig-height: 2.8
+import numpy as np, matplotlib.pyplot as plt
+from matplotlib.patches import Circle, Rectangle
+xs, ys = np.meshgrid(np.linspace(-2, 2, 400), np.linspace(-1.4, 1.4, 280))
+a = (xs + 0.55) ** 2 + ys ** 2 < 1; b = (xs - 0.55) ** 2 + ys ** 2 < 1
+fig, axes = plt.subplots(1, 2, figsize=(6, 2.8))
+for ax, reg, t in zip(axes, [~(a | b), ~a & ~b], [r"$(A\cup B)^c$", r"$A^c\cap B^c$"]):
+    ax.contourf(xs, ys, reg.astype(float), levels=[0.5, 1.5], colors=["#4c8cc9"], alpha=0.6)
+    ax.add_patch(Circle((-0.55, 0), 1, fill=False, lw=1.2)); ax.add_patch(Circle((0.55, 0), 1, fill=False, lw=1.2))
+    ax.add_patch(Rectangle((-2, -1.4), 4, 2.8, fill=False, lw=1.2))
+    ax.set_title(t, fontsize=14); ax.set_aspect("equal"); ax.axis("off")
+plt.tight_layout()
+```
+:::
+::::
+
+::: {.notes}
+Same shaded region in both panels.
+:::
+
+## Your turn {.yourturn}
+
+Which region is $A^c\cup B^c$?
+
+Shade it in your head, then say it in words.
+
+. . .
+
+:::: {.columns}
+::: {.column width="50%"}
+[Everything except the overlap.]{.answer}
+
+By De Morgan, $A^c\cup B^c=(A\cap B)^c$: "not both".
+:::
+::: {.column width="50%"}
+```{python}
+#| fig-width: 4
+#| fig-height: 2.4
+import numpy as np, matplotlib.pyplot as plt
+from matplotlib.patches import Circle, Rectangle
+xs, ys = np.meshgrid(np.linspace(-2, 2, 400), np.linspace(-1.4, 1.4, 280))
+a = (xs + 0.55) ** 2 + ys ** 2 < 1; b = (xs - 0.55) ** 2 + ys ** 2 < 1
+fig, ax = plt.subplots(figsize=(4, 2.4))
+ax.contourf(xs, ys, (~(a & b)).astype(float), levels=[0.5, 1.5], colors=["#b4542a"], alpha=0.5)
+ax.add_patch(Circle((-0.55, 0), 1, fill=False, lw=1.2)); ax.add_patch(Circle((0.55, 0), 1, fill=False, lw=1.2))
+ax.add_patch(Rectangle((-2, -1.4), 4, 2.8, fill=False, lw=1.2)); ax.set_aspect("equal"); ax.axis("off")
+plt.tight_layout()
+```
+:::
+::::
+
+::: {.notes}
+Let them say it before you shade it.
+:::
+
+## Where the axioms come from [Def 1.4]{.tag}
+
+Think of the share of days on which an event happens, over a very long run. It is never negative, it equals 1 for the sure event, and for events that cannot happen together the shares add up.
+
+. . .
+
+::: {.box-def}
+A **probability** assigns to every event $A$ a number $\Prob(A)$ so that
+
+1. $\Prob(A)\ge 0$;
+2. $\Prob(\Omega)=1$;
+3. if $A_1, A_2,\dots$ are pairwise mutually exclusive, then $\Prob(A_1\cup A_2\cup\dots)=\Prob(A_1)+\Prob(A_2)+\dots$
+:::
+
+Kolmogorov turned these three observations into the definition. Everything else follows from these three lines.
+
+## Consequences of the axioms [Thm 1.2]{.tag}
+
+:::: {.columns}
+::: {.column width="55%"}
+::: {.box-thm}
+For any events $A$ and $B$:
 
 1. $\Prob(\varnothing)=0$
 2. $\Prob(A^c)=1-\Prob(A)$
-3. $A\subseteq B\Rightarrow \Prob(A)\le\Prob(B)$
+3. $A\subseteq B\ \Rightarrow\ \Prob(A)\le\Prob(B)$. In particular $\Prob(A)\le 1$.
 4. $\Prob(A\cup B)=\Prob(A)+\Prob(B)-\Prob(A\cap B)$
+:::
+:::
+::: {.column width="45%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.6
+import matplotlib.pyplot as plt
+from matplotlib.patches import Rectangle, Ellipse
+fig, ax = plt.subplots(figsize=(5, 3.6))
+ax.add_patch(Rectangle((0, 0), 6, 4, fill=False, lw=2)); ax.add_patch(Ellipse((3, 1.9), 4.4, 3, color="#9bb8d6", alpha=0.6)); ax.add_patch(Ellipse((2.6, 1.8), 2, 1.4, color="#1f5c99", alpha=0.7))
+ax.text(2.6, 1.8, "A", color="white", ha="center", va="center", fontsize=16); ax.text(4.6, 2.6, "B", fontsize=16, color="#1f5c99")
+ax.text(5.8, 3.6, r"$\Omega$", fontsize=16, ha="right"); ax.set_title(r"$A\subseteq B$ gives $\mathbb{P}(A)\leq\mathbb{P}(B)\leq 1$", fontsize=12)
+ax.set_xlim(-0.1, 6.1); ax.set_ylim(-0.1, 4.1); ax.axis("off")
+plt.tight_layout()
+```
+:::
+::::
 
-Forgetting the last term in (4) is the most common mistake.
+## Why the consequences hold [Thm 1.2]{.tag}
 
-## Promo code and app with numbers (Ex 1.3)
+(2) $A$ and $A^c$ are mutually exclusive and $A\cup A^c=\Omega$, so axioms 3 and 2 give
+$$\Prob(A)+\Prob(A^c)=\Prob(\Omega)=1.$$
 
-$\Prob(A)=0.40$, $\Prob(B)=0.55$, $\Prob(A\cap B)=0.20$.
+. . .
 
-| Event | Probability |
-|---|---|
-| promo or app | 0.75 |
-| neither | 0.25 |
-| app, no promo | 0.35 |
+(3) If $A\subseteq B$, then $B$ is the union of the disjoint events $A$ and $B\cap A^c$:
+$$\Prob(B)=\Prob(A)+\Prob(B\cap A^c)\ge\Prob(A).$$
 
-::: {.notes}
-Draw the four pieces: promo only 0.20, app only 0.35, both 0.20, neither 0.25. They sum to 1.
+. . .
+
+(4) Split $A\cup B$ into $A$ and $B\cap A^c$, and $B$ into $B\cap A$ and $B\cap A^c$. Substitute.
+
+[(1) takes $A_1=\Omega$ and all other $A_i=\varnothing$ in axiom 3. Full proof: book, Section 1.3.]{.muted}
+
+## Inclusion-exclusion for two events [Thm 1.2(4)]{.tag}
+
+:::: {.columns}
+::: {.column width="50%"}
+::: {.box-thm}
+$$\begin{aligned}\Prob(A\cup B)={}&\Prob(A)+\Prob(B)\\&-\Prob(A\cap B)\end{aligned}$$
 :::
 
-# Classical probability
+Property (4) is the formula you will use most often.
 
-## Classical probability (Def 1.5)
+. . .
 
-Finite $\Omega$, all outcomes equally likely:
+Add $\Prob(A)$ and $\Prob(B)$, and the outcomes in both events are counted **twice**. Subtract the overlap once.
+:::
+::: {.column width="50%"}
+```{python}
+#| fig-width: 5.5
+#| fig-height: 3.4
+import numpy as np, matplotlib.pyplot as plt
+from matplotlib.patches import Circle, Rectangle
+xs, ys = np.meshgrid(np.linspace(-2, 2, 400), np.linspace(-1.4, 1.4, 280))
+a = (xs + 0.55) ** 2 + ys ** 2 < 1; b = (xs - 0.55) ** 2 + ys ** 2 < 1
+fig, ax = plt.subplots(figsize=(5.5, 3.4))
+ax.contourf(xs, ys, (a | b).astype(float), levels=[0.5, 1.5], colors=["#9bb8d6"], alpha=0.8)
+ax.contourf(xs, ys, (a & b).astype(float), levels=[0.5, 1.5], colors=["#b4542a"], alpha=0.8)
+ax.add_patch(Circle((-0.55, 0), 1, fill=False, lw=1.5)); ax.add_patch(Circle((0.55, 0), 1, fill=False, lw=1.5)); ax.add_patch(Rectangle((-2, -1.4), 4, 2.8, fill=False, lw=1.5))
+ax.text(0, 0, "twice", ha="center", va="center", fontsize=12, color="white", fontweight="bold")
+ax.set_aspect("equal"); ax.axis("off"); plt.tight_layout()
+```
+:::
+::::
+
+## Three events [Eq 1.1]{.tag}
+
+For three events the correction goes one step further:
+
 $$
-\Prob(A)=\frac{|A|}{|\Omega|}
+\begin{aligned}
+\Prob(A\cup B\cup C)={}&\Prob(A)+\Prob(B)+\Prob(C)\\
+&-\Prob(A\cap B)-\Prob(A\cap C)-\Prob(B\cap C)\\
+&+\Prob(A\cap B\cap C).
+\end{aligned}
 $$
 
-The difficulty is in "equally likely".
+. . .
 
-## Two dice (Ex 1.4, Fig 1.2)
+Singles **plus**, pairs **minus**, the triple **plus**.
+
+The centre is added three times, subtracted three times, and added once: counted exactly once.
+
+## Promo code and app, with numbers [Ex 1.3]{.tag} {.smaller}
+
+:::: {.columns}
+::: {.column width="52%"}
+::: {.box-ex}
+A hypothetical online store: 40% of orders use a promo code ($A$), 55% come through the app ($B$), 20% do both.
+
+Find the probability that a random order
+
+(a) uses a promo code or the app;
+(b) uses neither;
+(c) comes through the app without a promo code.
+:::
+:::
+::: {.column width="48%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.2
+import numpy as np, matplotlib.pyplot as plt
+from matplotlib.patches import Circle, Rectangle
+fig, ax = plt.subplots(figsize=(5, 3.2))
+ax.add_patch(Circle((-0.55, 0), 1, fill=False, lw=1.5)); ax.add_patch(Circle((0.55, 0), 1, fill=False, lw=1.5)); ax.add_patch(Rectangle((-2, -1.4), 4, 2.8, fill=False, lw=1.5))
+ax.text(-1.0, 1.15, "A: 0.40", fontsize=13, ha="center", color="#1f5c99"); ax.text(1.0, 1.15, "B: 0.55", fontsize=13, ha="center", color="#1f5c99")
+ax.text(0, 0, "0.20", ha="center", va="center", fontsize=14, color="#b4542a", fontweight="bold")
+ax.set_xlim(-2.1, 2.1); ax.set_ylim(-1.5, 1.6); ax.set_aspect("equal"); ax.axis("off"); plt.tight_layout()
+```
+:::
+::::
+
+## Promo code and app, solution [Ex 1.3]{.tag}
+
+**(a)** By Thm 1.2(4): $\Prob(A\cup B)=0.40+0.55-0.20=$ [0.75]{.answer}
+
+. . .
+
+**(b)** The complement of (a): $\Prob\big((A\cup B)^c\big)=1-0.75=$ [0.25]{.answer}
+
+. . .
+
+**(c)** $\Prob(B\cap A^c)=\Prob(B)-\Prob(A\cap B)=0.55-0.20=$ [0.35]{.answer}
+
+. . .
+
+**Check.** Four disjoint pieces: promo only, app only, both, neither.
 
 ```{python}
-#| fig-alt: "A six by six grid of points with the six outcomes of sum seven highlighted."
-import numpy as np
-import matplotlib.pyplot as plt
-
-red, blue = np.meshgrid(np.arange(1, 7), np.arange(1, 7))
-is_seven = (red + blue == 7)
-fig, ax = plt.subplots(figsize=(4.6, 3.8))
-ax.scatter(red[~is_seven], blue[~is_seven], s=70, color="#b7c4d1")
-ax.scatter(red[is_seven], blue[is_seven], s=70, color="#c0392b")
-ax.set_xlabel("Red die")
-ax.set_ylabel("Blue die")
-ax.set_xticks(range(1, 7))
-ax.set_yticks(range(1, 7))
-plt.tight_layout()
-plt.show()
+#| fig-width: 9
+#| fig-height: 1.1
+import numpy as np, matplotlib.pyplot as plt
+fig, ax = plt.subplots(figsize=(9, 1.1))
+vals = [0.20, 0.35, 0.20, 0.25]; labs = ["promo only", "app only", "both", "neither"]
+left = 0
+for v, l, c in zip(vals, labs, ["#9bb8d6", "#1f5c99", "#b4542a", "#c9d6e3"]):
+    ax.barh(0, v, left=left, color=c, ec="white", lw=2)
+    ax.text(left + v / 2, 0, f"{l}: {v:.2f}", ha="center", va="center", fontsize=13, color="white" if c in ("#1f5c99", "#b4542a") else "black")
+    left += v
+ax.set_xlim(0, 1); ax.axis("off"); plt.tight_layout()
 ```
 
-$\Prob(\text{sum}=7)=6/36=1/6$
+::: {.notes}
+Draw the four-piece picture and fill in 0.20, 0.35, 0.20, 0.25 with the room.
+:::
 
-## The trap
+## Pitfall: forgetting the overlap [Thm 1.2(4)]{.tag}
 
-Sums $2,\dots,12$: eleven values, but **not** equally likely.
+:::: {.columns}
+::: {.column width="50%"}
+::: {.box-ex}
+**Wrong.**
+$$\Prob(A\cup B)=0.40+0.55=0.95$$
+The 20% who used both are counted twice.
+:::
+:::
+::: {.column width="50%"}
+::: {.box-def}
+**Right.**
+$$\begin{aligned}\Prob(A\cup B)&=0.40+0.55-0.20\\&=0.75\end{aligned}$$
+:::
+:::
+::::
 
-- sum 7: six ways
-- sum 2: one way, $(1,1)$
+. . .
 
-Use the finest description in which outcomes are equally likely. Two coin tosses, exactly one head: $2/4$, not $1/3$.
+Fill in 0.40 and 0.55 as the pieces of a picture, and the numbers add to more than 1. That is the warning sign.
 
-## Where classical probability fails
+## "At least one" means "1 minus none" [Thm 1.2(2)]{.tag}
 
-"A customer buys or not, so 50/50" is the same mistake.
+:::: {.columns}
+::: {.column width="55%"}
+The complement rule is the tool for any "at least one" question.
 
-Dice, cards, lotteries: yes. Business questions: probabilities come from data or a model.
+. . .
+
+"Happens at least once" is usually hard to count. "Never happens" is often a single product.
+
+. . .
+
+Compute that, then subtract from 1.
+
+[We use it in the counting examples next and in every later lecture.]{.muted}
+:::
+::: {.column width="45%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots(figsize=(5, 3))
+ax.barh(0, 1, color="#9bb8d6", ec="white"); ax.barh(0, 0.3, color="#b4542a")
+ax.text(0.15, 0, "none", ha="center", va="center", color="white", fontsize=14); ax.text(0.65, 0, "at least one", ha="center", va="center", fontsize=14)
+ax.set_xlim(0, 1); ax.axis("off"); plt.tight_layout()
+```
+:::
+::::
+
+## Classical probability [Def 1.5]{.tag}
+
+:::: {.columns}
+::: {.column width="55%"}
+::: {.box-def}
+Suppose $\Omega$ has finitely many outcomes, all **equally likely** by symmetry. Then
+$$\Prob(A)=\frac{|A|}{|\Omega|}=\frac{\text{outcomes in }A}{\text{outcomes in }\Omega}$$
+:::
+
+. . .
+
+It never goes negative, $\Prob(\Omega)=1$, and for mutually exclusive events the counts add up. So it is a legitimate probability.
+
+. . .
+
+The whole difficulty hides in "equally likely".
+:::
+::: {.column width="45%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.6
+import matplotlib.pyplot as plt
+import numpy as np
+fig, ax = plt.subplots(figsize=(5, 3.6))
+xx, yy = np.meshgrid(range(6), range(4)); inA = (xx < 2) & (yy < 3)
+ax.scatter(xx[~inA], yy[~inA], s=200, color="#9bb8d6"); ax.scatter(xx[inA], yy[inA], s=200, color="#b4542a")
+ax.set_title(r"$|\Omega|=24$, $|A|=6$: $\mathbb{P}(A)=6/24$", fontsize=13); ax.axis("off"); plt.tight_layout()
+```
+:::
+::::
+
+## Two dice [Ex 1.4, Fig 1.2]{.tag}
+
+:::: {.columns}
+::: {.column width="52%"}
+A red die and a blue die: 36 outcomes $(i,j)$, all equally likely.
+
+What is the probability that the sum is 7?
+
+. . .
+
+Sum 7: $(1,6),(2,5),(3,4),(4,3),(5,2),(6,1)$.
+
+. . .
+
+Six outcomes out of 36:
+$$\Prob(\text{sum}=7)=\frac{6}{36}= \color{#b4542a}{\mathbf{1/6}}$$
+:::
+::: {.column width="48%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 4.2
+import numpy as np
+import matplotlib.pyplot as plt
+red, blue = np.meshgrid(np.arange(1, 7), np.arange(1, 7))
+is_seven = (red + blue == 7)
+fig, ax = plt.subplots(figsize=(5, 4.2))
+ax.scatter(red[~is_seven], blue[~is_seven], s=90, color="#b7c4d1")
+ax.scatter(red[is_seven], blue[is_seven], s=90, color="#c0392b")
+ax.set_xlabel("Red die"); ax.set_ylabel("Blue die")
+ax.set_xticks(range(1, 7)); ax.set_yticks(range(1, 7)); plt.tight_layout()
+```
+:::
+::::
+
+## The eleven sums are not equally likely [Sec 1.4]{.tag}
+
+:::: {.columns}
+::: {.column width="50%"}
+The possible sums are $2,3,\dots,12$: eleven values. Many students say each has probability $1/11$.
+
+. . .
+
+[It does not.]{.answer} The sum 7 happens in six ways, the sum 2 in one: $(1,1)$.
+
+. . .
+
+Eleven sums is the coarse sample space. The **36 pairs** are equally likely.
+
+Before using Def 1.5, ask: what is the finest description in which every outcome is equally likely?
+:::
+::: {.column width="50%"}
+```{python}
+#| fig-width: 5.5
+#| fig-height: 4
+import numpy as np, matplotlib.pyplot as plt
+s = np.arange(2, 13); ways = 6 - np.abs(s - 7)
+fig, ax = plt.subplots(figsize=(5.5, 4))
+ax.bar(s, ways, color=np.where(s == 7, "#b4542a", "#9bb8d6"))
+ax.set_xticks(s); ax.set_xlabel("sum of two dice"); ax.set_ylabel("ways out of 36"); plt.tight_layout()
+```
+:::
+::::
+
+## The same trap, in a suit [Sec 1.4]{.tag}
+
+:::: {.columns}
+::: {.column width="50%"}
+::: {.box-ex}
+**Coin twice, exactly one head.** Not $1/3$ from the counts $\{0,1,2\}$.
+
+Outcomes $HH, HT, TH, TT$. Exactly one head is $\{HT, TH\}$: [$2/4=1/2$]{.answer}.
+:::
+:::
+::: {.column width="50%"}
+::: {.box-ex}
+**"A customer buys or does not, so the probability is 1/2."** The two outcomes are not equally likely.
+:::
+:::
+::::
+
+. . .
+
+Classical probability is right for dice, cards, lotteries and a random name from a list. It is wrong for most business questions. There the probability has to come from data or from a model, and that is what the rest of the course is about.
+
+## Your turn {.yourturn}
+
+Two dice are rolled. What is the probability that the sum is **at least 10**?
+
+. . .
+
+:::: {.columns}
+::: {.column width="48%"}
+Sums 10, 11, 12 have 3, 2 and 1 outcomes.
+
+$$\frac{3+2+1}{36}= \color{#b4542a}{\mathbf{1/6}}$$
+:::
+::: {.column width="52%"}
+```{python}
+#| fig-width: 3.8
+#| fig-height: 3
+import numpy as np, matplotlib.pyplot as plt
+red, blue = np.meshgrid(np.arange(1, 7), np.arange(1, 7)); m = red + blue >= 10
+fig, ax = plt.subplots(figsize=(3.8, 3))
+ax.scatter(red[~m], blue[~m], s=70, color="#b7c4d1"); ax.scatter(red[m], blue[m], s=70, color="#c0392b")
+ax.set_xlabel("Red die"); ax.set_ylabel("Blue die"); plt.tight_layout()
+```
+:::
+::::
+
+::: {.notes}
+Before the break: "Two sums, 7 and 12. Which is more likely?" Take a vote by hand, then show the dice grid.
+:::
 
 ## Break
 
-# Counting
-
-## Product rule (Thm 1.3)
-
-$k$ stages with $n_1,\dots,n_k$ ways give $n_1 n_2\cdots n_k$ ways in total.
-
-## PIN codes (Ex 1.5)
-
-- Any four digits: $10^4=10\,000$
-- All digits different: $10\cdot9\cdot8\cdot7=5040$
-
-## Orderings and selections (Thm 1.4)
-
-From $n$ distinct objects:
-
-- all in a row: $n!$
-- $k$ in order: $\dfrac{n!}{(n-k)!}$
-- $k$ without order: $\dbinom{n}{k}=\dfrac{n!}{k!\,(n-k)!}$
-
-## Does order matter?
-
-Swap two chosen items. A different outcome means ordered; the same outcome means unordered.
-
-- gold, silver, bronze from 10: $720$
-- a team of 3 from 10: $\binom{10}{3}=120=720/3!$
-
-## A 6-from-45 lottery (Ex 1.6)
-
-$$
-\binom{45}{6}=8\,145\,060
-$$
-
-One ticket: $\approx 1.2\cdot10^{-7}$. Weekly play: about 157 000 years on average.
-
-## Expired packs (Ex 1.7)
-
-20 packs, 3 expired, 4 taken at random.
-
-$|\Omega|=\binom{20}{4}=4845$
-
-## Expired packs: answers
-
-| Event | Count | Probability |
-|---|---|---|
-| exactly one expired | $\binom31\binom{17}3=2040$ | 0.421 |
-| none expired | $\binom{17}4=2380$ | 0.491 |
-| at least one | complement | 0.509 |
+Back in 10 minutes.
 
 ::: {.notes}
-Numerator is a product, not a sum. Ask: why not 3 + 17?
+Halfway point (80 min). The second half starts with counting.
 :::
 
-# Geometric probability
+## Product rule [Thm 1.3]{.tag} {.smaller}
 
-## Geometric probability (Def 1.6)
+:::: {.columns}
+::: {.column width="52%"}
+::: {.box-thm}
+A procedure has $k$ stages. Stage 1 can be done in $n_1$ ways, stage 2 in $n_2$ ways (whatever happened in stage 1), and so on. The whole procedure can be done in
+$$n_1 n_2\cdots n_k\ \text{ways.}$$
+:::
 
-Uniform on a segment, region or solid:
-$$
-\Prob(A)=\frac{\text{size of }A}{\text{size of }\Omega}
-$$
+. . .
 
-Size: length, area or volume.
+After stage 1 there are $n_1$ situations, each continues in $n_2$ ways: $n_1n_2$ pairs. Then triples, and so on.
 
-## Courier in a two-hour window (Ex 1.8)
+[Proof: see the book, Section 1.5.]{.muted}
+:::
+::: {.column width="48%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.2
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots(figsize=(5, 3.2))
+for i, y1 in enumerate([2, 0, -2]):
+    ax.plot([0, 1], [0, y1], color="#1f5c99")
+    for y2 in (y1 + 0.5, y1 - 0.5):
+        ax.plot([1, 2], [y1, y2], color="#1f5c99"); ax.scatter(2, y2, color="#b4542a", s=40)
+ax.text(0.5, 2.7, r"$n_1=3$ ways", ha="center", fontsize=13); ax.text(1.5, 2.7, r"$n_2=2$ ways", ha="center", fontsize=13)
+ax.text(2.2, -0.2, r"$3\cdot 2=6$", fontsize=15, color="#b4542a", va="center")
+ax.set_xlim(-0.2, 3.1); ax.set_ylim(-3, 3.2); ax.axis("off"); plt.tight_layout()
+```
+:::
+::::
 
-Arrives uniformly between 10:00 and 12:00. You are out 10:30–11:15.
+## PIN codes [Ex 1.5]{.tag}
 
-$$
-\Prob(\text{courier arrives while you are out})=\frac{45}{120}=\frac38
-$$
+A bank card has a four-digit PIN.
 
-## Two people, one café (Ex 1.9)
+| Rule | Choices per position | Count |
+|---|---|---|
+| any digits | $10\cdot10\cdot10\cdot10$ | $10^4=10\,000$ |
+| all digits different | $10\cdot9\cdot8\cdot7$ | $5040$ |
 
-Each arrives uniformly in 12:00–13:00, independently, and waits 15 minutes. $\Prob(\text{meet})=?$
+. . .
 
-## Two people, one café: the square (Fig 1.3)
+A thief who guesses one PIN at random hits it with probability [$1/10\,000$]{.answer}.
+
+. . .
+
+The second count is an ordered selection without repetition. It has a name and a formula, next.
+
+## Orderings and selections [Thm 1.4]{.tag}
+
+From $n$ distinct objects, with $n!=n(n-1)\cdots2\cdot1$ and $0!=1$:
+
+:::: {.columns}
+::: {.column width="50%"}
+::: {.box-thm}
+**All $n$ in a row:** $n!$
+
+**$k$ of them in order:**
+$$\frac{n!}{(n-k)!}=n(n-1)\cdots(n-k+1)$$
+:::
+:::
+::: {.column width="50%"}
+::: {.box-thm}
+**$k$ of them, order ignored** (a subset):
+$$\binom{n}{k}=\frac{n!}{k!\,(n-k)!}$$
+the **binomial coefficient**
+:::
+:::
+::::
+
+. . .
+
+Why divide by $k!$: each subset of size $k$ appears in the ordered count exactly $k!$ times, once for each way of ordering it.
+
+## Does order matter? [Thm 1.4]{.tag}
+
+Swap two chosen items. If the result is a different outcome, count **ordered**. If it is the same outcome, count **unordered**.
+
+| Choose 3 of 10 candidates for… | Order | Count |
+|---|---|---|
+| gold, silver, bronze | matters | $10\cdot9\cdot8=720$ |
+| a project team | does not matter | $\binom{10}{3}=120$ |
+
+. . .
+
+Check: $720/3!=120$. Every team of 3 can be arranged in $3!=6$ medal orders.
+
+## Two facts about $\binom{n}{k}$ [Thm 1.4]{.tag}
+
+:::: {.columns}
+::: {.column width="45%"}
+$$\binom{n}{k}=\binom{n}{n-k}$$
+Choosing who goes in is the same as choosing who stays out.
+
+. . .
+
+$$\binom{n}{0}=\binom{n}{n}=1$$
+One way to take nobody, one way to take everybody.
+:::
+::: {.column width="55%"}
+```{python}
+#| fig-width: 5.5
+#| fig-height: 3.6
+import numpy as np, matplotlib.pyplot as plt
+from scipy import stats
+from math import comb
+k = np.arange(0, 11); c = [comb(10, i) for i in k]
+fig, ax = plt.subplots(figsize=(5.5, 3.6))
+ax.bar(k, c, color=["#b4542a" if i == 3 else "#9bb8d6" for i in k]); ax.bar(7, comb(10, 7), color="#b4542a")
+ax.set_xlabel("k (people chosen out of 10)"); ax.set_ylabel(r"$\binom{10}{k}$"); ax.set_xticks(k); plt.tight_layout()
+```
+:::
+::::
+
+## A 6-from-45 lottery [Ex 1.6]{.tag}
+
+You pick 6 different numbers from 1 to 45. Order is irrelevant.
+
+. . .
+
+$$\binom{45}{6}=\frac{45\cdot44\cdot43\cdot42\cdot41\cdot40}{720}=8\,145\,060$$
+
+. . .
+
+A single ticket wins the jackpot with probability
+$$\frac{1}{8\,145\,060}\approx 1.2\cdot10^{-7}.$$
+
+. . .
+
+Buy a ticket every week and you would wait on average about [157 000 years]{.answer}.
+
+## Expired packs: the set-up [Ex 1.7]{.tag} {.smaller}
+
+:::: {.columns}
+::: {.column width="52%"}
+::: {.box-ex}
+A warehouse shelf holds 20 packs of yoghurt, 3 of them past their date. An inspector takes 4 packs at random. Find the probability that
+
+(a) exactly one is expired;
+(b) none is expired;
+(c) at least one is expired.
+:::
+
+. . .
+
+Order does not matter, so
+$$|\Omega|=\binom{20}{4}=4845.$$
+:::
+::: {.column width="48%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.2
+import numpy as np, matplotlib.pyplot as plt
+fig, ax = plt.subplots(figsize=(5, 3.2))
+xx, yy = np.meshgrid(range(5), range(4)); xx = xx.ravel(); yy = yy.ravel()
+exp = np.arange(20) < 3
+ax.scatter(xx[~exp], yy[~exp], s=420, color="#9bb8d6"); ax.scatter(xx[exp], yy[exp], s=420, color="#b4542a")
+ax.text(2, -0.9, "3 expired (orange), 17 good", ha="center", fontsize=13); ax.set_ylim(-1.3, 3.5); ax.axis("off"); plt.tight_layout()
+```
+:::
+::::
+
+## Expired packs: (a) and (b) [Ex 1.7]{.tag}
+
+**(a) Exactly one expired.** Choose 1 of the 3 expired and 3 of the 17 good, then multiply (product rule):
+$$\binom{3}{1}\binom{17}{3}=3\cdot680=2040,\qquad \Prob=\frac{2040}{4845}\approx \color{#b4542a}{\mathbf{0.421}}$$
+
+. . .
+
+**(b) None expired.** All 4 come from the 17 good packs:
+$$\frac{\binom{17}{4}}{\binom{20}{4}}=\frac{2380}{4845}\approx \color{#b4542a}{\mathbf{0.491}}$$
+
+. . .
+
+The numerator in (a) is a **product**: pick from the bad group, and pick from the good group. Why not $3+17$?
+
+::: {.notes}
+Board layout: numerator as "pick from the bad group x pick from the good group", with a vertical line between the factors. Students almost always forget that the numerator is a product.
+:::
+
+## Expired packs: (c) and what it means [Ex 1.7]{.tag}
+
+:::: {.columns}
+::: {.column width="50%"}
+**(c) At least one expired.** Use the complement:
+$$1-0.491= \color{#b4542a}{\mathbf{0.509}}$$
+
+. . .
+
+The inspector checks four packs out of twenty and finds a problem in barely more than half of the cases, although 15% of the packs are bad.
+
+. . .
+
+Sampling a small part of a batch is a **weak control**. We return to sample sizes in module 3.
+:::
+::: {.column width="50%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.2
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots(figsize=(5, 3.2))
+v = [0.421, 0.491, 0.509]; l = ["exactly\none", "none", "at least\none"]
+ax.bar(l, v, color=["#9bb8d6", "#9bb8d6", "#b4542a"])
+for i, x in enumerate(v): ax.text(i, x + 0.01, f"{x:.3f}", ha="center", fontsize=13)
+ax.set_ylim(0, 0.62); ax.set_ylabel("probability"); plt.tight_layout()
+```
+:::
+::::
+
+## Your turn {.yourturn}
+
+A password has 4 characters, each a lowercase letter (26 choices).
+
+How many passwords have **at least one repeated letter**? Use the complement.
+
+. . .
+
+All four different: $26\cdot25\cdot24\cdot23=358\,800$. All passwords: $26^4=456\,976$.
+
+$$456\,976-358\,800= \color{#b4542a}{\mathbf{98\,176}}$$
+
+## Geometric probability [Def 1.6]{.tag} {.smaller}
+
+:::: {.columns}
+::: {.column width="52%"}
+Sometimes outcomes cannot be listed: a moment in time, a point on a map. "At random" then means every place is equally good.
+
+. . .
+
+::: {.box-def}
+$\Omega$ is a segment, a plane region or a region in space with finite size. An outcome is chosen **uniformly at random** if
+$$\Prob(A)=\frac{\text{size of }A}{\text{size of }\Omega}$$
+where size is length, area or volume.
+:::
+:::
+::: {.column width="48%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.2
+import numpy as np, matplotlib.pyplot as plt
+from matplotlib.patches import Rectangle, Ellipse
+fig, ax = plt.subplots(figsize=(5, 3.2))
+ax.add_patch(Rectangle((0, 0), 6, 4, fill=False, lw=2)); ax.add_patch(Ellipse((3.3, 2), 3, 1.8, color="#b4542a", alpha=0.6))
+ax.text(3.3, 2, "A", ha="center", va="center", fontsize=16, color="white"); ax.text(5.8, 3.5, r"$\Omega$", ha="right", fontsize=16)
+ax.text(3, -0.6, "probability = shaded area / total area", ha="center", fontsize=12)
+ax.set_xlim(-0.1, 6.1); ax.set_ylim(-1, 4.1); ax.axis("off"); plt.tight_layout()
+```
+:::
+::::
+
+## A courier in a two-hour window [Ex 1.8]{.tag}
+
+The courier arrives at a uniform moment between 10:00 and 12:00. You are out from 10:30 to 11:15. What is the probability that she comes while you are out?
 
 ```{python}
-#| fig-alt: "A square with a diagonal band shaded where the arrival times differ by at most fifteen minutes."
-import numpy as np
+#| fig-width: 8
+#| fig-height: 1.2
 import matplotlib.pyplot as plt
-
-t = np.linspace(0, 60, 200)
-fig, ax = plt.subplots(figsize=(4.6, 4.2))
-ax.fill_between(t, np.maximum(t - 15, 0), np.minimum(t + 15, 60), color="#4c8cc9", alpha=0.6)
-ax.plot([0, 60], [0, 60], color="black", lw=0.8, ls="--")
-ax.set_xlim(0, 60)
-ax.set_ylim(0, 60)
-ax.set_aspect("equal")
-ax.set_xlabel("Zarina arrives (min after 12:00)")
-ax.set_ylabel("Oksana arrives (min after 12:00)")
+fig, ax = plt.subplots(figsize=(8, 1.2))
+ax.barh(0, 120, color="#c9d6e3"); ax.barh(0, 45, left=30, color="#b4542a")
+ax.text(52.5, 0, "you are out: 45 min", ha="center", va="center", color="white", fontsize=13)
+ax.set_xticks([0, 30, 75, 120]); ax.set_xticklabels(["10:00", "10:30", "11:15", "12:00"], fontsize=12); ax.set_yticks([]); ax.grid(False)
+for s in ("left", "top", "right"): ax.spines[s].set_visible(False)
 plt.tight_layout()
-plt.show()
 ```
 
-$$
-\Prob(\text{meet})=1-\Big(\frac{45}{60}\Big)^2=\frac{7}{16}\approx0.44
-$$
+. . .
 
-## A point has probability zero
+$\dfrac{45}{120}=$ [3/8]{.answer}
 
-In a continuum, any single point has probability $0$, yet the outcome is some point.
+## Two people, one café: the set-up [Ex 1.9]{.tag} {.smaller}
 
-Probability zero does not mean impossible. We return to this in Lecture 4.
+:::: {.columns}
+::: {.column width="48%"}
+::: {.box-ex}
+Zarina and Oksana meet at a café between 12:00 and 13:00. Each arrives at a random moment of that hour, independently, and waits 15 minutes before leaving. What is the probability that they meet?
+:::
 
-## Exercises
+. . .
 
-1. Two dice: $\Prob(\text{sum}\ge10)$?
-2. $\Prob(A)=0.5$, $\Prob(B)=0.6$, never together. What is wrong?
-3. Six candidates in random order: Ilya before Priya? Consecutive?
-4. 4-letter passwords with a repeated letter?
-5. Random point in a square of side 2: within 1 of the centre?
+Let $x$, $y$ be the arrival times in minutes. The pair $(x,y)$ is a uniform point in the square $[0,60]^2$, area 3600.
 
-Seminar 1 has the full practice.
+. . .
+
+They meet when $|x-y|\le 15$: the band around the diagonal.
+:::
+::: {.column width="52%"}
+```{python}
+#| fig-width: 4
+#| fig-height: 3.5
+import numpy as np
+import matplotlib.pyplot as plt
+t = np.linspace(0, 60, 200)
+fig, ax = plt.subplots(figsize=(4, 3.5))
+ax.fill_between(t, np.maximum(t - 15, 0), np.minimum(t + 15, 60), color="#4c8cc9", alpha=0.6)
+ax.plot([0, 60], [0, 60], color="black", lw=0.8, ls="--")
+ax.set_xlim(0, 60); ax.set_ylim(0, 60); ax.set_aspect("equal")
+ax.set_xlabel("Zarina arrives (min after 12:00)"); ax.set_ylabel("Oksana arrives (min after 12:00)")
+plt.tight_layout()
+```
+:::
+::::
+
+## Two people, one café: the area [Ex 1.9]{.tag}
+
+Easier to find the area **outside** the band: two right triangles with legs $60-15=45$, each of area $45^2/2$.
+
+. . .
+
+The band has area $3600-45^2=1575$, so
+$$\Prob(\text{meet})=\frac{3600-45^2}{3600}=1-\Big(\frac{45}{60}\Big)^2= \color{#b4542a}{\mathbf{7/16 \approx  0.44}}$$
+
+. . .
+
+People find this low. Fifteen minutes feels generous, and yet they miss each other more than half of the time.
+
+Draw the problem as a square: two numbers become one point. That is the entire trick.
+
+## Probability zero is not impossible
+
+:::: {.columns}
+::: {.column width="55%"}
+In a geometric setting a single point has no length, so its probability is **zero**.
+
+. . .
+
+The courier arrives at exactly 10:47:12.000 with probability 0. Still, she arrives at some moment.
+
+. . .
+
+Once $\Omega$ is a continuum, [probability zero does not mean impossible]{.answer}.
+
+[This matters in Lecture 4.]{.muted}
+:::
+::: {.column width="45%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 2.6
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots(figsize=(5, 2.6))
+ax.plot([0, 120], [0, 0], color="#9bb8d6", lw=8, solid_capstyle="butt"); ax.scatter([47.2], [0], color="#b4542a", s=120, zorder=3)
+ax.annotate("one exact moment\nP = 0", (47.2, 0), xytext=(60, 0.6), fontsize=12, arrowprops=dict(arrowstyle="->"), color="#b4542a")
+ax.set_ylim(-0.5, 1.3); ax.set_xlabel("minutes after 10:00"); ax.set_yticks([]); ax.grid(False); ax.spines["left"].set_visible(False)
+plt.tight_layout()
+```
+:::
+::::
+
+## Your turn {.yourturn}
+
+A point is chosen uniformly in a square of side 2. What is the probability that it lies within distance 1 of the centre?
+
+. . .
+
+:::: {.columns}
+::: {.column width="50%"}
+Favourable region: a circle of radius 1, area $\pi$. The square has area 4.
+
+$$\frac{\pi}{4}\approx \color{#b4542a}{\mathbf{0.785}}$$
+:::
+::: {.column width="50%"}
+```{python}
+#| fig-width: 3.4
+#| fig-height: 3.2
+import matplotlib.pyplot as plt
+from matplotlib.patches import Circle, Rectangle
+fig, ax = plt.subplots(figsize=(3.4, 3.2))
+ax.add_patch(Rectangle((-1, -1), 2, 2, fill=False, lw=2)); ax.add_patch(Circle((0, 0), 1, color="#b4542a", alpha=0.6))
+ax.set_xlim(-1.2, 1.2); ax.set_ylim(-1.2, 1.2); ax.set_aspect("equal"); ax.axis("off"); plt.tight_layout()
+```
+:::
+::::
+
+## Your turn {.yourturn}
+
+A manager says: "The chance of a delay at the supplier is 0.5, the chance of a customs problem is 0.6, and they never happen together."
+
+What is wrong with that statement?
+
+. . .
+
+Mutually exclusive events would give
+$$\Prob(A\cup B)=0.5+0.6=1.1>1.$$
+
+[A probability cannot exceed 1.]{.answer} The three claims cannot all be true.
+
+::: {.notes}
+The full practice is in Seminar 1.
+:::
