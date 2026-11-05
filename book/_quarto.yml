@@ -20,6 +20,7 @@ book:
     - part: "Seminars"
       chapters:
         - seminars/S01-counting.qmd
+        - seminars/S02-conditional-probability.qmd
   appendices:
     - schedule.qmd
 

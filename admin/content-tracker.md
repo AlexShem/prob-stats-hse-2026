@@ -47,7 +47,7 @@ Status: merged (PR #1, counting terminology). Permutation, arrangement and combi
 
 ## L02: Conditional probability and Bayes' theorem
 
-Files: `book/lectures/L02-conditional-probability.qmd` (12 print pages), `slides/L02-conditional-probability.qmd` (50 slides + title). S02 not yet written.
+Files: `book/lectures/L02-conditional-probability.qmd` (12 print pages), `slides/L02-conditional-probability.qmd` (50 slides + title), `book/seminars/S02-conditional-probability.qmd` (9 problems, the last one starred).
 Status: chapter drafted on `unit/L02-conditional-probability`, under review.
 
 **Chapter.** Opens with the L01 store: $\Prob(\text{promo}\mid\text{app})=0.20/0.55\approx0.36$, not $0.40$.
@@ -66,7 +66,21 @@ Ends with 5 exercises and the pointer to Seminar 2.
 
 **Slides.** 50 slides, 44 with a visual. Break at slide 31, after the loan-officer slide that closes Sec 2.3. Reuses Fig 2.1 (conditioning panels), Fig 2.2 (bulb tree) and Table 2.1. New pictures: the B-rescaled-to-1 bar (Def 2.1), the red-die-shows-6 grid, the 66-pair grid checking Ex 2.3, the unit-square area picture for Def 2.2 and Thm 2.3, all 64 six-toss sequences with runs marked, sequence strips for Ex 2.4, a partition picture for Thm 2.4, a 1000-case grid for Ex 2.5, width = share mosaics for Ex 2.6, prior/posterior bars for Ex 2.7 and Ex 2.8. A shared `tree()` helper in the hidden first cell draws every probability tree (Ex 2.3, Ex 2.5, Ex 2.8, Exercise 4). Pitfall slides: swapping $\Prob(A\mid B)$ and $\Prob(B\mid A)$; complement behind the bar; independent vs mutually exclusive (with Exercise 3 as a quick check); pairwise vs mutual independence; mix moved, not the rates; "99% accurate" with the prosecutor's fallacy and Sally Clark. Your turn: Exercises 1, 2, 4, 5 and the "write six random tosses" room activity. Lecturer cues are in speaker notes.
 
-**Seminar.** Not yet written.
+**Seminar S02.** 9 problems, easy to hard; 13 print pages with solutions. Not in `solutions-released`.
+
+| Problem | Theme | Context, names | Cites |
+|---|---|---|---|
+| 1 | Drill: $\Prob(S\mid R)$ vs $\Prob(R\mid S)$ from a 500-answer two-way table; one-word independence check (0.80, 0.491, $\Prob(S)=0.684$) | HR survey, IT outsourcing firm, Nizhny Novgorod | Def 2.1, Ex 2.1, Def 2.2 |
+| 2 | Chain rule and tree, checked by counting: 3 of 40 raffle tickets, 4 prizes (357/494, 63/247) | Zarina, New Year raffle, Tyumen | Eq 2.1, Ex 2.3, Def 1.8 |
+| 3 | Independent ($0.10\cdot0.20=0.02$) vs mutually exclusive with the same marginals (union 0.28 vs 0.30) | late payment and blocked card, bank in Samara | Def 2.2, Thm 2.3, Thm 1.2 |
+| 4 | Find the mistake: divides instead of multiplying, unstated independence (0.0025); shared power supply pushes it up | Gleb, two servers, furniture company in Tver | Def 2.1, Thm 2.2, Thm 1.2, Sec 2.3 |
+| 5 | Gambler's fallacy with conversions: next click still 0.30, $0.3^6$, complement; streak as a reason to doubt the model | Priya, flower delivery before 8 March, Moscow | Def 2.3, Ex 2.4 |
+| 6 | Total probability, three wholesalers 50/30/20 with 1/2/4% expired (0.019, counts per 10,000) | Kemal, pharmacy chain in Perm | Thm 2.4, Eq 2.2 |
+| 7 | Bayes reverse of 6 (5/19, 6/19, 8/19), then shares 70/20/10 flip the answer (prior matters) | same | Eq 2.3, Thm 2.5 |
+| 8 | Long case: scoring model, 5% default, flags 80% / 10%; natural-frequency table, $\Prob(D\mid F)\approx0.296$, not flagged 0.012, rubles of the reject rule (+51.5 mln per 10,000), recession 10% gives 0.471 | Oksana, consumer-loan bank in Krasnoyarsk | Eq 2.3, Ex 2.1, Ex 2.8 |
+| 9* | Beyond the lecture: sequential Bayes (posterior becomes prior), conditional independence explained in plain words; second check gives 28/47; conditional independence is not independence; the "firm rejected by five banks" case left open in Sec 2.3 (0.200 to 0.560, sixth bank rejects 0.790) | same bank; small-business loans | Eq 2.3, Eq 2.2, Sec 2.3 |
+
+New contexts and names: HR survey, raffle, card-blocking, servers, flower ads, pharmacy wholesalers, loan scoring and credit bureau. Names: Zarina, Gleb, Priya, Kemal, Oksana. Relies on L01 (Def 1.8, Thm 1.2) and on the L02 loan officer's 30% approval rate (Problem 9 is built to match it). Anticipates: chi-square test of independence for a two-way table (module 3, named in Problem 1), expected value (L03; Problem 8(d) works in totals per 10,000 applicants, no $\E$), and the idea of updating a belief from data. Problem 9 introduces "conditionally independent" informally; nothing in the lectures defines it yet.
 
 ## Template for a new entry
 
