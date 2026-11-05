@@ -1,0 +1,7 @@
+# Schedule {#sec-schedule}
+
+All sessions are at Shabolovka ul. 26-28. Each slot is 80 minutes. Rooms change from week to week, so check here or in RUZ before you come.
+
+{{< include _schedule-tables.md >}}
+
+Module 3 (January–March 2027) will be added when the timetable is published.

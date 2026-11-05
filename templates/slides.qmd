@@ -1,0 +1,24 @@
+---
+title: "[TODO: Topic, same as the lecture chapter]"
+subtitle: "Lecture N · Probability Theory and Mathematical Statistics"
+date: "[TODO: YYYY-MM-DD]"
+---
+
+{{< include ../_shared/_macros.qmd >}}
+{{< include ../_shared/_setup.qmd >}}
+
+<!-- Copy to slides/LNN-<slug>.qmd (same stem as book/lectures/LNN-<slug>.qmd; that is how
+     the chapter finds its slides link). Shorter version of the chapter: same section order,
+     and notes numbers on every definition, theorem and example. 25–35 slides, break at the midpoint. -->
+
+# [TODO: Section title, same as in the chapter]
+
+## [TODO: Definition name] (Def N.1)
+
+::: {.notes}
+Speaker notes.
+:::
+
+## Break
+
+# [TODO: Second-half section]

@@ -1,0 +1,13 @@
+# Lecturer's print copy: same book plus `::: lecturer` cues and ALL seminar solutions.
+# `make print` renders it and splits it into one PDF per lecture/seminar.
+project:
+  output-dir: _output/lecturer
+
+lecturer-copy: true
+
+format:
+  pdf:
+    documentclass: scrreprt
+    fontsize: 12pt
+    papersize: a4
+    geometry: "left=2cm,right=5.5cm,top=2cm,bottom=2.2cm"

@@ -1,0 +1,19 @@
+---
+title: "[TODO: Midterm | Final exam]"
+subtitle: "Probability Theory and Mathematical Statistics · [TODO: date] · [TODO: duration]"
+format: pdf
+---
+
+{{< include ../../_shared/_macros.qmd >}}
+
+Name: \rule{6cm}{0.4pt} \hfill Group: \rule{1.5cm}{0.4pt} \hfill Variant: A
+
+<!-- Rules: allowed materials, calculator policy, total points. -->
+
+## Problem 1 ([TODO: points] points)
+
+[TODO: statement]
+
+::: {.content-visible when-profile="solutions"}
+**Marking key.** [TODO: steps with partial credit]
+:::

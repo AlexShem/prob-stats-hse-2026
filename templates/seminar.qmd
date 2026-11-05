@@ -1,0 +1,27 @@
+---
+execute:
+  echo: true
+---
+
+# Seminar N: [TODO: topic] {.unnumbered #sec-SNN}
+
+{{< include ../../_shared/_macros.qmd >}}
+{{< include ../../_shared/_setup.qmd >}}
+
+<!-- Copy to book/seminars/SNN-<slug>.qmd and list it under the "Seminars" part in
+     book/_quarto.yml. Every solution goes in a `::: sol` block. Students see it only after
+     "SNN" is added to `solutions-released` in book/_quarto.yml. -->
+
+## Problem 1 {.unnumbered}
+
+[TODO: statement]
+
+::: sol
+[TODO: solution by hand first; cite results as @thm-..., @def-...]
+
+```{python}
+# Python check: runs as-is in Colab/Jupyter, no course helpers.
+import numpy as np
+from scipy import stats
+```
+:::

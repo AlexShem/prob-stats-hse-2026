@@ -1,0 +1,12 @@
+# reveal.js slides, one file per lecture (LNN-<slug>.qmd, same stem as book/lectures/).
+# `make book` renders them and copies them into the book output, where chapters link to them.
+project:
+  output-dir: _output
+execute:
+  freeze: auto
+  echo: false
+format:
+  revealjs:
+    theme: [default, ../_shared/slides.scss]
+    slide-number: true
+    html-math-method: mathjax

@@ -1,0 +1,10 @@
+/*-- scss:defaults --*/
+$font-family-sans-serif: "Source Sans 3", "Helvetica Neue", Arial, sans-serif;
+$presentation-font-size-root: 34px;
+$presentation-heading-font-weight: 600;
+$presentation-heading-text-transform: none;
+$link-color: #1f5c99;
+
+/*-- scss:rules --*/
+.reveal h2 { font-size: 1.3em; }
+.reveal .small { font-size: 0.75em; }

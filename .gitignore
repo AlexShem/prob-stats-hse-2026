@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+.ipynb_checkpoints/
+.quarto/
+_output/
+*_files/
+*.aux
+*.log
+*.tex
+!_shared/*.tex
+.DS_Store

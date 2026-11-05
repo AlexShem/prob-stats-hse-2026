@@ -1,0 +1,32 @@
+# [TODO: Topic title in sentence case] {#sec-LNN}
+
+{{< include ../../_shared/_macros.qmd >}}
+{{< include ../../_shared/_setup.qmd >}}
+
+<!-- Lecture N, the master copy. Copy to book/lectures/LNN-<slug>.qmd and list it under the
+     "Lectures" part in book/_quarto.yml. Start with a concrete business situation, not a preview.
+     Target: 8–12 pages in the lecturer print copy (make print). -->
+
+## [TODO: First section] {#sec-LNN-first}
+
+::: lecturer
+[TODO: board layout, timing, the question to ask]
+:::
+
+::: {#def-NAME}
+## [TODO: Name]
+[TODO]
+:::
+
+::: {#exm-NAME}
+## [TODO: short title]
+[TODO]
+:::
+
+::: lecturer
+Break (80 min).
+:::
+
+## Exercises {.unnumbered}
+
+<!-- 3–6 short exercises. The full practice is in seminar SNN. -->

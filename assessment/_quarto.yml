@@ -1,0 +1,18 @@
+# Default profile = papers as handed out. --profile solutions adds marking keys.
+
+project:
+  output-dir: _output/papers
+
+execute:
+  freeze: auto
+
+format:
+  html:
+    theme: cosmo
+    toc: false
+    code-tools: false
+  pdf:
+    pdf-engine: xelatex
+    include-in-header: ../_shared/preamble.tex
+    geometry: margin=2.2cm
+    papersize: a4

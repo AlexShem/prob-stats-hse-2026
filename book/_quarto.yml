@@ -1,0 +1,47 @@
+# The course book: lectures + seminars in one place. Published as HTML; also a full PDF,
+# per-chapter PDFs (book/_output/book/pdf/) and the slides (book/_output/book/slides/).
+# Build with `make book` from the repo root, not `quarto render` alone (see CLAUDE.md).
+project:
+  type: book
+  output-dir: _output/book
+
+book:
+  title: "Probability Theory and Mathematical Statistics"
+  subtitle: "Lectures and seminars"
+  author: "Alexander Shemendyuk"
+  date: "2026/27"
+  downloads: [pdf]
+  chapters:
+    - index.qmd
+    - part: "Lectures"
+      chapters: []
+        # chapter number = lecture number; add in order, e.g.
+        # - lectures/L01-probability-basics.qmd
+    - part: "Seminars"
+      chapters: []
+        # - seminars/S01-counting.qmd
+  appendices:
+    - schedule.qmd
+
+# Seminars whose solutions students can see (by number prefix). Add one after each seminar.
+solutions-released: []
+
+filters:
+  - ../_shared/course.lua
+
+execute:
+  freeze: auto
+  echo: false
+
+format:
+  html:
+    theme: cosmo
+    number-sections: true
+    css: ../_shared/book.css
+  pdf:
+    documentclass: scrbook
+    classoption: [oneside, open=any]
+    pdf-engine: xelatex
+    monofont: "DejaVu Sans Mono"
+    include-in-header: ../_shared/preamble.tex
+    callout-icon: false
