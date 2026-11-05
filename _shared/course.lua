@@ -43,19 +43,6 @@ local function box(div, ctype, default_title)
   return quarto.Callout({ type = ctype, title = title, content = div.content, appearance = "simple" })
 end
 
--- End-of-proof square for PDF (HTML gets it from book.css). Appended to the last paragraph so
--- it sits at the right edge of the last line, or on its own line after display math.
-local function add_qed(blocks)
-  local mark = pandoc.RawInline("latex", "\\hfill\\ensuremath{\\square}")
-  local last = blocks[#blocks]
-  if last and (last.t == "Para" or last.t == "Plain") then
-    last.content:insert(mark)
-  else
-    blocks:insert(pandoc.Plain({ mark }))
-  end
-  return blocks
-end
-
 local function handle_proof(div)
   local fold = div.classes:includes("proof-fold")
   if quarto.doc.is_format("html") then
@@ -67,13 +54,13 @@ local function handle_proof(div)
     out:insert(pandoc.RawBlock("html", "</div></details>"))
     return out
   end
-  if quarto.doc.is_format("pdf") or quarto.doc.is_format("latex") then
-    local blocks = add_qed(pandoc.List(div.content))
-    if fold then
-      return pandoc.Div(blocks, pandoc.Attr(div.identifier, { "proof" }, div.attributes))
-    end
-    div.content = blocks
-    return div
+  if fold and (quarto.doc.is_format("pdf") or quarto.doc.is_format("latex")) then
+    -- Quarto's own .proof blocks become amsthm proof environments, which draw the end square.
+    -- A folded proof is printed in full, so give it the same environment.
+    local out = pandoc.List({ pandoc.RawBlock("latex", "\\begin{proof}") })
+    out:extend(div.content)
+    out:insert(pandoc.RawBlock("latex", "\\end{proof}"))
+    return out
   end
   return nil
 end
