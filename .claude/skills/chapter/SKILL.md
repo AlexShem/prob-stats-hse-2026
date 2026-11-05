@@ -1,17 +1,31 @@
 ---
 name: chapter
-description: Stage 1 of a teaching unit. Write or revise the lecture chapter book/lectures/LNN-<slug>.qmd (the master copy). Does not touch slides or seminars.
-argument-hint: "LNN [notes or outline]"
-disable-model-invocation: true
+description: Prepare a new lecture chapter (book/lectures/LNN-*.qmd) or make a substantial change to one, and carry the change through to slides and seminars. Use when Alexander asks to write, prepare or rework a lecture.
+argument-hint: "LNN [notes, outline or the change to make]"
+allowed-tools: Bash(git branch *) Bash(git status *) Bash(ls *)
 ---
 
-Write the lecture chapter for **$0** (stage 1 of the unit workflow in CLAUDE.md). Extra instructions from Alexander, if any: $ARGUMENTS
+Lecture **$0**. Alexander's instructions: $ARGUMENTS
 
-1. Invoke the `quarto-authoring` skill before editing any Quarto file.
-2. Git: `git branch --show-current`. You should be on `unit/$0-<slug>`. If you're on `main`, run `git switch -c unit/$0-<slug>`. Never rename `main`. If another unit branch is checked out with uncommitted work, stop and ask.
-3. Read: CLAUDE.md (all of it, especially "Writing style"), the $0 row in `admin/course-plan.md`, and the referenced line ranges of `sources/` via `sources/Модули_1_2_новые.summary.md`. If the chapter already exists, read it and the earlier chapters' last sections, so you don't repeat them and the notation carries through.
-4. Before writing, show Alexander a short outline: sections, the opening case, each definition, theorem and example with its one-line purpose, figures, and the break point. Wait for his OK or changes. Skip this only if he gave an outline in the arguments.
-5. Write `book/lectures/$0-<slug>.qmd` from `templates/lecture.qmd` and list it in `book/_quarto.yml`. Follow CLAUDE.md, "The lecture chapter is the master". Write prose, label every numbered item, add `::: lecturer` cues, and work every example in full.
-6. Build and check: `make book`, `make print`, `make lint`. The print PDF `book/_output/lecturer/$0-*.pdf` should be 8–12 pages. No `lecturer` text may appear in `book/_output/book/`. Read the print PDF text once (`pdftotext`) and fix anything that reads badly or renders wrong.
-7. Commit (`$0: chapter …`). **Do not write slides or the seminar.** They come after Alexander approves the chapter, via `/slides $0` and `/seminar SNN`.
-8. Report: page count, the list of numbered items (`make labels L=<stem>`), open `[TODO: …]`s, and anything you were unsure about.
+Repo state at invocation:
+- Branch: !`git branch --show-current`
+- Uncommitted changes: !`git status --short`
+- Existing files: !`ls book/lectures book/seminars slides`
+
+You are the main session and you coordinate. Delegate the work to the project agents in `.claude/agents/`. Their models are set in their files, so don't override them. Follow CLAUDE.md, "Routing".
+
+**New chapter** (no `book/lectures/$0-*.qmd` yet):
+1. Spawn **source-scout**: "Brief for lecture $0: plan row, source material, reusable examples, what earlier chapters define."
+2. From the brief and `admin/course-plan.md`, draft an outline: sections, the opening business case, each definition, theorem and example with a one-line purpose, figures, and the break point. **Show it to Alexander and wait for his OK.** Skip this only if he gave an outline.
+3. Spawn **chapter-writer** with the approved outline and the scout's brief.
+4. Spawn **math-checker** (the chapter) and **build-checker** in parallel. If math-checker finds errors, send them back to chapter-writer (SendMessage to the same agent) and check again.
+5. Report: page count, numbered items, open TODOs, and the next step (`/slides $0` once Alexander has read the print copy `book/_output/lecturer/$0-*.pdf`).
+
+**Revision** (the chapter exists):
+1. If the change is substantial (a new section, a restructure, several new items), show Alexander a short plan of the change first. For a single addition (a notation, a remark, an example), go straight on.
+2. Spawn **chapter-writer** with the change.
+3. **Propagate:**
+   - If its report lists slide impact or renumbering and `slides/$0-*.qmd` exists, spawn **slide-designer** in update mode. Pass on the slide-impact list, the renumbering and Alexander's wording.
+   - If seminars cite renumbered or changed items (`grep -l '@<label>' book/seminars/`), spawn **seminar-writer** to bring them in line.
+4. Spawn **math-checker** on the changed files and **build-checker**, in parallel.
+5. Report what changed where (chapter, slides by number, seminars), the branch, and that it is ready to merge when Alexander agrees.
