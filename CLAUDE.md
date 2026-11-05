@@ -7,7 +7,7 @@ Alexander's how-to for the stage commands: `WORKFLOW.md`. Keep it in sync when c
 ## Required skills
 
 - **`quarto-authoring`**: invoke it with the Skill tool before creating or editing any `.qmd` file, `_quarto.yml`, profile or Lua filter. This is not optional. If you spawn a subagent that will touch Quarto files, say in its prompt: "Before editing any Quarto file, invoke the `quarto-authoring` skill."
-- **Project commands** (`.claude/skills/`): `/chapter`, `/slides`, `/seminar`, `/review-unit`. These are the stages of a teaching unit, and Alexander triggers each one (see "Making a teaching unit"). Don't run a later stage on your own initiative.
+- **Project agents and commands**: the main session coordinates and delegates to the agents in `.claude/agents/`, using the commands in `.claude/skills/` (`/chapter`, `/slides`, `/seminar`, `/review-unit`). See "Routing" below. Alexander may type a command or just describe what he wants. Either way, follow "Routing".
 - **`anti-ai`**: the user invokes this skill by name and agents should not load it on their own. Its rules for this course are written out below under "Writing style", and they apply to every piece of text.
 
 ## Audience and scope
@@ -48,9 +48,13 @@ _shared/             _macros.qmd + preamble.tex (math), _setup.qmd (plot style),
 templates/           lecture.qmd, seminar.qmd, slides.qmd (a pattern deck), exam.qmd. Copy these, don't render them in place
 admin/               course facts, plan, generated schedule; raw RUZ exports in admin/raw/
 sources/             inherited materials (read-only input, see "Working with sources")
-scripts/             schedule_from_xls.py, split_book_pdf.py, style_check.py,
+scripts/             schedule_from_xls.py, split_book_pdf.py, style_check.py, check_outputs.py,
                      slides_snapshot.py (deck → PDF + PNG contact sheets), chapter_labels.py
-.claude/skills/      project commands: chapter, slides, seminar, review-unit
+.claude/agents/      project agents (model set per agent): chapter-writer, slide-designer,
+                     seminar-writer, source-scout, math-checker, build-checker, unit-reviewer
+.claude/skills/      project commands that coordinate them: chapter, slides, seminar, review-unit
+.claude/settings.json  hooks: git guardrails, sources/ read-only, style check after .qmd edits
+                     (scripts in scripts/hooks/)
 ```
 
 There is no root `_quarto.yml`. Don't add one. Each project writes to `<project>/_output/` (gitignored). Keep `output-dir` inside the project, because Quarto misbehaves when it points outside. Slides cannot live inside the book project, since Quarto renders them next to their source. That's why they are a separate project, and `make book` copies them in.
@@ -67,6 +71,7 @@ make snapshot L=<stem>   # one deck → slides/_output/<stem>.pdf + PNG contact 
 make labels L=<stem>     # numbers of definitions/theorems/examples/figures in a rendered chapter
 make assessment       # private papers → assessment/_output/papers
 make assessment-keys  # with marking keys → assessment/_output/solutions
+make check            # leaks (lecturer cues, unreleased solutions), unresolved refs, sizes; after make book + print
 make lint             # style tripwire (see "Writing style")
 make schedule         # regenerate admin/schedule.md + book/_schedule-tables.md from the newest admin/raw/*.xls
 uv run quarto preview book   # live preview while writing (no per-chapter PDFs or slides in preview)
@@ -112,24 +117,52 @@ Rules for agents:
 4. Don't push, merge into `main` or delete branches unless Alexander asks. He reviews the branch first.
 5. After publishing, tag what students saw: `git tag pub/2026-11-07`. That makes "which version did they have before the midterm?" easy to answer.
 
+## Routing (how the main session handles a request)
+
+Alexander starts a session and says what he wants in plain words, e.g. "fix slide 12 of lecture 1", "add the notation $A\setminus B$ to lecture 1 and make sure the slides show it", "prepare lecture 2", "is unit 2 ready?". **The main session coordinates. The project agents do the work.** Their models are set in `.claude/agents/*.md`: opus for writing (chapter, slides, seminar), sonnet for judgement (lookups, maths, review), haiku for running the scripted build checks. Don't override them.
+
+| Request | What the main session does |
+|---|---|
+| New lecture ("prepare lecture 2") | Run `/chapter L02`: source-scout → outline to Alexander → chapter-writer → math-checker + build-checker. Then stop. The slides come after he has read the chapter. |
+| Change to a lecture's content (notation, definition, example, wording, error) | Run `/chapter LNN <the change>`: chapter-writer, then propagate to slide-designer (update) and seminar-writer if affected, then math-checker + build-checker. |
+| Slides only ("slide 12 is cramped", "add a diagram", "make the deck") | Run `/slides LNN <request>`: slide-designer in a fresh context, then build-checker. |
+| New or changed seminar, problems, solutions | Run `/seminar SNN <request>`: seminar-writer, then math-checker + build-checker. |
+| "Check the numbers in …" | math-checker. |
+| "Does it build", "anything broken?" | build-checker. |
+| "What do the sources have on …", "which problems can we reuse" | source-scout. |
+| "Is unit N ready?", before a merge | Run `/review-unit LNN SNN`: math-checker, unit-reviewer and build-checker in parallel, then one ranked list. |
+| Trivial fix (a typo, a wrong word, at most ~3 lines, no numbers, labels or structure involved) | The main session edits it directly in the chapter and in the matching slide/seminar line, then runs build-checker. |
+| Release solutions, refresh the schedule | The main session, straight on `main` (CLAUDE.md, "Git workflow"). |
+| Exam drafting | The main session on `exam/…`, then math-checker. Never in `book/` or `slides/`. |
+| Tooling (filter, Makefile, scripts, agents, these rules) | The main session on `infra/…`. Update `WORKFLOW.md` if the way Alexander works changes. |
+
+**Rules:**
+
+- **The chapter is the master.** Any change to a chapter's content is followed through to its deck and to seminars that cite it, in the same request. The chapter-writer's report (renumbering, slide impact) tells you what to pass on.
+- **Approval points stay in the main session.** Agents can't ask Alexander anything mid-run. Get his OK on outlines and problem lists *before* spawning a writer. For a request that is already specific ("add X", "fix slide 12"), just do it.
+- **Independent checks run in parallel** (one message with several Agent calls). Writers run one at a time, because they share the working tree.
+- **Every request ends with build-checker passing.** Then report what changed (files, slide numbers), the branch, and "ready to merge when you say so".
+- **Branches:** agents create their own `unit/…` or `fix/…` branch when they start on `main`. Several small requests in one session may share one `fix/…` branch. Merge to `main` only when Alexander says so.
+- **Hooks** (`.claude/settings.json`) block pushes, renaming `main`, commits straight to `main` and edits in `sources/`. They also run the style check after each `.qmd` edit. If a hook blocks something, don't work around it. Follow its message.
+
 ## Making a teaching unit
 
 A unit is one lecture and the seminar(s) after it. It is made in **stages, in this order**, and Alexander reviews each stage before the next one starts. The book chapter comes first and is finished before anything is derived from it.
 
-| Stage | Command | Runs | Output |
+| Stage | Command | Agents | Output |
 |---|---|---|---|
-| 1. Chapter | `/chapter LNN` | in the session, with an outline to approve first | `book/lectures/LNN-*.qmd` |
-| — | Alexander reads the print copy, edits, approves | | commit |
-| 2. Slides | `/slides LNN` | fresh subagent; reads only the committed chapter | `slides/LNN-*.qmd`, visually checked |
-| 3. Seminar | `/seminar SNN` | in the session, with a problem list to approve first | `book/seminars/SNN-*.qmd` |
-| 4. Review | `/review-unit LNN SNN` | fresh subagent, read-only | findings report |
+| 1. Chapter | `/chapter LNN` | source-scout → (outline approved) → chapter-writer → math-checker + build-checker | `book/lectures/LNN-*.qmd` |
+| — | Alexander reads the print copy and approves | | |
+| 2. Slides | `/slides LNN` | slide-designer (fresh context) | `slides/LNN-*.qmd`, visually checked |
+| 3. Seminar | `/seminar SNN` | source-scout → (problem list approved) → seminar-writer → math-checker + build-checker | `book/seminars/SNN-*.qmd` |
+| 4. Review | `/review-unit LNN SNN` | math-checker + unit-reviewer + build-checker in parallel | numbered findings |
 | — | fixes, then merge (`git merge --no-ff`) | | `main` |
 
 Why the stages are separate: slides written in the same pass as the chapter turn into a thin outline of it. Making the slides as their own task, from a finished chapter and with every slide looked at as an image, gives a deck students can study from.
 
 If the chapter changes after the slides exist, rerun `/slides LNN` with "update to the revised chapter". It will compare the chapter with the deck and redo the slides that changed.
 
-The full instructions for each stage are in `.claude/skills/<stage>/SKILL.md`. The essentials:
+The coordination steps are in `.claude/skills/<stage>/SKILL.md`, and the working rules in `.claude/agents/<agent>.md`. The essentials:
 
 ### The lecture chapter is the master
 
@@ -149,7 +182,7 @@ The full instructions for each stage are in `.claude/skills/<stage>/SKILL.md`. T
 - Chapter numbers go in a tag: `## Complement rule [Thm 1.2]{.tag}`. Get the numbers from `make labels`, never by guessing.
 - 35–55 slides per lecture day, at least half of them with a visual. One `## Break` at the midpoint.
 - Every deck is checked by eye: `make snapshot` and then the contact-sheet images. A deck isn't done until no slide overflows and no slide is half empty.
-- The full instructions are in `.claude/skills/slides/SKILL.md`.
+- The full rules are in `.claude/agents/slide-designer.md`.
 
 ### Seminars
 

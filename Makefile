@@ -2,7 +2,7 @@
 Q = uv run quarto render
 BOOK_OUT = book/_output/book
 
-.PHONY: all book print slides snapshot labels assessment assessment-keys schedule lint clean
+.PHONY: all book print slides snapshot labels check assessment assessment-keys schedule lint clean
 
 all: book print
 
@@ -37,6 +37,10 @@ assessment-keys:  ; $(Q) assessment --profile solutions
 # Regenerate admin/schedule.md and book/_schedule-tables.md from the newest admin/raw/*.xls
 schedule:
 	uv run --with xlrd python -W ignore scripts/schedule_from_xls.py $(if $(XLS),"$(XLS)")
+
+# Leaks (lecturer cues, unreleased solutions), unresolved refs, sizes. Run after `make book print`.
+check:
+	uv run python scripts/check_outputs.py
 
 # Style tripwire for AI-sounding wording (see CLAUDE.md)
 lint:
