@@ -47,9 +47,26 @@ Status: merged (PR #1, counting terminology). Permutation, arrangement and combi
 
 ## L02: Conditional probability and Bayes' theorem
 
-Status: in preparation on `unit/L02-conditional-probability`. Planned outline only; the writer replaces this entry with what the chapter actually contains.
+Files: `book/lectures/L02-conditional-probability.qmd` (12 print pages). Slides and S02 not yet written.
+Status: chapter drafted on `unit/L02-conditional-probability`, under review.
 
-Planned: opening with the L01 store ($\Prob(\text{promo}\mid\text{app})$); conditional probability, multiplication rule with a tree, independence (gambler's fallacy), total probability, Bayes. Break after independence.
+**Chapter.** Opens with the L01 store: $\Prob(\text{promo}\mid\text{app})=0.20/0.55\approx0.36$, not $0.40$.
+
+| Section | Items |
+|---|---|
+| 2.1 Conditional probability | Def 2.1; Fig 2.1 reduced sample space (conditioning panels); Ex 2.1 promo given app, $\Prob(A\mid B)\ne\Prob(B\mid A)$; Thm 2.1 $\Prob(\cdot\mid B)$ satisfies the axioms (proof-fold) |
+| 2.2 Multiplication rule | Thm 2.2 with chain rule (Eq 2.1); Ex 2.2 birthdays as a chain (team of 10, 0.883, ties to S01 Problem 9); Ex 2.3 two faulty bulbs out of 12, tree (Fig 2.2), checked by counting |
+| 2.3 Independence | Def 2.2; Thm 2.3 complements; Def 2.3 mutual independence (pairwise is not enough, counterexample); Ex 2.4 gambler's fallacy, six tosses and the loan-officer version. **Break after this section.** |
+| 2.4 Total probability | Thm 2.4 (Eq 2.2), uses the partition from L01 Def 1.3; Ex 2.5 two phone-case factories (0.024); Ex 2.6 funnel by segment, overall rate 5.6% to 7.1% only because the mix changed |
+| 2.5 Bayes | Thm 2.5 (Eq 2.3); Ex 2.7 which factory made the defective case (0.75); Ex 2.8 fraud alerts, 100,000 payments, 0.2% fraud, 1% false alarms (198 / 2 / 998 / 98,802), Table 2.1; prior and posterior; prosecutor's fallacy |
+
+Ends with 5 exercises and the pointer to Seminar 2.
+
+**Facts later units can use.** Notation $\Prob(A\mid B)$, no new macros. Terms introduced: conditional probability, probability tree, independent, mutually independent, gambler's fallacy, prior, posterior. Contexts used: phone-case factories, customer funnel with segments (new, returning, referred), fraud alerts, loan officer, team birthdays. Real cases named: Gigerenzer's tests of doctors, Sally Clark (prosecutor's fallacy). Mistakes named: swapping $\Prob(A\mid B)$ and $\Prob(B\mid A)$; $\Prob(A\mid B^c)\ne1-\Prob(A\mid B)$; independent taken as mutually exclusive; pairwise taken as mutual independence; the gambler's fallacy and its mirror; a change in mix read as a change in rates. Open thread: the chapter points to Bayes for "one firm rejected five times", which no section works out, so S02 can pick it up.
+
+**Slides.** Not yet built. Break after 2.3. Two figures and Table 2.1 to reuse.
+
+**Seminar.** Not yet written.
 
 ## Template for a new entry
 
