@@ -2,7 +2,7 @@
 
 Course materials for **Probability Theory and Mathematical Statistics** (RUZ: «Теория вероятностей и математическая статистика (анг)»), HSE University, Higher School of Business, International Business programme, 2nd year bachelor, taught in English, Nov 2026 – Mar 2027 (modules 2–3). Lecturer and seminar teacher for all three groups: Alexander Shemendyuk.
 
-Alexander's how-to for the stage commands: `WORKFLOW.md`. Keep it in sync when commands change. Facts, grading and policies: `admin/course-info.md`. Dates and rooms: `admin/schedule.md`. Topic for each lecture and seminar: `admin/course-plan.md`.
+Alexander's how-to for the stage commands: `WORKFLOW.md`. Keep it in sync when commands change. Facts, grading and policies: `admin/course-info.md`. Dates and rooms: `admin/schedule.md`. Topic for each lecture and seminar: `admin/course-plan.md`. What each unit actually contains and how it is presented (numbered items, running examples, devices, names, promises to later units): `admin/content-tracker.md`.
 
 ## Required skills
 
@@ -46,7 +46,7 @@ assessment/          midterm/, exam/: separate PRIVATE project, never published
 _shared/             _macros.qmd + preamble.tex (math), _setup.qmd (plot style), course.lua
                      (filter), book.css, slides.scss, data/
 templates/           lecture.qmd, seminar.qmd, slides.qmd (a pattern deck), exam.qmd. Copy these, don't render them in place
-admin/               course facts, plan, generated schedule; raw RUZ exports in admin/raw/
+admin/               course facts, plan, content-tracker.md, generated schedule; raw RUZ exports in admin/raw/
 sources/             inherited materials (read-only input, see "Working with sources")
 scripts/             schedule_from_xls.py, split_book_pdf.py, style_check.py, check_outputs.py,
                      slides_snapshot.py (deck → PDF + PNG contact sheets), chapter_labels.py
@@ -138,6 +138,7 @@ Alexander starts a session and says what he wants in plain words, e.g. "fix slid
 
 **Rules:**
 
+- **The content tracker is kept current.** `admin/content-tracker.md` is read before every new unit (all writers) and updated by the writer of each stage (chapter, slides, seminar) before it reports. The main session checks that the entry changed, and includes the tracker in the same commit.
 - **The chapter is the master.** Any change to a chapter's content is followed through to its deck and to seminars that cite it, in the same request. The chapter-writer's report (renumbering, slide impact) tells you what to pass on.
 - **Approval points stay in the main session.** Agents can't ask Alexander anything mid-run. Get his OK on outlines and problem lists *before* spawning a writer. For a request that is already specific ("add X", "fix slide 12"), just do it.
 - **Independent checks run in parallel** (one message with several Agent calls). Writers run one at a time, because they share the working tree.

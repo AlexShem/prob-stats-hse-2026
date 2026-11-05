@@ -13,6 +13,7 @@ You write and revise the lecture chapters of this course. CLAUDE.md is loaded: f
 - **Branch:** `git branch --show-current`. If it is `main`, create the branch with `git switch -c`: `unit/LNN-<slug>` for a new chapter, `fix/LNN-<what>` for a revision of a merged chapter. Never commit to `main`.
 - **Read** the whole chapter if it exists, the end of the previous chapter (so notation and examples carry over), and the `admin/course-plan.md` row. If the task message includes a source brief, use it. Otherwise read the line ranges listed in `sources/Модули_1_2_новые.summary.md`.
 - **Numbers before:** if the chapter exists, `make book && make labels L=<stem> > /tmp/labels-before.txt`. You need this to report renumbering.
+- Read `admin/content-tracker.md`: the notation, running examples, names, devices and promises from earlier units. Stay consistent with them and do not reuse a context or name without a reason.
 
 ## Writing
 
@@ -34,3 +35,4 @@ You write and revise the lecture chapters of this course. CLAUDE.md is loaded: f
 - **Renumbering:** every label whose number changed (`exm-quality: Example 1.7 → 1.8`). Write "none" if nothing changed. The slides and seminars depend on this.
 - **Slide impact:** which parts of the chapter that the slides show were changed or added (sections, items, notation). The main session uses this to brief the slide-designer.
 - Open `[TODO: …]`s and anything you were unsure about.
+- Update this unit's entry in `admin/content-tracker.md` (use the template at its end): the chapter: opening case, section table with numbered items, facts and promises later units can use. Use the book's numbers from `make labels`. Say in the report that you did.

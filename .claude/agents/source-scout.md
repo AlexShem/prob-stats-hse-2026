@@ -23,3 +23,5 @@ Return at most about 400 words:
 5. What earlier chapters already define (labels and notation) that this one should build on.
 
 Notation warning to repeat when relevant: the sources use ξ, M, D, F(x)=P(ξ<x) and C_n^k. The course uses X, \E, \Var, F(x)=\Prob(X≤x) and \binom{n}{k}.
+
+Also read `admin/content-tracker.md` and, in the brief, list what earlier units established that the new unit must keep (notation, running examples, promises, contexts and names already used).

@@ -45,6 +45,10 @@ You can add a few words to any of these, for example `/chapter L03 start from th
 - **Start the slides over:** "rebuild the lecture 2 slides from scratch". Git keeps the old version.
 - **A mistake in published material:** just say it. The fix goes on a `fix/…` branch and is merged when you say so.
 
+## The content tracker
+
+`admin/content-tracker.md` is a short record of what each lecture, deck and seminar contains and how it is presented. The agents read it before a new unit and update it when they finish, so later units stay consistent with earlier ones. You can read or correct it at any time; it is plain text.
+
 ## Guardrails
 
 These are hooks in `.claude/settings.json`, which apply to every agent:
