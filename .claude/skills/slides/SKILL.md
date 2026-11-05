@@ -15,7 +15,9 @@ You start with no conversation history. Everything you need is in this repo and 
 
 - Invoke the `quarto-authoring` skill first.
 - Read `CLAUDE.md` in full. The "Writing style" rules apply to slides too.
-- `git branch --show-current` is `unit/$0-…`, and `book/lectures/$0-*.qmd` exists and has no uncommitted changes (`git status --short book/lectures`). The chapter is final: you do not edit it. If you find an error in the chapter, list it in your report.
+- **Branch:** if `git branch --show-current` is `main`, create `unit/$0-slides` (`git switch -c unit/$0-slides`) and work there. Otherwise it should be `unit/$0-…`.
+- **Existing deck:** if `slides/$0-*.qmd` already exists, rebuild it from scratch unless the instructions say "update" (git keeps the old version). With "update", diff the chapter against the deck, then redo only the slides whose chapter content changed and keep the rest.
+- **Chapter:** and `book/lectures/$0-*.qmd` exists and has no uncommitted changes (`git status --short book/lectures`). The chapter is final: you do not edit it. If you find an error in the chapter, list it in your report.
 
 ## 1. Read
 
