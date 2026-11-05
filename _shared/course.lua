@@ -3,6 +3,9 @@
 --                          `solutions-released` (book/_quarto.yml) or in the lecturer copy,
 --                          removed otherwise. Not "solution": Quarto reserves that class.
 --   ::: lecturer ... :::   board/timing cue, only in the lecturer copy.
+--   ::: proof ... :::      proof of an important result: always inline, closed with an end mark.
+--   ::: proof-fold ... ::: proof of a lesser result: a closed dropdown in HTML, printed in full
+--                          in PDF (book and lecturer copy). Same end mark either way.
 --   HTML only: a download line (PDF, slides) under each lecture/seminar title.
 -- Only files named LNN-*.qmd / SNN-*.qmd get the download line.
 
@@ -40,7 +43,45 @@ local function box(div, ctype, default_title)
   return quarto.Callout({ type = ctype, title = title, content = div.content, appearance = "simple" })
 end
 
+-- End-of-proof square for PDF (HTML gets it from book.css). Appended to the last paragraph so
+-- it sits at the right edge of the last line, or on its own line after display math.
+local function add_qed(blocks)
+  local mark = pandoc.RawInline("latex", "\\hfill\\ensuremath{\\square}")
+  local last = blocks[#blocks]
+  if last and (last.t == "Para" or last.t == "Plain") then
+    last.content:insert(mark)
+  else
+    blocks:insert(pandoc.Plain({ mark }))
+  end
+  return blocks
+end
+
+local function handle_proof(div)
+  local fold = div.classes:includes("proof-fold")
+  if quarto.doc.is_format("html") then
+    if not fold then return nil end  -- Quarto's own .proof block; the end mark comes from CSS
+    local out = pandoc.List({
+      pandoc.RawBlock("html", '<details class="proof-fold"><summary>Proof</summary><div class="proof-body">'),
+    })
+    out:extend(div.content)
+    out:insert(pandoc.RawBlock("html", "</div></details>"))
+    return out
+  end
+  if quarto.doc.is_format("pdf") or quarto.doc.is_format("latex") then
+    local blocks = add_qed(pandoc.List(div.content))
+    if fold then
+      return pandoc.Div(blocks, pandoc.Attr(div.identifier, { "proof" }, div.attributes))
+    end
+    div.content = blocks
+    return div
+  end
+  return nil
+end
+
 local function handle_div(div)
+  if div.classes:includes("proof") or div.classes:includes("proof-fold") then
+    return handle_proof(div)
+  end
   if div.classes:includes("sol") then
     if is_released() then return box(div, "note", "Solution") end
     return {}

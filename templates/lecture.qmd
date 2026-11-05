@@ -18,6 +18,19 @@
 [TODO]
 :::
 
+::: {#thm-NAME}
+## [TODO: Name]
+[TODO]
+:::
+
+::: proof
+[TODO: proof of an important theorem, always visible]
+:::
+
+::: proof-fold
+[TODO: proof of a lesser result, a dropdown in HTML]
+:::
+
 ::: {#exm-NAME}
 ## [TODO: short title]
 [TODO]
