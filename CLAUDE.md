@@ -83,6 +83,8 @@ uv run quarto preview book   # live preview while writing (no per-chapter PDFs o
 |---|---|---|
 | `::: lecturer` … `:::` | removed | shown as a "Board" box |
 | `::: sol` … `:::` (in seminars) | shown only if the seminar is in `solutions-released` | always shown |
+| `::: proof` … `:::` | inline, "Proof." and an end square | same |
+| `::: proof-fold` … `:::` | closed "Proof" dropdown in HTML; in PDF printed in full, with the end square | printed in full |
 
 - **Releasing solutions:** after a seminar has run for all three groups, add its prefix to `book/_quarto.yml` (`solutions-released: [S01, S02]`), then `make book`. Until then the chapter says "Solutions appear here after the seminar."
 - Use `sol` and not `solution`, which is a built-in Quarto class that bypasses the filter and would leak the solution. Don't put solutions in any other kind of block.
@@ -132,7 +134,7 @@ The full instructions for each stage are in `.claude/skills/<stage>/SKILL.md`. T
 ### The lecture chapter is the master
 
 - Write content and fix mistakes in the chapter first. The slides and seminar follow it.
-- Complete enough for a student who missed the lecture: definitions, results, every worked example in full and the figures. A proof only appears when it is short and teaches something, and otherwise the chapter gives the idea.
+- Complete enough for a student who missed the lecture: definitions, results, every worked example in full and the figures. Every theorem has a proof. Proofs of important results (those that teach a method or that later chapters lean on) go in `::: proof`, always visible. Proofs of lesser results go in `::: proof-fold`, a dropdown in HTML. Keep each proof short, and give the idea when the full argument is long.
 - About 8–12 pages in the print copy per lecture day. That fits 160 minutes at the board with examples worked live.
 - Number everything that will be referred to: `#def-`, `#thm-`, `#exm-`, `#fig-`, `#eq-`, `{#sec-}`. Seminars cite them with `@thm-…`, and the reference resolves across the book.
 - `::: lecturer` cues are for the board layout, timing, the question to ask the room, when to show a slide, and the break (once per lecture day, after the first 80 minutes). Keep them short, because they are notes to self.

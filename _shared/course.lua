@@ -3,6 +3,9 @@
 --                          `solutions-released` (book/_quarto.yml) or in the lecturer copy,
 --                          removed otherwise. Not "solution": Quarto reserves that class.
 --   ::: lecturer ... :::   board/timing cue, only in the lecturer copy.
+--   ::: proof ... :::      proof of an important result: always inline, closed with an end mark.
+--   ::: proof-fold ... ::: proof of a lesser result: a closed dropdown in HTML, printed in full
+--                          in PDF (book and lecturer copy). Same end mark either way.
 --   HTML only: a download line (PDF, slides) under each lecture/seminar title.
 -- Only files named LNN-*.qmd / SNN-*.qmd get the download line.
 -- Line for a lecture: "PDF · Slides (PDF)"; for a seminar: "PDF".
@@ -41,7 +44,32 @@ local function box(div, ctype, default_title)
   return quarto.Callout({ type = ctype, title = title, content = div.content, appearance = "simple" })
 end
 
+local function handle_proof(div)
+  local fold = div.classes:includes("proof-fold")
+  if quarto.doc.is_format("html") then
+    if not fold then return nil end  -- Quarto's own .proof block; the end mark comes from CSS
+    local out = pandoc.List({
+      pandoc.RawBlock("html", '<details class="proof-fold"><summary>Proof</summary><div class="proof-body">'),
+    })
+    out:extend(div.content)
+    out:insert(pandoc.RawBlock("html", "</div></details>"))
+    return out
+  end
+  if fold and (quarto.doc.is_format("pdf") or quarto.doc.is_format("latex")) then
+    -- Quarto's own .proof blocks become amsthm proof environments, which draw the end square.
+    -- A folded proof is printed in full, so give it the same environment.
+    local out = pandoc.List({ pandoc.RawBlock("latex", "\\begin{proof}") })
+    out:extend(div.content)
+    out:insert(pandoc.RawBlock("latex", "\\end{proof}"))
+    return out
+  end
+  return nil
+end
+
 local function handle_div(div)
+  if div.classes:includes("proof") or div.classes:includes("proof-fold") then
+    return handle_proof(div)
+  end
   if div.classes:includes("sol") then
     if is_released() then return box(div, "note", "Solution") end
     return {}

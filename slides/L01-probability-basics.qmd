@@ -1,0 +1,302 @@
+---
+title: "Events, probability and counting"
+subtitle: "Lecture 1 · Probability Theory and Mathematical Statistics"
+date: "2026-11-07"
+---
+
+{{< include ../_shared/_macros.qmd >}}
+{{< include ../_shared/_setup.qmd >}}
+
+# Experiments and outcomes
+
+## Ilya's croissants
+
+Ilya bakes 30 croissants every morning.
+
+- Will he sell all of them? Nobody knows.
+- How likely is it that he sells at least 25? He can plan around that.
+
+::: {.notes}
+Ask the room for a number for tomorrow. Write three answers on the board. None is "the" answer.
+:::
+
+## Random experiment and sample space (Def 1.1)
+
+A **random experiment**: the result is not certain in advance, but the possible results can be listed.
+
+The set of all outcomes is the **sample space** $\Omega$.
+
+## Four sample spaces (Ex 1.1)
+
+- One customer: $\Omega=\{\text{buys},\text{leaves}\}$
+- Two customers, in order: $\{BB, BL, LB, LL\}$
+- Croissants sold: $\{0,1,\dots,30\}$
+- Waiting time in minutes: $[0,\infty)$
+
+$\Omega$ is your choice. It depends on what you record.
+
+# Events and set operations
+
+## Event (Def 1.2)
+
+An **event** is a subset $A\subseteq\Omega$. It **occurs** if the outcome is in $A$.
+
+- $\Omega$: the sure event
+- $\varnothing$: the impossible event
+
+## Set operations (Table 1.1)
+
+| Notation | Reads as |
+|---|---|
+| $A\cup B$ | $A$ or $B$ (at least one) |
+| $A\cap B$ | $A$ and $B$ (both) |
+| $A^c$ | not $A$ |
+| $A\cap B^c$ | $A$ but not $B$ |
+
+## Venn pictures (Fig 1.1)
+
+```{python}
+#| fig-alt: "Four Venn diagrams with the union, intersection, complement of A and difference shaded."
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.patches import Circle, Rectangle
+
+xs, ys = np.meshgrid(np.linspace(-2, 2, 400), np.linspace(-1.4, 1.4, 280))
+in_a = (xs + 0.55) ** 2 + ys ** 2 < 1
+in_b = (xs - 0.55) ** 2 + ys ** 2 < 1
+panels = [
+    ("$A\\cup B$", in_a | in_b),
+    ("$A\\cap B$", in_a & in_b),
+    ("$A^c$", ~in_a),
+    ("$A\\cap B^c$", in_a & ~in_b),
+]
+fig, axes = plt.subplots(1, 4, figsize=(10, 2.8))
+for ax, (title, region) in zip(axes, panels):
+    ax.contourf(xs, ys, region.astype(float), levels=[0.5, 1.5], colors=["#4c8cc9"], alpha=0.6)
+    ax.add_patch(Circle((-0.55, 0), 1, fill=False, lw=1.2))
+    ax.add_patch(Circle((0.55, 0), 1, fill=False, lw=1.2))
+    ax.add_patch(Rectangle((-2, -1.4), 4, 2.8, fill=False, lw=1.2))
+    ax.text(-1.05, 0, "A", ha="center", va="center")
+    ax.text(1.05, 0, "B", ha="center", va="center")
+    ax.set_title(title, fontsize=13)
+    ax.set_aspect("equal")
+    ax.axis("off")
+plt.tight_layout()
+plt.show()
+```
+
+## Promo code and mobile app (Ex 1.2)
+
+$A$ = promo code, $B$ = mobile app.
+
+- $A\cap B^c$: promo code, not in the app
+- $(A\cup B)^c$ and $A^c\cap B^c$: the same event
+
+## Mutually exclusive events, partition (Def 1.3)
+
+- $A\cap B=\varnothing$: **mutually exclusive**
+- $H_1,\dots,H_n$ pairwise exclusive with union $\Omega$: a **partition**
+
+## De Morgan's laws (Thm 1.1)
+
+$$
+(A\cup B)^c = A^c\cap B^c,\qquad (A\cap B)^c = A^c\cup B^c
+$$
+
+"Not (promo or app)" is "no promo and no app".
+
+# The axioms of probability
+
+## Probability (Def 1.4)
+
+1. $\Prob(A)\ge 0$
+2. $\Prob(\Omega)=1$
+3. Pairwise exclusive $A_1,A_2,\dots$: $\Prob(\bigcup A_i)=\sum \Prob(A_i)$
+
+## Consequences (Thm 1.2)
+
+1. $\Prob(\varnothing)=0$
+2. $\Prob(A^c)=1-\Prob(A)$
+3. $A\subseteq B\Rightarrow \Prob(A)\le\Prob(B)$
+4. $\Prob(A\cup B)=\Prob(A)+\Prob(B)-\Prob(A\cap B)$
+
+Forgetting the last term in (4) is the most common mistake.
+
+## Promo code and app with numbers (Ex 1.3)
+
+$\Prob(A)=0.40$, $\Prob(B)=0.55$, $\Prob(A\cap B)=0.20$.
+
+| Event | Probability |
+|---|---|
+| promo or app | 0.75 |
+| neither | 0.25 |
+| app, no promo | 0.35 |
+
+::: {.notes}
+Draw the four pieces: promo only 0.20, app only 0.35, both 0.20, neither 0.25. They sum to 1.
+:::
+
+# Classical probability
+
+## Classical probability (Def 1.5)
+
+Finite $\Omega$, all outcomes equally likely:
+$$
+\Prob(A)=\frac{|A|}{|\Omega|}
+$$
+
+The difficulty is in "equally likely".
+
+## Two dice (Ex 1.4, Fig 1.2)
+
+```{python}
+#| fig-alt: "A six by six grid of points with the six outcomes of sum seven highlighted."
+import numpy as np
+import matplotlib.pyplot as plt
+
+red, blue = np.meshgrid(np.arange(1, 7), np.arange(1, 7))
+is_seven = (red + blue == 7)
+fig, ax = plt.subplots(figsize=(4.6, 3.8))
+ax.scatter(red[~is_seven], blue[~is_seven], s=70, color="#b7c4d1")
+ax.scatter(red[is_seven], blue[is_seven], s=70, color="#c0392b")
+ax.set_xlabel("Red die")
+ax.set_ylabel("Blue die")
+ax.set_xticks(range(1, 7))
+ax.set_yticks(range(1, 7))
+plt.tight_layout()
+plt.show()
+```
+
+$\Prob(\text{sum}=7)=6/36=1/6$
+
+## The trap
+
+Sums $2,\dots,12$: eleven values, but **not** equally likely.
+
+- sum 7: six ways
+- sum 2: one way, $(1,1)$
+
+Use the finest description in which outcomes are equally likely. Two coin tosses, exactly one head: $2/4$, not $1/3$.
+
+## Where classical probability fails
+
+"A customer buys or not, so 50/50" is the same mistake.
+
+Dice, cards, lotteries: yes. Business questions: probabilities come from data or a model.
+
+## Break
+
+# Counting
+
+## Product rule (Thm 1.3)
+
+$k$ stages with $n_1,\dots,n_k$ ways give $n_1 n_2\cdots n_k$ ways in total.
+
+## PIN codes (Ex 1.5)
+
+- Any four digits: $10^4=10\,000$
+- All digits different: $10\cdot9\cdot8\cdot7=5040$
+
+## Orderings and selections (Thm 1.4)
+
+From $n$ distinct objects:
+
+- all in a row: $n!$
+- $k$ in order: $\dfrac{n!}{(n-k)!}$
+- $k$ without order: $\dbinom{n}{k}=\dfrac{n!}{k!\,(n-k)!}$
+
+## Does order matter?
+
+Swap two chosen items. A different outcome means ordered; the same outcome means unordered.
+
+- gold, silver, bronze from 10: $720$
+- a team of 3 from 10: $\binom{10}{3}=120=720/3!$
+
+## A 6-from-45 lottery (Ex 1.6)
+
+$$
+\binom{45}{6}=8\,145\,060
+$$
+
+One ticket: $\approx 1.2\cdot10^{-7}$. Weekly play: about 157 000 years on average.
+
+## Expired packs (Ex 1.7)
+
+20 packs, 3 expired, 4 taken at random.
+
+$|\Omega|=\binom{20}{4}=4845$
+
+## Expired packs: answers
+
+| Event | Count | Probability |
+|---|---|---|
+| exactly one expired | $\binom31\binom{17}3=2040$ | 0.421 |
+| none expired | $\binom{17}4=2380$ | 0.491 |
+| at least one | complement | 0.509 |
+
+::: {.notes}
+Numerator is a product, not a sum. Ask: why not 3 + 17?
+:::
+
+# Geometric probability
+
+## Geometric probability (Def 1.6)
+
+Uniform on a segment, region or solid:
+$$
+\Prob(A)=\frac{\text{size of }A}{\text{size of }\Omega}
+$$
+
+Size: length, area or volume.
+
+## Courier in a two-hour window (Ex 1.8)
+
+Arrives uniformly between 10:00 and 12:00. You are out 10:30–11:15.
+
+$$
+\Prob(\text{courier arrives while you are out})=\frac{45}{120}=\frac38
+$$
+
+## Two people, one café (Ex 1.9)
+
+Each arrives uniformly in 12:00–13:00, independently, and waits 15 minutes. $\Prob(\text{meet})=?$
+
+## Two people, one café: the square (Fig 1.3)
+
+```{python}
+#| fig-alt: "A square with a diagonal band shaded where the arrival times differ by at most fifteen minutes."
+import numpy as np
+import matplotlib.pyplot as plt
+
+t = np.linspace(0, 60, 200)
+fig, ax = plt.subplots(figsize=(4.6, 4.2))
+ax.fill_between(t, np.maximum(t - 15, 0), np.minimum(t + 15, 60), color="#4c8cc9", alpha=0.6)
+ax.plot([0, 60], [0, 60], color="black", lw=0.8, ls="--")
+ax.set_xlim(0, 60)
+ax.set_ylim(0, 60)
+ax.set_aspect("equal")
+ax.set_xlabel("Zarina arrives (min after 12:00)")
+ax.set_ylabel("Oksana arrives (min after 12:00)")
+plt.tight_layout()
+plt.show()
+```
+
+$$
+\Prob(\text{meet})=1-\Big(\frac{45}{60}\Big)^2=\frac{7}{16}\approx0.44
+$$
+
+## A point has probability zero
+
+In a continuum, any single point has probability $0$, yet the outcome is some point.
+
+Probability zero does not mean impossible. We return to this in Lecture 4.
+
+## Exercises
+
+1. Two dice: $\Prob(\text{sum}\ge10)$?
+2. $\Prob(A)=0.5$, $\Prob(B)=0.6$, never together. What is wrong?
+3. Six candidates in random order: Ilya before Priya? Consecutive?
+4. 4-letter passwords with a repeated letter?
+5. Random point in a square of side 2: within 1 of the centre?
+
+Seminar 1 has the full practice.

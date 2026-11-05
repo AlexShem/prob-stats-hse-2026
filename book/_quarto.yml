@@ -14,12 +14,11 @@ book:
   chapters:
     - index.qmd
     - part: "Lectures"
-      chapters: []
-        # chapter number = lecture number; add in order, e.g.
-        # - lectures/L01-probability-basics.qmd
+      chapters:
+        - lectures/L01-probability-basics.qmd
     - part: "Seminars"
-      chapters: []
-        # - seminars/S01-counting.qmd
+      chapters:
+        - seminars/S01-counting.qmd
   appendices:
     - schedule.qmd
 
