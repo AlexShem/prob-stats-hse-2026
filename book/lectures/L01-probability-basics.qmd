@@ -106,7 +106,9 @@ $$
 $$
 :::
 
-The idea is one sentence. An outcome is outside $A\cup B$ exactly when it is outside $A$ and outside $B$. The second law is the same sentence with "and" and "or" swapped. In words: "not (promo or app)" is "no promo and no app". This is the equality in @exm-promo-events.
+::: proof-fold
+An outcome is outside $A\cup B$ exactly when it is outside $A$ and outside $B$, which is the first law. The second law is the same sentence with "and" and "or" swapped. In words: "not (promo or app)" is "no promo and no app". This is the equality in @exm-promo-events.
+:::
 
 ::: lecturer
 Draw the two circles on the board and shade each row of @tbl-operations. Then ask: "Which region is $A^c\cup B^c$?" Let them say it before you shade it.
@@ -236,6 +238,10 @@ To use @def-classical we must count outcomes, and the lists get too long to writ
 If a procedure has $k$ stages, the first stage can be done in $n_1$ ways, the second in $n_2$ ways (whatever happened in the first), and so on, then the whole procedure can be done in $n_1 n_2\cdots n_k$ ways.
 :::
 
+::: proof-fold
+After the first stage there are $n_1$ possible situations. Each of them continues in $n_2$ ways, which gives $n_1n_2$ pairs of choices. Each pair continues in $n_3$ ways, which gives $n_1n_2n_3$ triples, and so on up to stage $k$.
+:::
+
 ::: {#exm-pin}
 ## PIN codes
 A bank card has a four-digit PIN. Each of the four positions has 10 choices, so there are $10^4=10\,000$ PINs. If the digits must all be different, the first position has 10 choices, the second 9, then 8 and 7, giving $10\cdot 9\cdot 8\cdot 7=5040$.
@@ -260,7 +266,9 @@ $$
 $$ {#eq-binom}
 :::
 
+::: proof
 Part 1 is the product rule with $n,n-1,\dots,1$ choices. Part 2 is the same with $k$ stages. For part 3, each subset of size $k$ appears in the count of part 2 exactly $k!$ times, once for each way of ordering it. Divide by $k!$.
+:::
 
 Two useful facts: $\binom{n}{k}=\binom{n}{n-k}$ (choosing who goes in is the same as choosing who stays out) and $\binom{n}{0}=\binom{n}{n}=1$.
 
