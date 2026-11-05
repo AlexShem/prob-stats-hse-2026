@@ -9,7 +9,7 @@ No. Among app orders, the ones with a promo code make up 0.20 out of 0.55, so th
 $$
 \frac{0.20}{0.55}\approx 0.36 .
 $$
-Knowing "this is an app order" moved the probability from 0.40 to about 0.36. A small move, but a real one, and that one division is the seed of everything below: conditional probability, independence, the law of total probability and Bayes' theorem.
+Knowing "this is an app order" moved the probability from 0.40 to about 0.36. A small move, but a real one, and that one division is the starting point for everything below: conditional probability, independence, the law of total probability and Bayes' theorem.
 
 ::: lecturer
 Timing: 0:00–0:25 conditional probability, 0:25–0:55 multiplication rule and trees, 0:55–1:20 independence. Break at 1:20. Second slot: total probability (30 min), Bayes (40 min), exercises (10 min).
@@ -26,7 +26,7 @@ $$
 $$
 :::
 
-Read $\Prob(A\mid B)$ as "the probability of $A$ given $B$". The idea is in @fig-conditional. Once we know that $B$ has occurred, every outcome outside $B$ is out of the game. $B$ becomes the new sample space, and the only part of $A$ that can still happen is $A\cap B$. Dividing by $\Prob(B)$ rescales things so that the new space has total probability 1 again.
+Read $\Prob(A\mid B)$ as "the probability of $A$ given $B$". The idea is in @fig-conditional. Once we know that $B$ has occurred, every outcome outside $B$ is ruled out. $B$ becomes the new sample space, and the only part of $A$ that can still happen is $A\cap B$. Dividing by $\Prob(B)$ rescales things so that the new space has total probability 1 again.
 
 ```{python}
 #| label: fig-conditional
@@ -266,9 +266,9 @@ $$
 
 The coin has no memory. The belief that after five tails heads is "due" is called the **gambler's fallacy**. Part of it comes from mixing up (a) and (b): "five heads and one tail" feels ordinary because it is a family of six sequences, and "six tails" feels special because it is a single one. Any single sequence, including HTHHTH, is as rare as six tails.
 
-The same mistake turns up in offices. A loan officer at a hypothetical bank in Novosibirsk approves 30% of small-business applications, and the applications in her queue come from unrelated firms, so treat them as independent. She has just rejected five in a row (probability $0.7^5\approx 0.17$, not rare at all). Is the sixth applicant more likely to be approved? No, still 0.30. Her queue does not owe her an approval.
+The same mistake happens in offices. A loan officer at a hypothetical bank in Novosibirsk approves 30% of small-business applications, and the applications in her queue come from unrelated firms, so treat them as independent. She has just rejected five in a row (probability $0.7^5\approx 0.17$, not rare at all). Is the sixth applicant more likely to be approved? No, still 0.30. Like the coin, her queue has no memory.
 
-Now the mirror image, which is where real life gets messier. If *one* firm has been turned down by five banks, the sixth bank's decision is not a fresh coin. The five rejections tell you something about the application, and the sixth bank will probably reject it as well. Those events are not independent, because they share a cause. Bayes' theorem, at the end of this lecture, is the tool for that kind of reasoning.
+Now the mirror image, which is where real life gets messier. If *one* firm has been turned down by five banks, the sixth bank's decision is not a new toss of a coin. The five rejections tell you something about the application, and the sixth bank will probably reject it as well. Those events are not independent, because they share a cause. Bayes' theorem, at the end of this lecture, is the tool for that kind of reasoning.
 
 ::: lecturer
 Break (80 min).
@@ -363,7 +363,7 @@ The counts give the same thing in one glance: 18 of the 24 defective cases are f
 
 The prior for Guangzhou was 60%, and after seeing a defect it is 75%. A defect points towards Guangzhou, because defects are twice as common there. It is not proof: one defective case in four is from Chelyabinsk.
 
-Most people get the next example wrong. When Gerd Gigerenzer and his co-authors put the same kind of question about screening tests to doctors, most of the doctors in their studies got it wrong too (Gigerenzer et al., 2007, *Psychological Science in the Public Interest*). Before you read the solution, write down your guess.
+Gerd Gigerenzer and his co-authors put questions like the next one, about screening tests, to doctors, and most of the doctors in their studies got them wrong (Gigerenzer et al., 2007, *Psychological Science in the Public Interest*). Before you read the solution, write down your own guess.
 
 ::: {#exm-fraud}
 ## Fraud alerts
@@ -384,11 +384,11 @@ Only about one flagged payment in six is fraud. @tbl-bayes shows the same calcul
 
 : One day of payments in @exm-fraud. Of the 1,196 flagged payments, 198 are fraud: $198/1196\approx 0.166$. {#tbl-bayes}
 
-Read the table row by row first. The filter catches 198 of the 200 frauds, which is the 99% from the brochure. But 99,800 legitimate payments are so many more that 1% of them, 998 false alarms, swamps the 198 real ones. The base rate, here 0.2%, matters as much as the accuracy of the test. Whenever the thing you are looking for is rare, expect most alarms to be false, even from a good test.
+Read the table row by row first. The filter flags 198 of the 200 frauds, which is the 99% from the brochure. But there are so many legitimate payments, 99,800, that 1% of them gives 998 false alarms, five times as many as the 198 real ones. The **base rate**, the share of all cases that really have the property (here 0.2% of payments are fraud), matters as much as the accuracy of the test. Whenever the thing you are looking for is rare, expect most alarms to be false, even from a good test.
 
 That does not make the filter useless. The prior was 0.002 and the posterior is 0.166, more than 80 times higher. A flag is strong evidence, not a verdict. This is why the bank sends you an SMS to confirm a flagged payment instead of blocking your card.
 
-And here is the swap from @exm-promo-conditional once again. "99% accurate" describes $\Prob(L\mid F)=0.99$. The question was about $\Prob(F\mid L)$. People who answer "99%" have swapped the two. In court the same error is called the prosecutor's fallacy. It appeared in the 1999 trial of Sally Clark in England, together with a worse mistake: the expert witness squared the probability of one cot death to get the probability of two, as if the two deaths in one family were independent. Her conviction was overturned in 2003, mainly because of medical evidence that had not been disclosed.
+And here is the swap from @exm-promo-conditional once again. "99% accurate" describes $\Prob(L\mid F)=0.99$. The question was about $\Prob(F\mid L)$. People who answer "99%" have swapped the two. In court the same error is called the **prosecutor's fallacy**: the court treats the probability of the evidence if the accused is innocent, $\Prob(\text{evidence}\mid\text{innocent})$, as if it were the probability that the accused is innocent given the evidence, $\Prob(\text{innocent}\mid\text{evidence})$. It appeared in the 1999 trial of Sally Clark in England, together with a worse mistake: the expert witness squared the probability of one sudden infant death to get the probability of two, as if the two deaths in one family were independent. Her conviction was overturned in 2003, mainly because of medical evidence that had not been disclosed.
 
 ::: lecturer
 Collect the guesses for @exm-fraud by show of hands: above 90%, 50–90%, below 50%. Then draw @tbl-bayes empty and fill it in with the room, starting from 100,000 in the corner. Only after the table, write the formula. Students who get lost in @eq-bayes usually follow the table.
