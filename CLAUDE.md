@@ -2,7 +2,7 @@
 
 Course materials for **Probability Theory and Mathematical Statistics** (RUZ: «Теория вероятностей и математическая статистика (анг)»), HSE University, Higher School of Business, International Business programme, 2nd year bachelor, taught in English, Nov 2026 – Mar 2027 (modules 2–3). Lecturer and seminar teacher for all three groups: Alexander Shemendyuk.
 
-Facts, grading and policies: `admin/course-info.md`. Dates and rooms: `admin/schedule.md`. Topic for each lecture and seminar: `admin/course-plan.md`.
+Alexander's how-to for the stage commands: `WORKFLOW.md`. Keep it in sync when commands change. Facts, grading and policies: `admin/course-info.md`. Dates and rooms: `admin/schedule.md`. Topic for each lecture and seminar: `admin/course-plan.md`.
 
 ## Required skills
 
@@ -141,11 +141,15 @@ The full instructions for each stage are in `.claude/skills/<stage>/SKILL.md`. T
 
 ### Slides
 
-- A study aid students read on their own, and something Alexander can project. Each slide holds one complete idea (25–70 words), and worked examples are shown step by step with pauses. That means no stub slides and no section-divider slides.
-- Built from the patterns in `templates/slides.qmd` (boxes `.box-def`/`.box-thm`/`.box-ex`, `.answer`, `{.yourturn}`, columns) and the theme `_shared/slides.scss` (16:9, 1280×720).
+- The chapter retold visually. Students study from it, and Alexander may project it.
+- It keeps the chapter's main content (every definition, theorem, example, key explanation and common mistake) in well-formatted text: boxes, columns, highlighted answers, step-by-step reveals.
+- It adds visualizations wherever a picture helps: diagrams, trees, grids, plots, tables. New figures are fine if they only illustrate what the chapter says.
+- It cuts only the most cumbersome parts. Long proofs become a statement plus one line of idea and a pointer to the book, and long algebra shrinks to its key steps.
+- Built from the patterns in `templates/slides.qmd` (`.box-def`/`.box-thm`/`.box-ex`, `.answer`, `.muted`, `{.yourturn}`, columns) and the theme `_shared/slides.scss` (16:9, 1280×720).
 - Chapter numbers go in a tag: `## Complement rule [Thm 1.2]{.tag}`. Get the numbers from `make labels`, never by guessing.
-- 28–40 slides per lecture day, with one `## Break` at the midpoint.
+- 35–55 slides per lecture day, at least half of them with a visual. One `## Break` at the midpoint.
 - Every deck is checked by eye: `make snapshot` and then the contact-sheet images. A deck isn't done until no slide overflows and no slide is half empty.
+- The full instructions are in `.claude/skills/slides/SKILL.md`.
 
 ### Seminars
 

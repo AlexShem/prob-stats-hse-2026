@@ -30,6 +30,6 @@ Check, in this order:
 4. **Slides visually.** Look at every contact sheet in `slides/_output/snap/<stem>/`. Report overflow, near-empty slides, unreadable figures, raw LaTeX, and runs of same-shaped slides.
 5. **Audience fit.** Is it clear for non-native-English business students? Flag jargon that isn't defined, steps that are skipped, and examples that aren't business-like.
 6. **Writing style.** Run `make lint`, then read for the tells that lint can't catch (CLAUDE.md, "Writing style"): uniform rhythm, recap paragraphs, rule-of-three lists, sentences that only tell the reader what something meant, generic examples.
-7. **Size.** The print PDF should be 8–12 pages per lecture day, with 28–40 slides and 6–9 seminar problems.
+7. **Size and coverage.** The print PDF should be 8–12 pages per lecture day, with 35–55 slides (at least half with a visual) and 6–9 seminar problems. Every numbered item and example of the chapter should be on a slide. Only long proofs and long algebra may be cut.
 
 Report findings ranked by severity: wrong mathematics and leaks first, then inconsistencies, then visual problems, then style. Give each finding as `file:line`, what is wrong, and a suggested fix. End with a one-line verdict: ready to merge, or not yet.

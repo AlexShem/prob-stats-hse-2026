@@ -21,7 +21,7 @@ Install [Quarto](https://quarto.org) (≥ 1.9), [uv](https://docs.astral.sh/uv/)
 `make snapshot L=<deck>` renders one slide deck to PDF and PNG contact sheets for checking it by eye.
 
 Each teaching unit is made in stages with the project commands in Claude Code: `/chapter L02` → review →
-`/slides L02` → `/seminar S02` → `/review-unit L02 S02` → merge. See "Making a teaching unit" in CLAUDE.md.
+`/slides L02` → `/seminar S02` → `/review-unit L02 S02` → merge. Step by step: [WORKFLOW.md](WORKFLOW.md).
 
 `uv run quarto preview book` gives a live preview while writing. How the pieces fit together, the
 conventions and the writing rules are in [CLAUDE.md](CLAUDE.md).
