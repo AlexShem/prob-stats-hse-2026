@@ -36,6 +36,30 @@ for i, item in enumerate(outline):
 marks.sort(key=lambda t: t[1])
 marks.append(("END", len(reader.pages)))
 
+
+def norm(text):
+    text = text.lower().replace("\u2019", "").replace("'", "")
+    return " ".join(re.sub(r"[^a-z0-9 ]", " ", text).split())
+
+
+def title_key(title):
+    """First four words of a title, letters and digits only (survives quote styles)."""
+    return " ".join(norm(title).split()[:4])
+
+
+# A chapter that follows another unnumbered chapter can be bookmarked on the last page of the
+# previous one. If its title is not on the bookmarked page but is on the next, start there. Do
+# this on the bookmarks themselves, so the previous chapter also ends one page later.
+fixed = []
+for title, page in marks[:-1]:
+    name = titles.get(re.sub(r"^[\dA-Z]+(\.\d+)*\s+", "", title).strip()) or titles.get(title.strip())
+    if name and page + 1 < len(reader.pages):
+        k = title_key(next(t for t, n in titles.items() if n == name))
+        if k not in norm(reader.pages[page].extract_text()) and k in norm(reader.pages[page + 1].extract_text()):
+            page += 1
+    fixed.append((title, page))
+marks = fixed + [marks[-1]]
+
 found = 0
 for (title, a), (_, b) in zip(marks, marks[1:]):
     name = titles.get(re.sub(r"^[\dA-Z]+(\.\d+)*\s+", "", title).strip()) or titles.get(title.strip())
