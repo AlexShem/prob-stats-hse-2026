@@ -8,9 +8,15 @@ execute:
 {{< include ../../_shared/_macros.qmd >}}
 {{< include ../../_shared/_setup.qmd >}}
 
-Material from Lecture 2 (@sec-L02). The firms on this sheet are made up, and so are their numbers. Parts marked *optional* are for groups with time to spare, and so is the starred Problem 9\*, which goes past the lecture and is not examinable. As in Seminar 1, work by hand first and let the Python check you.
+Material from Lecture 2 (@sec-L02). The firms on this sheet are made up, and so are their numbers. The short drills in Problems 1, 3 and 4 and parts 3(c) and 5(d) are marked *if time allows*. The starred Problem 9\* goes past the lecture and is not examinable: it is for a strong group or for homework. As in Seminar 1, work by hand first and let the Python check you.
+
+::: lecturer
+80 minutes. The spine is Problems 2, 5, 6, 7 and 8, about 10–12 min each. Problems 1, 3 and 4 are short drills, only if the group is quick. 9\* for a strong group, otherwise homework.
+:::
 
 ## Problem 1 {.unnumbered}
+
+*Short drill, if time allows.*
 
 HR at an IT outsourcing firm in Nizhny Novgorod asked all 504 employees two questions: do you work mostly from home or from the office, and are you satisfied with your job? Four people did not answer and are left out. The other 500 answers are in the table.
 
@@ -95,48 +101,50 @@ print(f"P(exactly one prize) = {p_one:.3f}, by counting {count_one:.3f}")
 
 ## Problem 3 {.unnumbered}
 
-Two things can go wrong with a credit-card client in a month: a late payment and a blocked card. Let $L$ be "the client made a late payment" and $C$ "the client's card was blocked at least once", usually after a payment that looked suspicious. Last month's records at a bank in Samara give
+*Short drill, if time allows.*
+
+A furniture delivery firm in Samara keeps a record of two kinds of trouble with an order: the sofa or wardrobe arrives damaged, or it arrives late. Let $D$ be "the item arrives damaged", usually a scratch picked up while loading the van, and $L$ "the delivery is late". Last month's records give
 $$
-\Prob(L)=0.10,\qquad \Prob(C)=0.20,\qquad \Prob(L\cap C)=0.02 .
+\Prob(D)=0.10,\qquad \Prob(L)=0.20,\qquad \Prob(D\cap L)=0.02 .
 $$
 
-(a) Are $L$ and $C$ independent? Find $\Prob(C\mid L)$ as well.
-(b) Find the probability that a client had at least one of the two, and the probability that a client had neither.
-(c) *Optional, if time allows.* At a second bank, the system freezes the payment schedule while a card is blocked, so a client whose card was blocked is never recorded as late that month. Again $\Prob(L)=0.10$ and $\Prob(C)=0.20$. Answer (a) and (b) for this bank and say what has changed.
+(a) Are $D$ and $L$ independent? Find $\Prob(L\mid D)$ as well.
+(b) Find the probability that an order had at least one of the two problems, and the probability that it had neither.
+(c) *Optional, if time allows.* At a second firm, the driver checks every item at the customer's door. A damaged item is not handed over: the delivery is cancelled and a new item is sent later as a new order, so a delivery with a damaged item is never recorded as late. Again $\Prob(D)=0.10$ and $\Prob(L)=0.20$. Answer (a) and (b) for this firm and say what has changed.
 
 ::: sol
-(a) $\Prob(L)\Prob(C)=0.10\cdot0.20=0.02=\Prob(L\cap C)$, so $L$ and $C$ are independent by @def-independent. In conditional form, $\Prob(C\mid L)=0.02/0.10=0.20=\Prob(C)$: learning that a client paid late does not change the chance that the card was blocked. That fits the story, because cards are blocked for suspicious payments, not for late ones.
+(a) $\Prob(D)\Prob(L)=0.10\cdot0.20=0.02=\Prob(D\cap L)$, so $D$ and $L$ are independent by @def-independent. In conditional form, $\Prob(L\mid D)=0.02/0.10=0.20=\Prob(L)$: learning that the item was damaged does not change the chance that the delivery was late. That fits the story, because scratches come from loading in the warehouse and delays come from traffic.
 
-(b) At least one: $\Prob(L\cup C)=0.10+0.20-0.02=0.28$ (@thm-consequences). Neither: by @thm-complements, $L^c$ and $C^c$ are independent too, so $\Prob(L^c\cap C^c)=0.90\cdot0.80=0.72$, which is $1-0.28$ as it should be.
+(b) At least one: $\Prob(D\cup L)=0.10+0.20-0.02=0.28$ (@thm-consequences). Neither: by @thm-complements, $D^c$ and $L^c$ are independent too, so $\Prob(D^c\cap L^c)=0.90\cdot0.80=0.72$, which is $1-0.28$ as it should be.
 
-(c) Now $L$ and $C$ are mutually exclusive, $\Prob(L\cap C)=0$. That is not $0.02$, so they are *not* independent. $\Prob(C\mid L)=0$: once you know the client was late, you know the card was not blocked. At least one: $0.10+0.20=0.30$. Neither: $1-0.30=0.70$. The product $0.90\cdot0.80=0.72$ is wrong here, because @thm-complements needs independence.
-
-What changed is only the overlap. The same two numbers, 0.10 and 0.20, gave 0.28 at one bank and 0.30 at the other. $\Prob(L)$ and $\Prob(C)$ alone never tell you $\Prob(L\cup C)$: you also need $\Prob(L\cap C)$, or a reason to assume independence.
+(c) Now $D$ and $L$ are mutually exclusive, $\Prob(D\cap L)=0$. That is not $0.02$, so they are *not* independent. $\Prob(L\mid D)=0$: once you know the item was damaged, you know the delivery was not recorded as late. At least one: $0.10+0.20=0.30$. Neither: $1-0.30=0.70$. The product $0.90\cdot0.80=0.72$ is wrong here, because @thm-complements needs independence.
 
 ```{python}
-p_late, p_blocked = 0.10, 0.20
-for bank, p_both in [("bank 1", 0.02), ("bank 2", 0.00)]:
-    p_either = p_late + p_blocked - p_both
-    print(f"{bank}: P(C | L) = {p_both / p_late:.2f}, "
+p_damaged, p_late = 0.10, 0.20
+for firm, p_both in [("firm 1", 0.02), ("firm 2", 0.00)]:
+    p_either = p_damaged + p_late - p_both
+    print(f"{firm}: P(L | D) = {p_both / p_damaged:.2f}, "
           f"P(at least one) = {p_either:.2f}, P(neither) = {1 - p_either:.2f}")
 ```
 :::
 
 ## Problem 4 {.unnumbered}
 
+*Short drill, if time allows.*
+
 Find the mistakes. The problem was:
 
-> *An online furniture shop in Tver runs on two servers in two different data centres. On a given day each server fails with probability 0.05. The site goes down only if both servers fail. What is the probability that the site goes down on a given day?*
+> *A cinema chain in Tver sells its tickets through a website that runs on two servers in two different data centres. On a given day each server fails with probability 0.05. The site goes down only if both servers fail. What is the probability that the site goes down on a given day?*
 
 Gleb from the IT department wrote this solution.
 
 > *Let $A$ be "server 1 fails" and $B$ "server 2 fails". The site goes down when $A\cap B$ happens. By the definition of conditional probability, $\Prob(A\cap B)=\Prob(A\mid B)/\Prob(B)$. Server 1 fails with probability 0.05 whatever server 2 does, so $\Prob(A\mid B)=0.05$. Then $\Prob(A\cap B)=0.05/0.05=1$. The site goes down every day, and the second server does not help at all.*
 
 (a) There are two mistakes, one in a formula and one in what Gleb does not say. Find both and give the correct answer.
-(b) To save money, the company moves both servers into one data centre with a single power supply. Does the probability that the site goes down go up, go down or stay the same? No number needed.
+(b) To save money, the chain moves both servers into one data centre with a single power supply. Does the probability that the site goes down go up, go down or stay the same? No number needed.
 
 ::: sol
-(a) *The formula.* @def-conditional says $\Prob(A\mid B)=\Prob(A\cap B)/\Prob(B)$. Multiplying both sides by $\Prob(B)$ gives $\Prob(A\cap B)=\Prob(A\mid B)\,\Prob(B)$, which is @thm-multiplication. Gleb divided instead. A ten-second check would have caught it: $A\cap B$ is inside $A$, so $\Prob(A\cap B)\le\Prob(A)=0.05$ by @thm-consequences. An answer of 1 cannot be right.
+(a) *The formula.* @def-conditional says $\Prob(A\mid B)=\Prob(A\cap B)/\Prob(B)$. Multiplying both sides by $\Prob(B)$ gives $\Prob(A\cap B)=\Prob(A\mid B)\,\Prob(B)$, which is @thm-multiplication. Gleb divided by $\Prob(B)$ where he should have multiplied by it. A quick check shows that something is wrong: $A\cap B$ is inside $A$, so $\Prob(A\cap B)\le\Prob(A)=0.05$ by @thm-consequences. An answer of 1 cannot be right.
 
 *What is not said.* "Server 1 fails with probability 0.05 whatever server 2 does" means $\Prob(A\mid B)=\Prob(A)$, which is the assumption that $A$ and $B$ are independent (@def-independent). The assumption is reasonable here, since the servers sit in different data centres, but it is an assumption. A solution has to say it, and say why it is believable.
 
@@ -144,9 +152,9 @@ Correct answer, assuming independence:
 $$
 \Prob(A\cap B)=0.05\cdot0.05=0.0025,
 $$
-about one day in 400. The simulation below gives the same number up to simulation noise.
+about one day in 400. The simulation below gives the same number, up to random variation.
 
-(b) It goes up. With one power supply, a power cut takes down both servers at once. Then learning that server 2 failed makes it more likely that server 1 failed too, so $\Prob(A\mid B)>0.05$ and $\Prob(A\cap B)=\Prob(A\mid B)\Prob(B)>0.0025$. If, say, half of server 2's failures were power cuts, $\Prob(A\mid B)$ would be at least 0.5 and the site would go down at least ten times as often. This is the warning from @sec-L02-independence: assume independence only when there is a physical reason for it.
+(b) It goes up. With one power supply, a power cut takes down both servers at once. Then learning that server 2 failed makes it more likely that server 1 failed too, so $\Prob(A\mid B)>0.05$ and $\Prob(A\cap B)=\Prob(A\mid B)\Prob(B)>0.0025$. If, say, half of server 2's failures were power cuts, $\Prob(A\mid B)$ would be at least 0.5 and the site would go down at least ten times as often.
 
 ```{python}
 import numpy as np
@@ -162,23 +170,23 @@ print(f"simulated P(site down) = {p_site_down:.4f}, formula = {p_fail * p_fail:.
 
 ## Problem 5 {.unnumbered}
 
-Priya buys online ads for a flower delivery service in Moscow. From a year of data she knows that 30% of the clicks from one ad channel turn into an order. Treat clicks from different people as mutually independent. On the Monday before 8 March, the first six clicks of the day all turn into orders.
+Timur buys online ads for a flower delivery service in Moscow. From a year of data he knows that 30% of the clicks from one ad channel turn into an order. Treat clicks from different people as mutually independent. On the Monday before 8 March, the first six clicks of the day all turn into orders.
 
 (a) Is the seventh click more likely than 30% to turn into an order? One word, then one line.
 (b) On Sunday evening, what was the probability that the first six clicks on Monday would all convert?
 (c) What was the probability that at least one of the first six would not convert?
-(d) *Optional, if time allows.* Priya's manager says: "Six orders in a row! This channel suddenly sells much better, double the budget!" What would you look at before you agree or disagree?
+(d) *Optional, if time allows.* Timur's manager says: "Six orders in a row! This channel suddenly sells much better, double the budget!" What would you look at before you agree or disagree?
 
 ::: sol
 (a) No. Under the model the clicks are mutually independent, so by @def-mutual the conditional probability that click 7 converts, given that clicks 1 to 6 did, is still $0.30$. It is @exm-gambler(c) again, with clicks in place of coin tosses.
 
 (b) By @def-mutual, $0.3^6=0.000729$, about 7 in 10,000.
 
-(c) The complement of (b): $1-0.000729=0.999271$. Watch the wording: "at least one does not convert" is not "none converts". The second would be $0.7^6\approx0.118$.
+(c) The complement of (b): $1-0.000729=0.999271$. Read the question carefully: "at least one does not convert" is not "none converts". The second would be $0.7^6\approx0.118$.
 
-(d) Part (b) is the interesting number. Six conversions in a row has probability about 0.0007 if the model is right, which is rare enough to make you doubt the model. Something may have changed. The days before 8 March are the busiest week of the year for flowers, so people who click on a flower ad that week probably buy much more often than 30%. A tracking bug that counts one order six times is another candidate. If the rate itself has gone up, the manager may be right, though the reason is the season and not the streak: the 30% from ordinary months does not apply this week. Updating a belief from data, one observation at a time, is a job for Bayes' theorem. Problem 9\* does it for a firm that keeps being rejected.
+(d) Part (b) is the interesting number. Six conversions in a row has probability about 0.0007 if the model is right, which is rare enough to make you doubt the model. Something may have changed. The days before 8 March are the busiest week of the year for flowers, so people who click on a flower ad that week probably buy much more often than 30%. A tracking bug that counts one order six times is another candidate. If the rate itself has gone up, the manager may be right, though the reason is the season and not the streak: the 30% from ordinary months does not apply this week. Problem 9\*(d) shows how Bayes' theorem updates a belief like this, one observation at a time.
 
-The simulation below agrees with (a) and (b) up to simulation noise. Only about 1,500 of the two million simulated Mondays have a streak, so the last line is the noisiest.
+The simulation below agrees with (a) and (b), up to random variation. Only about 1,500 of the two million simulated Mondays have a streak, so the last line rests on far fewer cases than the first and is the least precise.
 
 ```{python}
 import numpy as np
@@ -195,7 +203,7 @@ print(f"P(7th converts | streak) = {clicks[streak, 6].mean():.3f}")
 
 ## Problem 6 {.unnumbered}
 
-Calls to the support line of an online electronics shop go to three call centres: 50% to Kazan, 30% to Ufa and 20% to Izhevsk. The Izhevsk centre opened in the spring, and most of its staff are still on probation. A call ends with a written complaint in 1% of cases in Kazan, 2% in Ufa and 4% in Izhevsk.
+Calls to the support line of an online electronics shop go to three call centres: 50% to Kazan, 30% to Ufa and 20% to Izhevsk. The Izhevsk centre opened in the spring, and most of its staff are still on probation, the trial months of a new job. A call ends with a written complaint in 1% of cases in Kazan, 2% in Ufa and 4% in Izhevsk.
 
 What share of all calls ends with a complaint?
 
@@ -206,7 +214,7 @@ $$
 $$
 so 1.9% of calls. In counts: of 10,000 calls, 5000 go to Kazan and 50 of them end with a complaint, 3000 go to Ufa with 60 complaints, and 2000 go to Izhevsk with 80. That is 190 complaints in 10,000 calls.
 
-A quick check: by @thm-total the answer is a weighted average of 1%, 2% and 4%, so anything outside that range would be wrong.
+A quick check: by @thm-total the answer is a weighted average of 1%, 2% and 4%, an average in which each rate counts as much as its centre's share of calls. So anything outside the range from 1% to 4% would be wrong.
 
 ```{python}
 import numpy as np
@@ -244,7 +252,7 @@ $$
 \Prob(H_1\mid K)=\frac{0.007}{0.015}\approx0.467,\qquad
 \Prob(H_2\mid K)=\Prob(H_3\mid K)=\frac{0.004}{0.015}\approx0.267 .
 $$
-Now Kazan is the most likely source, and Aigerim should start there. The evidence is the same complaint with the same rates, and only the priors moved. That is why the prior in @thm-bayes cannot be skipped.
+Now Kazan is the most likely source, and Aigerim should start there. The complaint rates are the same as before; only the priors moved.
 
 ```{python}
 import numpy as np
@@ -262,10 +270,10 @@ for share in ([0.50, 0.30, 0.20], [0.70, 0.20, 0.10]):
 
 ## Problem 8 {.unnumbered}
 
-At a consumer-loan bank in Krasnoyarsk, 5% of clients default, that is, do not repay. Oksana from the credit-risk team is testing a scoring model. On old clients, the model flagged 80% of those who later defaulted and 10% of those who repaid.
+At a consumer-loan bank in Krasnoyarsk, 5% of clients default, that is, do not repay. Diego from the credit-risk team is testing a scoring model. On old clients, the model flagged 80% of those who later defaulted and 10% of those who repaid.
 
 (a) Imagine 10,000 applicants. Fill in a table with rows "default" and "repay", columns "flagged" and "not flagged", and totals.
-(b) A sales manager reads the test report and says: "The model catches 80% of defaulters, so a flagged client defaults with probability 0.8." Find the correct probability twice: with Bayes' theorem and from your table. Out of 100 flagged loans, about how many will default?
+(b) A sales manager reads the test report and says: "The model catches 80% of defaulters, so a flagged client defaults with probability 0.8." Find the correct probability with Bayes' theorem and check it in your table.
 (c) What share of the clients who are not flagged default?
 (d) In a recession the default rate rises to 10%, and the model flags defaulters and good clients at the same rates as before. Find the probability that a flagged client defaults now.
 
@@ -286,13 +294,13 @@ $$
 $$
 In the table: 400 of the 1,350 flagged clients default, and $400/1350\approx0.296$. So of 100 flagged loans, about 30 default and about 70 would have been repaid. The flag still means a lot: it raises the chance of default from 5% to about 30%, six times higher. It is just far from 80%, because good clients are 19 times as many as defaulters and 10% of a big group is a lot of people.
 
-(c) $\Prob(D\mid F^c)=100/8650\approx0.012$. A client who is not flagged is about four times safer than an average client. Not being flagged is information too.
+(c) $\Prob(D\mid F^c)=100/8650\approx0.012$. A client who is not flagged is about four times safer than an average client.
 
 (d) Same formula, new prior:
 $$
 \Prob(D\mid F)=\frac{0.80\cdot0.10}{0.80\cdot0.10+0.10\cdot0.90}=\frac{0.08}{0.17}\approx0.471 .
 $$
-The model has not changed at all, yet a flag now means almost a 50% chance of default. A bank that judges its model only by "it catches 80% of defaulters" misses this. The base rate matters as much as the model.
+The model has not changed at all, yet a flag now means almost a 50% chance of default.
 
 ```{python}
 n_clients = 10_000
@@ -310,7 +318,7 @@ for p_default in (0.05, 0.10):
 
 This problem goes beyond Lecture 2 and is not examinable. It uses Bayes' theorem several times in a row, and the new idea is simple: after each piece of evidence, the posterior becomes the prior for the next one.
 
-(a) Oksana's bank from Problem 8 (default rate 5%) adds a second check, a report from a credit bureau. The report comes out "bad" for 70% of the clients who will default and for 20% of the clients who will repay. Assume that the model and the bureau report are *conditionally independent given the type of client*. In plain words: among defaulters, a bad report is no more and no less likely for flagged clients than for unflagged ones, and the same holds among clients who repay. The model looks at the application form and the bureau at old loans, so once you know what kind of client it is, one check tells you nothing new about the other.
+(a) Diego's bank from Problem 8 (default rate 5%) adds a second check, a report from a credit bureau. The report comes out "bad" for 70% of the clients who will default and for 20% of the clients who will repay. Assume that the model and the bureau report are *conditionally independent given the type of client*. In plain words: among defaulters, a bad report is no more and no less likely for flagged clients than for unflagged ones, and the same holds among clients who repay. The model looks at the application form and the bureau at old loans, so once you know what kind of client it is, one check tells you nothing new about the other.
 
 An applicant is flagged by the model. Take the answer of Problem 8(b) as the new prior. What is the probability of default if the bureau report is bad? If it is clean?
 
@@ -323,7 +331,7 @@ An applicant is flagged by the model. Take the answer of Problem 8(b) as the new
 
 For 10,000 applicants, how much loss does each rule avoid, how much interest does it give up, and what is the difference? Which rule is better? Ignore the price of the bureau reports.
 
-(d) Lecture 2 left one case open: a firm turned down by five banks in a row (@sec-L02-independence). Suppose that 20% of the small firms that apply for loans are poor payers and 80% are ordinary. A bank rejects a poor payer with probability 0.90 and an ordinary firm with probability 0.65, so overall it rejects $0.2\cdot0.90+0.8\cdot0.65=0.70$ of applications, like the loan officer in the lecture. Given the type of firm, different banks decide conditionally independently. One firm is rejected by bank after bank. Find the probability that it is a poor payer after each of the first five rejections. Then find the probability that a sixth bank also rejects it.
+(d) Lecture 2 left one case open: a firm rejected by five banks in a row (@sec-L02-independence). Suppose that 20% of the small firms that apply for loans are poor payers and 80% are ordinary. A bank rejects a poor payer with probability 0.90 and an ordinary firm with probability 0.65, so overall it rejects $0.2\cdot0.90+0.8\cdot0.65=0.70$ of applications, like the loan officer in the lecture. Given the type of firm, different banks decide conditionally independently. One firm is rejected by bank after bank. Find the probability that it is a poor payer after each of the first five rejections. Then find the probability that a sixth bank also rejects it.
 
 (e) Is the conditional independence in (d) believable? One or two sentences.
 
@@ -348,11 +356,11 @@ The flag and the bad report are *not* independent events. $\Prob(F)=0.135$ and $
 
 (c) Start from the table of Problem 8(a): 400 of the 500 defaulters and 950 of the 9,500 good clients are flagged.
 
-Rule 1 avoids 400 defaults, $400\cdot200{,}000=80{,}000{,}000$ rubles, and turns away 950 good clients, $950\cdot30{,}000=28{,}500{,}000$ rubles of interest. The bank is $51{,}500{,}000$ rubles ahead.
+Rule 1 avoids 400 defaults, $400\cdot200{,}000=80{,}000{,}000$ rubles, and rejects 950 good clients, who would have paid $950\cdot30{,}000=28{,}500{,}000$ rubles of interest. The net gain for the bank is $51{,}500{,}000$ rubles.
 
-Rule 2. By conditional independence, the report is bad for 70% of the 400 flagged defaulters, which is 280, and for 20% of the 950 flagged good clients, which is 190. The rule avoids $280\cdot200{,}000=56{,}000{,}000$ rubles and gives up $190\cdot30{,}000=5{,}700{,}000$. The bank is $50{,}300{,}000$ rubles ahead.
+Rule 2. By conditional independence, the report is bad for 70% of the 400 flagged defaulters, which is 280, and for 20% of the 950 flagged good clients, which is 190. The rule avoids $280\cdot200{,}000=56{,}000{,}000$ rubles and gives up $190\cdot30{,}000=5{,}700{,}000$. The net gain is $50{,}300{,}000$ rubles.
 
-Rule 1 wins, by 1.2 million rubles. The two rules differ only on the 880 flagged applicants with a clean report, 120 defaulters and 760 good clients. Rule 2 lends to them: it earns $760\cdot30{,}000=22{,}800{,}000$ rubles and loses $120\cdot200{,}000=24{,}000{,}000$. In probabilities, their default rate is $3/22\approx0.136$ from (a), and lending to a group pays only if its default rate is below $30{,}000/230{,}000\approx0.130$. So with these prices a clean report does not rescue a flagged applicant, and the bureau report is not worth buying for this decision. It is close, though: at 32,000 rubles of interest per loan, Rule 2 would win. And neither net counts the good clients who are turned away and go to a competitor for good.
+Rule 1 wins, by 1.2 million rubles. The two rules differ only on the 880 flagged applicants with a clean report, 120 defaulters and 760 good clients. Rule 2 lends to them: it earns $760\cdot30{,}000=22{,}800{,}000$ rubles and loses $120\cdot200{,}000=24{,}000{,}000$. In probabilities, their default rate is $3/22\approx0.136$ from (a), and lending to a group pays only if its default rate is below $30{,}000/230{,}000\approx0.130$. So with these prices the bank should reject a flagged applicant even when the report is clean, and the bureau report is not worth buying for this decision. With 32,000 rubles of interest per loan instead of 30,000, the break-even rate would be $32{,}000/232{,}000\approx0.138$, and Rule 2 would win.
 
 (d) Let $P$ be "poor payer", with prior $\Prob(P)=0.20$. After the first rejection, by @eq-bayes,
 $$
@@ -368,9 +376,9 @@ For the sixth bank, use @eq-total with the current beliefs as weights:
 $$
 \Prob(\text{6th rejects}\mid\text{5 rejections})=0.90\cdot0.560+0.65\cdot0.440\approx0.790,
 $$
-against 0.70 for a firm we know nothing about. So the lecture was right that the sixth bank is not a fresh coin. Still, each rejection is weak evidence, since poor payers are rejected only $0.90/0.65\approx1.4$ times as often as ordinary firms, and even after five rejections the firm is a poor payer with probability only 0.56.
+against 0.70 for a firm we know nothing about. So the lecture was right that the sixth bank is not a new toss of a coin. Still, each rejection is weak evidence, since poor payers are rejected only $0.90/0.65\approx1.4$ times as often as ordinary firms, and even after five rejections the firm is a poor payer with probability only 0.56.
 
-(e) Not fully. Banks buy reports from the same credit bureaux and use similar rules, so even for an ordinary firm one rejection makes the next more likely. Then the five rejections partly repeat one piece of evidence, and 0.56 is too high. If all banks decided exactly alike, five rejections would carry no more information than one, and the answer would be 0.257. The truth is somewhere in between.
+(e) Not fully. Banks buy reports from the same credit bureaux and use similar rules, so even for an ordinary firm one rejection makes the next more likely. Then the five rejections partly repeat one piece of evidence, and 0.56 is too high. If all banks decided exactly alike, five rejections would carry no more information than one, and the answer would be 0.257. The real answer lies between 0.257 and 0.56.
 
 A simulation of one million applicants for (a) and (b). The bureau report is drawn separately from the flag, given the client's type, which is exactly conditional independence.
 
@@ -399,7 +407,7 @@ for rule, (reject_default, reject_repay) in rules.items():
     avoided = round(reject_default * n_default) * cost_default
     given_up = round(reject_repay * n_repay) * interest
     print(f"{rule}: avoids {avoided:,} rubles, gives up {given_up:,}, "
-          f"ahead by {avoided - given_up:,} rubles")
+          f"net gain {avoided - given_up:,} rubles")
 ```
 
 The sequence of rejections in (d):
