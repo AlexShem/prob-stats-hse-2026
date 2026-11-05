@@ -57,7 +57,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-When all outcomes are equally likely (@def-classical), the division turns into a ratio of counts: $\Prob(A\mid B)=|A\cap B|/|B|$. Roll the two dice of @exm-two-dice, and suppose you can see only the red one. It shows a 6. Now the sum is at least 10 exactly when the blue die shows 4, 5 or 6, which is 3 of the 6 remaining outcomes, so the probability is $1/2$. Before you looked at the red die it was $6/36=1/6$.
+When all outcomes are equally likely (@def-classical), the division turns into a ratio of counts: $\Prob(A\mid B)=|A\cap B|/|B|$. Roll the two dice of Lecture 1 (@exm-two-dice), one red and one blue, and suppose you can see only the red one. It shows a 6. Now the sum is at least 10 exactly when the blue die shows 4, 5 or 6, which is 3 of the 6 remaining outcomes, so the probability is $1/2$. Before you looked at the red die it was $6/36=1/6$.
 
 ::: {#exm-promo-conditional}
 ## Promo code given app, and the other way round
@@ -128,7 +128,7 @@ $$
 and two of the ten share a birthday with probability about $0.117$.
 :::
 
-Multiply out and the product is $365\cdot364\cdots356/365^{10}$, exactly what counting ordered outcomes gives with @thm-product. The chain rule and the counting are two readings of one fraction. I find the chain reading easier to set up, because you never have to decide what $\Omega$ is. Seminar 1 (Problem 9) asks the same question for 30 people, and the answer there is about 0.706.
+Multiply out and the product is $365\cdot364\cdots356/365^{10}$, exactly what counting ordered outcomes gives with @thm-product. The chain rule and the counting are two readings of one fraction. I find the chain reading easier to set up, because you never have to decide what $\Omega$ is. Seminar 1 (Problem 9) asks about 30 people. For them "all different" has probability about 0.294, so the probability that at least two share a birthday is about 0.706.
 
 When an experiment happens in stages, draw it as a **probability tree**. Each branch carries the conditional probability of that step, given the path that leads to it. The probabilities on the branches leaving one node add up to 1 (that is @thm-conditional-axioms). To get the probability of a whole path, multiply along it (the multiplication rule). To get the probability of an event, add the paths that make it up: different paths are mutually exclusive.
 
@@ -363,7 +363,7 @@ The counts give the same thing in one glance: 18 of the 24 defective cases are f
 
 The prior for Guangzhou was 60%, and after seeing a defect it is 75%. A defect points towards Guangzhou, because defects are twice as common there. It is not proof: one defective case in four is from Chelyabinsk.
 
-Most people get the next example wrong. When Gerd Gigerenzer put the same kind of question about screening tests to doctors, most of them did too. Before you read the solution, write down your guess.
+Most people get the next example wrong. When Gerd Gigerenzer and his co-authors put the same kind of question about screening tests to doctors, most of the doctors in their studies got it wrong too (Gigerenzer et al., 2007, *Psychological Science in the Public Interest*). Before you read the solution, write down your guess.
 
 ::: {#exm-fraud}
 ## Fraud alerts
@@ -384,11 +384,11 @@ Only about one flagged payment in six is fraud. @tbl-bayes shows the same calcul
 
 : One day of payments in @exm-fraud. Of the 1,196 flagged payments, 198 are fraud: $198/1196\approx 0.166$. {#tbl-bayes}
 
-Read the table column by column. The filter catches 198 of the 200 frauds, which is the 99% from the brochure. But 99,800 legitimate payments are so many more that 1% of them, 998 false alarms, swamps the 198 real ones. The base rate, here 0.2%, matters as much as the accuracy of the test. Whenever the thing you are looking for is rare, expect most alarms to be false, even from a good test.
+Read the table row by row first. The filter catches 198 of the 200 frauds, which is the 99% from the brochure. But 99,800 legitimate payments are so many more that 1% of them, 998 false alarms, swamps the 198 real ones. The base rate, here 0.2%, matters as much as the accuracy of the test. Whenever the thing you are looking for is rare, expect most alarms to be false, even from a good test.
 
-That does not make the filter useless. The prior was 0.002 and the posterior is 0.166, about 80 times higher. A flag is strong evidence, not a verdict. This is why the bank sends you an SMS to confirm a flagged payment instead of blocking your card.
+That does not make the filter useless. The prior was 0.002 and the posterior is 0.166, more than 80 times higher. A flag is strong evidence, not a verdict. This is why the bank sends you an SMS to confirm a flagged payment instead of blocking your card.
 
-And here is the swap from @exm-promo-conditional once again. "99% accurate" describes $\Prob(L\mid F)=0.99$. The question was about $\Prob(F\mid L)$. People who answer "99%" have swapped the two. In court the same error is called the prosecutor's fallacy. It was one of the statistical errors behind the 1999 conviction of Sally Clark in England, overturned in 2003.
+And here is the swap from @exm-promo-conditional once again. "99% accurate" describes $\Prob(L\mid F)=0.99$. The question was about $\Prob(F\mid L)$. People who answer "99%" have swapped the two. In court the same error is called the prosecutor's fallacy. It appeared in the 1999 trial of Sally Clark in England, together with a worse mistake: the expert witness squared the probability of one cot death to get the probability of two, as if the two deaths in one family were independent. Her conviction was overturned in 2003, mainly because of medical evidence that had not been disclosed.
 
 ::: lecturer
 Collect the guesses for @exm-fraud by show of hands: above 90%, 50–90%, below 50%. Then draw @tbl-bayes empty and fill it in with the room, starting from 100,000 in the corner. Only after the table, write the formula. Students who get lost in @eq-bayes usually follow the table.
