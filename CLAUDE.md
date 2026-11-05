@@ -7,6 +7,7 @@ Facts, grading and policies: `admin/course-info.md`. Dates and rooms: `admin/sch
 ## Required skills
 
 - **`quarto-authoring`**: invoke it with the Skill tool before creating or editing any `.qmd` file, `_quarto.yml`, profile or Lua filter. This is not optional. If you spawn a subagent that will touch Quarto files, say in its prompt: "Before editing any Quarto file, invoke the `quarto-authoring` skill."
+- **Project commands** (`.claude/skills/`): `/chapter`, `/slides`, `/seminar`, `/review-unit`. These are the stages of a teaching unit, and Alexander triggers each one (see "Making a teaching unit"). Don't run a later stage on your own initiative.
 - **`anti-ai`**: the user invokes this skill by name and agents should not load it on their own. Its rules for this course are written out below under "Writing style", and they apply to every piece of text.
 
 ## Audience and scope
@@ -25,7 +26,7 @@ Facts, grading and policies: `admin/course-info.md`. Dates and rooms: `admin/sch
 - **Lectures** part: one chapter per lecture day (`book/lectures/LNN-*.qmd`). Chapter number = lecture number.
 - **Seminars** part: one unnumbered chapter per seminar (`book/seminars/SNN-*.qmd`), with problems and, once released, solutions with a Python check.
 - **Appendix**: the schedule (generated from RUZ).
-- Under every lecture and seminar title, a download line: **PDF** of that chapter, plus **Slides** (reveal.js) for lectures. The filter adds it automatically, so don't write it by hand.
+- Under every lecture and seminar title, a download line: **PDF** of that chapter, plus **Slides** (reveal.js) and **Slides PDF** for lectures. The filter adds it automatically, so don't write it by hand.
 - A download icon for the PDF of the whole book.
 
 Alexander also gets a **print copy** (`make print`): the same chapters with board cues and *all* solutions, A4, 12 pt and a 5.5 cm right margin for handwriting, one PDF per lecture or seminar. He teaches at the whiteboard from it. Each lecture day is 2 × 80 minutes.
@@ -44,10 +45,12 @@ slides/              reveal.js project, slides/LNN-<slug>.qmd, same stem as the 
 assessment/          midterm/, exam/: separate PRIVATE project, never published
 _shared/             _macros.qmd + preamble.tex (math), _setup.qmd (plot style), course.lua
                      (filter), book.css, slides.scss, data/
-templates/           lecture.qmd, seminar.qmd, slides.qmd, exam.qmd. Copy these, don't render them
+templates/           lecture.qmd, seminar.qmd, slides.qmd (a pattern deck), exam.qmd. Copy these, don't render them in place
 admin/               course facts, plan, generated schedule; raw RUZ exports in admin/raw/
 sources/             inherited materials (read-only input, see "Working with sources")
-scripts/             schedule_from_xls.py, split_book_pdf.py, style_check.py
+scripts/             schedule_from_xls.py, split_book_pdf.py, style_check.py,
+                     slides_snapshot.py (deck → PDF + PNG contact sheets), chapter_labels.py
+.claude/skills/      project commands: chapter, slides, seminar, review-unit
 ```
 
 There is no root `_quarto.yml`. Don't add one. Each project writes to `<project>/_output/` (gitignored). Keep `output-dir` inside the project, because Quarto misbehaves when it points outside. Slides cannot live inside the book project, since Quarto renders them next to their source. That's why they are a separate project, and `make book` copies them in.
@@ -60,6 +63,8 @@ Run everything from the repo root through `make`, which calls `uv run quarto …
 make book             # student site → book/_output/book/ (HTML, full PDF, pdf/LNN-*.pdf, pdf/SNN-*.pdf, slides/)
 make print            # lecturer copy → book/_output/lecturer/LNN-*.pdf, SNN-*.pdf
 make slides           # slides only (make book already runs this)
+make snapshot L=<stem>   # one deck → slides/_output/<stem>.pdf + PNG contact sheets in slides/_output/snap/<stem>/
+make labels L=<stem>     # numbers of definitions/theorems/examples/figures in a rendered chapter
 make assessment       # private papers → assessment/_output/papers
 make assessment-keys  # with marking keys → assessment/_output/solutions
 make lint             # style tripwire (see "Writing style")
@@ -98,23 +103,31 @@ Material is prepared one teaching unit at a time, a few days before it is taught
 
 Rules for agents:
 
-1. Before editing, check the branch (`git branch --show-current`). If you are on `main`, create the right branch first. Don't start a new unit on top of an unmerged one: branch from `main`.
+1. Before editing, check the branch (`git branch --show-current`). If you are on `main`, create the right branch with `git switch -c unit/...`. **Never rename `main`** (`git branch -m`). Don't start a new unit on top of an unmerged one: branch from `main`.
+1a. Another agent may be working in the same checkout. For infrastructure work, use a separate worktree (`git worktree add ../prob-stats-hse-2026-infra -b infra/<what> main`) instead of switching branches under it.
 2. Commit in small steps with the unit as the prefix: `L01: first draft of chapter`, `L01: slides`, `S01: problems 1–6`, `S01: solutions`, `infra: split script handles appendices`. Don't commit `_output/`. Do commit `_freeze/`.
-3. Merge only after the checklist below passes (build, print, lint, no leaks) **and** Alexander has looked at the unit. Merge with `git merge --no-ff unit/...` so the unit stays one visible block in the history, then delete the branch.
+3. Merge only after `/review-unit` has no open findings for mathematics, leaks or consistency, **and** Alexander has looked at the unit. Merge with `git merge --no-ff unit/...` so the unit stays one visible block in the history, then delete the branch.
 4. Don't push, merge into `main` or delete branches unless Alexander asks. He reviews the branch first.
 5. After publishing, tag what students saw: `git tag pub/2026-11-07`. That makes "which version did they have before the midterm?" easy to answer.
 
-## Adding a lecture (checklist)
+## Making a teaching unit
 
-0. `git switch main && git switch -c unit/LNN-<slug>` (see "Git workflow").
-1. Read the lecture's row in `admin/course-plan.md` and the referenced line ranges via `sources/Модули_1_2_новые.summary.md`.
-2. Copy `templates/lecture.qmd` → `book/lectures/LNN-<slug>.qmd`. Add it to the "Lectures" part in `book/_quarto.yml` (replace `chapters: []` with a list).
-3. Write the chapter (it is the master copy, see below).
-4. Copy `templates/slides.qmd` → `slides/LNN-<slug>.qmd`, with exactly the same stem, and write the slides from the chapter.
-5. For the seminar(s) that follow: copy `templates/seminar.qmd` → `book/seminars/SNN-<slug>.qmd` and add it to the "Seminars" part.
-6. Run `make book` and `make print`. Then check: the lecture's print PDF is about 8–12 pages; the slides link and PDF link work; no `lecturer` or `sol` text appears in the student output; `make lint` is clean.
-7. Fix any `[TODO: …]` you can. Leave the ones only Alexander can fill, and list them for him.
-8. Commit on the unit branch and hand over for review. Alexander decides when it merges into `main`.
+A unit is one lecture and the seminar(s) after it. It is made in **stages, in this order**, and Alexander reviews each stage before the next one starts. The book chapter comes first and is finished before anything is derived from it.
+
+| Stage | Command | Runs | Output |
+|---|---|---|---|
+| 1. Chapter | `/chapter LNN` | in the session, with an outline to approve first | `book/lectures/LNN-*.qmd` |
+| — | Alexander reads the print copy, edits, approves | | commit |
+| 2. Slides | `/slides LNN` | fresh subagent; reads only the committed chapter | `slides/LNN-*.qmd`, visually checked |
+| 3. Seminar | `/seminar SNN` | in the session, with a problem list to approve first | `book/seminars/SNN-*.qmd` |
+| 4. Review | `/review-unit LNN SNN` | fresh subagent, read-only | findings report |
+| — | fixes, then merge (`git merge --no-ff`) | | `main` |
+
+Why the stages are separate: slides written in the same pass as the chapter turn into a thin outline of it. Making the slides as their own task, from a finished chapter and with every slide looked at as an image, gives a deck students can study from.
+
+If the chapter changes after the slides exist, rerun `/slides LNN` with "update to the revised chapter". It will compare the chapter with the deck and redo the slides that changed.
+
+The full instructions for each stage are in `.claude/skills/<stage>/SKILL.md`. The essentials:
 
 ### The lecture chapter is the master
 
@@ -126,15 +139,16 @@ Rules for agents:
 
 ### Slides
 
-- They are a shorter version of the chapter, with no new material. Same section order and headings. Each definition, theorem or example carries its chapter number: `## Bayes' theorem (Thm 2.4)`.
-- Show what students should *see* rather than copy: statements, key formulas, figures, tables, problem statements and the final answers of worked examples. Derivations happen on the board and are written out in the chapter.
-- About 25–35 slides per lecture day, with `## Break` at the midpoint. Speaker notes go in `::: {.notes}`.
-- When a chapter changes, update its slides in the same pass and check that the numbers still match.
+- A study aid students read on their own, and something Alexander can project. Each slide holds one complete idea (25–70 words), and worked examples are shown step by step with pauses. That means no stub slides and no section-divider slides.
+- Built from the patterns in `templates/slides.qmd` (boxes `.box-def`/`.box-thm`/`.box-ex`, `.answer`, `{.yourturn}`, columns) and the theme `_shared/slides.scss` (16:9, 1280×720).
+- Chapter numbers go in a tag: `## Complement rule [Thm 1.2]{.tag}`. Get the numbers from `make labels`, never by guessing.
+- 28–40 slides per lecture day, with one `## Break` at the midpoint.
+- Every deck is checked by eye: `make snapshot` and then the contact-sheet images. A deck isn't done until no slide overflows and no slide is half empty.
 
 ### Seminars
 
 - File names follow the S-numbers in `admin/schedule.md`. All three groups get the same sheet.
-- Problems are `## Problem N {.unnumbered}`, numbered by hand.
+- Problems are `## Problem N {.unnumbered}`, numbered by hand. About 6–9 problems per 80-minute seminar, from easy to hard.
 - Seminar files set `execute: echo: true` in their front matter (already in the template), so the Python is visible. Lecture chapters hide code by default and show only the figures.
 
 ## Conventions

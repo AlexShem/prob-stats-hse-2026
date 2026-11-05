@@ -1,10 +1,63 @@
 /*-- scss:defaults --*/
-$font-family-sans-serif: "Source Sans 3", "Helvetica Neue", Arial, sans-serif;
-$presentation-font-size-root: 34px;
-$presentation-heading-font-weight: 600;
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=Source+Code+Pro:wght@400;600&display=swap");
+
+$font-family-sans-serif: unquote("'Source Sans 3', 'Helvetica Neue', Arial, sans-serif");
+$font-family-monospace: unquote("'Source Code Pro', 'DejaVu Sans Mono', monospace");
+$presentation-font-size-root: 36px;
+$presentation-line-height: 1.35;
+$presentation-heading-font: $font-family-sans-serif;
+$presentation-heading-font-weight: 700;
 $presentation-heading-text-transform: none;
+$presentation-heading-letter-spacing: 0;
+$presentation-h2-font-size: 1.35em;
+$body-color: #1d2733;
+$presentation-heading-color: #173a63;
 $link-color: #1f5c99;
+$code-block-font-size: 0.62em;
+
+$accent: #1f5c99;
+$accent-soft: #eaf1f8;
+$warm: #b4542a;
+$warm-soft: #fbf0e9;
 
 /*-- scss:rules --*/
-.reveal h2 { font-size: 1.3em; }
+.reveal .slides { text-align: left; }
+
+/* slide titles: left, with a thin rule underneath */
+.reveal h2 {
+  padding-bottom: 0.15em;
+  margin-bottom: 0.6em;
+  border-bottom: 3px solid $accent-soft;
+}
+
+/* section slides (# Heading): coloured band, big title */
+.reveal section.level1 h1,
+.reveal .slide.level1 h1 { color: $accent; font-size: 2.1em; }
+
+/* numbered items from the chapter: ::: {.box-def} / .box-thm / .box-ex */
+.reveal .box-def, .reveal .box-thm, .reveal .box-ex {
+  border-left: 6px solid $accent;
+  background: $accent-soft;
+  padding: 0.45em 0.8em;
+  margin: 0.4em 0 0.6em;
+  border-radius: 4px;
+}
+.reveal .box-thm { border-left-color: #173a63; }
+.reveal .box-ex  { border-left-color: $warm; background: $warm-soft; }
+.reveal .box-def > p:first-child, .reveal .box-thm > p:first-child, .reveal .box-ex > p:first-child { margin-top: 0; }
+.reveal .box-def > p:last-child, .reveal .box-thm > p:last-child, .reveal .box-ex > p:last-child { margin-bottom: 0; }
+.reveal .tag { font-size: 0.65em; font-weight: 600; letter-spacing: 0.03em; color: #5b6b7c; text-transform: uppercase; }
+
+/* final answer of a worked example */
+.reveal .answer { font-weight: 700; color: $warm; }
+
+/* "Your turn" slides: ## Your turn {.yourturn} */
+.reveal .slide.yourturn h2 { color: $warm; border-bottom-color: $warm-soft; }
+
+.reveal .muted { color: #5b6b7c; }
 .reveal .small { font-size: 0.75em; }
+.reveal .big { font-size: 1.4em; }
+.reveal .slide-number { font-size: 0.5em; }
+.reveal .footer { font-size: 0.45em; color: #8a97a5; }
+.reveal table { font-size: 0.85em; }
+.reveal .MathJax_Display, .reveal mjx-container[display="true"] { margin: 0.5em 0 !important; }
