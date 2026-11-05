@@ -47,7 +47,7 @@ Status: merged (PR #1, counting terminology). Permutation, arrangement and combi
 
 ## L02: Conditional probability and Bayes' theorem
 
-Files: `book/lectures/L02-conditional-probability.qmd` (12 print pages). Slides and S02 not yet written.
+Files: `book/lectures/L02-conditional-probability.qmd` (12 print pages), `slides/L02-conditional-probability.qmd` (50 slides + title). S02 not yet written.
 Status: chapter drafted on `unit/L02-conditional-probability`, under review.
 
 **Chapter.** Opens with the L01 store: $\Prob(\text{promo}\mid\text{app})=0.20/0.55\approx0.36$, not $0.40$.
@@ -64,7 +64,7 @@ Ends with 5 exercises and the pointer to Seminar 2.
 
 **Facts later units can use.** Notation $\Prob(A\mid B)$, no new macros. Terms introduced: conditional probability, probability tree, independent, mutually independent, gambler's fallacy, prior, posterior. Contexts used: phone-case factories, customer funnel with segments (new, returning, referred), fraud alerts, loan officer, team birthdays. Real cases named: Gigerenzer's tests of doctors, Sally Clark (prosecutor's fallacy). Mistakes named: swapping $\Prob(A\mid B)$ and $\Prob(B\mid A)$; $\Prob(A\mid B^c)\ne1-\Prob(A\mid B)$; independent taken as mutually exclusive; pairwise taken as mutual independence; the gambler's fallacy and its mirror; a change in mix read as a change in rates. Open thread: the chapter points to Bayes for "one firm rejected five times", which no section works out, so S02 can pick it up.
 
-**Slides.** Not yet built. Break after 2.3. Two figures and Table 2.1 to reuse.
+**Slides.** 50 slides, 44 with a visual. Break at slide 31, after the loan-officer slide that closes Sec 2.3. Reuses Fig 2.1 (conditioning panels), Fig 2.2 (bulb tree) and Table 2.1. New pictures: the B-rescaled-to-1 bar (Def 2.1), the red-die-shows-6 grid, the 66-pair grid checking Ex 2.3, the unit-square area picture for Def 2.2 and Thm 2.3, all 64 six-toss sequences with runs marked, sequence strips for Ex 2.4, a partition picture for Thm 2.4, a 1000-case grid for Ex 2.5, width = share mosaics for Ex 2.6, prior/posterior bars for Ex 2.7 and Ex 2.8. A shared `tree()` helper in the hidden first cell draws every probability tree (Ex 2.3, Ex 2.5, Ex 2.8, Exercise 4). Pitfall slides: swapping $\Prob(A\mid B)$ and $\Prob(B\mid A)$; complement behind the bar; independent vs mutually exclusive (with Exercise 3 as a quick check); pairwise vs mutual independence; mix moved, not the rates; "99% accurate" with the prosecutor's fallacy and Sally Clark. Your turn: Exercises 1, 2, 4, 5 and the "write six random tosses" room activity. Lecturer cues are in speaker notes.
 
 **Seminar.** Not yet written.
 

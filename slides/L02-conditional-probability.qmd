@@ -1,0 +1,1565 @@
+---
+title: "Conditional probability and Bayes' theorem"
+subtitle: "Lecture 2 · Probability Theory and Mathematical Statistics"
+date: "2026-11-11"
+---
+
+{{< include ../_shared/_macros.qmd >}}
+{{< include ../_shared/_setup.qmd >}}
+
+<!--
+PLAN  NN | title | pattern | chapter item | visual
+01 | Priya sees an app order | hook | intro | Venn with B highlighted, numbers
+02 | Conditional probability | item | Def 2.1 | bar: B rescaled to total 1
+03 | Conditioning shrinks the sample space | picture | Fig 2.1 | chapter's two panels
+04 | Equally likely outcomes: count inside B | explain | Sec 2.1, dice | 6x6 grid, red=6 column
+05 | Promo given app, and the other way round | worked | Ex 2.1 | Venn with four numbers
+06 | Pitfall: swapping P(A|B) and P(B|A) | pitfall | after Ex 2.1 | two share bars
+07 | Conditional probability is a probability | item | Thm 2.1 | bar of B split into A, A^c
+08 | Pitfall: the complement behind the bar | pitfall | Sec 2.1 | bars inside B and B^c
+09 | Your turn: sum 8, at least one 3 | yourturn | Exercise 1 | grid after pause
+10 | Multiplication rule | item | Thm 2.2, Eq 2.1 | none (formula box)
+11 | The chain rule reads like a story | explain | proof + reading of Eq 2.1 | step diagram
+12 | Birthdays, one person at a time | worked | Ex 2.2 | none (steps)
+13 | Chain or counting: one fraction | explain | after Ex 2.2 | P(all different) vs team size
+14 | Probability tree | explain | Sec 2.2 | generic tree with the rules
+15 | Two faulty bulbs: set-up | worked | Ex 2.3 | box of 12 bulbs, before/after
+16 | Two faulty bulbs: the tree | worked | Ex 2.3, Fig 2.2 | chapter's tree
+17 | Check by counting | compare | Ex 2.3 | 66-pair grid
+18 | The second bulb, knowing nothing | worked | Sec 2.2 | tree, F paths highlighted
+19 | Independent events | item | Def 2.2 | unit square, A strip x B strip
+20 | Promo code and app are dependent | worked | Sec 2.3 | bars 0.40 / 0.36 / 0.44
+21 | Assumed, not computed | explain | Sec 2.3 | table assume / suspicious
+22 | Pitfall: independent vs mutually exclusive | pitfall | Sec 2.3 + Exercise 3 | bars card/cash before/after
+23 | Complements of independent events | item | Thm 2.3 | unit square, "neither" corner
+24 | Your turn: P(A u B), neither | yourturn | Exercise 2 | square after pause
+25 | Mutual independence | item | Def 2.3 | bar: all on time / at least one late
+26 | Pitfall: pairwise is not enough | pitfall | Sec 2.3 | table HH..TT x A,B,C
+27 | Your turn: six "random" tosses | yourturn | lecturer cue | all 64 sequences, runs marked
+28 | Gambler's fallacy (a), (b) | worked | Ex 2.4 | sequence strips
+29 | Gambler's fallacy (c) | worked | Ex 2.4 | TTTTT? strip, two completions
+30 | Loan officer and the mirror image | compare | after Ex 2.4 | two strips R R R R R ?
+31 | Break | break | cue |
+32 | Law of total probability | item | Thm 2.4, Eq 2.2 | partition with A cut in pieces
+33 | Two ways to picture it | explain | after Thm 2.4 | generic tree H1..H3 -> A
+34 | Phone cases from two factories | worked | Ex 2.5 | tree
+35 | Phone cases: add the D paths | worked | Ex 2.5 | 1000-case grid
+36 | Conversion by segment (a) | worked | Ex 2.6 | mosaic width=share, height=rate
+37 | Conversion by segment (b) | worked | Ex 2.6 | mosaic before/after
+38 | Pitfall: the mix moved, not the rates | pitfall | after Ex 2.6 | number line of rates
+39 | From the effect back to the cause | picture | Sec 2.5 intro | forward/backward arrows
+40 | Bayes' theorem | item | Thm 2.5, Eq 2.3 | none (box + proof idea)
+41 | Prior and posterior | explain | after Thm 2.5 | annotated formula
+42 | Which factory made the defective case? | worked | Ex 2.7 | prior/posterior bars
+43 | Fraud alerts: guess first | worked | Ex 2.8 | 1000 dots, 2 fraud
+44 | Fraud alerts: the formula | worked | Ex 2.8 | tree
+45 | Fraud alerts in counts | picture | Table 2.1 | table
+46 | Why most alarms are false | explain | after Table 2.1 | stacked bar of 1,196 flags
+47 | A flag is evidence, not a verdict | explain | after Table 2.1 | prior vs posterior bars
+48 | Pitfall: "99% accurate" | pitfall | end of Sec 2.5 | wrong vs right boxes
+49 | Your turn: late deliveries | yourturn | Exercise 4 | tree after pause
+50 | Your turn: find the mistake | yourturn | Exercise 5 | none
+
+CUT: proof of Thm 2.1 (one line: check the three axioms); proof of Thm 2.2 kept as its one telescoping
+idea; proof of Thm 2.4 and Thm 2.5 shortened to one line each; Exercise 3 folded into the pitfall slide 22
+as a quick check; the pointer to Seminar 2 goes in the notes.
+-->
+
+```{python}
+#| include: false
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.patches import Circle, Rectangle, FancyBboxPatch
+plt.rcParams.update({"font.size": 14})
+BLUE, LIGHT, ORANGE, GREY, PALE = "#1f5c99", "#9bb8d6", "#b4542a", "#c9d6e3", "#e8b9a3"
+
+def tree(ax, first, second, leaves=None, highlight=(), headers=None, fs=14, leaf_fs=13, x2=2.0):
+    """Two-level tree. first: [(label, prob)], second: [[(label, prob), ...] per first node]."""
+    leaves = leaves or {}
+    ys, k = {}, 0
+    n = sum(len(s) for s in second)
+    top = (n - 1) / 2
+    for i, s in enumerate(second):
+        for j in range(len(s)):
+            ys[(i, j)] = top - k; k += 1
+    node = dict(ha="center", va="center", fontsize=fs,
+                bbox=dict(boxstyle="round,pad=0.25", fc="white", ec="#333333"))
+    prob = dict(ha="center", va="center", fontsize=fs - 1,
+                bbox=dict(boxstyle="square,pad=0.1", fc="white", ec="none"))
+    for i, (lab, p) in enumerate(first):
+        y1 = np.mean([ys[(i, j)] for j in range(len(second[i]))])
+        hot = any((i, j) in highlight for j in range(len(second[i])))
+        ax.plot([0, 1], [0, y1], color=ORANGE if hot else BLUE, lw=2.5 if hot else 1.6, zorder=0)
+        ax.text(0.5, y1 / 2, p, **prob)
+        for j, (lab2, p2) in enumerate(second[i]):
+            y2 = ys[(i, j)]; h = (i, j) in highlight
+            ax.plot([1, x2], [y1, y2], color=ORANGE if h else BLUE, lw=2.5 if h else 1.6, zorder=0)
+            ax.text((1 + x2) / 2, (y1 + y2) / 2, p2, **prob)
+            ax.text(x2, y2, lab2, **node)
+            if (i, j) in leaves:
+                ax.text(x2 + 0.2, y2, leaves[(i, j)], ha="left", va="center", fontsize=leaf_fs,
+                        color=ORANGE if h else "#1d2733", fontweight="bold" if h else "normal")
+        ax.text(1, y1, lab, **node)
+    ax.plot([0], [0], "o", color="#333333", ms=6)
+    if headers:
+        for x, t in zip((1, x2), headers):
+            ax.text(x, top + 0.75, t, ha="center", fontsize=fs - 2, color="#5b6b7c")
+    ax.set_xlim(-0.15, x2 + 1.25); ax.set_ylim(-top - 0.6, top + 1.1); ax.axis("off")
+
+def dice_grid(ax, colour, title=None):
+    """36 outcomes; colour(r, b) returns a colour."""
+    for r in range(1, 7):
+        for b in range(1, 7):
+            ax.scatter(r, b, s=150, color=colour(r, b), zorder=2)
+    ax.set_xticks(range(1, 7)); ax.set_yticks(range(1, 7))
+    ax.set_xlabel("red die"); ax.set_ylabel("blue die")
+    ax.set_xlim(0.4, 6.6); ax.set_ylim(0.4, 6.6); ax.set_aspect("equal")
+    if title: ax.set_title(title, fontsize=13)
+
+def strip(ax, seq, x0, y, cell=1.0, hot=(), fs=13, unknown_col="white", h=0.8):
+    """One row of coin results, e.g. 'TTTTT?'."""
+    for k, c in enumerate(seq):
+        fc = ORANGE if k in hot else (BLUE if c == "H" else (GREY if c in "TR" else unknown_col))
+        ax.add_patch(Rectangle((x0 + k * cell, y), cell * 0.92, h, fc=fc, ec="#333333", lw=1))
+        if fs:
+            ax.text(x0 + k * cell + cell * 0.46, y + h / 2, c, ha="center", va="center", fontsize=fs,
+                    color="white" if fc in (BLUE, ORANGE) else "#1d2733", fontweight="bold")
+
+def venn(ax, shade=None, colour=LIGHT, labels=("A", "B")):
+    xs, ys = np.meshgrid(np.linspace(-2, 2, 400), np.linspace(-1.4, 1.4, 280))
+    in_a = (xs + 0.55) ** 2 + ys ** 2 < 1; in_b = (xs - 0.55) ** 2 + ys ** 2 < 1
+    if shade is not None:
+        ax.contourf(xs, ys, shade(in_a, in_b).astype(float), levels=[0.5, 1.5], colors=[colour], alpha=0.7)
+    ax.add_patch(Circle((-0.55, 0), 1, fill=False, lw=1.5)); ax.add_patch(Circle((0.55, 0), 1, fill=False, lw=1.5))
+    ax.add_patch(Rectangle((-2, -1.4), 4, 2.8, fill=False, lw=1.5))
+    ax.set_xlim(-2.05, 2.05); ax.set_ylim(-1.45, 1.75); ax.set_aspect("equal"); ax.axis("off")
+```
+
+## Priya sees an app order
+
+:::: {.columns}
+::: {.column width="52%"}
+The store of Ex 1.3: 40% of orders use a promo code, 55% come through the app, 20% do both.
+
+. . .
+
+Priya, an analyst, sees a customer open the app. Still a 40% chance of a promo code?
+
+. . .
+
+Among app orders, promo-code ones are 0.20 out of 0.55:
+$$\frac{0.20}{0.55}\approx \color{#b4542a}{\mathbf{0.36}}$$
+
+. . .
+
+That one division is the seed of this whole lecture.
+:::
+::: {.column width="48%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.6
+fig, ax = plt.subplots(figsize=(5, 3.6))
+venn(ax, lambda a, b: ~b, colour="#cccccc")
+venn(ax, lambda a, b: a & b, colour=BLUE)
+ax.add_patch(Circle((0.55, 0), 1, fill=False, lw=3, color=ORANGE))
+ax.text(-1.05, 0, "0.20", ha="center", va="center", fontsize=14, color="#555555")
+ax.text(0, 0, "0.20", ha="center", va="center", fontsize=15, color="white", fontweight="bold")
+ax.text(1.05, 0, "0.35", ha="center", va="center", fontsize=15, color=ORANGE, fontweight="bold")
+ax.text(-1.0, 1.15, "promo A", ha="center", fontsize=13); ax.text(1.0, 1.15, "app B", ha="center", fontsize=13, color=ORANGE)
+ax.text(1.75, -1.25, "0.25", ha="right", fontsize=13, color="#555555")
+ax.set_title("given app: only the circle B is left", fontsize=13)
+plt.tight_layout()
+```
+:::
+::::
+
+::: {.notes}
+Timing: 0:00-0:25 conditional probability, 0:25-0:55 multiplication rule and trees, 0:55-1:20 independence. Break at 1:20. Second slot: total probability (30 min), Bayes (40 min), exercises (10 min).
+Write 0.40, 0.55, 0.20 from Lecture 1 on the board. Ask: "She opens the app. Still 40%?" Let them argue for a minute before dividing.
+:::
+
+## Conditional probability [Def 2.1]{.tag}
+
+:::: {.columns}
+::: {.column width="55%"}
+::: {.box-def}
+Let $\Prob(B)>0$. The **conditional probability** of $A$ given $B$ is
+$$\Prob(A\mid B)=\frac{\Prob(A\cap B)}{\Prob(B)}.$$
+:::
+
+Read: "the probability of $A$ given $B$".
+
+. . .
+
+Once $B$ has occurred, $B$ is the new sample space and only $A\cap B$ is still possible. Dividing by $\Prob(B)$ brings the total back to 1.
+:::
+::: {.column width="45%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.2
+fig, ax = plt.subplots(figsize=(5, 3.2))
+ax.barh(1, 1, color="#dddddd", ec="white"); ax.barh(1, 0.55, left=0.45, color=LIGHT, ec="white")
+ax.barh(1, 0.20, left=0.45, color=BLUE, ec="white")
+ax.text(0.22, 1, "outside B", ha="center", va="center", fontsize=12, color="#555555")
+ax.text(0.55, 1, r"$A\cap B$", ha="center", va="center", fontsize=13, color="white")
+ax.text(0.82, 1, "rest of B", ha="center", va="center", fontsize=12)
+ax.barh(0, 1, color=LIGHT, ec="white"); ax.barh(0, 0.20 / 0.55, color=BLUE, ec="white")
+ax.text(0.18, 0, r"$A\cap B$", ha="center", va="center", fontsize=13, color="white")
+ax.text(0.68, 0, "rest of B", ha="center", va="center", fontsize=12)
+ax.annotate("", xy=(0.02, 0.42), xytext=(0.45, 0.58), arrowprops=dict(arrowstyle="->", color=ORANGE, lw=2))
+ax.annotate("", xy=(0.98, 0.42), xytext=(0.98, 0.58), arrowprops=dict(arrowstyle="->", color=ORANGE, lw=2))
+ax.set_yticks([0, 1]); ax.set_yticklabels(["given B", r"all of $\Omega$"])
+ax.set_xticks([0, 0.5, 1]); ax.set_xlabel("probability")
+ax.grid(False); ax.spines["left"].set_visible(False)
+ax.set_title("B is stretched to total 1", fontsize=13)
+plt.tight_layout()
+```
+:::
+::::
+
+## Conditioning shrinks the sample space [Fig 2.1]{.tag}
+
+```{python}
+#| fig-width: 10
+#| fig-height: 3.2
+xs, ys = np.meshgrid(np.linspace(-2, 2, 400), np.linspace(-1.4, 1.4, 280))
+in_a = (xs + 0.55) ** 2 + ys ** 2 < 1
+in_b = (xs - 0.55) ** 2 + ys ** 2 < 1
+fig, axes = plt.subplots(1, 2, figsize=(10, 3.2))
+titles = ["Before: all of $\\Omega$", "Given $B$: only $B$ is left"]
+for k, (ax, title) in enumerate(zip(axes, titles)):
+    if k == 1:
+        ax.contourf(xs, ys, (~in_b).astype(float), levels=[0.5, 1.5], colors=["#bbbbbb"], alpha=0.7)
+    ax.contourf(xs, ys, (in_a & in_b).astype(float), levels=[0.5, 1.5], colors=["#4c8cc9"], alpha=0.7)
+    ax.add_patch(Circle((-0.55, 0), 1, fill=False, lw=1.5))
+    ax.add_patch(Circle((0.55, 0), 1, fill=False, lw=2.5 if k == 1 else 1.5, color="#c0392b" if k == 1 else "black"))
+    ax.add_patch(Rectangle((-2, -1.4), 4, 2.8, fill=False, lw=1.5))
+    ax.text(-1.05, 0, "A", ha="center", va="center", fontsize=16)
+    ax.text(1.05, 0, "B", ha="center", va="center", fontsize=16)
+    ax.set_title(title, fontsize=16)
+    ax.set_aspect("equal")
+    ax.axis("off")
+plt.tight_layout()
+```
+
+Everything outside $B$ (grey) is out of the game. $\Prob(A\mid B)$ is the share of $B$ taken by $A\cap B$.
+
+::: {.notes}
+Draw the two panels side by side and physically cross out everything outside B.
+:::
+
+## Equally likely outcomes: count inside $B$ [Sec 2.1]{.tag}
+
+:::: {.columns}
+::: {.column width="52%"}
+With equally likely outcomes (Def 1.5) the division becomes a ratio of counts:
+$$\Prob(A\mid B)=\frac{|A\cap B|}{|B|}$$
+
+. . .
+
+Two dice, one red and one blue (Ex 1.4). You see only the red one: it shows a **6**.
+
+. . .
+
+The sum is at least 10 exactly when blue shows 4, 5 or 6: 3 of the 6 outcomes left, [probability $1/2$]{.answer}.
+
+Before you looked: $6/36=1/6$.
+:::
+::: {.column width="48%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 4.2
+fig, ax = plt.subplots(figsize=(5, 4.2))
+def col(r, b):
+    if r != 6: return ORANGE if r + b >= 10 else "#dddddd"
+    return ORANGE if r + b >= 10 else BLUE
+dice_grid(ax, col)
+ax.add_patch(FancyBboxPatch((5.6, 0.6), 0.8, 5.8, boxstyle="round,pad=0.02", fill=False, ec=BLUE, lw=2.5))
+ax.text(6, 6.9, "red = 6", ha="center", fontsize=13, color=BLUE)
+ax.set_ylim(0.4, 7.2); ax.grid(False)
+ax.set_title("orange: sum at least 10", fontsize=13)
+plt.tight_layout()
+```
+:::
+::::
+
+## Promo given app, and the other way round [Ex 2.1]{.tag}
+
+:::: {.columns}
+::: {.column width="55%"}
+$A$: promo code, $B$: app. Find $\Prob(A\mid B)$, $\Prob(B\mid A)$, $\Prob(A^c\mid B)$.
+
+. . .
+
+**(a)** $\Prob(A\mid B)=\dfrac{0.20}{0.55}=\dfrac{4}{11}\approx$ [0.364]{.answer}
+
+. . .
+
+**(b)** $\Prob(B\mid A)=\dfrac{0.20}{0.40}=$ [0.50]{.answer}
+
+. . .
+
+**(c)** App without promo code: $\Prob(A^c\cap B)=0.35$ (Ex 1.3(c)), so $\Prob(A^c\mid B)=\dfrac{0.35}{0.55}\approx$ [0.636]{.answer}
+
+[(a) and (c) add up to 1. No accident, see Thm 2.1.]{.muted}
+:::
+::: {.column width="45%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.6
+fig, ax = plt.subplots(figsize=(5, 3.6))
+venn(ax)
+for x, t in [(-1.05, "0.20"), (0, "0.20"), (1.05, "0.35")]:
+    ax.text(x, 0, t, ha="center", va="center", fontsize=15, color=ORANGE if x == 0 else "#1d2733", fontweight="bold" if x == 0 else "normal")
+ax.text(1.8, -1.25, "neither 0.25", ha="right", fontsize=12, color="#555555")
+ax.text(-1.0, 1.15, "promo A: 0.40", ha="center", fontsize=13, color=BLUE)
+ax.text(1.0, 1.15, "app B: 0.55", ha="center", fontsize=13, color=BLUE)
+plt.tight_layout()
+```
+:::
+::::
+
+## Pitfall: swapping $\Prob(A\mid B)$ and $\Prob(B\mid A)$ [Ex 2.1]{.tag}
+
+:::: {.columns}
+::: {.column width="52%"}
+Same numerator 0.20, different denominator. (a) asks about app orders, (b) about promo-code orders.
+
+::: {.box-def}
+**True.** "Half of promo-code users order through the app." $\Prob(B\mid A)=0.50$.
+:::
+
+::: {.box-ex}
+**False.** "Half of app users use a promo code." $\Prob(A\mid B)\approx 0.36$.
+:::
+
+[The most common mistake of this lecture. Newspapers make it too.]{.muted}
+:::
+::: {.column width="48%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.6
+fig, ax = plt.subplots(figsize=(5, 3.6))
+for y, tot, lab in [(1, 0.55, "app orders\n(0.55)"), (0, 0.40, "promo orders\n(0.40)")]:
+    ax.barh(y, 1, color=LIGHT, ec="white"); ax.barh(y, 0.20 / tot, color=ORANGE, ec="white")
+    ax.text(0.20 / tot / 2, y, f"both\n{0.20 / tot:.0%}", ha="center", va="center", color="white", fontsize=13, fontweight="bold")
+ax.set_yticks([0, 1]); ax.set_yticklabels(["promo orders", "app orders"])
+ax.set_xticks([0, 0.5, 1]); ax.set_xticklabels(["0", "half", "all"])
+ax.set_title("share of each group that does both", fontsize=13)
+ax.grid(False); ax.spines["left"].set_visible(False)
+plt.tight_layout()
+```
+:::
+::::
+
+::: {.notes}
+Before computing (a) and (b) ask: "Which is bigger, P(A|B) or P(B|A)?" Most will say they are equal.
+:::
+
+## Conditional probability is a probability [Thm 2.1]{.tag}
+
+::: {.box-thm}
+Fix $B$ with $\Prob(B)>0$. Then $A\mapsto\Prob(A\mid B)$ satisfies the three axioms (Def 1.4), so every rule of Thm 1.2 holds for it:
+$$\begin{aligned}\Prob(A^c\mid B)&=1-\Prob(A\mid B),\\ \Prob(A_1\cup A_2\mid B)&=\Prob(A_1\mid B)+\Prob(A_2\mid B)-\Prob(A_1\cap A_2\mid B).\end{aligned}$$
+:::
+
+```{python}
+#| fig-width: 10
+#| fig-height: 1.5
+fig, ax = plt.subplots(figsize=(10, 1.5))
+a = 0.20 / 0.55
+ax.barh(0, a, color=BLUE, ec="white"); ax.barh(0, 1 - a, left=a, color=LIGHT, ec="white")
+ax.text(a / 2, 0, "promo: 0.364", ha="center", va="center", color="white", fontsize=15)
+ax.text(a + (1 - a) / 2, 0, "no promo: 0.636", ha="center", va="center", fontsize=15)
+ax.set_xticks([0, 1]); ax.set_yticks([]); ax.set_xlim(0, 1)
+ax.set_xlabel("app orders only: the two shares add up to 1, as in Ex 2.1")
+ax.grid(False); ax.spines["left"].set_visible(False)
+plt.tight_layout()
+```
+
+[Proof: check the three axioms one by one. See the book, Section 2.1.]{.muted}
+
+## Pitfall: the complement goes in front of the bar [Sec 2.1]{.tag}
+
+:::: {.columns}
+::: {.column width="55%"}
+::: {.box-ex}
+**Wrong.** $\Prob(A\mid B^c)=1-\Prob(A\mid B)\approx 0.636$
+:::
+
+::: {.box-def}
+**Right.** Promo share among website orders: $\Prob(A\mid B^c)=\dfrac{0.20}{0.45}\approx 0.444$
+:::
+
+. . .
+
+$1-\Prob(A\mid B)$ is $\Prob(A^c\mid B)$. A new condition is a new group: the two numbers are unrelated.
+:::
+::: {.column width="45%"}
+```{python}
+#| fig-width: 4.6
+#| fig-height: 3.1
+fig, ax = plt.subplots(figsize=(4.6, 3.1))
+for y, p, lab in [(1, 0.20 / 0.55, "app (B)"), (0, 0.20 / 0.45, "website (B$^c$)")]:
+    ax.barh(y, 1, color=LIGHT, ec="white"); ax.barh(y, p, color=BLUE, ec="white")
+    ax.text(p / 2, y, f"{p:.3f}", ha="center", va="center", color="white", fontsize=14)
+ax.set_yticks([0, 1]); ax.set_yticklabels(["website $B^c$", "app $B$"])
+ax.set_xticks([0, 1]); ax.set_xlabel("each group scaled to 1")
+ax.set_title("two groups, two separate shares", fontsize=13)
+ax.grid(False); ax.spines["left"].set_visible(False)
+plt.tight_layout()
+```
+:::
+::::
+
+## Your turn {.yourturn}
+
+Two dice are rolled and the sum is **8**. What is the probability that at least one die shows a 3?
+
+. . .
+
+:::: {.columns}
+::: {.column width="55%"}
+Given "sum 8", five outcomes are left: $(2,6),(3,5),(4,4),(5,3),(6,2)$. Two of them contain a 3.
+
+$$\Prob(\text{a }3\mid\text{sum }8)=\color{#b4542a}{\mathbf{2/5}}$$
+:::
+::: {.column width="45%"}
+```{python}
+#| fig-width: 3.8
+#| fig-height: 3.1
+fig, ax = plt.subplots(figsize=(3.8, 3.1))
+dice_grid(ax, lambda r, b: (ORANGE if 3 in (r, b) else BLUE) if r + b == 8 else "#dddddd")
+ax.grid(False)
+plt.tight_layout()
+```
+:::
+::::
+
+## Multiplication rule [Thm 2.2, Eq 2.1]{.tag}
+
+Turn the definition around: $\Prob(A\cap B)=\Prob(B)\,\Prob(A\mid B)$. This is how most joint probabilities are found in practice.
+
+::: {.box-thm}
+If $\Prob(A)>0$ and $\Prob(B)>0$, then
+$$\Prob(A\cap B)=\Prob(A)\,\Prob(B\mid A)=\Prob(B)\,\Prob(A\mid B).$$
+More generally, if $\Prob(A_1\cap\dots\cap A_{n-1})>0$,
+$$\begin{aligned}\Prob(A_1\cap\dots\cap A_n)=\Prob(A_1)\,&\Prob(A_2\mid A_1)\,\Prob(A_3\mid A_1\cap A_2)\\&\cdots\Prob(A_n\mid A_1\cap\dots\cap A_{n-1}).\end{aligned}$$
+:::
+
+We think in steps: first one thing happens, then the next, given the first.
+
+## The chain rule reads like a story [Eq 2.1]{.tag}
+
+```{python}
+#| fig-width: 10
+#| fig-height: 1.2
+fig, ax = plt.subplots(figsize=(10, 1.2))
+steps = [r"first $A_1$", r"then $A_2$ given $A_1$", r"then $A_3$ given $A_1, A_2$", r"$\ldots$", r"$A_n$ given all before"]
+xs = [0.55, 2.6, 5.2, 7.05, 8.85]
+ts = [ax.text(x, 0, s, ha="center", va="center", fontsize=15,
+              bbox=dict(boxstyle="round,pad=0.4", fc="#eaf1f8", ec=BLUE if s != r"$\ldots$" else "none"))
+      for x, s in zip(xs, steps)]
+for t0, t1 in zip(ts[:-1], ts[1:]):
+    ax.annotate("", xy=(0, 0.5), xycoords=t1, xytext=(1, 0.5), textcoords=t0,
+                arrowprops=dict(arrowstyle="->", color=ORANGE, lw=2, shrinkA=4, shrinkB=4))
+ax.set_xlim(-0.4, 10.2); ax.set_ylim(-0.5, 0.5); ax.axis("off")
+plt.tight_layout()
+```
+
+Each factor answers one question: what is the chance of the next step, given everything so far?
+
+. . .
+
+**Why it holds.** Write each factor as a fraction, and each numerator cancels the next denominator:
+$$\Prob(A_1)\cdot\frac{\Prob(A_1\cap A_2)}{\Prob(A_1)}\cdot\frac{\Prob(A_1\cap A_2\cap A_3)}{\Prob(A_1\cap A_2)}\cdots$$
+[Details: see the book, Section 2.2.]{.muted}
+
+## Birthdays, one person at a time [Ex 2.2]{.tag}
+
+::: {.box-ex}
+Kemal's department has 10 people. Ignore 29 February. Each birthday is equally likely to be any of 365 days, whatever the others' birthdays are. What is the probability that all 10 are different?
+:::
+
+. . .
+
+Line the people up. $A_k$: person $k$ avoids the birthdays of persons $1,\dots,k-1$.
+
+. . .
+
+Given the first $k-1$ have $k-1$ different birthdays, person $k$ must avoid $k-1$ days: probability $(365-k+1)/365$.
+
+. . .
+
+$$\Prob(\text{all different})=\frac{364}{365}\cdot\frac{363}{365}\cdots\frac{356}{365}\approx\color{#b4542a}{\mathbf{0.883}}$$
+
+Two of the ten share a birthday with probability about [0.117]{.answer}.
+
+## Chain or counting: one fraction [Ex 2.2]{.tag}
+
+:::: {.columns}
+::: {.column width="50%"}
+Multiply out: $\dfrac{365\cdot364\cdots356}{365^{10}}$. Counting ordered outcomes with the product rule (Thm 1.3) gives exactly this.
+
+. . .
+
+I find the chain easier to set up: you never have to decide what $\Omega$ is.
+
+. . .
+
+Seminar 1, Problem 9: with 30 people "all different" is about 0.294, so [a shared birthday has probability about 0.706]{.answer}.
+:::
+::: {.column width="50%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.8
+n = np.arange(1, 31)
+p_diff = np.cumprod((365 - n + 1) / 365)
+fig, ax = plt.subplots(figsize=(5, 3.8))
+ax.plot(n, p_diff, "o-", color=LIGHT, ms=4)
+for k in (10, 30):
+    ax.plot(k, p_diff[k - 1], "o", color=ORANGE, ms=9)
+    ax.annotate(f"{k} people: {p_diff[k - 1]:.3f}", (k, p_diff[k - 1]), xytext=(k - 14 if k == 30 else k + 1.5, p_diff[k - 1] + 0.08),
+                fontsize=13, color=ORANGE)
+ax.set_xlabel("number of people"); ax.set_ylabel("P(all different)")
+ax.set_ylim(0, 1.05)
+plt.tight_layout()
+```
+:::
+::::
+
+## Probability tree [Sec 2.2]{.tag}
+
+:::: {.columns}
+::: {.column width="50%"}
+When an experiment happens in stages, draw a **probability tree**. Each branch carries the conditional probability of its step, given the path that leads to it.
+
+- Branches leaving one node add up to 1 (Thm 2.1).
+- Multiply along a path to get its probability (Thm 2.2).
+- Add the paths that make up an event: different paths are mutually exclusive.
+:::
+::: {.column width="50%"}
+```{python}
+#| fig-width: 5.4
+#| fig-height: 3.8
+fig, ax = plt.subplots(figsize=(5.4, 3.8))
+tree(ax, [("B", r"$\mathbb{P}(B)$"), (r"$B^c$", r"$\mathbb{P}(B^c)$")],
+     [[("A", r"$\mathbb{P}(A|B)$"), (r"$A^c$", "")], [("A", r"$\mathbb{P}(A|B^c)$"), (r"$A^c$", "")]],
+     leaves={(0, 0): r"$\mathbb{P}(B)\,\mathbb{P}(A|B)$", (1, 0): r"$\mathbb{P}(B^c)\,\mathbb{P}(A|B^c)$"},
+     highlight={(0, 0)}, fs=15, leaf_fs=14, x2=2.2)
+ax.set_xlim(-0.15, 4.3)
+plt.tight_layout()
+```
+:::
+::::
+
+## Two faulty bulbs in a row: set-up [Ex 2.3]{.tag}
+
+:::: {.columns}
+::: {.column width="52%"}
+::: {.box-ex}
+A hypothetical wholesaler in Kazan: a box of 12 LED bulbs, 3 faulty. Oksana tests two, one after the other, without putting the first back. P(both faulty)? P(exactly one)?
+:::
+
+. . .
+
+$F_1$, $F_2$: first, second bulb faulty. $\Prob(F_1)=3/12$.
+
+. . .
+
+$\Prob(F_2\mid F_1)=2/11$ and $\Prob(F_2\mid F_1^c)=3/11$.
+:::
+::: {.column width="48%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.4
+fig, ax = plt.subplots(figsize=(5, 3.4))
+def bulbs(y, n_bad, n, title, removed=False):
+    for k in range(12):
+        x = k % 6; yy = y - (k // 6) * 0.9
+        if removed and k == 0:
+            ax.add_patch(Circle((x, yy), 0.33, fill=False, ls="--", ec="#999999")); continue
+        bad = k < n_bad + (1 if removed else 0)
+        ax.add_patch(Circle((x, yy), 0.33, color=ORANGE if bad else LIGHT))
+    ax.text(-0.5, y + 0.6, title, fontsize=13, ha="left")
+bulbs(3.4, 3, 12, "the box: 3 faulty of 12")
+bulbs(0.6, 2, 11, "after a faulty first bulb: 2 of 11", removed=True)
+ax.set_xlim(-0.6, 5.6); ax.set_ylim(-0.8, 4.4); ax.set_aspect("equal"); ax.axis("off")
+plt.tight_layout()
+```
+:::
+::::
+
+## Two faulty bulbs: the tree [Ex 2.3, Fig 2.2]{.tag}
+
+:::: {.columns}
+::: {.column width="56%"}
+```{python}
+#| fig-width: 5.8
+#| fig-height: 4.2
+fig, ax = plt.subplots(figsize=(5.8, 4.2))
+tree(ax, [("F", "3/12"), ("G", "9/12")], [[("F", "2/11"), ("G", "9/11")], [("F", "3/11"), ("G", "8/11")]],
+     leaves={(0, 0): "FF: 6/132", (0, 1): "FG: 27/132", (1, 0): "GF: 27/132", (1, 1): "GG: 72/132"},
+     highlight={(0, 1), (1, 0)}, headers=("1st bulb", "2nd bulb"))
+plt.tight_layout()
+```
+:::
+::: {.column width="44%"}
+**(a)** Multiply along FF:
+$$\frac{3}{12}\cdot\frac{2}{11}=\frac{6}{132}=\frac{1}{22}\approx\color{#b4542a}{\mathbf{0.045}}$$
+
+. . .
+
+**(b)** Add two paths, FG and GF (orange):
+$$\frac{27}{132}+\frac{27}{132}=\frac{9}{22}\approx\color{#b4542a}{\mathbf{0.409}}$$
+:::
+::::
+
+::: {.notes}
+Draw the tree left to right: branch probabilities in one colour, path products at the leaves in another.
+:::
+
+## Check by counting [Ex 2.3]{.tag}
+
+:::: {.columns}
+::: {.column width="50%"}
+As in Ex 1.7: order does not matter, so take the $\binom{12}{2}=66$ equally likely pairs.
+
+. . .
+
+Both faulty: $\binom{3}{2}=3$ pairs, so $3/66=$ [1/22]{.answer}.
+
+. . .
+
+Exactly one faulty: $3\cdot 9=27$ pairs, so $27/66=$ [9/22]{.answer}.
+
+Same answers as the tree.
+:::
+::: {.column width="50%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 4
+fig, ax = plt.subplots(figsize=(5, 4))
+for i in range(12):
+    for j in range(i + 1, 12):
+        nbad = (i < 3) + (j < 3)
+        ax.add_patch(Rectangle((j - 0.45, 11 - i - 0.45), 0.9, 0.9, color={2: ORANGE, 1: PALE, 0: LIGHT}[nbad]))
+ax.text(1.2, 2.5, "both faulty: 3", color=ORANGE, fontsize=13)
+ax.text(1.2, 1.4, "one faulty: 27", color="#b4542a", alpha=0.75, fontsize=13)
+ax.text(1.2, 0.3, "none faulty: 36", color=BLUE, fontsize=13)
+ax.set_xlim(0.3, 11.7); ax.set_ylim(-0.6, 11.6); ax.set_aspect("equal"); ax.axis("off")
+ax.set_title("the 66 pairs of bulbs (bulbs 1-3 faulty)", fontsize=13)
+plt.tight_layout()
+```
+:::
+::::
+
+## The second bulb, knowing nothing about the first [Sec 2.2]{.tag}
+
+:::: {.columns}
+::: {.column width="55%"}
+Add the two paths that end in F:
+$$\Prob(F_2)=\frac{3}{12}\cdot\frac{2}{11}+\frac{9}{12}\cdot\frac{3}{11}=\frac{33}{132}=\color{#b4542a}{\mathbf{1/4}}$$
+
+. . .
+
+The same as for the first bulb. The box has changed, but in a way you do not know about.
+
+[This sum is the law of total probability (Section 2.4).]{.muted}
+:::
+::: {.column width="45%"}
+```{python}
+#| fig-width: 4.8
+#| fig-height: 4.2
+fig, ax = plt.subplots(figsize=(4.8, 4.2))
+tree(ax, [("F", "3/12"), ("G", "9/12")], [[("F", "2/11"), ("G", "9/11")], [("F", "3/11"), ("G", "8/11")]],
+     leaves={(0, 0): "6/132", (1, 0): "27/132"}, highlight={(0, 0), (1, 0)}, headers=("1st bulb", "2nd bulb"))
+plt.tight_layout()
+```
+:::
+::::
+
+::: {.notes}
+Before computing, ask: "Is the second bulb more or less likely to be faulty than the first?" Most say "it depends". The answer 1/4 is a good moment.
+:::
+
+## Independent events [Def 2.2]{.tag}
+
+:::: {.columns}
+::: {.column width="56%"}
+Sometimes the extra information changes nothing. A fair coin does not care what it showed last time.
+
+::: {.box-def}
+$A$ and $B$ are **independent** if $\Prob(A\cap B)=\Prob(A)\,\Prob(B)$.
+
+If $\Prob(B)>0$, this is the same as $\Prob(A\mid B)=\Prob(A)$.
+:::
+
+. . .
+
+The product form is the definition: it is symmetric and works even when $\Prob(B)=0$.
+:::
+::: {.column width="44%"}
+```{python}
+#| fig-width: 4.4
+#| fig-height: 3.6
+fig, ax = plt.subplots(figsize=(4.4, 3.6))
+pa, pb = 0.4, 0.55
+ax.add_patch(Rectangle((0, 0), pa, 1, color=LIGHT, alpha=0.7))
+ax.add_patch(Rectangle((0, 0), 1, pb, color=GREY, alpha=0.6))
+ax.add_patch(Rectangle((0, 0), pa, pb, color=BLUE))
+ax.add_patch(Rectangle((0, 0), 1, 1, fill=False, lw=2))
+ax.text(pa / 2, pb / 2, r"$A\cap B$", color="white", ha="center", va="center", fontsize=15)
+ax.text(pa / 2, 0.8, "A", ha="center", fontsize=16); ax.text(0.75, pb / 2, "B", ha="center", fontsize=16)
+ax.set_xticks([0, pa, 1]); ax.set_xticklabels(["0", r"$\mathbb{P}(A)$", "1"])
+ax.set_yticks([0, pb, 1]); ax.set_yticklabels(["0", r"$\mathbb{P}(B)$", "1"])
+ax.set_aspect("equal"); ax.grid(False)
+ax.set_title("inside B, A takes the same share", fontsize=13)
+plt.tight_layout()
+```
+:::
+::::
+
+## Promo code and app are not independent [Sec 2.3]{.tag}
+
+:::: {.columns}
+::: {.column width="52%"}
+Check the product rule for the store:
+$$\Prob(A)\,\Prob(B)=0.40\cdot0.55=0.22$$
+
+. . .
+
+But $\Prob(A\cap B)=0.20\ne 0.22$. [Not independent.]{.answer}
+
+. . .
+
+App customers use promo codes a bit less often: 36% against 40% overall.
+
+[Whether a gap like 0.22 against 0.20 is real or noise in one day of orders is a question for module 3.]{.muted}
+:::
+::: {.column width="48%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.6
+fig, ax = plt.subplots(figsize=(5, 3.6))
+labs = ["all orders", "app orders", "website orders"]; vals = [0.40, 0.20 / 0.55, 0.20 / 0.45]
+bars = ax.bar(labs, vals, color=[BLUE, ORANGE, LIGHT], width=0.6)
+for b, v in zip(bars, vals):
+    ax.text(b.get_x() + b.get_width() / 2, v + 0.01, f"{v:.0%}", ha="center", fontsize=14)
+ax.set_ylabel("share with a promo code"); ax.set_ylim(0, 0.55)
+plt.tight_layout()
+```
+:::
+::::
+
+## Independence is assumed, not computed [Sec 2.3]{.tag}
+
+In practice we assume independence when there is a physical reason. Be suspicious otherwise.
+
+| Fine to assume | Be suspicious |
+|---|---|
+| two customers who do not know each other | rain on Monday and rain on Tuesday |
+| two machines on separate power lines | defaults of two firms in the same industry |
+| two tosses of a coin | |
+
+. . .
+
+The events on the right share a cause: the weather system, the state of the industry. Knowing one tells you something about the other.
+
+## Pitfall: independent is not mutually exclusive [Sec 2.3]{.tag}
+
+:::: {.columns}
+::: {.column width="55%"}
+Both sound like "nothing to do with each other". They are close to opposites.
+
+. . .
+
+Mutually exclusive, both with positive probability: $\Prob(A\cap B)=0$ but $\Prob(A)\Prob(B)>0$. [So they are dependent.]{.answer}
+
+. . .
+
+A shop in Tula: a customer pays by card (0.8) or in cash (0.2), never both. Learning "card" pushes cash from 0.2 to 0.
+
+. . .
+
+[Quick check: $\Prob(A)=0.2$, $\Prob(B)=0.3$, mutually exclusive. Independent? No: $0\ne0.06$.]{.small}
+:::
+::: {.column width="45%"}
+```{python}
+#| fig-width: 4.8
+#| fig-height: 3.6
+fig, ax = plt.subplots(figsize=(4.8, 3.6))
+ax.bar([0, 1], [0.2, 0.0], color=[LIGHT, ORANGE], width=0.55)
+ax.text(0, 0.21, "0.2", ha="center", fontsize=15); ax.text(1, 0.01, "0", ha="center", fontsize=15, color=ORANGE)
+ax.set_xticks([0, 1]); ax.set_xticklabels(["before", "given 'card'"])
+ax.set_ylabel("P(cash)"); ax.set_ylim(0, 0.3)
+ax.set_title("as dependent as it gets", fontsize=13)
+plt.tight_layout()
+```
+:::
+::::
+
+## Complements of independent events [Thm 2.3]{.tag}
+
+:::: {.columns}
+::: {.column width="56%"}
+::: {.box-thm}
+If $A$ and $B$ are independent, so are $A$ and $B^c$, $A^c$ and $B$, and $A^c$ and $B^c$.
+:::
+
+**Idea.** $\Prob(A\cap B^c)=\Prob(A)-\Prob(A)\Prob(B)=\Prob(A)\Prob(B^c)$. Repeat with roles swapped.
+
+. . .
+
+This makes "none of them" easy:
+$$\Prob(\text{neither})=\big(1-\Prob(A)\big)\big(1-\Prob(B)\big),$$
+and "at least one" is 1 minus that.
+:::
+::: {.column width="44%"}
+```{python}
+#| fig-width: 4.6
+#| fig-height: 4
+fig, ax = plt.subplots(figsize=(4.6, 4))
+pa, pb = 0.4, 0.55
+ax.add_patch(Rectangle((0, 0), pa, 1, color=LIGHT, alpha=0.7))
+ax.add_patch(Rectangle((0, 0), 1, pb, color=GREY, alpha=0.6))
+ax.add_patch(Rectangle((pa, pb), 1 - pa, 1 - pb, color=ORANGE, alpha=0.85))
+ax.add_patch(Rectangle((0, 0), 1, 1, fill=False, lw=2))
+ax.text((1 + pa) / 2, (1 + pb) / 2, "neither", color="white", ha="center", va="center", fontsize=15, fontweight="bold")
+ax.text(pa / 2, 0.8, "A", ha="center", fontsize=16); ax.text(0.75, pb / 2, "B", ha="center", fontsize=16)
+ax.set_xticks([0, pa, 1]); ax.set_xticklabels(["0", r"$\mathbb{P}(A)$", "1"])
+ax.set_yticks([0, pb, 1]); ax.set_yticklabels(["0", r"$\mathbb{P}(B)$", "1"])
+ax.set_aspect("equal"); ax.grid(False)
+ax.set_title(r"$(1-\mathbb{P}(A))(1-\mathbb{P}(B))$", fontsize=13)
+plt.tight_layout()
+```
+:::
+::::
+
+## Your turn {.yourturn}
+
+$A$ and $B$ are independent, $\Prob(A)=0.3$ and $\Prob(B)=0.5$. Find $\Prob(A\cup B)$ and the probability that neither occurs.
+
+. . .
+
+:::: {.columns}
+::: {.column width="55%"}
+$$\Prob(A\cup B)=0.3+0.5-0.3\cdot0.5=\color{#b4542a}{\mathbf{0.65}}$$
+
+Neither, by Thm 2.3:
+$$0.7\cdot0.5=\color{#b4542a}{\mathbf{0.35}}$$
+
+The two answers add up to 1, as they should.
+:::
+::: {.column width="45%"}
+```{python}
+#| fig-width: 3.8
+#| fig-height: 3.4
+fig, ax = plt.subplots(figsize=(3.8, 3.4))
+pa, pb = 0.3, 0.5
+ax.add_patch(Rectangle((0, 0), 1, 1, color=LIGHT, alpha=0.8))
+ax.add_patch(Rectangle((pa, pb), 1 - pa, 1 - pb, color=ORANGE))
+ax.add_patch(Rectangle((0, 0), 1, 1, fill=False, lw=2))
+ax.text((1 + pa) / 2, (1 + pb) / 2, "0.35", color="white", ha="center", va="center", fontsize=16, fontweight="bold")
+ax.text(0.3, 0.25, r"$A\cup B$: 0.65", ha="center", va="center", fontsize=14)
+ax.set_xticks([0, pa, 1]); ax.set_yticks([0, pb, 1]); ax.set_aspect("equal"); ax.grid(False)
+plt.tight_layout()
+```
+:::
+::::
+
+## Mutual independence [Def 2.3]{.tag}
+
+::: {.box-def}
+$A_1,\dots,A_n$ are **mutually independent** if for every choice of two or more of them $\Prob(A_{i_1}\cap\dots\cap A_{i_k})=\Prob(A_{i_1})\cdots\Prob(A_{i_k})$.
+:::
+
+Examples: repeated coin tosses, answers of unrelated customers. Complements may replace any of the $A_i$ (used without proof).
+
+. . .
+
+:::: {.columns}
+::: {.column width="55%"}
+Three suppliers, each late with probability 0.1, independently:
+$$\Prob(\text{at least one late})=1-0.9^3=\color{#b4542a}{\mathbf{0.271}}$$
+:::
+::: {.column width="45%"}
+```{python}
+#| fig-width: 4.8
+#| fig-height: 1.6
+fig, ax = plt.subplots(figsize=(4.8, 1.6))
+ax.barh(0, 0.729, color=LIGHT, ec="white"); ax.barh(0, 0.271, left=0.729, color=ORANGE, ec="white")
+ax.text(0.36, 0, "all on time\n$0.9^3=0.729$", ha="center", va="center", fontsize=13)
+ax.text(0.865, 0, "late\n0.271", ha="center", va="center", fontsize=13, color="white")
+ax.set_xlim(0, 1); ax.axis("off")
+plt.tight_layout()
+```
+:::
+::::
+
+## Pitfall: pairwise is not enough [Sec 2.3]{.tag}
+
+:::: {.columns}
+::: {.column width="55%"}
+Toss a fair coin twice. $A$: first is heads, $B$: second is heads, $C$: the two tosses agree. Each has probability $1/2$.
+
+. . .
+
+Each pair meets only in HH: $\frac14=\frac12\cdot\frac12$. So they are pairwise independent.
+
+. . .
+
+But $A\cap B\cap C$ is also just HH: $\frac14$, [not $\frac18$]{.answer}. Knowing $A$ and $B$ tells you $C$ for sure.
+
+[In this course "independent" for several events always means mutually independent.]{.muted}
+:::
+::: {.column width="45%"}
+| Outcome | $A$ | $B$ | $C$ |
+|:---:|:---:|:---:|:---:|
+| **HH** | **yes** | **yes** | **yes** |
+| HT | yes | | |
+| TH | | yes | |
+| TT | | | yes |
+
+: Each outcome has probability $1/4$.
+:::
+::::
+
+## Your turn {.yourturn}
+
+Write down a "random" sequence of six coin tosses, H or T, without tossing. Does it contain a run of **three or more** equal results in a row?
+
+. . .
+
+:::: {.columns}
+::: {.column width="45%"}
+Few people write one. A real coin gives such a run with probability
+$$\frac{38}{64}\approx\color{#b4542a}{\mathbf{0.59}}.$$
+
+People avoid runs because runs "don't look random".
+:::
+::: {.column width="55%"}
+```{python}
+#| fig-width: 5.6
+#| fig-height: 3.4
+import itertools
+fig, ax = plt.subplots(figsize=(5.6, 3.4))
+seqs = ["".join(s) for s in itertools.product("HT", repeat=6)]
+for idx, s in enumerate(seqs):
+    hot = set()
+    for k in range(4):
+        if s[k] == s[k + 1] == s[k + 2]: hot |= {k, k + 1, k + 2}
+    cx, cy = (idx % 4) * 7.2, -(idx // 4) * 1.0
+    for k, c in enumerate(s):
+        fc = ORANGE if k in hot else (BLUE if c == "H" else GREY)
+        ax.add_patch(Rectangle((cx + k, cy), 0.9, 0.8, fc=fc, ec="none"))
+ax.set_xlim(-0.3, 28.5); ax.set_ylim(-16.2, 1.0); ax.axis("off")
+ax.set_title("all 64 sequences; orange = run of 3 or more (38 of them)", fontsize=11)
+plt.tight_layout()
+```
+:::
+::::
+
+::: {.notes}
+Everyone writes a sequence before the gambler's fallacy example. Ask who has a run of three or more. Usually few hands go up.
+:::
+
+## The gambler's fallacy [Ex 2.4]{.tag}
+
+:::: {.columns}
+::: {.column width="52%"}
+A fair coin, six independent tosses. (a) P(TTTTTT)? P(HHHHHT)? (b) P(five heads and one tail, in any order)?
+
+. . .
+
+**(a)** Each fixed sequence: $(1/2)^6=$ [1/64]{.answer}, six tails included.
+
+. . .
+
+**(b)** The tail has 6 possible positions: six mutually exclusive sequences, $6/64=$ [3/32]{.answer}.
+:::
+::: {.column width="48%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 4.1
+fig, ax = plt.subplots(figsize=(5, 4.1))
+for y, s in [(6.6, "TTTTTT"), (5.6, "HHHHHT"), (4.6, "HTHHTH")]:
+    strip(ax, s, 0, y, fs=12); ax.text(6.3, y + 0.4, "1/64", va="center", fontsize=13)
+ax.text(0, 7.6, "single sequences", fontsize=13, color="#5b6b7c")
+for k in range(6):
+    s = "H" * (5 - k) + "T" + "H" * k
+    strip(ax, s, 0, 2.75 - k * 0.55, fs=0, h=0.45)
+ax.text(0, 3.5, "five heads, one tail: a family", fontsize=13, color="#5b6b7c")
+ax.text(6.3, 0.3, "6/64", va="center", fontsize=14, color=ORANGE, fontweight="bold")
+ax.set_xlim(-0.2, 8); ax.set_ylim(-0.4, 8.1); ax.axis("off")
+plt.tight_layout()
+```
+:::
+::::
+
+## The gambler's fallacy, part (c) [Ex 2.4]{.tag}
+
+**(c)** Five tails so far. $T_i$: toss $i$ is tails, $H_6$: toss 6 is heads.
+
+$$\Prob(H_6\mid T_1\cap\dots\cap T_5)=\frac{\Prob(T_1\cap\dots\cap T_5\cap H_6)}{\Prob(T_1\cap\dots\cap T_5)}=\frac{1/64}{1/32}=\color{#b4542a}{\mathbf{1/2}}$$
+
+```{python}
+#| fig-width: 10
+#| fig-height: 1.35
+fig, ax = plt.subplots(figsize=(10, 1.35))
+strip(ax, "TTTTT?", 0, 0.6, fs=14)
+ax.text(0, 1.6, "seen so far", fontsize=13, color="#5b6b7c")
+ax.annotate("", xy=(9.3, 0.9), xytext=(6.4, 1.0), arrowprops=dict(arrowstyle="->", color="#5b6b7c", lw=1.5))
+ax.text(10, 1.6, "the only two ways to go on, equally likely", fontsize=13, color="#5b6b7c")
+strip(ax, "TTTTTH", 10, 0.6, fs=14, hot={5}); ax.text(16.2, 1.0, "1/64", va="center", fontsize=13)
+strip(ax, "TTTTTT", 18.5, 0.6, fs=14); ax.text(24.7, 1.0, "1/64", va="center", fontsize=13)
+ax.set_xlim(-0.2, 26); ax.set_ylim(0.4, 2.0); ax.axis("off")
+plt.tight_layout()
+```
+
+The coin has no memory. Believing that heads is "due" is the **gambler's fallacy**. Part of it is mixing (a) with (b): HTHHTH is as rare as six tails.
+
+## Loan officer, and the mirror image [Sec 2.3]{.tag}
+
+:::: {.columns}
+::: {.column width="50%"}
+::: {.box-def}
+**Unrelated firms.** A hypothetical bank in Novosibirsk approves 30% of applications. The officer just rejected five in a row ($0.7^5\approx0.17$, not rare).
+
+The sixth: [still 0.30]{.answer}. Her queue does not owe her an approval.
+:::
+:::
+::: {.column width="50%"}
+::: {.box-ex}
+**One firm, five banks.** One firm was turned down by five banks.
+
+The sixth decision is not a fresh coin. The rejections share a cause, the application itself, so the sixth bank will probably reject too.
+:::
+:::
+::::
+
+```{python}
+#| fig-width: 10
+#| fig-height: 0.9
+fig, ax = plt.subplots(figsize=(10, 0.9))
+strip(ax, "RRRRR?", 0, 0, fs=14); ax.text(6.2, 0.4, "independent", va="center", fontsize=13, color=BLUE)
+strip(ax, "RRRRR?", 11, 0, fs=14); ax.text(17.2, 0.4, "shared cause", va="center", fontsize=13, color=ORANGE)
+ax.set_xlim(-0.2, 21); ax.set_ylim(-0.1, 0.9); ax.axis("off")
+plt.tight_layout()
+```
+
+[Reasoning about a shared cause is the job of Bayes' theorem, later today.]{.muted}
+
+## Break
+
+Back in 10 minutes.
+
+::: {.notes}
+Break after 80 minutes. The second half starts with the law of total probability (Section 2.4).
+:::
+
+## Law of total probability [Thm 2.4, Eq 2.2]{.tag}
+
+:::: {.columns}
+::: {.column width="56%"}
+Lecture 1 promised that partitions would come back. Rates are often easy within groups: per supplier, per customer segment.
+
+::: {.box-thm}
+Let $H_1,\dots,H_n$ be a partition of $\Omega$ (Def 1.3), all $\Prob(H_i)>0$. Then
+$$\Prob(A)=\sum_{i=1}^n\Prob(A\mid H_i)\,\Prob(H_i).$$
+:::
+
+[Idea: $A$ splits into the disjoint pieces $A\cap H_i$. Add them (axiom 3), and each piece is $\Prob(A\mid H_i)\Prob(H_i)$ by Thm 2.2.]{.small}
+:::
+::: {.column width="44%"}
+```{python}
+#| fig-width: 4.6
+#| fig-height: 3.8
+fig, ax = plt.subplots(figsize=(4.6, 3.8))
+xs, ys = np.meshgrid(np.linspace(0, 3, 300), np.linspace(0, 2.4, 240))
+inA = ((xs - 1.5) / 1.15) ** 2 + ((ys - 1.2) / 0.7) ** 2 < 1
+for k, (lo, hi, c) in enumerate([(0, 1.0, BLUE), (1.0, 1.8, ORANGE), (1.8, 3, "#5b8a3c")]):
+    ax.contourf(xs, ys, (inA & (xs >= lo) & (xs < hi)).astype(float), levels=[0.5, 1.5], colors=[c], alpha=0.75)
+    ax.text((lo + hi) / 2, 2.15, f"$H_{k + 1}$", ha="center", fontsize=16)
+    ax.text((lo + hi) / 2, 1.2, rf"$A\cap H_{k + 1}$", ha="center", va="center", fontsize=11, color="white")
+for x in (1.0, 1.8): ax.plot([x, x], [0, 2.4], color="#333333", lw=1.5)
+ax.add_patch(Rectangle((0, 0), 3, 2.4, fill=False, lw=2))
+ax.text(2.6, 0.25, "A", fontsize=16)
+ax.set_xlim(-0.05, 3.05); ax.set_ylim(-0.05, 2.45); ax.set_aspect("equal"); ax.axis("off")
+plt.tight_layout()
+```
+:::
+::::
+
+## Two ways to picture it [Thm 2.4]{.tag}
+
+:::: {.columns}
+::: {.column width="48%"}
+**On a tree.** First level: the partition $H_1,\dots,H_n$. Second level: $A$ or not $A$. Then $\Prob(A)$ is the sum over the paths that end in $A$, as for the second bulb.
+
+. . .
+
+**As an average.** $\Prob(A)$ is a **weighted average** of the group rates $\Prob(A\mid H_i)$, with the group sizes $\Prob(H_i)$ as weights.
+
+So $\Prob(A)$ always lies between the smallest and the largest rate.
+:::
+::: {.column width="52%"}
+```{python}
+#| fig-width: 5.4
+#| fig-height: 4.2
+fig, ax = plt.subplots(figsize=(5.4, 4.2))
+tree(ax, [("$H_1$", r"$\mathbb{P}(H_1)$"), ("$H_2$", r"$\mathbb{P}(H_2)$"), ("$H_3$", r"$\mathbb{P}(H_3)$")],
+     [[("A", ""), ("$A^c$", "")]] * 3,
+     leaves={(0, 0): r"$\mathbb{P}(A|H_1)\mathbb{P}(H_1)$", (1, 0): r"$\mathbb{P}(A|H_2)\mathbb{P}(H_2)$", (2, 0): r"$\mathbb{P}(A|H_3)\mathbb{P}(H_3)$"},
+     highlight={(0, 0), (1, 0), (2, 0)}, fs=14, leaf_fs=13, x2=1.9)
+ax.set_xlim(-0.15, 4.1)
+plt.tight_layout()
+```
+:::
+::::
+
+## Phone cases from two factories [Ex 2.5]{.tag}
+
+:::: {.columns}
+::: {.column width="50%"}
+::: {.box-ex}
+A hypothetical marketplace seller in Yekaterinburg: 60% of the phone cases come from Guangzhou, 40% from a workshop in Chelyabinsk (90 rubles dearer per case).
+
+3% of Guangzhou cases are defective, 1.5% of Chelyabinsk ones. P(a random case is defective)?
+:::
+
+[Branches carry the conditional rates. The two orange paths end in a defect.]{.muted}
+:::
+::: {.column width="50%"}
+```{python}
+#| fig-width: 5.4
+#| fig-height: 4
+fig, ax = plt.subplots(figsize=(5.4, 4))
+tree(ax, [("Guangzhou", "0.60"), ("Chelyab.", "0.40")],
+     [[("D", "0.03"), ("ok", "0.97")], [("D", "0.015"), ("ok", "0.985")]],
+     leaves={(0, 0): "0.018", (1, 0): "0.006"}, highlight={(0, 0), (1, 0)}, fs=12, x2=2.3)
+ax.set_xlim(-0.15, 3.3)
+plt.tight_layout()
+```
+:::
+::::
+
+## Phone cases: add the paths to D [Ex 2.5]{.tag}
+
+:::: {.columns}
+::: {.column width="50%"}
+$H_1$: Guangzhou, $H_2$: Chelyabinsk (a partition). $D$: defective.
+
+. . .
+
+$$\begin{aligned}\Prob(D)&=0.03\cdot0.60+0.015\cdot0.40\\&=0.018+0.006=\color{#b4542a}{\mathbf{0.024}}\end{aligned}$$
+
+. . .
+
+2.4% is between 1.5% and 3%, and closer to 3%, because Guangzhou supplies more.
+
+In counts: of 1000 cases, 18 + 6 = 24 are defective.
+:::
+::: {.column width="50%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.8
+fig, ax = plt.subplots(figsize=(5, 3.8))
+rng = np.random.default_rng(2026)
+cols, rows = 40, 25
+gz = rng.choice(24 * rows, 18, replace=False); ch = rng.choice(16 * rows, 6, replace=False)
+for c in range(cols):
+    for r in range(rows):
+        if c < 24: k = c * rows + r; colr = ORANGE if k in gz else LIGHT
+        else: k = (c - 24) * rows + r; colr = ORANGE if k in ch else GREY
+        ax.add_patch(Rectangle((c, r), 0.8, 0.8, color=colr))
+ax.text(12, 26, "Guangzhou: 600, 18 defective", ha="center", fontsize=11, color=BLUE)
+ax.text(32, 26, "Chelyabinsk: 400, 6", ha="center", fontsize=11, color="#5b6b7c")
+ax.set_xlim(-0.5, 40.5); ax.set_ylim(-0.5, 28); ax.set_aspect("equal"); ax.axis("off")
+plt.tight_layout()
+```
+:::
+::::
+
+## Conversion by customer segment [Ex 2.6]{.tag}
+
+:::: {.columns}
+::: {.column width="50%"}
+::: {.box-ex}
+A hypothetical online school of English. Pricing-page visitors: 50% new, 35% returning, 15% referred. They buy at rates 2%, 8%, 12%. (a) What share of all visitors buy?
+:::
+
+. . .
+
+The segments are a partition. By Eq 2.2:
+$$\begin{aligned}&0.02\cdot0.50+0.08\cdot0.35+0.12\cdot0.15\\&=0.010+0.028+0.018=\color{#b4542a}{\mathbf{0.056}}\end{aligned}$$
+:::
+::: {.column width="50%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.8
+def mosaic(ax, shares, rates, title, names=("new", "returning", "referred")):
+    left = 0
+    for s, r, n in zip(shares, rates, names):
+        ax.bar(left, r, width=s, align="edge", color=LIGHT, ec="white", lw=2)
+        ax.text(left + s / 2, r + 0.003, f"{r:.0%}", ha="center", fontsize=13)
+        ax.text(left + s / 2, -0.006, f"{n}\n{s:.0%}", ha="center", va="top", fontsize=11)
+        left += s
+    tot = sum(s * r for s, r in zip(shares, rates))
+    ax.axhline(tot, color=ORANGE, lw=2.5); ax.text(0.01, tot + 0.003, f"overall {tot:.1%}", color=ORANGE, fontsize=12,
+                                                   bbox=dict(fc="white", ec="none", pad=1))
+    ax.set_xlim(0, 1); ax.set_ylim(0, 0.14); ax.set_xticks([]); ax.set_ylabel("buy rate")
+    ax.set_title(title, fontsize=13); ax.grid(False)
+fig, ax = plt.subplots(figsize=(5, 3.8))
+mosaic(ax, [0.50, 0.35, 0.15], [0.02, 0.08, 0.12], "width = share of visitors")
+plt.tight_layout()
+```
+:::
+::::
+
+::: {.notes}
+Write the three segment shares in one row and the three rates under them, then do the sum as "weight times rate, add up". Ask: "Can the overall conversion be above 12%?" No, it is a weighted average.
+:::
+
+## Conversion after a referral campaign [Ex 2.6]{.tag}
+
+**(b)** A referral campaign changes the mix to 35% new, 35% returning, 30% referred. The rates in each segment stay the same.
+
+. . .
+
+:::: {.columns}
+::: {.column width="40%"}
+Same rates, new weights:
+$$\begin{aligned}&0.02\cdot0.35+0.08\cdot0.35\\&\quad+0.12\cdot0.30\\&=0.007+0.028+0.036\\&=\color{#b4542a}{\mathbf{0.071}}\end{aligned}$$
+:::
+::: {.column width="60%"}
+```{python}
+#| fig-width: 7
+#| fig-height: 3.3
+fig, axes = plt.subplots(1, 2, figsize=(7, 3.3), sharey=True)
+mosaic(axes[0], [0.50, 0.35, 0.15], [0.02, 0.08, 0.12], "before", names=("new", "ret.", "ref."))
+mosaic(axes[1], [0.35, 0.35, 0.30], [0.02, 0.08, 0.12], "after the campaign", names=("new", "ret.", "ref."))
+axes[1].set_ylabel("")
+plt.tight_layout()
+```
+:::
+::::
+
+## Pitfall: the mix moved, not the rates [Ex 2.6]{.tag}
+
+:::: {.columns}
+::: {.column width="50%"}
+::: {.box-ex}
+**Wrong.** "Overall conversion rose from 5.6% to 7.1%. The new landing page works."
+:::
+:::
+::: {.column width="50%"}
+::: {.box-def}
+**Right.** Not one segment converts better than before. Only the mix changed.
+:::
+:::
+::::
+
+When a dashboard shows one overall rate moving, first ask whether the rates moved or the mix did.
+
+```{python}
+#| fig-width: 10
+#| fig-height: 1.7
+fig, ax = plt.subplots(figsize=(10, 1.7))
+ax.plot([0, 14], [0, 0], color="#999999", lw=1.5)
+for r, n in [(2, "new"), (8, "returning"), (12, "referred")]:
+    ax.plot(r, 0, "o", color=BLUE, ms=11); ax.text(r, 0.35, f"{n} {r}%", ha="center", fontsize=13, color=BLUE)
+for r, n, ha in [(5.6, "before 5.6%", "right"), (7.1, "after 7.1%", "left")]:
+    ax.plot(r, 0, "D", color=ORANGE, ms=10); ax.text(r, -0.6, n, ha=ha, fontsize=13, color=ORANGE)
+ax.set_xlim(-0.5, 14.5); ax.set_ylim(-1, 0.8); ax.axis("off")
+plt.tight_layout()
+```
+
+## From the effect back to the cause [Sec 2.5]{.tag}
+
+```{python}
+#| fig-width: 10
+#| fig-height: 2.8
+fig, ax = plt.subplots(figsize=(10, 2.8))
+for x, t, sub in [(1.5, "cause", "which factory?\nfraud or not?"), (8.5, "effect", "a defect\na flag")]:
+    ax.text(x, 0, t, ha="center", va="center", fontsize=20, bbox=dict(boxstyle="round,pad=0.6", fc="#eaf1f8", ec=BLUE))
+    ax.text(x, -1.25, sub, ha="center", va="center", fontsize=13, color="#5b6b7c")
+ax.annotate("", xy=(7.2, 0.35), xytext=(2.8, 0.35), arrowprops=dict(arrowstyle="->", color=BLUE, lw=2.5))
+ax.text(5, 0.7, "total probability: forward", ha="center", fontsize=14, color=BLUE)
+ax.annotate("", xy=(2.8, -0.35), xytext=(7.2, -0.35), arrowprops=dict(arrowstyle="->", color=ORANGE, lw=2.5))
+ax.text(5, -0.85, "Bayes: backward", ha="center", fontsize=14, color=ORANGE)
+ax.set_xlim(0, 10); ax.set_ylim(-1.8, 1.1); ax.axis("off")
+plt.tight_layout()
+```
+
+The law of total probability goes from the cause to the effect. In practice we often see the effect and want the cause. This case is defective: which factory made it? This payment was flagged: is it fraud? Bayes' theorem turns the conditioning around.
+
+## Bayes' theorem [Thm 2.5, Eq 2.3]{.tag}
+
+::: {.box-thm}
+Let $H_1,\dots,H_n$ be a partition of $\Omega$ with all $\Prob(H_i)>0$, and $\Prob(A)>0$. Then for each $k$
+$$\Prob(H_k\mid A)=\frac{\Prob(A\mid H_k)\,\Prob(H_k)}{\sum_{i=1}^n\Prob(A\mid H_i)\,\Prob(H_i)}.$$
+For two events with $\Prob(A)>0$, $\Prob(B)>0$: $\;\Prob(B\mid A)=\dfrac{\Prob(A\mid B)\,\Prob(B)}{\Prob(A)}$.
+:::
+
+. . .
+
+**Idea.** Start from $\Prob(H_k\cap A)/\Prob(A)$. The numerator comes from Thm 2.2, the denominator from Eq 2.2.
+
+## Prior and posterior [Thm 2.5]{.tag}
+
+$$\Prob(H_k\mid A)=\frac{\overbrace{\Prob(A\mid H_k)}^{\text{how well }H_k\text{ explains }A}\cdot\overbrace{\Prob(H_k)}^{\text{prior}}}{\underbrace{\textstyle\sum_i\Prob(A\mid H_i)\,\Prob(H_i)}_{\text{the same for every }k}}$$
+
+. . .
+
+:::: {.columns}
+::: {.column width="50%"}
+The **prior** $\Prob(H_k)$: what we believe before we see $A$.
+
+The **posterior** $\Prob(H_k\mid A)$: what we believe after.
+
+. . .
+
+The denominator only makes the posteriors add up to 1.
+:::
+::: {.column width="50%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 2.4
+fig, axes = plt.subplots(1, 2, figsize=(5, 2.4), sharey=False)
+num = np.array([0.3, 0.1, 0.2])
+for ax, vals, t in [(axes[0], num, "numerators"), (axes[1], num / num.sum(), "posteriors")]:
+    ax.bar([r"$H_1$", r"$H_2$", r"$H_3$"], vals, color=[LIGHT, LIGHT, LIGHT] if t == "numerators" else [ORANGE] * 3, width=0.6)
+    ax.set_title(t, fontsize=13); ax.set_yticks([])
+axes[1].text(1, 0.52, "add up to 1", ha="center", fontsize=12, color=ORANGE)
+axes[1].set_ylim(0, 0.6); axes[0].set_ylim(0, 0.6 * num.sum())
+fig.text(0.5, 0.5, r"$\div$ sum", ha="center", fontsize=15)
+plt.tight_layout(w_pad=3)
+```
+:::
+::::
+
+## Which factory made the defective case? [Ex 2.7]{.tag}
+
+:::: {.columns}
+::: {.column width="52%"}
+A defective case comes back (Ex 2.5). By Eq 2.3:
+$$\begin{aligned}\Prob(H_1\mid D)&=\frac{0.03\cdot0.60}{0.024}=\color{#b4542a}{\mathbf{0.75}}\\ \Prob(H_2\mid D)&=\frac{0.006}{0.024}=0.25\end{aligned}$$
+
+. . .
+
+In counts: 18 of the 24 defective cases are from Guangzhou.
+
+. . .
+
+Defects are twice as common there, so a defect points to Guangzhou. Not proof: one in four is from Chelyabinsk.
+:::
+::: {.column width="48%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.6
+fig, ax = plt.subplots(figsize=(5, 3.6))
+x = np.arange(2); w = 0.36
+b1 = ax.bar(x - w / 2, [0.60, 0.40], w, color=LIGHT, label="prior")
+b2 = ax.bar(x + w / 2, [0.75, 0.25], w, color=ORANGE, label="posterior, given D")
+for bars in (b1, b2):
+    for b in bars:
+        ax.text(b.get_x() + b.get_width() / 2, b.get_height() + 0.015, f"{b.get_height():.2f}", ha="center", fontsize=13)
+ax.set_xticks(x); ax.set_xticklabels(["Guangzhou", "Chelyabinsk"])
+ax.set_ylabel("probability"); ax.set_ylim(0, 0.9); ax.legend(fontsize=12, frameon=False)
+plt.tight_layout()
+```
+:::
+::::
+
+## Fraud alerts: write down a guess first [Ex 2.8]{.tag}
+
+:::: {.columns}
+::: {.column width="55%"}
+::: {.box-ex}
+A hypothetical bank processes 100,000 card payments a day; 0.2% are fraudulent. Its filter flags 99% of frauds and also 1% of legitimate payments. The vendor's brochure calls this "99% accurate".
+
+A payment has just been flagged. What is the probability that it is fraud?
+:::
+
+[When Gigerenzer and co-authors gave doctors this kind of question about screening tests, most got it wrong (Gigerenzer et al., 2007, *Psychological Science in the Public Interest*).]{.small .muted}
+:::
+::: {.column width="45%"}
+```{python}
+#| fig-width: 4.6
+#| fig-height: 3.6
+fig, ax = plt.subplots(figsize=(4.6, 3.6))
+xx, yy = np.meshgrid(np.arange(40), np.arange(25))
+ax.scatter(xx.ravel(), yy.ravel(), s=6, color=LIGHT)
+ax.scatter([13, 31], [17, 6], s=70, color=ORANGE, zorder=3)
+ax.set_title("1,000 payments: 2 are fraud (orange)", fontsize=13)
+ax.set_aspect("equal"); ax.axis("off")
+plt.tight_layout()
+```
+:::
+::::
+
+::: {.notes}
+Collect the guesses by show of hands: above 90%, 50-90%, below 50%.
+:::
+
+## Fraud alerts: the formula [Ex 2.8]{.tag}
+
+:::: {.columns}
+::: {.column width="52%"}
+$F$: fraudulent, $L$: flagged. $\Prob(F)=0.002$, $\Prob(L\mid F)=0.99$, $\Prob(L\mid F^c)=0.01$. Partition: $F$, $F^c$.
+
+. . .
+
+$$\begin{aligned}\Prob(F\mid L)&=\frac{0.99\cdot0.002}{0.99\cdot0.002+0.01\cdot0.998}\\[4pt]&=\frac{0.00198}{0.00198+0.00998}\approx\color{#b4542a}{\mathbf{0.166}}\end{aligned}$$
+
+. . .
+
+Only about [one flagged payment in six]{.answer} is fraud.
+:::
+::: {.column width="48%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.8
+fig, ax = plt.subplots(figsize=(5, 3.8))
+tree(ax, [("F", "0.002"), (r"$F^c$", "0.998")],
+     [[("L", "0.99"), (r"$L^c$", "0.01")], [("L", "0.01"), (r"$L^c$", "0.99")]],
+     leaves={(0, 0): "0.00198", (1, 0): "0.00998"}, highlight={(0, 0), (1, 0)}, fs=13)
+ax.set_xlim(-0.15, 3.25)
+plt.tight_layout()
+```
+:::
+::::
+
+## Fraud alerts in counts [Table 2.1]{.tag}
+
+One day of payments:
+
+|  | Flagged | Not flagged | Total |
+|---|---:|---:|---:|
+| Fraudulent | 198 | 2 | 200 |
+| Legitimate | 998 | 98,802 | 99,800 |
+| Total | **1,196** | 98,804 | 100,000 |
+
+. . .
+
+Read it row by row first: the filter catches 198 of the 200 frauds, the 99% from the brochure.
+
+. . .
+
+Then read down the "Flagged" column: of the 1,196 flags, 198 are fraud, $198/1196\approx$ [0.166]{.answer}.
+
+::: {.notes}
+Draw the table empty and fill it in with the room, starting from 100,000 in the corner. Only after the table, write the formula. Students who get lost in Eq 2.3 usually follow the table.
+:::
+
+## Why most alarms are false [Sec 2.5]{.tag}
+
+```{python}
+#| fig-width: 10
+#| fig-height: 1.9
+fig, ax = plt.subplots(figsize=(10, 1.9))
+ax.barh(0, 198, color=ORANGE, ec="white"); ax.barh(0, 998, left=198, color=LIGHT, ec="white")
+ax.text(99, 0, "fraud\n198", ha="center", va="center", color="white", fontsize=14, fontweight="bold")
+ax.text(198 + 499, 0, "false alarms: 998", ha="center", va="center", fontsize=15)
+ax.set_xlim(0, 1196); ax.set_yticks([]); ax.set_xlabel("the 1,196 flagged payments of one day")
+ax.grid(False); ax.spines["left"].set_visible(False)
+plt.tight_layout()
+```
+
+The 99,800 legitimate payments are so many that 1% of them, 998 false alarms, swamps the 198 real ones.
+
+. . .
+
+[The base rate, here 0.2%, matters as much as the accuracy of the test.]{.answer} Whenever the thing you look for is rare, expect most alarms to be false, even from a good test.
+
+## A flag is evidence, not a verdict [Ex 2.8]{.tag}
+
+:::: {.columns}
+::: {.column width="52%"}
+The filter is not useless.
+
+. . .
+
+Prior: $\Prob(F)=0.002$. Posterior: $\Prob(F\mid L)\approx0.166$. [More than 80 times higher.]{.answer}
+
+. . .
+
+A flag is strong evidence, but not a verdict. This is why the bank sends you an SMS to confirm a flagged payment instead of blocking your card.
+:::
+::: {.column width="48%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.6
+fig, ax = plt.subplots(figsize=(5, 3.6))
+bars = ax.bar(["before the flag\n(prior)", "after the flag\n(posterior)"], [0.002, 0.166], color=[LIGHT, ORANGE], width=0.55)
+for b, t in zip(bars, ["0.2%", "16.6%"]):
+    ax.text(b.get_x() + b.get_width() / 2, b.get_height() + 0.005, t, ha="center", fontsize=15)
+ax.set_ylabel("P(fraud)"); ax.set_ylim(0, 0.2)
+plt.tight_layout()
+```
+:::
+::::
+
+## Pitfall: "99% accurate" answers another question [Ex 2.8]{.tag}
+
+:::: {.columns}
+::: {.column width="50%"}
+::: {.box-ex}
+**Wrong.** "The filter is 99% accurate, so a flagged payment is fraud with probability 0.99."
+:::
+:::
+::: {.column width="50%"}
+::: {.box-def}
+**Right.** 0.99 is $\Prob(L\mid F)$. The question asks for $\Prob(F\mid L)\approx0.166$.
+:::
+:::
+::::
+
+The same swap as in Ex 2.1. In court it is called the **prosecutor's fallacy**.
+
+. . .
+
+It appeared in the 1999 trial of Sally Clark in England, with a worse mistake: the expert squared the probability of one cot death to get two, as if two deaths in one family were independent. Her conviction was overturned in 2003, mainly because of medical evidence that had not been disclosed.
+
+## Your turn {.yourturn}
+
+Priya runs a courier service. On 30% of days the weather is bad. Then 20% of deliveries are late, on other days 5%. P(a delivery is late)? A delivery was late: P(bad weather)?
+
+. . .
+
+:::: {.columns}
+::: {.column width="50%"}
+$$\Prob(\text{late})=0.2\cdot0.3+0.05\cdot0.7=\color{#b4542a}{\mathbf{0.095}}$$
+
+$$\Prob(\text{bad}\mid\text{late})=\frac{0.06}{0.095}\approx\color{#b4542a}{\mathbf{0.632}}$$
+:::
+::: {.column width="50%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 2.9
+fig, ax = plt.subplots(figsize=(5, 2.9))
+tree(ax, [("bad", "0.3"), ("good", "0.7")],
+     [[("late", "0.2"), ("on time", "0.8")], [("late", "0.05"), ("on time", "0.95")]],
+     leaves={(0, 0): "0.06", (1, 0): "0.035"}, highlight={(0, 0), (1, 0)}, fs=12, x2=2.2)
+ax.set_xlim(-0.15, 3.4)
+plt.tight_layout()
+```
+:::
+::::
+
+## Your turn {.yourturn}
+
+**Find the mistake.** "An HR screening test is passed by 90% of strong candidates and by 20% of weak ones. 30% of applicants are strong. Ilya passed the test, so he is a strong candidate with probability 90%."
+
+. . .
+
+90% is $\Prob(\text{pass}\mid\text{strong})$. The question asks for $\Prob(\text{strong}\mid\text{pass})$:
+
+$$\Prob(\text{strong}\mid\text{pass})=\frac{0.9\cdot0.3}{0.9\cdot0.3+0.2\cdot0.7}=\frac{0.27}{0.41}\approx\color{#b4542a}{\mathbf{0.659}}$$
+
+[The swap again, the same one as in Ex 2.1 and Ex 2.8.]{.muted}
+
+::: {.notes}
+The full practice is in Seminar 2.
+:::
