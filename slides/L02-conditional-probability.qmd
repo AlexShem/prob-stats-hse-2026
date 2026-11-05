@@ -16,7 +16,7 @@ PLAN  NN | title | pattern | chapter item | visual
 05 | Promo given app, and the other way round | worked | Ex 2.1 | Venn with four numbers
 06 | Pitfall: swapping P(A|B) and P(B|A) | pitfall | after Ex 2.1 | two share bars
 07 | Conditional probability is a probability | item | Thm 2.1 | bar of B split into A, A^c
-08 | Pitfall: the complement behind the bar | pitfall | Sec 2.1 | bars inside B and B^c
+08 | Pitfall: the complement behind the bar | pitfall | Sec 2.1 | bars inside B and B^c (figure left)
 09 | Your turn: sum 8, at least one 3 | yourturn | Exercise 1 | grid after pause
 10 | Multiplication rule | item | Thm 2.2, Eq 2.1 | none (formula box)
 11 | The chain rule reads like a story | explain | proof + reading of Eq 2.1 | step diagram
@@ -29,7 +29,7 @@ PLAN  NN | title | pattern | chapter item | visual
 18 | The second bulb, knowing nothing | worked | Sec 2.2 | tree, F paths highlighted
 19 | Independent events | item | Def 2.2 | unit square, A strip x B strip
 20 | Promo code and app are dependent | worked | Sec 2.3 | bars 0.40 / 0.36 / 0.44
-21 | Assumed, not computed | compare | Sec 2.3 | two boxes + shared-cause diagram
+21 | Assumed, not computed | compare | Sec 2.3 | two boxes + separate power lines diagram
 22 | Pitfall: independent vs mutually exclusive | pitfall | Sec 2.3 + Exercise 3 | bars card/cash before/after
 23 | Complements of independent events | item | Thm 2.3 | unit square, "neither" corner
 24 | Your turn: P(A u B), neither | yourturn | Exercise 2 | square after pause
@@ -73,7 +73,7 @@ from matplotlib.patches import Circle, Rectangle, FancyBboxPatch
 plt.rcParams.update({"font.size": 14})
 BLUE, LIGHT, ORANGE, GREY, PALE = "#1f5c99", "#9bb8d6", "#b4542a", "#c9d6e3", "#e8b9a3"
 
-def tree(ax, first, second, leaves=None, highlight=(), headers=None, fs=14, leaf_fs=13, x2=2.0):
+def tree(ax, first, second, leaves=None, highlight=(), headers=None, fs=14, leaf_fs=13, x2=2.0, x1=1.0):
     """Two-level tree. first: [(label, prob)], second: [[(label, prob), ...] per first node]."""
     leaves = leaves or {}
     ys, k = {}, 0
@@ -89,20 +89,20 @@ def tree(ax, first, second, leaves=None, highlight=(), headers=None, fs=14, leaf
     for i, (lab, p) in enumerate(first):
         y1 = np.mean([ys[(i, j)] for j in range(len(second[i]))])
         hot = any((i, j) in highlight for j in range(len(second[i])))
-        ax.plot([0, 1], [0, y1], color=ORANGE if hot else BLUE, lw=2.5 if hot else 1.6, zorder=0)
-        ax.text(0.5, y1 / 2, p, **prob)
+        ax.plot([0, x1], [0, y1], color=ORANGE if hot else BLUE, lw=2.5 if hot else 1.6, zorder=0)
+        ax.text(x1 / 2, y1 / 2, p, **prob)
         for j, (lab2, p2) in enumerate(second[i]):
             y2 = ys[(i, j)]; h = (i, j) in highlight
-            ax.plot([1, x2], [y1, y2], color=ORANGE if h else BLUE, lw=2.5 if h else 1.6, zorder=0)
-            ax.text((1 + x2) / 2, (y1 + y2) / 2, p2, **prob)
+            ax.plot([x1, x2], [y1, y2], color=ORANGE if h else BLUE, lw=2.5 if h else 1.6, zorder=0)
+            ax.text((x1 + x2) / 2, (y1 + y2) / 2, p2, **prob)
             ax.text(x2, y2, lab2, **node)
             if (i, j) in leaves:
                 ax.text(x2 + 0.2, y2, leaves[(i, j)], ha="left", va="center", fontsize=leaf_fs,
                         color=ORANGE if h else "#1d2733", fontweight="bold" if h else "normal")
-        ax.text(1, y1, lab, **node)
+        ax.text(x1, y1, lab, **node)
     ax.plot([0], [0], "o", color="#333333", ms=6)
     if headers:
-        for x, t in zip((1, x2), headers):
+        for x, t in zip((x1, x2), headers):
             ax.text(x, top + 0.75, t, ha="center", fontsize=fs - 2, color="#5b6b7c")
     ax.set_xlim(-0.15, x2 + 1.25); ax.set_ylim(-top - 0.6, top + 1.1); ax.axis("off")
 
@@ -364,8 +364,8 @@ $$\begin{aligned}\Prob(A^c\mid B)&=1-\Prob(A\mid B),\\ \Prob(A_1\cup A_2\mid B)&
 
 ```{python}
 #| fig-width: 10
-#| fig-height: 1.5
-fig, ax = plt.subplots(figsize=(10, 1.5))
+#| fig-height: 1.25
+fig, ax = plt.subplots(figsize=(10, 1.25))
 a = 0.20 / 0.55
 ax.barh(0, a, color=BLUE, ec="white"); ax.barh(0, 1 - a, left=a, color=LIGHT, ec="white")
 ax.text(a / 2, 0, "promo: 0.364", ha="center", va="center", color="white", fontsize=15)
@@ -381,19 +381,6 @@ plt.tight_layout()
 ## Pitfall: the complement goes in front of the bar [Sec 2.1]{.tag}
 
 :::: {.columns}
-::: {.column width="55%"}
-::: {.box-ex}
-**Wrong.** $\Prob(A\mid B^c)=1-\Prob(A\mid B)\approx 0.636$
-:::
-
-::: {.box-def}
-**Right.** Promo share among orders not through the app: $\Prob(A\mid B^c)=\dfrac{0.20}{0.45}\approx 0.444$
-:::
-
-. . .
-
-$1-\Prob(A\mid B)$ is $\Prob(A^c\mid B)$. A new condition is a new group: the two numbers are unrelated.
-:::
 ::: {.column width="45%"}
 ```{python}
 #| fig-width: 4.6
@@ -408,6 +395,17 @@ ax.set_title("two groups, two separate shares", fontsize=13)
 ax.grid(False); ax.spines["left"].set_visible(False)
 plt.tight_layout()
 ```
+:::
+::: {.column width="55%"}
+What share of the orders **not** through the app use a promo code?
+
+**Wrong:** $\Prob(A\mid B^c)=1-\Prob(A\mid B)\approx 0.636$
+
+**Right:** $\Prob(A\mid B^c)=\dfrac{0.20}{0.45}\approx$ [0.444]{.answer}
+
+. . .
+
+$1-\Prob(A\mid B)$ is $\Prob(A^c\mid B)$. A new condition is a new group: the two numbers are unrelated.
 :::
 ::::
 
@@ -757,35 +755,35 @@ plt.tight_layout()
 
 ## Independence is assumed, not computed [Sec 2.3]{.tag}
 
-We assume independence when there is a physical reason. Be suspicious otherwise.
+In practice independence is usually assumed, not computed. You assume it when there is a physical reason.
 
 :::: {.columns}
 ::: {.column width="50%"}
 ::: {.box-def}
-**Fine to assume:** two customers who do not know each other; two machines on separate power lines; two tosses of a coin.
+**Fine to assume:** two customers who do not know each other, two machines on separate power lines, two tosses of a coin.
 :::
 :::
 ::: {.column width="50%"}
 ::: {.box-ex}
-**Be suspicious:** rain on Monday and rain on Tuesday; defaults of two firms in the same industry. Each pair shares a cause, so knowing one event tells you something about the other.
+**Be suspicious otherwise.** Rain on Monday and rain on Tuesday are not independent, and neither are defaults of two firms in the same industry.
 :::
 :::
 ::::
 
 ```{python}
 #| fig-width: 10
-#| fig-height: 1.4
-fig, axes = plt.subplots(1, 2, figsize=(10, 1.4))
+#| fig-height: 1.5
+fig, ax = plt.subplots(figsize=(10, 1.5))
 box = dict(boxstyle="round,pad=0.35", fc="#eaf1f8", ec=BLUE)
-hot = dict(boxstyle="round,pad=0.35", fc="#f6e7df", ec=ORANGE)
-for ax, (cause, e1, e2) in zip(axes, [("the weather system", "rain on Monday", "rain on Tuesday"),
-                                       ("the state of the industry", "firm 1 defaults", "firm 2 defaults")]):
-    ax.text(2.5, 1.0, cause, ha="center", va="center", fontsize=14, bbox=hot)
-    for x, e in [(1.0, e1), (4.0, e2)]:
-        ax.text(x, 0.0, e, ha="center", va="center", fontsize=14, bbox=box)
-        ax.annotate("", xy=(x, 0.22), xytext=(2.5, 0.8), arrowprops=dict(arrowstyle="->", color=ORANGE, lw=1.8))
-    ax.set_xlim(-0.2, 5.2); ax.set_ylim(-0.35, 1.3); ax.axis("off")
-plt.tight_layout(w_pad=3)
+for x0, k in [(0.4, 1), (6.0, 2)]:
+    t0 = ax.text(x0, 0.5, f"power line {k}", ha="left", va="center", fontsize=15, bbox=dict(boxstyle="round,pad=0.35", fc="white", ec=BLUE))
+    t1 = ax.text(x0 + 2.5, 0.5, f"machine {k}", ha="left", va="center", fontsize=15, bbox=box)
+    ax.annotate("", xy=(0, 0.5), xycoords=t1, xytext=(1, 0.5), textcoords=t0,
+                arrowprops=dict(arrowstyle="->", color=BLUE, lw=2, shrinkA=4, shrinkB=4))
+ax.plot([5.2, 5.2], [0.0, 1.0], color="#999999", lw=1.5, ls="--")
+ax.text(5.2, 1.2, "nothing connects the two", ha="center", va="center", fontsize=14, color="#5b6b7c")
+ax.set_xlim(0, 10.2); ax.set_ylim(-0.1, 1.4); ax.axis("off")
+plt.tight_layout()
 ```
 
 ## Pitfall: independent is not mutually exclusive [Sec 2.3]{.tag}
@@ -801,16 +799,12 @@ Mutually exclusive, both with positive probability: $\Prob(A\cap B)=0$ but $\Pro
 . . .
 
 A shop in Tula: a customer pays by card (0.8) or in cash (0.2), never both. Learning "card" pushes cash from 0.2 to 0.
-
-. . .
-
-[Quick check: $\Prob(A)=0.2$, $\Prob(B)=0.3$, mutually exclusive. Independent? No: $0\ne0.06$.]{.small}
 :::
 ::: {.column width="45%"}
 ```{python}
 #| fig-width: 4.8
-#| fig-height: 3.6
-fig, ax = plt.subplots(figsize=(4.8, 3.6))
+#| fig-height: 3.2
+fig, ax = plt.subplots(figsize=(4.8, 3.2))
 ax.bar([0, 1], [0.2, 0.0], color=[LIGHT, ORANGE], width=0.55)
 ax.text(0, 0.21, "0.2", ha="center", fontsize=15); ax.text(1, 0.01, "0", ha="center", fontsize=15, color=ORANGE)
 ax.set_xticks([0, 1]); ax.set_xticklabels(["before", "given 'card'"])
@@ -820,6 +814,10 @@ plt.tight_layout()
 ```
 :::
 ::::
+
+. . .
+
+Check: $\Prob(A)=0.2$, $\Prob(B)=0.3$, mutually exclusive. Independent? [No: $0\ne0.06$.]{.answer}
 
 ## Complements of independent events [Thm 2.3]{.tag}
 
@@ -930,8 +928,8 @@ Two tosses of a fair coin: four outcomes, $1/4$ each. Each event has probability
 
 ```{python}
 #| fig-width: 10
-#| fig-height: 1.3
-fig, ax = plt.subplots(figsize=(10, 1.3))
+#| fig-height: 1.2
+fig, ax = plt.subplots(figsize=(10, 1.2))
 outs = ["HH", "HT", "TH", "TT"]
 events = [("A: first is heads", {"HH", "HT"}), ("B: second is heads", {"HH", "TH"}), ("C: the tosses agree", {"HH", "TT"})]
 for j, o in enumerate(outs):
@@ -947,14 +945,14 @@ plt.tight_layout()
 ```
 
 :::: {.columns}
-::: {.column width="50%"}
+::: {.column width="57%"}
 ::: {.box-def}
 **Every pair** meets only in HH:\
-$\Prob(A\cap B)=\frac14=\frac12\cdot\frac12$\
-Same for $A,C$ and $B,C$: pairwise independent.
+$\Prob(\text{both})=\frac14=\frac12\cdot\frac12$ for each pair.\
+Pairwise independent.
 :::
 :::
-::: {.column width="50%"}
+::: {.column width="43%"}
 ::: {.fragment}
 ::: {.box-ex}
 **All three** also meet only in HH:\
@@ -1073,24 +1071,24 @@ The sixth: [still 0.30]{.answer}. Like the coin, her queue has no memory.
 :::
 ::: {.column width="50%"}
 ::: {.box-ex}
-**One firm, five banks.** One firm was turned down by five banks.
+**One firm, five banks.** The five rejections tell you something about the application, and the sixth bank will probably reject it as well.
 
-The sixth bank's decision is not a new toss of a coin. The rejections share a cause, the application itself, so the sixth bank will probably reject too.
+They share a cause, so they are not independent.
 :::
 :::
 ::::
 
 ```{python}
 #| fig-width: 10
-#| fig-height: 0.9
-fig, ax = plt.subplots(figsize=(10, 0.9))
+#| fig-height: 0.75
+fig, ax = plt.subplots(figsize=(10, 0.75))
 strip(ax, "RRRRR?", 0, 0, fs=14); ax.text(6.2, 0.4, "independent", va="center", fontsize=13, color=BLUE)
 strip(ax, "RRRRR?", 11, 0, fs=14); ax.text(17.2, 0.4, "shared cause", va="center", fontsize=13, color=ORANGE)
 ax.set_xlim(-0.2, 21); ax.set_ylim(-0.1, 0.9); ax.axis("off")
 plt.tight_layout()
 ```
 
-[Reasoning about a shared cause is the job of Bayes' theorem, later today.]{.muted}
+[Bayes' theorem, at the end of this lecture, is the tool for that kind of reasoning.]{.muted}
 
 ## Break
 
@@ -1102,28 +1100,26 @@ Break after 80 minutes. The second half starts with the law of total probability
 
 ## Law of total probability [Thm 2.4, Eq 2.2]{.tag}
 
-Lecture 1 promised that partitions would come back. Rates are often easy within groups: per supplier, per segment.
+Rates are often easy within groups: per supplier, per segment.
 
 :::: {.columns}
 ::: {.column width="58%"}
 ::: {.box-thm}
-Let $H_1,\dots,H_n$ be a partition of $\Omega$ (Def 1.3), all $\Prob(H_i)>0$. Then
+Let $H_1,\dots,H_n$ be a partition of $\Omega$ [(Def 1.3: no two overlap, together they make up $\Omega$)]{.muted}, all $\Prob(H_i)>0$. Then
 $$\Prob(A)=\sum_{i=1}^n\Prob(A\mid H_i)\,\Prob(H_i).$$
 :::
-
-**Idea.** $A$ splits into disjoint pieces $A\cap H_i$. Add them (axiom 3), and each piece is $\Prob(A\mid H_i)\Prob(H_i)$ by Thm 2.2.
 :::
 ::: {.column width="42%"}
 ```{python}
 #| fig-width: 4.4
-#| fig-height: 3.4
-fig, ax = plt.subplots(figsize=(4.4, 3.4))
+#| fig-height: 3.0
+fig, ax = plt.subplots(figsize=(4.4, 3.0))
 xs, ys = np.meshgrid(np.linspace(0, 3, 300), np.linspace(0, 2.4, 240))
 inA = ((xs - 1.5) / 1.15) ** 2 + ((ys - 1.2) / 0.7) ** 2 < 1
 for k, (lo, hi, c) in enumerate([(0, 1.0, BLUE), (1.0, 1.8, ORANGE), (1.8, 3, "#5b8a3c")]):
     ax.contourf(xs, ys, (inA & (xs >= lo) & (xs < hi)).astype(float), levels=[0.5, 1.5], colors=[c], alpha=0.75)
     ax.text((lo + hi) / 2, 2.15, f"$H_{k + 1}$", ha="center", fontsize=16)
-    ax.text((lo + hi) / 2, 1.2, rf"$A\cap H_{k + 1}$", ha="center", va="center", fontsize=11, color="white")
+    ax.text((lo + hi) / 2 + {0: 0.18, 1: 0, 2: -0.12}[k], 1.2, rf"$A\cap H_{k + 1}$", ha="center", va="center", fontsize=12, color="white")
 for x in (1.0, 1.8): ax.plot([x, x], [0, 2.4], color="#333333", lw=1.5)
 ax.add_patch(Rectangle((0, 0), 3, 2.4, fill=False, lw=2))
 ax.text(2.6, 0.25, "A", fontsize=16)
@@ -1132,6 +1128,12 @@ plt.tight_layout()
 ```
 :::
 ::::
+
+**Idea.** Add the disjoint pieces $A\cap H_i$ (axiom 3) and use Thm 2.2 on each of them.
+
+::: {.notes}
+Lecture 1 promised that partitions would come back: here they are.
+:::
 
 ## Two ways to picture it [Thm 2.4]{.tag}
 
@@ -1153,8 +1155,8 @@ fig, ax = plt.subplots(figsize=(5.4, 4.2))
 tree(ax, [("$H_1$", r"$\mathbb{P}(H_1)$"), ("$H_2$", r"$\mathbb{P}(H_2)$"), ("$H_3$", r"$\mathbb{P}(H_3)$")],
      [[("A", ""), ("$A^c$", "")]] * 3,
      leaves={(0, 0): r"$\mathbb{P}(A|H_1)\mathbb{P}(H_1)$", (1, 0): r"$\mathbb{P}(A|H_2)\mathbb{P}(H_2)$", (2, 0): r"$\mathbb{P}(A|H_3)\mathbb{P}(H_3)$"},
-     highlight={(0, 0), (1, 0), (2, 0)}, fs=14, leaf_fs=13, x2=1.9)
-ax.set_xlim(-0.15, 4.1)
+     highlight={(0, 0), (1, 0), (2, 0)}, fs=17, leaf_fs=16, x1=1.25, x2=2.25)
+ax.set_xlim(-0.1, 4.0)
 plt.tight_layout()
 ```
 :::
@@ -1289,7 +1291,7 @@ plt.tight_layout()
 
 ## Pitfall: the mix moved, not the rates [Ex 2.6]{.tag}
 
-Overall conversion rose from 5.6% to 7.1%, and marketing reports "the new landing page works". [Wrong.]{.answer}
+After the referral campaign of (b), overall conversion rose from 5.6% to 7.1%. Marketing teams like to report this as "the new landing page works". [Wrong.]{.answer}
 
 ```{python}
 #| fig-width: 10
@@ -1345,21 +1347,21 @@ Two events, $\Prob(A),\Prob(B)>0$: $\;\Prob(B\mid A)=\Prob(A\mid B)\,\Prob(B)/\P
 
 ```{python}
 #| fig-width: 10
-#| fig-height: 1.25
-fig, ax = plt.subplots(figsize=(10, 1.25))
+#| fig-height: 1.55
+fig, ax = plt.subplots(figsize=(10, 1.55))
 widths, rates = [0.5, 0.3, 0.2], [0.35, 0.75, 0.5]
 left = 0
 for k, (w, r) in enumerate(zip(widths, rates)):
     ax.add_patch(Rectangle((left, 0), w, 1, fc="#eeeeee", ec="white", lw=3))
     ax.add_patch(Rectangle((left, 0), w, r, fc=ORANGE if k == 1 else LIGHT, ec="white", lw=3))
-    ax.text(left + w / 2, 1.08, f"$H_{k + 1}$", ha="center", va="bottom", fontsize=15)
-    ax.text(left + w / 2, r / 2, rf"$A\cap H_{k + 1}$", ha="center", va="center", fontsize=13,
+    ax.text(left + w / 2, 1.06, f"$H_{k + 1}$", ha="center", va="bottom", fontsize=17)
+    ax.text(left + w / 2, r / 2, rf"$A\cap H_{k + 1}$", ha="center", va="center", fontsize=16,
             color="white" if k == 1 else "#1d2733")
     left += w
-ax.text(1.04, 0.8, "column width: prior $\\mathbb{P}(H_i)$", ha="left", va="center", fontsize=14, color="#5b6b7c")
-ax.text(1.04, 0.45, "shaded height: $\\mathbb{P}(A\\mid H_i)$", ha="left", va="center", fontsize=14, color="#5b6b7c")
-ax.text(1.04, 0.1, "posterior of $H_2$: orange area / all shaded", ha="left", va="center", fontsize=14, color=ORANGE)
-ax.set_xlim(-0.01, 1.75); ax.set_ylim(-0.02, 1.35); ax.axis("off")
+ax.text(1.05, 0.85, "column width: prior $\\mathbb{P}(H_i)$", ha="left", va="center", fontsize=16, color="#5b6b7c")
+ax.text(1.05, 0.5, "shaded height: $\\mathbb{P}(A\\mid H_i)$", ha="left", va="center", fontsize=16, color="#5b6b7c")
+ax.text(1.05, 0.15, "posterior of $H_2$: orange / all shaded", ha="left", va="center", fontsize=16, color=ORANGE)
+ax.set_xlim(-0.01, 2.05); ax.set_ylim(-0.02, 1.4); ax.axis("off")
 plt.tight_layout()
 ```
 
