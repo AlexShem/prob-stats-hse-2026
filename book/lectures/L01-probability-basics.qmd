@@ -273,7 +273,7 @@ A permutation is the arrangement with $k=n$, and then the formula gives $n!/0!=n
 
 ::: {#def-combination}
 ## Combination
-A **combination** of $k$ objects from $n$ distinct objects is an unordered selection without repetition, that is, a subset of size $k$. The number of combinations is written $\binom{n}{k}$, read "$n$ choose $k$" and called the binomial coefficient. Its formula is @eq-binom below.
+A **combination** of $k$ objects from $n$ distinct objects ($0\le k\le n$) is an unordered selection without repetition, that is, a subset of size $k$. The number of combinations is written $\binom{n}{k}$, read "$n$ choose $k$" and called the binomial coefficient. Its formula is @eq-binom below.
 
 The same supermarket picks 3 of its 12 tea brands for a weekend discount. Now the three brands form a set, and nothing is first or last. The lottery in @exm-lottery and the inspector's sample in @exm-quality are combinations too.
 :::

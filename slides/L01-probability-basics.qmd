@@ -974,7 +974,7 @@ A supermarket puts 3 of its 12 tea brands into the eye-level slots: [1320]{.answ
 ## Combination [Def 1.8]{.tag}
 
 ::: {.box-def}
-A **combination** of $k$ objects from $n$ distinct objects is an unordered selection without repetition, that is, a subset of size $k$. Their number is written $\binom{n}{k}$. We read it "$n$ choose $k$" and call it the binomial coefficient.
+A **combination** of $k$ objects from $n$ distinct objects ($0\le k\le n$) is an unordered selection without repetition, that is, a subset of size $k$. Their number is written $\binom{n}{k}$. We read it "$n$ choose $k$" and call it the binomial coefficient.
 :::
 
 :::: {.columns}
