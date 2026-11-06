@@ -34,28 +34,28 @@ Probability theory in module 2. Statistics and regression in module 3.
 ## Where I studied
 
 :::: {.columns}
-::: {.column width="22%"}
-![](img/logo-hse.png){height="90px"}
+::: {.column width="26%"}
+![](img/logo-hse.png){height="120px"}
 :::
-::: {.column width="78%"}
+::: {.column width="74%"}
 **Bachelor, HSE.** Computer Science, Applied Mathematics and Informatics. [TODO: years]
 :::
 ::::
 
 :::: {.columns}
-::: {.column width="22%"}
-![](img/logo-hse.png){height="90px"}
+::: {.column width="26%"}
+![](img/logo-hse.png){height="120px"}
 :::
-::: {.column width="78%"}
+::: {.column width="74%"}
 **Master, HSE, Faculty of Economics.** Statistical Modelling and Actuarial Science. [TODO: years]
 :::
 ::::
 
 :::: {.columns}
-::: {.column width="22%"}
-![](img/logo-hec.png){height="90px"}
+::: {.column width="26%"}
+![](img/logo-unil.png){width="280px"}
 :::
-::: {.column width="78%"}
+::: {.column width="74%"}
 **PhD in Actuarial Science.** HEC Lausanne, University of Lausanne (UNIL), Switzerland. [TODO: years]
 :::
 ::::
@@ -67,10 +67,10 @@ Same university as you, then a few years in a different country.
 ## What I do now
 
 :::: {.columns}
-::: {.column width="30%"}
-![](img/logo-mephi.png){width="300px"}
+::: {.column width="38%"}
+![](img/logo-mephi.png){width="420px"}
 :::
-::: {.column width="70%"}
+::: {.column width="62%"}
 Since September 2026 I am head of the **AI in Finance** lab at MEPhI (National Research Nuclear University), Moscow.
 
 . . .
