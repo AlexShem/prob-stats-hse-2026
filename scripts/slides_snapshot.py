@@ -33,11 +33,48 @@ chrome = chrome[0] if chrome else shutil.which("chromium") or shutil.which("goog
 if not chrome:
     sys.exit("No headless Chrome found. Run `quarto install chrome-headless-shell`.")
 
-subprocess.run([
-    chrome, "--headless", "--disable-gpu", "--no-sandbox", "--run-all-compositor-stages-before-draw",
-    "--virtual-time-budget=20000", "--no-pdf-header-footer", f"--print-to-pdf={pdf}",
-    f"file://{html.resolve()}?print-pdf",
-], check=True, capture_output=True, timeout=180)
+# The chalkboard plugin waits for a drawings file in print mode and never lets reveal lay the
+# pages out (result: one blank page). Print from a copy of the deck without the plugin.
+printable = html.with_name(f"{stem}.print.html")
+src = html.read_text(encoding="utf-8")
+src = re.sub(r'<script src="[^"]*reveal-chalkboard/plugin\.js"></script>', "", src)
+src = src.replace("RevealChalkboard, ", "")
+# Headless Chrome cannot always reach the MathJax CDN (TLS errors, or it simply hangs), and then
+# reveal never finishes the layout. Use a local copy, fetched once with npm into ~/.cache.
+mj_dir = Path.home() / ".cache/prob-stats-mathjax"
+mj = mj_dir / "core/tex-chtml.local.js"   # next to sre/, which MathJax loads relative to itself
+if not mj.exists() and shutil.which("npm"):
+    mj_dir.mkdir(parents=True, exist_ok=True)
+    for pkg in ("mathjax@4", "@mathjax/mathjax-newcm-font@4"):
+        subprocess.run(["npm", "pack", pkg], cwd=mj_dir, check=True, capture_output=True)
+    subprocess.run("mkdir -p core fonts/@mathjax/mathjax-newcm-font"
+                   " && tar xzf mathjax-4*.tgz -C core --strip-components=1"
+                   " && tar xzf mathjax-mathjax-newcm-font-*.tgz -C fonts/@mathjax/mathjax-newcm-font --strip-components=1",
+                   shell=True, cwd=mj_dir, check=True)
+    code = (mj_dir / "core/tex-chtml.js").read_text(encoding="utf-8")
+    code = code.replace('"https://cdn.jsdelivr.net/npm/@mathjax"', '"' + (mj_dir / "fonts/@mathjax").as_uri() + '"')
+    # no speech/braille: its worker fetches files over file:// and hangs the typesetting
+    code = code.replace("enableSpeech:!0", "enableSpeech:!1").replace("enableBraille:!0", "enableBraille:!1")
+    mj.write_text(code, encoding="utf-8")
+if mj.exists():
+    src = src.replace("https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js", mj.as_uri())
+# Source Sans 3 normally comes from Google Fonts. Without network the text falls back to a wider
+# font, slides overflow and drop out of the PDF. Use a local copy through @font-face.
+ss_dir = Path.home() / ".cache/prob-stats-fonts"
+if not (ss_dir / "package/TTF").exists() and shutil.which("npm"):
+    ss_dir.mkdir(parents=True, exist_ok=True)
+    subprocess.run(["npm", "pack", "source-sans@3"], cwd=ss_dir, check=True, capture_output=True)
+    subprocess.run("tar xzf source-sans-*.tgz", shell=True, cwd=ss_dir, check=True)
+if (ss_dir / "package/TTF").exists():
+    faces = "".join(
+        f"@font-face{{font-family:'Source Sans 3';font-weight:{w};font-style:{st};"
+        f"src:url('{(ss_dir / 'package/TTF' / f'SourceSans3-{f}.ttf').as_uri()}')}}"
+        for f, w, st in [("Regular", 400, "normal"), ("It", 400, "italic"), ("Semibold", 600, "normal"), ("Bold", 700, "normal")])
+    src = src.replace("</head>", f"<style>{faces}</style></head>", 1)
+printable.write_text(src, encoding="utf-8")
+subprocess.run(["node", "scripts/slides_to_pdf.mjs", chrome, f"file://{printable.resolve()}?print-pdf", str(pdf)],
+               check=True, timeout=180)
+printable.unlink()
 
 if pdf_only:
     print(pdf)

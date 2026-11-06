@@ -2,19 +2,9 @@
 title: "About me"
 subtitle: "Probability Theory and Mathematical Statistics · first session"
 date: "2026-11-07"
-format:
-  revealjs:
-    logo: img/logo-hse-wide.png
 ---
 
 {{< include ../_shared/_macros.qmd >}}
-
-```{=html}
-<style>
-/* HSE mark bottom left on every slide, level with the footer text */
-.reveal .slide-logo { position: fixed !important; left: 14px !important; right: auto !important; bottom: 8px !important; top: auto !important; height: 28px !important; max-height: 28px !important; width: auto !important; }
-</style>
-```
 
 <!-- Intro deck for the first session. Not a lecture: no chapter, no tracker entry.
      Facts: degrees as given by Aleksandr; the paper is listed on Math-Net.ru (person192719).
@@ -194,7 +184,7 @@ A bank has just approved 1,000 loans. Some borrowers will not pay back, and nobo
 
 - Lectures: two 80-minute blocks with a break. The book chapter is the master copy, the slides retell it.
 - Seminars: the same problem sheet for all groups. Solutions appear in the book after the last group has done it.
-- [TODO: grading, to be filled when the formula is fixed. See `admin/course-info.md`.]
+- Grading: [to be confirmed]{.answer}
 
 ## Questions
 

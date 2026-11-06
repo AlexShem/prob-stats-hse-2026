@@ -79,6 +79,7 @@ uv run quarto preview book   # live preview while writing (no per-chapter PDFs o
 
 - `quarto render book` on its own gives the HTML and the full PDF but not the per-chapter PDFs or the slides. Use `make book` for anything you'll publish.
 - The per-chapter PDFs come from splitting the book PDF at its bookmarks (`scripts/split_book_pdf.py`). That's why the numbering and cross-references in a chapter PDF match the book. The split matches each bookmark to the `# ` title line of the `.qmd` file, so keep that title on a single line. The script warns if a chapter isn't found.
+- Slide PDFs are printed by `scripts/slides_to_pdf.mjs` from a copy of the deck without the chalkboard plugin (it blocks reveal's print mode), with MathJax and Source Sans served from `~/.cache`. Every deck gets the HSE logo through `logo:` in `slides/_quarto.yml`.
 - `execute: freeze: auto`: code only re-runs when its file changes. Commit `_freeze/`. After changing `_shared/_setup.qmd`, delete the `_freeze/` folders.
 - Python packages: `uv add <pkg>` (`--dev` for build-only tools). Never `pip install`. Student-facing code may only use numpy, scipy, pandas, matplotlib and statsmodels.
 

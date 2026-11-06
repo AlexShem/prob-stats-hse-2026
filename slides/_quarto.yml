@@ -16,6 +16,7 @@ format:
     margin: 0.06
     center: false
     slide-number: c/t
+    logo: img/logo-hse-wide.png
     transition: none
     html-math-method: mathjax
     chalkboard:

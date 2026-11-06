@@ -61,3 +61,6 @@ $warm-soft: #fbf0e9;
 .reveal .footer { font-size: 0.45em; color: #8a97a5; }
 .reveal table { font-size: 0.85em; }
 .reveal .MathJax_Display, .reveal mjx-container[display="true"] { margin: 0.5em 0 !important; }
+
+/* HSE mark bottom left on every slide, level with the footer text */
+.reveal .slide-logo { position: fixed !important; left: 14px !important; right: auto !important; bottom: 8px !important; top: auto !important; height: 28px !important; max-height: 28px !important; width: auto !important; }

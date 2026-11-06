@@ -91,3 +91,6 @@ There's no command for exams. Ask in plain words, for example "draft the midterm
 - **An agent is on the wrong branch, or two agents share the checkout:** stop one of them. For tooling work, ask for a separate worktree (see CLAUDE.md, "Git workflow").
 - **Slides look cramped or empty:** `/slides LNN update: …` with the slide numbers from the PDF.
 - **A solution shows up for students too early:** check `solutions-released` in `book/_quarto.yml`, then `make book`.
+
+
+**Slide PDFs.** They are printed by `scripts/slides_to_pdf.mjs` (needs `node` and `npm`). The first run downloads MathJax and the Source Sans font into `~/.cache/prob-stats-*`, so the PDF does not depend on the network. If a PDF ever comes out as one blank page, run `make snapshot L=<stem>` and read the message.
