@@ -1,0 +1,195 @@
+---
+title: "About me"
+subtitle: "Probability Theory and Mathematical Statistics · first session"
+date: "2026-11-07"
+---
+
+{{< include ../_shared/_macros.qmd >}}
+
+<!-- Intro deck for the first session. Not a lecture: no chapter, no tracker entry.
+     Facts: degrees as given by Aleksandr; the paper is listed on Math-Net.ru (person192719).
+     Everything in [TODO: …] is for Aleksandr to fill or delete before the session. -->
+
+## Aleksandr Shemendyuk
+
+:::: {.columns}
+::: {.column width="55%"}
+I will teach you both the lectures and the seminars, in all three groups.
+
+. . .
+
+So you will see me twice as often as you might like.
+
+. . .
+
+Probability theory in module 2. Statistics and regression in module 3.
+:::
+::: {.column width="45%"}
+![](img/aleksandr.jpg){width="330px" style="border-radius:8px"}
+
+aashemendyuk@mephi.ru
+
+[An HSE address may come later. I will tell you.]{.muted}
+:::
+::::
+
+## Where I studied
+
+:::: {.columns}
+::: {.column width="26%"}
+![](img/logo-hse.png){height="120px"}
+:::
+::: {.column width="74%"}
+**Bachelor, HSE, Faculty of Computer Science.** Applied Mathematics and Informatics. 2013–2017
+:::
+::::
+
+:::: {.columns}
+::: {.column width="26%"}
+![](img/logo-hse.png){height="120px"}
+:::
+::: {.column width="74%"}
+**Master, HSE, Faculty of Economics.** Statistical Modelling and Actuarial Science. 2017–2019
+:::
+::::
+
+:::: {.columns}
+::: {.column width="26%"}
+![](img/logo-unil.png){width="280px"}
+:::
+::: {.column width="74%"}
+**PhD in Actuarial Science.** HEC Lausanne, University of Lausanne (UNIL), Switzerland. 2019–2024
+:::
+::::
+
+## After the PhD I stayed at UNIL
+
+:::: {.columns}
+::: {.column width="26%"}
+![](img/logo-unil.png){width="280px"}
+:::
+::: {.column width="74%"}
+I taught master courses for the business analytics and management programmes:
+
+. . .
+
+**Data Science in Business Analytics** (6 credits)
+
+. . .
+
+**AI Tools in Business Innovation** (3 credits), an elective course I developed myself
+
+. . .
+
+How to use AI for automation, customer support and AI apps: LLM APIs, make.com, n8n.io, and building a website with a backend and a database, then connecting them.
+:::
+::::
+
+## What I do now
+
+:::: {.columns}
+::: {.column width="38%"}
+![](img/logo-mephi.png){width="420px"}
+:::
+::: {.column width="62%"}
+Since September 2026 I am head of the **AI in Finance** lab at MEPhI (National Research Nuclear University), Moscow.
+
+. . .
+
+The lab is new and still growing, and projects appear fast. They run from the cost of institutional care to credit risk, and the common thread is how health connects to economics.
+:::
+::::
+
+## What an actuary does
+
+Insurers sell a promise: *if something bad happens, we pay.* Someone has to decide the price of that promise.
+
+. . .
+
+An actuary prices it with probability. How often does a car crash? How large is a typical claim? How much money must be set aside so the company survives a terrible year?
+
+. . .
+
+That is the content of this course, with the insurance removed: probability first, then statistics for estimating it from data.
+
+## What I researched: care for the elderly
+
+The data came from nursing homes in the canton of Geneva: more than 21,000 residents, followed from 1996 to 2018.
+
+. . .
+
+Three questions an insurer or a nursing home has to answer:
+
+. . .
+
+- How long will a resident stay?
+- How much care will they need while they are there?
+- What will it cost?
+
+. . .
+
+All three are probability questions with real money behind them.
+
+## Three papers, three methods
+
+Written with Joël Wagner, University of Lausanne.
+
+. . .
+
+*Duration and intensity of care* (Annals of Actuarial Science, 2023, with M. Bladt and M. Fuino). An accelerated failure time model for how long people stay, and beta regression for how intensive the care is.
+
+. . .
+
+*Health profiles* (Insurance: Mathematics and Economics, 2024). Spectral clustering finds eight typical profiles of residents. Multinomial logistic regression shows what decides the profile.
+
+. . .
+
+*Costs over time* (Insurance: Mathematics and Economics, 2025). A multi-state Markov model: a resident moves between four care levels, from nearly independent to severely dependent, and each level has a price.
+
+## You will meet the same ideas here
+
+:::: {.columns}
+::: {.column width="50%"}
+The Markov model is conditional probability, repeated: given that a resident is in state 2 today, what is the chance of state 3 tomorrow? That is Lecture 2.
+:::
+::: {.column width="50%"}
+Length of stay is a random variable with a distribution, an expectation and a variance. That is Lectures 3 to 5.
+:::
+::::
+
+. . .
+
+Regression and estimation from data come in module 3.
+
+## Why this matters for a business student
+
+Pricing, credit risk, inventory, quality control, A/B tests, surveys. All of them ask the same thing: [how sure can we be, given what we know?]{.answer}
+
+A bank has just approved 1,000 loans. Some borrowers will not pay back, and nobody knows which ones.
+
+:::: {.columns}
+::: {.column width="50%"}
+::: {.box-ex}
+**Module 2: before any data.** If each loan defaults with probability *p*, how many defaults should the bank plan for, and how far from that number can the real count be?
+:::
+:::
+::: {.column width="50%"}
+::: {.box-thm}
+**Module 3: after six months.** The bank now has real data. How well does it know *p*, and when is a change in the default rate more than bad luck?
+:::
+:::
+::::
+
+## How we will work
+
+- Lectures: two 80-minute blocks with a break. The book chapter is the master copy, the slides retell it.
+- Seminars: the same problem sheet for all groups. Solutions appear in the book after the last group has done it.
+- Grading: [to be confirmed]{.answer}
+
+## Questions
+
+Ask me anything about the course, about studying in Lausanne, or about what an actuary does all day.
+
+. . .
+
+aashemendyuk@mephi.ru

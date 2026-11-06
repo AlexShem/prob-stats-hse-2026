@@ -8,13 +8,14 @@ project:
 book:
   title: "Probability Theory and Mathematical Statistics"
   subtitle: "Lectures and seminars"
-  author: "Alexander Shemendyuk"
+  author: "Aleksandr Shemendyuk"
   date: "2026/27"
   downloads: [pdf]
   chapters:
     - index.qmd
     - part: "Lectures"
       chapters:
+        - lectures/L00-about-me.qmd
         - lectures/L01-probability-basics.qmd
         - lectures/L02-conditional-probability.qmd
     - part: "Seminars"

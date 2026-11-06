@@ -8,7 +8,7 @@ background: false
 allowed-tools: Bash(git branch *) Bash(git status *) Bash(ls *)
 ---
 
-Lecture: **$0**. Instructions from Alexander: $ARGUMENTS
+Lecture: **$0**. Instructions from Aleksandr: $ARGUMENTS
 
 Repo state at invocation:
 - Branch: !`git branch --show-current`

@@ -1,7 +1,7 @@
 # Probability Theory and Mathematical Statistics, HSE 2026/27
 
 Course materials for the 2nd-year International Business programme at the HSE Higher School of
-Business (lecturer: Alexander Shemendyuk). Everything students see is one Quarto book (lectures and
+Business (lecturer: Aleksandr Shemendyuk). Everything students see is one Quarto book (lectures and
 seminars), with a PDF of each chapter and reveal.js slides for each lecture linked from it.
 
 ## Setup

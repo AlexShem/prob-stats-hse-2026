@@ -1,13 +1,13 @@
 # CLAUDE.md
 
-Course materials for **Probability Theory and Mathematical Statistics** (RUZ: «Теория вероятностей и математическая статистика (анг)»), HSE University, Higher School of Business, International Business programme, 2nd year bachelor, taught in English, Nov 2026 – Mar 2027 (modules 2–3). Lecturer and seminar teacher for all three groups: Alexander Shemendyuk.
+Course materials for **Probability Theory and Mathematical Statistics** (RUZ: «Теория вероятностей и математическая статистика (анг)»), HSE University, Higher School of Business, International Business programme, 2nd year bachelor, taught in English, Nov 2026 – Mar 2027 (modules 2–3). Lecturer and seminar teacher for all three groups: Aleksandr Shemendyuk.
 
-Alexander's how-to for the stage commands: `WORKFLOW.md`. Keep it in sync when commands change. Facts, grading and policies: `admin/course-info.md`. Dates and rooms: `admin/schedule.md`. Topic for each lecture and seminar: `admin/course-plan.md`. What each unit actually contains and how it is presented (numbered items, running examples, devices, names, promises to later units): `admin/content-tracker.md`.
+Aleksandr's how-to for the stage commands: `WORKFLOW.md`. Keep it in sync when commands change. Facts, grading and policies: `admin/course-info.md`. Dates and rooms: `admin/schedule.md`. Topic for each lecture and seminar: `admin/course-plan.md`. What each unit actually contains and how it is presented (numbered items, running examples, devices, names, promises to later units): `admin/content-tracker.md`.
 
 ## Required skills
 
 - **`quarto-authoring`**: invoke it with the Skill tool before creating or editing any `.qmd` file, `_quarto.yml`, profile or Lua filter. This is not optional. If you spawn a subagent that will touch Quarto files, say in its prompt: "Before editing any Quarto file, invoke the `quarto-authoring` skill."
-- **Project agents and commands**: the main session coordinates and delegates to the agents in `.claude/agents/`, using the commands in `.claude/skills/` (`/chapter`, `/slides`, `/seminar`, `/review-unit`). See "Routing" below. Alexander may type a command or just describe what he wants. Either way, follow "Routing".
+- **Project agents and commands**: the main session coordinates and delegates to the agents in `.claude/agents/`, using the commands in `.claude/skills/` (`/chapter`, `/slides`, `/seminar`, `/review-unit`). See "Routing" below. Aleksandr may type a command or just describe what he wants. Either way, follow "Routing".
 - **`anti-ai`**: the user invokes this skill by name and agents should not load it on their own. Its rules for this course are written out below under "Writing style", and they apply to every piece of text.
 
 ## Audience and scope
@@ -29,7 +29,7 @@ Alexander's how-to for the stage commands: `WORKFLOW.md`. Keep it in sync when c
 - Under every lecture and seminar title, a download line: **PDF** of that chapter, plus **Slides** (reveal.js) and **Slides PDF** for lectures. The filter adds it automatically, so don't write it by hand.
 - A download icon for the PDF of the whole book.
 
-Alexander also gets a **print copy** (`make print`): the same chapters with board cues and *all* solutions, A4, 12 pt and a 5.5 cm right margin for handwriting, one PDF per lecture or seminar. He teaches at the whiteboard from it. Each lecture day is 2 × 80 minutes.
+Aleksandr also gets a **print copy** (`make print`): the same chapters with board cues and *all* solutions, A4, 12 pt and a 5.5 cm right margin for handwriting, one PDF per lecture or seminar. He teaches at the whiteboard from it. Each lecture day is 2 × 80 minutes.
 
 ## Layout
 
@@ -79,6 +79,7 @@ uv run quarto preview book   # live preview while writing (no per-chapter PDFs o
 
 - `quarto render book` on its own gives the HTML and the full PDF but not the per-chapter PDFs or the slides. Use `make book` for anything you'll publish.
 - The per-chapter PDFs come from splitting the book PDF at its bookmarks (`scripts/split_book_pdf.py`). That's why the numbering and cross-references in a chapter PDF match the book. The split matches each bookmark to the `# ` title line of the `.qmd` file, so keep that title on a single line. The script warns if a chapter isn't found.
+- Slide PDFs are printed by `scripts/slides_to_pdf.mjs` from a copy of the deck without the chalkboard plugin (it blocks reveal's print mode), with MathJax and Source Sans served from `~/.cache`. Every deck gets the HSE logo through `logo:` in `slides/_quarto.yml`.
 - `execute: freeze: auto`: code only re-runs when its file changes. Commit `_freeze/`. After changing `_shared/_setup.qmd`, delete the `_freeze/` folders.
 - Python packages: `uv add <pkg>` (`--dev` for build-only tools). Never `pip install`. Student-facing code may only use numpy, scipy, pandas, matplotlib and statsmodels.
 
@@ -106,24 +107,24 @@ Material is prepared one teaching unit at a time, a few days before it is taught
 - **Fixes to material already merged** (a typo in L02 found during L03 week): `fix/<what>`, e.g. `fix/L02-bayes-example`. Keep these off unit branches, so a fix can go out without waiting for the next unit.
 - **Infrastructure** (filter, templates, Makefile, CLAUDE.md, scripts): `infra/<what>`.
 - **Assessment**: `exam/midterm`, `exam/final`. The repo is private, but still never merge exam content into `book/` or `slides/`.
-- **One-line operational changes** go straight to `main` as single commits, and only when Alexander asks: releasing solutions (`solutions-released`), a schedule refresh (`make schedule`). Commit message, for example: `Release S01 solutions`.
+- **One-line operational changes** go straight to `main` as single commits, and only when Aleksandr asks: releasing solutions (`solutions-released`), a schedule refresh (`make schedule`). Commit message, for example: `Release S01 solutions`.
 
 Rules for agents:
 
 1. Before editing, check the branch (`git branch --show-current`). If you are on `main`, create the right branch with `git switch -c unit/...`. **Never rename `main`** (`git branch -m`). Don't start a new unit on top of an unmerged one: branch from `main`.
 1a. Another agent may be working in the same checkout. For infrastructure work, use a separate worktree (`git worktree add ../prob-stats-hse-2026-infra -b infra/<what> main`) instead of switching branches under it.
 2. Commit in small steps with the unit as the prefix: `L01: first draft of chapter`, `L01: slides`, `S01: problems 1–6`, `S01: solutions`, `infra: split script handles appendices`. Don't commit `_output/`. Do commit `_freeze/`.
-3. Merge only after `/review-unit` has no open findings for mathematics, leaks or consistency, **and** Alexander has looked at the unit. Merge with `git merge --no-ff unit/...` so the unit stays one visible block in the history, then delete the branch.
-4. Don't push, merge into `main` or delete branches unless Alexander asks. He reviews the branch first.
+3. Merge only after `/review-unit` has no open findings for mathematics, leaks or consistency, **and** Aleksandr has looked at the unit. Merge with `git merge --no-ff unit/...` so the unit stays one visible block in the history, then delete the branch.
+4. Don't push, merge into `main` or delete branches unless Aleksandr asks. He reviews the branch first.
 5. After publishing, tag what students saw: `git tag pub/2026-11-07`. That makes "which version did they have before the midterm?" easy to answer.
 
 ## Routing (how the main session handles a request)
 
-Alexander starts a session and says what he wants in plain words, e.g. "fix slide 12 of lecture 1", "add the notation $A\setminus B$ to lecture 1 and make sure the slides show it", "prepare lecture 2", "is unit 2 ready?". **The main session coordinates. The project agents do the work.** Their models are set in `.claude/agents/*.md`: opus for writing (chapter, slides, seminar), sonnet for judgement (lookups, maths, review), haiku for running the scripted build checks. Don't override them.
+Aleksandr starts a session and says what he wants in plain words, e.g. "fix slide 12 of lecture 1", "add the notation $A\setminus B$ to lecture 1 and make sure the slides show it", "prepare lecture 2", "is unit 2 ready?". **The main session coordinates. The project agents do the work.** Their models are set in `.claude/agents/*.md`: opus for writing (chapter, slides, seminar), sonnet for judgement (lookups, maths, review), haiku for running the scripted build checks. Don't override them.
 
 | Request | What the main session does |
 |---|---|
-| New lecture ("prepare lecture 2") | Run `/chapter L02`: source-scout → outline to Alexander → chapter-writer → math-checker + build-checker. Then stop. The slides come after he has read the chapter. |
+| New lecture ("prepare lecture 2") | Run `/chapter L02`: source-scout → outline to Aleksandr → chapter-writer → math-checker + build-checker. Then stop. The slides come after he has read the chapter. |
 | Change to a lecture's content (notation, definition, example, wording, error) | Run `/chapter LNN <the change>`: chapter-writer, then propagate to slide-designer (update) and seminar-writer if affected, then math-checker + build-checker. |
 | Slides only ("slide 12 is cramped", "add a diagram", "make the deck") | Run `/slides LNN <request>`: slide-designer in a fresh context, then build-checker. |
 | New or changed seminar, problems, solutions | Run `/seminar SNN <request>`: seminar-writer, then math-checker + build-checker. |
@@ -134,26 +135,26 @@ Alexander starts a session and says what he wants in plain words, e.g. "fix slid
 | Trivial fix (a typo, a wrong word, at most ~3 lines, no numbers, labels or structure involved) | The main session edits it directly in the chapter and in the matching slide/seminar line, then runs build-checker. |
 | Release solutions, refresh the schedule | The main session, straight on `main` (CLAUDE.md, "Git workflow"). |
 | Exam drafting | The main session on `exam/…`, then math-checker. Never in `book/` or `slides/`. |
-| Tooling (filter, Makefile, scripts, agents, these rules) | The main session on `infra/…`. Update `WORKFLOW.md` if the way Alexander works changes. |
+| Tooling (filter, Makefile, scripts, agents, these rules) | The main session on `infra/…`. Update `WORKFLOW.md` if the way Aleksandr works changes. |
 
 **Rules:**
 
 - **The content tracker is kept current.** `admin/content-tracker.md` is read before every new unit (all writers) and updated by the writer of each stage (chapter, slides, seminar) before it reports. The main session checks that the entry changed, and includes the tracker in the same commit.
 - **The chapter is the master.** Any change to a chapter's content is followed through to its deck and to seminars that cite it, in the same request. The chapter-writer's report (renumbering, slide impact) tells you what to pass on.
-- **Approval points stay in the main session.** Agents can't ask Alexander anything mid-run. Get his OK on outlines and problem lists *before* spawning a writer. For a request that is already specific ("add X", "fix slide 12"), just do it.
+- **Approval points stay in the main session.** Agents can't ask Aleksandr anything mid-run. Get his OK on outlines and problem lists *before* spawning a writer. For a request that is already specific ("add X", "fix slide 12"), just do it.
 - **Independent checks run in parallel** (one message with several Agent calls). Writers run one at a time, because they share the working tree.
 - **Every request ends with build-checker passing.** Then report what changed (files, slide numbers), the branch, and "ready to merge when you say so".
-- **Branches:** agents create their own `unit/…` or `fix/…` branch when they start on `main`. Several small requests in one session may share one `fix/…` branch. Merge to `main` only when Alexander says so.
+- **Branches:** agents create their own `unit/…` or `fix/…` branch when they start on `main`. Several small requests in one session may share one `fix/…` branch. Merge to `main` only when Aleksandr says so.
 - **Hooks** (`.claude/settings.json`) block pushes, renaming `main`, commits straight to `main` and edits in `sources/`. They also run the style check after each `.qmd` edit. If a hook blocks something, don't work around it. Follow its message.
 
 ## Making a teaching unit
 
-A unit is one lecture and the seminar(s) after it. It is made in **stages, in this order**, and Alexander reviews each stage before the next one starts. The book chapter comes first and is finished before anything is derived from it.
+A unit is one lecture and the seminar(s) after it. It is made in **stages, in this order**, and Aleksandr reviews each stage before the next one starts. The book chapter comes first and is finished before anything is derived from it.
 
 | Stage | Command | Agents | Output |
 |---|---|---|---|
 | 1. Chapter | `/chapter LNN` | source-scout → (outline approved) → chapter-writer → math-checker + build-checker | `book/lectures/LNN-*.qmd` |
-| — | Alexander reads the print copy and approves | | |
+| — | Aleksandr reads the print copy and approves | | |
 | 2. Slides | `/slides LNN` | slide-designer (fresh context) | `slides/LNN-*.qmd`, visually checked |
 | 3. Seminar | `/seminar SNN` | source-scout → (problem list approved) → seminar-writer → math-checker + build-checker | `book/seminars/SNN-*.qmd` |
 | 4. Review | `/review-unit LNN SNN` | math-checker + unit-reviewer + build-checker in parallel | numbered findings |
@@ -175,7 +176,7 @@ The coordination steps are in `.claude/skills/<stage>/SKILL.md`, and the working
 
 ### Slides
 
-- The chapter retold visually. Students study from it, and Alexander may project it.
+- The chapter retold visually. Students study from it, and Aleksandr may project it.
 - It keeps the chapter's main content (every definition, theorem, example, key explanation and common mistake) in well-formatted text: boxes, columns, highlighted answers, step-by-step reveals.
 - It adds visualizations wherever a picture helps: diagrams, trees, grids, plots, tables. New figures are fine if they only illustrate what the chapter says.
 - It cuts only the most cumbersome parts. Long proofs become a statement plus one line of idea and a pointer to the book, and long algebra shrinks to its key steps.
@@ -222,7 +223,7 @@ The materials must read as written by this lecturer, not generated. These rules 
 - One recognisable voice: a lecturer talking to students. First person is fine ("I like this example because…", "we will need this in Lecture 6"). Contractions are fine in chapters and slides and not in exams.
 - Commit to a view. "The normal approximation is bad here, n = 12 is too small" beats "it may be important to consider whether the approximation is appropriate". At most one hedge per page.
 - Let some friction show. Say where students usually go wrong, where a method is annoying, which textbook formula you don't like and why.
-- If Alexander gives his own wording or a rough draft, keep his sentences verbatim, including any oddities. Add material between them instead of rewriting them. Tell him which parts are new.
+- If Aleksandr gives his own wording or a rough draft, keep his sentences verbatim, including any oddities. Add material between them instead of rewriting them. Tell him which parts are new.
 
 **Structure**
 - No preview openers ("In this lecture we will…") and no recap closers ("In summary…", "Key takeaways"). Start a chapter with a concrete case, a number or a question students would ask. End on the last useful point or on an exercise.
@@ -250,7 +251,7 @@ The materials must read as written by this lecturer, not generated. These rules 
 
 ## Working with sources
 
-`sources/` holds the old materials Alexander builds on. Use them for coverage and problem ideas, but rewrite in this course's notation and voice instead of copying their wording. When adapting a problem, change the context and the numbers and note the origin in a comment: `<!-- adapted from sources/xxx.md, task 3.14 -->`. Keep `sources/README.md` up to date.
+`sources/` holds the old materials Aleksandr builds on. Use them for coverage and problem ideas, but rewrite in this course's notation and voice instead of copying their wording. When adapting a problem, change the context and the numbers and note the origin in a comment: `<!-- adapted from sources/xxx.md, task 3.14 -->`. Keep `sources/README.md` up to date.
 
 - `Модули_1_2_новые.md` (4,700 lines): read `sources/Модули_1_2_новые.summary.md` first, then only the line ranges you need. It uses ξ, M (mean), D (variance), $F(x)=P(\xi<x)$ and $C_n^k$. Convert these to our notation. Its contexts are ML/IT (servers, classifiers, hashes), so recast them as business situations. It has known answer-key errors, which are listed in the summary.
 
@@ -260,4 +261,4 @@ The materials must read as written by this lecturer, not generated. These rules 
 - Grading formula and ECTS: TODO in `admin/course-info.md` and in the table on `book/index.qmd`.
 - Midterm date: S10 or a separate session in the week of 21–27 Dec, not confirmed.
 - Where the book is published (HSE LMS, GitHub Pages, Quarto Pub): not decided. Publish the folder `book/_output/book/`.
-- The welcome text in `book/index.qmd` is for Alexander to write.
+- The welcome text in `book/index.qmd` is for Aleksandr to write.

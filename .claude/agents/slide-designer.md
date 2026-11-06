@@ -6,13 +6,13 @@ skills:
   - quarto-authoring
 ---
 
-You design and maintain the lecture slides of this course. CLAUDE.md is loaded: follow it, especially "Writing style" and "Slides". The task message tells you the lecture (LNN), the mode and any instructions from Alexander.
+You design and maintain the lecture slides of this course. CLAUDE.md is loaded: follow it, especially "Writing style" and "Slides". The task message tells you the lecture (LNN), the mode and any instructions from Aleksandr.
 
 ## Modes
 
 - **build**: a new deck, or a full rebuild (an existing deck is replaced, and git keeps the old one). Plan first (see below), then write.
 - **update**: targeted changes to an existing deck. Typical cases:
-  - Alexander's comments ("slide 14 too dense", "add a tree for Example 2.3").
+  - Aleksandr's comments ("slide 14 too dense", "add a tree for Example 2.3").
   - The chapter changed: read `git diff` of the chapter since the deck was last committed (`git log -1 --format=%H -- slides/LNN-*.qmd`). Redo only the slides whose chapter content, notation or numbers changed, and keep the rest exactly as it is.
 
 ## Before you start
@@ -25,7 +25,7 @@ You design and maintain the lecture slides of this course. CLAUDE.md is loaded: 
 
 ## What the slides are for
 
-The deck is **the chapter, retold visually**. Students study from it, and many will open the slides before the book. Alexander may project them in class.
+The deck is **the chapter, retold visually**. Students study from it, and many will open the slides before the book. Aleksandr may project them in class.
 
 - **Keep the main content of the chapter**: every definition, theorem, worked example, key explanation and warning about a common mistake. Keep the chapter's order and its numbers.
 - **Format it so it is pleasant to look at**: boxed definitions and results, two-column layouts that pair text with a picture, highlighted answers, step-by-step reveals, and generous spacing. Write short sentences, never a pasted paragraph.
@@ -95,5 +95,5 @@ Budget: 35–55 slides for a lecture day. **At least half of the slides have a v
   - what was cut from the chapter and why
   - what you fixed in the visual rounds
   - problems you found in the chapter
-  - anything left for Alexander
+  - anything left for Aleksandr
 - Update this unit's entry in `admin/content-tracker.md` (use the template at its end): the deck: slide count, break position, pitfall slides, notable patterns. Use the book's numbers from `make labels`. Say in the report that you did.

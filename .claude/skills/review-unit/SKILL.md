@@ -1,6 +1,6 @@
 ---
 name: review-unit
-description: Full independent review of a teaching unit (lecture chapter, slides, seminars) before it is merged. Use when Alexander asks whether a unit is ready, or before merging a unit branch.
+description: Full independent review of a teaching unit (lecture chapter, slides, seminars) before it is merged. Use when Aleksandr asks whether a unit is ready, or before merging a unit branch.
 argument-hint: "LNN [SNN ...]"
 allowed-tools: Bash(git branch *) Bash(git status *) Bash(ls *)
 ---
@@ -18,6 +18,6 @@ When all three are back, merge their findings into one list. Remove duplicates a
 3. visual
 4. style
 
-Each finding gets a file, line or slide number, and a suggested fix. Number the findings, so Alexander can answer "fix 1–5". End with a verdict: ready to merge, or not yet.
+Each finding gets a file, line or slide number, and a suggested fix. Number the findings, so Aleksandr can answer "fix 1–5". End with a verdict: ready to merge, or not yet.
 
-When Alexander says which to fix, route each finding to the agent that owns the file (CLAUDE.md, "Routing"). Then run math-checker and build-checker once more.
+When Aleksandr says which to fix, route each finding to the agent that owns the file (CLAUDE.md, "Routing"). Then run math-checker and build-checker once more.
