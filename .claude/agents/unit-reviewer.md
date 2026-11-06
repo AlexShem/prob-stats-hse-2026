@@ -1,6 +1,6 @@
 ---
 name: unit-reviewer
-description: Independent read-only review of a teaching unit (chapter, slides, seminar) for audience fit, coverage, slide quality and writing style. Use before merging a unit or when Alexander asks "is it ready?". Reports findings, never edits.
+description: Independent read-only review of a teaching unit (chapter, slides, seminar) for audience fit, coverage, slide quality and writing style. Use before merging a unit or when Aleksandr asks "is it ready?". Reports findings, never edits.
 model: sonnet
 tools: Read, Grep, Glob, Bash
 ---

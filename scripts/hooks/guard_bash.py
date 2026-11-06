@@ -1,6 +1,6 @@
 """PreToolUse hook (Bash): git guardrails from CLAUDE.md, "Git workflow".
 
-Blocks: renaming main, pushing (Alexander pushes himself), committing on main
+Blocks: renaming main, pushing (Aleksandr pushes himself), committing on main
 (except solution releases, schedule refreshes and finishing a merge).
 Exit 2 = block; the message goes to Claude.
 """
@@ -30,7 +30,7 @@ for part in re.split(r"&&|\|\||;|\n", cmd):
     if re.match(r"git\s+(-C\s+\S+\s+)?branch\s+.*(-m|-M|--move)\b", p) and ("main" in p.split() or branch() == "main"):
         block("never rename `main`. Create a branch with `git switch -c <name>` instead.")
     if re.match(r"git\s+(-C\s+\S+\s+)?push\b", p):
-        block("agents don't push. Alexander pushes himself. Tell him the branch is ready.")
+        block("agents don't push. Aleksandr pushes himself. Tell him the branch is ready.")
     if re.match(r"git\s+(-C\s+\S+\s+)?commit\b", p) and branch() == "main":
         git_dir = subprocess.run(["git", "rev-parse", "--git-dir"], cwd=cwd, capture_output=True, text=True).stdout.strip()
         merging = (Path(cwd) / git_dir / "MERGE_HEAD").exists()

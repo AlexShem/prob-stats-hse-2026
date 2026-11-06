@@ -2,7 +2,7 @@
 
 {{< include ../_shared/_macros.qmd >}}
 
-[TODO: a short welcome in Alexander's own words.]
+[TODO: a short welcome in Aleksandr's own words.]
 
 Everything for the course is here. The **Lectures** part has one chapter per lecture day: the
 definitions, results, worked examples and figures from the board. The **Seminars** part has the
@@ -17,5 +17,5 @@ The dates and rooms are in the [Schedule](schedule.qmd).
 |---|---|
 | Course | Probability Theory and Mathematical Statistics (Теория вероятностей и математическая статистика) |
 | Programme | International Business, Higher School of Business, HSE University, 2nd year |
-| Lecturer | Alexander Shemendyuk |
+| Lecturer | Aleksandr Shemendyuk |
 | Assessment | [TODO: grading formula, midterm and exam dates] |

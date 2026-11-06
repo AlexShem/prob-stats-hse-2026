@@ -1,6 +1,6 @@
 # Workflow: preparing a week of teaching
 
-This is a quick reference for Alexander. The rules the agents follow are in `CLAUDE.md` (see "Routing"). The agents are in `.claude/agents/`, and the commands in `.claude/skills/`.
+This is a quick reference for Aleksandr. The rules the agents follow are in `CLAUDE.md` (see "Routing"). The agents are in `.claude/agents/`, and the commands in `.claude/skills/`.
 
 ## Just say what you want
 

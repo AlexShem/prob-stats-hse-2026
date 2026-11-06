@@ -8,7 +8,7 @@
 | Programme | Б 38.03.02, Международный бизнес (International Business), 2nd year bachelor |
 | Language | English |
 | Period | Modules 2–3: Nov 2026 – Mar 2027 (module 3 timetable not received yet) |
-| Lecturer / seminars | Alexander Shemendyuk (all lectures, all three seminar groups) |
+| Lecturer / seminars | Aleksandr Shemendyuk (all lectures, all three seminar groups) |
 | Groups | G1, G2, G3 (RUZ 26_27_М_ТВИМС_Г_1258330_1/2/3) |
 | Venue | Shabolovka ul. 26-28 |
 | ECTS / hours | TODO |
