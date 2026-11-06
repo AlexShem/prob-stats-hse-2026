@@ -16,9 +16,11 @@ book:
     - part: "Lectures"
       chapters:
         - lectures/L01-probability-basics.qmd
+        - lectures/L02-conditional-probability.qmd
     - part: "Seminars"
       chapters:
         - seminars/S01-counting.qmd
+        - seminars/S02-conditional-probability.qmd
   appendices:
     - schedule.qmd
 
