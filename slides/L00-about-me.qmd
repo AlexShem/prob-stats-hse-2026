@@ -2,9 +2,19 @@
 title: "About me"
 subtitle: "Probability Theory and Mathematical Statistics · first session"
 date: "2026-11-07"
+format:
+  revealjs:
+    logo: img/logo-hse-wide.png
 ---
 
 {{< include ../_shared/_macros.qmd >}}
+
+```{=html}
+<style>
+/* HSE mark bottom left on every slide, level with the footer text */
+.reveal .slide-logo { position: fixed !important; left: 14px !important; right: auto !important; bottom: 8px !important; top: auto !important; height: 28px !important; max-height: 28px !important; width: auto !important; }
+</style>
+```
 
 <!-- Intro deck for the first session. Not a lecture: no chapter, no tracker entry.
      Facts: degrees as given by Aleksandr; the paper is listed on Math-Net.ru (person192719).
@@ -81,7 +91,11 @@ I taught master courses for the business analytics and management programmes:
 
 . . .
 
-**AI Tools in Business Innovation**, an elective course I developed myself
+**AI Tools in Business Innovation** (3 credits), an elective course I developed myself
+
+. . .
+
+How to use AI for automation, customer support and AI apps: LLM APIs, make.com, n8n.io, and building a website with a backend and a database, then connecting them.
 :::
 ::::
 
