@@ -126,24 +126,54 @@ An actuary prices it with probability. How often does a car crash? How large is 
 
 That is the content of this course, with the insurance removed: probability first, then statistics for estimating it from data.
 
-## What I research
+## What I researched: care for the elderly
 
-My PhD was about **ruin**: the chance that an insurer's capital falls below zero.
-
-. . .
-
-A paper from that work, with G. Jasnovidov:
-
-*Two-dimensional Parisian ruin problem and computation of corresponding Pickands constants.*
-Theory of Probability and its Applications, 70(1), 2025, pp. 37–59.
+The data came from nursing homes in the canton of Geneva: more than 21,000 residents, followed from 1996 to 2018.
 
 . . .
 
-"Parisian" means that being below zero for a moment is not yet ruin. The company has to stay below for a given length of time.
+Three questions an insurer or a nursing home has to answer:
 
 . . .
 
-[TODO: one sentence on what the paper finds, in plain words, or cut this slide.]
+- How long will a resident stay?
+- How much care will they need while they are there?
+- What will it cost?
+
+. . .
+
+All three are probability questions with real money behind them.
+
+## Three papers, three methods
+
+Written with Joël Wagner, University of Lausanne.
+
+. . .
+
+*Duration and intensity of care* (Annals of Actuarial Science, 2023, with M. Bladt and M. Fuino). An accelerated failure time model for how long people stay, and beta regression for how intensive the care is.
+
+. . .
+
+*Health profiles* (Insurance: Mathematics and Economics, 2024). Spectral clustering finds eight typical profiles of residents. Multinomial logistic regression shows what decides the profile.
+
+. . .
+
+*Costs over time* (Insurance: Mathematics and Economics, 2025). A multi-state Markov model: a resident moves between four care levels, from nearly independent to severely dependent, and each level has a price.
+
+## You will meet the same ideas here
+
+:::: {.columns}
+::: {.column width="50%"}
+The Markov model is conditional probability, repeated: given that a resident is in state 2 today, what is the chance of state 3 tomorrow? That is Lecture 2.
+:::
+::: {.column width="50%"}
+Length of stay is a random variable with a distribution, an expectation and a variance. That is Lectures 3 to 5.
+:::
+::::
+
+. . .
+
+Regression and estimation from data come in module 3.
 
 ## Why this matters for a business student
 
