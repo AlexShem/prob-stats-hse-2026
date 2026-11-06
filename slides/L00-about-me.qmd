@@ -25,7 +25,7 @@ So you will see me twice as often as you might like.
 Probability theory in module 2. Statistics and regression in module 3.
 :::
 ::: {.column width="45%"}
-[TODO: photo]{.muted}
+![](img/aleksandr.jpg){width="330px" style="border-radius:8px"}
 
 [TODO: e-mail and where to find me]{.muted}
 :::
@@ -33,21 +33,51 @@ Probability theory in module 2. Statistics and regression in module 3.
 
 ## Where I studied
 
-::: {.box-def}
-**2013–2017 [TODO: check years]** Bachelor, HSE. Computer Science, Applied Mathematics and Informatics.
+:::: {.columns}
+::: {.column width="22%"}
+![](img/logo-hse.png){height="90px"}
 :::
+::: {.column width="78%"}
+**Bachelor, HSE.** Computer Science, Applied Mathematics and Informatics. [TODO: years]
+:::
+::::
 
-::: {.box-def}
-**Master, HSE, Faculty of Economics.** Statistical Modelling and Actuarial Science.
+:::: {.columns}
+::: {.column width="22%"}
+![](img/logo-hse.png){height="90px"}
 :::
+::: {.column width="78%"}
+**Master, HSE, Faculty of Economics.** Statistical Modelling and Actuarial Science. [TODO: years]
+:::
+::::
 
-::: {.box-def}
-**PhD in Actuarial Science.** HEC Lausanne, University of Lausanne (UNIL), Switzerland.
+:::: {.columns}
+::: {.column width="22%"}
+![](img/logo-hec.png){height="90px"}
 :::
+::: {.column width="78%"}
+**PhD in Actuarial Science.** HEC Lausanne, University of Lausanne (UNIL), Switzerland. [TODO: years]
+:::
+::::
 
 . . .
 
-Same university as you, then a few years in a different country. [TODO: years for the master and the PhD.]
+Same university as you, then a few years in a different country.
+
+## What I do now
+
+:::: {.columns}
+::: {.column width="30%"}
+![](img/logo-mephi.png){width="300px"}
+:::
+::: {.column width="70%"}
+Since September 2026 I am head of the **AI in Finance** lab at MEPhI (National Research Nuclear University), Moscow.
+
+. . .
+
+[TODO: two plain sentences on what the lab does and one project students could relate to.]{.muted}
+:::
+::::
 
 ## What an actuary does
 
