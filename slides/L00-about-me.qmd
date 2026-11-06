@@ -27,7 +27,9 @@ Probability theory in module 2. Statistics and regression in module 3.
 ::: {.column width="45%"}
 ![](img/aleksandr.jpg){width="330px" style="border-radius:8px"}
 
-[TODO: e-mail and where to find me]{.muted}
+aashemendyuk@mephi.ru
+
+[An HSE address may come later. I will tell you.]{.muted}
 :::
 ::::
 
@@ -38,7 +40,7 @@ Probability theory in module 2. Statistics and regression in module 3.
 ![](img/logo-hse.png){height="120px"}
 :::
 ::: {.column width="74%"}
-**Bachelor, HSE.** Computer Science, Applied Mathematics and Informatics. [TODO: years]
+**Bachelor, HSE.** Computer Science, Applied Mathematics and Informatics. 2013–2017
 :::
 ::::
 
@@ -47,7 +49,7 @@ Probability theory in module 2. Statistics and regression in module 3.
 ![](img/logo-hse.png){height="120px"}
 :::
 ::: {.column width="74%"}
-**Master, HSE, Faculty of Economics.** Statistical Modelling and Actuarial Science. [TODO: years]
+**Master, HSE, Faculty of Economics.** Statistical Modelling and Actuarial Science. 2017–2019
 :::
 ::::
 
@@ -56,13 +58,32 @@ Probability theory in module 2. Statistics and regression in module 3.
 ![](img/logo-unil.png){width="280px"}
 :::
 ::: {.column width="74%"}
-**PhD in Actuarial Science.** HEC Lausanne, University of Lausanne (UNIL), Switzerland. [TODO: years]
+**PhD in Actuarial Science.** HEC Lausanne, University of Lausanne (UNIL), Switzerland. 2019–2024
 :::
 ::::
 
 . . .
 
 Same university as you, then a few years in a different country.
+
+## After the PhD I stayed at UNIL
+
+:::: {.columns}
+::: {.column width="26%"}
+![](img/logo-unil.png){width="280px"}
+:::
+::: {.column width="74%"}
+I taught master courses for the business analytics and management programmes:
+
+. . .
+
+**Data Science in Business Analytics** (6 credits)
+
+. . .
+
+**AI Tools in Business Innovation**, an elective course I developed myself
+:::
+::::
 
 ## What I do now
 
@@ -137,4 +158,4 @@ Ask me anything about the course, about studying in Lausanne, or about what an a
 
 . . .
 
-[TODO: contact details]{.muted}
+aashemendyuk@mephi.ru
