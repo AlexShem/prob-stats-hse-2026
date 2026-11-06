@@ -173,24 +173,20 @@ Regression and estimation from data come in module 3.
 
 ## Why this matters for a business student
 
+Pricing, credit risk, inventory, quality control, A/B tests, surveys. All of them ask the same thing: [how sure can we be, given what we know?]{.answer}
+
+A bank has just approved 1,000 loans. Some borrowers will not pay back, and nobody knows which ones.
+
 :::: {.columns}
 ::: {.column width="50%"}
-Pricing, credit risk, inventory, quality control, A/B tests, surveys.
-
-. . .
-
-All of them are the same question: *how sure can we be, given what we know?*
+::: {.box-ex}
+**Module 2: before any data.** If each loan defaults with probability *p*, how many defaults should the bank plan for, and how far from that number can the real count be?
+:::
 :::
 ::: {.column width="50%"}
-A bank gives 1,000 loans. Some borrowers will not pay back, and nobody knows which ones.
-
-. . .
-
-How many defaults should the bank plan for? Module 2.
-
-. . .
-
-After the first six months the bank has real data. How far can it trust the estimate? Module 3.
+::: {.box-thm}
+**Module 3: after six months.** The bank now has real data. How well does it know *p*, and when is a change in the default rate more than bad luck?
+:::
 :::
 ::::
 
