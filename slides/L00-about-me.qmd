@@ -182,7 +182,15 @@ Pricing, credit risk, inventory, quality control, A/B tests, surveys.
 All of them are the same question: *how sure can we be, given what we know?*
 :::
 ::: {.column width="50%"}
-[TODO: one real example from your own practice or research that students would recognise.]{.muted}
+A bank gives 1,000 loans. Some borrowers will not pay back, and nobody knows which ones.
+
+. . .
+
+How many defaults should the bank plan for? Module 2.
+
+. . .
+
+After the first six months the bank has real data. How far can it trust the estimate? Module 3.
 :::
 ::::
 
