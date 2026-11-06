@@ -1,0 +1,110 @@
+---
+title: "About me"
+subtitle: "Probability Theory and Mathematical Statistics · first session"
+date: "2026-11-07"
+---
+
+{{< include ../_shared/_macros.qmd >}}
+
+<!-- Intro deck for the first session. Not a lecture: no chapter, no tracker entry.
+     Facts: degrees as given by Aleksandr; the paper is listed on Math-Net.ru (person192719).
+     Everything in [TODO: …] is for Aleksandr to fill or delete before the session. -->
+
+## Aleksandr Shemendyuk
+
+:::: {.columns}
+::: {.column width="55%"}
+I will teach you both the lectures and the seminars, in all three groups.
+
+. . .
+
+So you will see me twice as often as you might like.
+
+. . .
+
+Probability theory in module 2. Statistics and regression in module 3.
+:::
+::: {.column width="45%"}
+[TODO: photo]{.muted}
+
+[TODO: e-mail and where to find me]{.muted}
+:::
+::::
+
+## Where I studied
+
+::: {.box-def}
+**2013–2017 [TODO: check years]** Bachelor, HSE. Computer Science, Applied Mathematics and Informatics.
+:::
+
+::: {.box-def}
+**Master, HSE, Faculty of Economics.** Statistical Modelling and Actuarial Science.
+:::
+
+::: {.box-def}
+**PhD in Actuarial Science.** HEC Lausanne, University of Lausanne (UNIL), Switzerland.
+:::
+
+. . .
+
+Same university as you, then a few years in a different country. [TODO: years for the master and the PhD.]
+
+## What an actuary does
+
+Insurers sell a promise: *if something bad happens, we pay.* Someone has to decide the price of that promise.
+
+. . .
+
+An actuary prices it with probability. How often does a car crash? How large is a typical claim? How much money must be set aside so the company survives a terrible year?
+
+. . .
+
+That is the content of this course, with the insurance removed: probability first, then statistics for estimating it from data.
+
+## What I research
+
+My PhD was about **ruin**: the chance that an insurer's capital falls below zero.
+
+. . .
+
+A paper from that work, with G. Jasnovidov:
+
+*Two-dimensional Parisian ruin problem and computation of corresponding Pickands constants.*
+Theory of Probability and its Applications, 70(1), 2025, pp. 37–59.
+
+. . .
+
+"Parisian" means that being below zero for a moment is not yet ruin. The company has to stay below for a given length of time.
+
+. . .
+
+[TODO: one sentence on what the paper finds, in plain words, or cut this slide.]
+
+## Why this matters for a business student
+
+:::: {.columns}
+::: {.column width="50%"}
+Pricing, credit risk, inventory, quality control, A/B tests, surveys.
+
+. . .
+
+All of them are the same question: *how sure can we be, given what we know?*
+:::
+::: {.column width="50%"}
+[TODO: one real example from your own practice or research that students would recognise.]{.muted}
+:::
+::::
+
+## How we will work
+
+- Lectures: two 80-minute blocks with a break. The book chapter is the master copy, the slides retell it.
+- Seminars: the same problem sheet for all groups. Solutions appear in the book after the last group has done it.
+- [TODO: grading, to be filled when the formula is fixed. See `admin/course-info.md`.]
+
+## Questions
+
+Ask me anything about the course, about studying in Lausanne, or about what an actuary does all day.
+
+. . .
+
+[TODO: contact details]{.muted}
