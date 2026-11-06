@@ -50,7 +50,7 @@ aashemendyuk@mephi.ru
 ![](img/logo-hse.png){height="120px"}
 :::
 ::: {.column width="74%"}
-**Bachelor, HSE.** Computer Science, Applied Mathematics and Informatics. 2013–2017
+**Bachelor, HSE, Faculty of Computer Science.** Applied Mathematics and Informatics. 2013–2017
 :::
 ::::
 
@@ -71,10 +71,6 @@ aashemendyuk@mephi.ru
 **PhD in Actuarial Science.** HEC Lausanne, University of Lausanne (UNIL), Switzerland. 2019–2024
 :::
 ::::
-
-. . .
-
-Same university as you, then a few years in a different country.
 
 ## After the PhD I stayed at UNIL
 
@@ -110,7 +106,7 @@ Since September 2026 I am head of the **AI in Finance** lab at MEPhI (National R
 
 . . .
 
-[TODO: two plain sentences on what the lab does and one project students could relate to.]{.muted}
+The lab is new and still growing, and projects appear fast. They run from the cost of institutional care to credit risk, and the common thread is how health connects to economics.
 :::
 ::::
 
