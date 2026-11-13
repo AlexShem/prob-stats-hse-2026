@@ -42,4 +42,4 @@ In module 2 we work before any data. If each loan defaults with probability $p$,
 
 Lectures run as two 80-minute blocks with a break. This book is the master copy of every lecture, and the slides retell it. Seminars use the same problem sheet in all groups, and the solutions appear in the book after the last group has done it.
 
-Grading: to be confirmed. I will tell you in class.
+The final exam is 45% of the grade and the midterm on probability 25%. Attendance at seminars gives 10%. Eight short online quizzes (four per module) give 10%, and problems you solve at the board in seminars another 10%. There is no homework. The details and the retake rule are on the [front page of the book](../index.qmd#sec-grading).

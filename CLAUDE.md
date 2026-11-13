@@ -17,7 +17,8 @@ Aleksandr's how-to for the stage commands: `WORKFLOW.md`. Keep it in sync when c
 - It is a paid ("premium") programme, so the materials have to look carefully made: consistent notation, no typos in formulas, figures with labelled axes.
 - It is a classic university course: probability in module 2, statistics including regression in module 3. There is no programming or software-tools layer.
 - Python only appears at the end of seminar solutions, to show how the problem is solved numerically. We don't teach Python. Students should be able to read the code, run it and change a number.
-- No quizzes for now.
+- Quizzes: 4 short online quizzes per module (10–15 min, multiple choice, short answer or a photo of a handwritten solution). They are assessment: drafted privately in `assessment/quizzes/`, never in `book/` or `slides/`, and Aleksandr uploads them to the LMS.
+- No homework. Seminar activity is graded on problems solved at the board.
 
 ## What students get
 
@@ -42,7 +43,7 @@ book/                Quarto BOOK project, the published site
   seminars/SNN-<slug>.qmd
   schedule.qmd       includes _schedule-tables.md (generated, don't edit)
 slides/              reveal.js project, slides/LNN-<slug>.qmd, same stem as the lecture
-assessment/          midterm/, exam/: separate PRIVATE project, never published
+assessment/          midterm/, exam/, quizzes/: separate PRIVATE project, never published
 _shared/             _macros.qmd + preamble.tex (math), _setup.qmd (plot style), course.lua
                      (filter), book.css, slides.scss, data/
 templates/           lecture.qmd, seminar.qmd, slides.qmd (a pattern deck), exam.qmd. Copy these, don't render them in place
@@ -106,7 +107,7 @@ Material is prepared one teaching unit at a time, a few days before it is taught
 - **Seminar-only work** (a seminar prepared separately from its lecture, or reworked later): `unit/SNN-<slug>`.
 - **Fixes to material already merged** (a typo in L02 found during L03 week): `fix/<what>`, e.g. `fix/L02-bayes-example`. Keep these off unit branches, so a fix can go out without waiting for the next unit.
 - **Infrastructure** (filter, templates, Makefile, CLAUDE.md, scripts): `infra/<what>`.
-- **Assessment**: `exam/midterm`, `exam/final`. The repo is private, but still never merge exam content into `book/` or `slides/`.
+- **Assessment**: `exam/midterm`, `exam/final`, `exam/quiz-<module>-<n>` (e.g. `exam/quiz-2-1`). The repo is private, but still never merge exam content into `book/` or `slides/`.
 - **One-line operational changes** go straight to `main` as single commits, and only when Aleksandr asks: releasing solutions (`solutions-released`), a schedule refresh (`make schedule`). Commit message, for example: `Release S01 solutions`.
 
 Rules for agents:
@@ -134,7 +135,7 @@ Aleksandr starts a session and says what he wants in plain words, e.g. "fix slid
 | "Is unit N ready?", before a merge | Run `/review-unit LNN SNN`: math-checker, unit-reviewer and build-checker in parallel, then one ranked list. |
 | Trivial fix (a typo, a wrong word, at most ~3 lines, no numbers, labels or structure involved) | The main session edits it directly in the chapter and in the matching slide/seminar line, then runs build-checker. |
 | Release solutions, refresh the schedule | The main session, straight on `main` (CLAUDE.md, "Git workflow"). |
-| Exam drafting | The main session on `exam/…`, then math-checker. Never in `book/` or `slides/`. |
+| Exam or quiz drafting | The main session on `exam/…`, then math-checker. Never in `book/` or `slides/`. |
 | Tooling (filter, Makefile, scripts, agents, these rules) | The main session on `infra/…`. Update `WORKFLOW.md` if the way Aleksandr works changes. |
 
 **Rules:**
@@ -212,7 +213,7 @@ The coordination steps are in `.claude/skills/<stage>/SKILL.md`, and the working
 
 ### Confidentiality
 
-- Midterm and exam content lives only in `assessment/` (its own project with a `solutions` profile for marking keys). It must never appear in `book/` or `slides/`, or in anything published. Keep the repository private.
+- Midterm, exam and quiz content lives only in `assessment/` (its own project with a `solutions` profile for marking keys). It must never appear in `book/` or `slides/`, or in anything published. Keep the repository private.
 - Exams use `::: {.content-visible when-profile="solutions"}` for keys. The `sol`/`lecturer` filter is only active in the book.
 
 ## Writing style (anti-AI rules)
@@ -258,7 +259,7 @@ The materials must read as written by this lecturer, not generated. These rules 
 ## Open items
 
 - Module 3 timetable (Jan–Mar 2027) is missing. Add it with `make schedule` when it arrives.
-- Grading formula and ECTS: TODO in `admin/course-info.md` and in the table on `book/index.qmd`.
+- Grading formula is recorded (`admin/course-info.md`, public on `book/index.qmd` and L00). Still open: ECTS/hours, final-grade rounding, what the blocking final exam means for students (pass threshold?), quiz dates and topics, the programme's "Exam example.pdf" (not in the repo).
 - Midterm date: S10 or a separate session in the week of 21–27 Dec, not confirmed.
 - Where the book is published (HSE LMS, GitHub Pages, Quarto Pub): not decided. Publish the folder `book/_output/book/`.
 - The welcome text in `book/index.qmd` is for Aleksandr to write.

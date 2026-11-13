@@ -50,6 +50,7 @@ All eight topics are in. If module 3 has fewer lecture days than topics, items 1
 
 ## Decisions
 
-- No quizzes for now.
+- Quizzes: 4 online quizzes in module 2 and 4 in module 3 (5% each block). Dates and topics not fixed yet. Drafted privately in `assessment/quizzes/`.
+- No homework.
 - Regression is part of module 3.
 - Midterm date is open (see above).
