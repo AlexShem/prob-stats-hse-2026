@@ -46,6 +46,43 @@ A café chain surveys one random customer. Let $A$ be "ordered coffee" and $B$ "
 (b) $A^c\cap B^c$, which equals $(A\cup B)^c$ by @thm-demorgan.
 (c) $A\cup B$.
 (d) Either coffee without dessert or dessert without coffee: $(A\cap B^c)\cup(A^c\cap B)$. These two pieces are mutually exclusive, so their probabilities add. Do not write $A\cup B$ here: it also contains "both".
+
+Each answer is the shaded region in the matching panel of the picture.
+
+```{python}
+#| echo: false
+#| fig-alt: "Four Venn diagrams of two overlapping circles A and B. Shaded: A without B; everything outside both circles; both circles; both circles without their overlap."
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.patches import Circle, Rectangle
+
+xs, ys = np.meshgrid(np.linspace(-2, 2, 400),
+                     np.linspace(-1.4, 1.4, 280))
+in_a = (xs + 0.55) ** 2 + ys ** 2 < 1
+in_b = (xs - 0.55) ** 2 + ys ** 2 < 1
+panels = [
+    ("(a) $A\\cap B^c$", in_a & ~in_b),
+    ("(b) $A^c\\cap B^c$", ~in_a & ~in_b),
+    ("(c) $A\\cup B$", in_a | in_b),
+    ("(d) exactly one", in_a ^ in_b),
+]
+fig, axes = plt.subplots(1, 4, figsize=(6, 1.8))
+for ax, (title, region) in zip(axes, panels):
+    ax.contourf(xs, ys, region.astype(float), levels=[0.5, 1.5],
+                colors=["#4c8cc9"], alpha=0.6)
+    ax.add_patch(Circle((-0.55, 0), 1, fill=False, lw=1.2))
+    ax.add_patch(Circle((0.55, 0), 1, fill=False, lw=1.2))
+    ax.add_patch(Rectangle((-2, -1.4), 4, 2.8, fill=False, lw=1.2))
+    ax.text(-1.05, 0, "A", ha="center", va="center")
+    ax.text(1.05, 0, "B", ha="center", va="center")
+    ax.set_title(title, fontsize=10)
+    ax.set_xlim(-2.05, 2.05)
+    ax.set_ylim(-1.45, 1.45)
+    ax.set_aspect("equal")
+    ax.axis("off")
+plt.tight_layout()
+plt.show()
+```
 :::
 
 ## Problem 2 {.unnumbered}
@@ -69,7 +106,40 @@ Then use De Morgan's laws to write (b) and (e) in a second way. Are (b) and (e) 
 
 (c) Three mutually exclusive pieces, one for each supplier who is on time: $(A\cap B^c\cap C^c)\cup(A^c\cap B\cap C^c)\cup(A^c\cap B^c\cap C)$.
 
-(d) $(A\cap B)\cup(A\cap C)\cup(B\cap C)$. This union contains "all three on time" too, which is right: three is at least two.
+(d) $(A\cap B)\cup(A\cap C)\cup(B\cap C)$. This union contains "all three on time" too, which is right: three is at least two. The picture shades (c) and (d).
+
+```{python}
+#| echo: false
+#| fig-alt: "Two Venn diagrams of three overlapping circles A, B and C. On the left the parts inside exactly one circle are shaded, on the right the parts inside at least two circles."
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.patches import Circle, Rectangle
+
+xs, ys = np.meshgrid(np.linspace(-2.2, 2.2, 440),
+                     np.linspace(-2, 1.7, 370))
+centres = [(-0.6, 0.35), (0.6, 0.35), (0, -0.65)]
+inside = [(xs - cx) ** 2 + (ys - cy) ** 2 < 1 for cx, cy in centres]
+n_on_time = sum(region.astype(int) for region in inside)
+panels = [("(c) exactly one", n_on_time == 1),
+          ("(d) at least two", n_on_time >= 2)]
+fig, axes = plt.subplots(1, 2, figsize=(5, 2.4))
+for ax, (title, region) in zip(axes, panels):
+    ax.contourf(xs, ys, region.astype(float), levels=[0.5, 1.5],
+                colors=["#4c8cc9"], alpha=0.6)
+    for cx, cy in centres:
+        ax.add_patch(Circle((cx, cy), 1, fill=False, lw=1.2))
+    ax.add_patch(Rectangle((-2.2, -2), 4.4, 3.7, fill=False, lw=1.2))
+    spots = [(-1.8, 1.3), (1.8, 1.3), (-1.3, -1.5)]
+    for name, (tx, ty) in zip("ABC", spots):
+        ax.text(tx, ty, name, ha="center", va="center")
+    ax.set_title(title, fontsize=11)
+    ax.set_xlim(-2.25, 2.25)
+    ax.set_ylim(-2.05, 1.75)
+    ax.set_aspect("equal")
+    ax.axis("off")
+plt.tight_layout()
+plt.show()
+```
 
 (e) $(A\cap B\cap C)^c$.
 
@@ -126,7 +196,7 @@ For the largest share: $A\cap B\subseteq B$, so by @thm-consequences(3) it is at
 p_app, p_card = 0.80, 0.70
 lowest = max(0, p_app + p_card - 1)
 highest = min(p_app, p_card)
-print(f"share of clients with both: between {lowest:.2f} and {highest:.2f}")
+print(f"share with both: between {lowest:.2f} and {highest:.2f}")
 ```
 :::
 
@@ -147,7 +217,8 @@ from collections import Counter
 
 sums = Counter(i + j for i, j in product(range(1, 7), repeat=2))
 for total in (2, 7, 12):
-    print(f"P(sum = {total}) = {sums[total]}/36 = {sums[total] / 36:.3f}")
+    n_ways = sums[total]
+    print(f"P(sum = {total}) = {n_ways}/36 = {n_ways / 36:.3f}")
 ```
 :::
 
@@ -177,8 +248,11 @@ from collections import Counter
 # one outcome = (cashier of customer 1, of customer 2, of customer 3)
 outcomes = list(product(range(1, 5), repeat=3))
 n_used = Counter(len(set(choice)) for choice in outcomes)
-for used, name in [(3, "all different"), (1, "all the same"), (2, "exactly two share")]:
-    print(f"P({name}) = {n_used[used]}/{len(outcomes)} = {n_used[used] / len(outcomes):.4f}")
+names = {3: "all different", 1: "all the same",
+         2: "exactly two share"}
+for used, name in names.items():
+    share = n_used[used] / len(outcomes)
+    print(f"P({name}) = {n_used[used]}/{len(outcomes)} = {share:.4f}")
 ```
 :::
 
@@ -207,7 +281,8 @@ from math import factorial, perm, comb
 
 print(f"(a) pitch orders: {factorial(6)}")
 print(f"(b) chair, deputy, treasurer: {perm(15, 3)}")
-print(f"(c) delegations: {comb(15, 3)}, and 2730 / 3! = {perm(15, 3) // factorial(3)}")
+print(f"(c) delegations: {comb(15, 3)}")
+print(f"    check: 2730 / 3! = {perm(15, 3) // factorial(3)}")
 print(f"(d) loyalty codes: {26 ** 3:,}")
 ```
 :::
@@ -278,7 +353,7 @@ from scipy import stats
 # stats.hypergeom(M=total packs, n=expired packs, N=packs taken)
 for total, expired in [(20, 3), (40, 6)]:
     p_none = stats.hypergeom(total, expired, 4).pmf(0)
-    print(f"{total} packs, {expired} expired: P(none expired) = {p_none:.3f}")
+    print(f"{total} packs, {expired} expired: P(none) = {p_none:.3f}")
 ```
 :::
 
@@ -295,10 +370,10 @@ Order does not matter, so $|\Omega|=\binom{12}{5}=792$. "At least 2 analysts" me
 So $\Prob=1-\dfrac{21+175}{792}=\dfrac{596}{792}\approx 0.753$.
 
 ```{python}
-from scipy.special import comb
+from math import comb
 
-n_groups = comb(12, 5, exact=True)
-n_few_analysts = sum(comb(5, k, exact=True) * comb(7, 5 - k, exact=True) for k in (0, 1))
+n_groups = comb(12, 5)
+n_few_analysts = sum(comb(5, k) * comb(7, 5 - k) for k in (0, 1))
 print(f"P(at least 2 analysts) = {1 - n_few_analysts / n_groups:.3f}")
 ```
 :::
@@ -311,7 +386,33 @@ The shuttle from Rumyantsevo metro station to a business park leaves every 12 mi
 (b) What is the probability that she waits exactly 5 minutes? Is this event impossible?
 
 ::: sol
-(a) Look at one 12-minute gap between two departures. Lena's arrival is a uniform point in it (@def-geometric). She waits more than 5 minutes if she arrives in the first 7 minutes after a departure, so $\Prob=7/12\approx0.583$. As in @exm-courier, it is a length divided by a length.
+(a) Look at one 12-minute gap between two departures. Lena's arrival is a uniform point in it (@def-geometric). She waits more than 5 minutes if she arrives in the first 7 minutes after a departure (the blue part of the picture), so $\Prob=7/12\approx0.583$. As in @exm-courier, it is a length divided by a length.
+
+```{python}
+#| echo: false
+#| fig-alt: "A timeline from 0 to 12 minutes between two shuttle departures. The first 7 minutes are shaded and labelled wait more than 5 minutes, the last 5 minutes are labelled wait at most 5 minutes."
+import matplotlib.pyplot as plt
+
+fig, ax = plt.subplots(figsize=(5.5, 1.4))
+ax.axvspan(0, 7, color="#4c8cc9", alpha=0.6)
+ax.axvspan(7, 12, color="#b7c4d1", alpha=0.6)
+ax.text(3.5, 0.5, "wait > 5 min\n7 minutes", ha="center",
+        va="center")
+ax.text(9.5, 0.5, "wait ≤ 5 min\n5 minutes", ha="center",
+        va="center")
+for departure in (0, 12):
+    ax.axvline(departure, color="#c0392b", lw=2.5)
+    ax.text(departure, 1.08, "shuttle leaves", color="#c0392b",
+            ha="center", va="bottom", fontsize=9)
+ax.set_xlim(-0.5, 12.5)
+ax.set_ylim(0, 1)
+ax.set_xticks(range(0, 13))
+ax.set_yticks([])
+ax.grid(False)
+ax.spines["left"].set_visible(False)
+ax.set_xlabel("Lena arrives (minutes after a departure)")
+plt.show()
+```
 
 (b) Waiting exactly 5 minutes means arriving at one single moment, an interval of length 0, so the probability is 0. The event is not impossible: Lena arrives at some moment, and every single moment has probability 0 (the remark at the end of @sec-L01-geometric).
 
@@ -319,9 +420,11 @@ The shuttle from Rumyantsevo metro station to a business park leaves every 12 mi
 import numpy as np
 
 rng = np.random.default_rng(2026)
-arrival = rng.uniform(0, 12, 1_000_000)   # minutes after the last departure
+# arrival = minutes after the last departure
+arrival = rng.uniform(0, 12, 1_000_000)
 wait = 12 - arrival
-print(f"simulated P(wait > 5) = {np.mean(wait > 5):.3f}, exact = {7 / 12:.3f}")
+p_sim = np.mean(wait > 5)
+print(f"simulated P(wait > 5) = {p_sim:.3f}, exact = {7 / 12:.3f}")
 print(f"simulated P(wait exactly 5) = {np.mean(wait == 5):.3f}")
 ```
 :::
@@ -331,10 +434,34 @@ print(f"simulated P(wait exactly 5) = {np.mean(wait == 5):.3f}")
 Priya and Kemal agree to meet at a bus stop between 18:00 and 19:00. Each arrives at a random moment of that hour, independently, and waits 10 minutes. What is the probability that they meet? Draw the region.
 
 ::: sol
-As in @exm-meeting, $(x,y)$ is uniform in the square $[0,60]^2$ and they meet when $|x-y|\le10$. The two corner triangles outside the band have legs $60-10=50$, so together they have area $50^2$. Then
+As in @exm-meeting, $(x,y)$ is uniform in the square $[0,60]^2$ and they meet when $|x-y|\le10$, the shaded band in the picture. The two corner triangles outside the band have legs $60-10=50$, so together they have area $50^2$. Then
 $$
 \Prob(\text{meet})=1-\Big(\frac{50}{60}\Big)^2=\frac{11}{36}\approx 0.306.
 $$
+
+```{python}
+#| echo: false
+#| fig-alt: "A square of arrival times with a shaded band of width 10 minutes on each side of the diagonal. The two white corner triangles are labelled leg 50."
+import numpy as np
+import matplotlib.pyplot as plt
+
+t = np.linspace(0, 60, 200)
+fig, ax = plt.subplots(figsize=(4, 3.8))
+ax.fill_between(t, np.maximum(t - 10, 0), np.minimum(t + 10, 60),
+                color="#4c8cc9", alpha=0.6)
+ax.plot([0, 60], [0, 60], color="black", lw=0.8, ls="--")
+ax.text(43, 17, "leg 50", ha="center", va="center")
+ax.text(17, 43, "leg 50", ha="center", va="center")
+ax.text(36, 30, "they meet", rotation=45, ha="center", va="center",
+        fontsize=9)
+ax.set_xlim(0, 60)
+ax.set_ylim(0, 60)
+ax.set_aspect("equal")
+ax.set_xlabel("Priya arrives (minutes after 18:00)")
+ax.set_ylabel("Kemal arrives (minutes after 18:00)")
+plt.tight_layout()
+plt.show()
+```
 
 ```{python}
 import numpy as np
@@ -359,7 +486,7 @@ A warehouse near Podolsk has one loading dock. Two trucks are due between 8:00 a
 ::: sol
 (a) Truck 1 uses the dock from $x$ to $x+10$ and truck 2 from $y$ to $y+20$. No clash means that one truck is done before the other arrives: either $y\ge x+10$ (truck 1 came first and finished) or $x\ge y+20$ (truck 2 came first and finished).
 
-(b) The point $(x,y)$ is uniform in the square $[0,60]^2$ of area 3600 (@def-geometric). The region $y\ge x+10$ is the triangle above the line $y=x+10$, with legs $60-10=50$ and area $50^2/2=1250$. The region $x\ge y+20$ is the triangle below the line $y=x-20$, with legs $60-20=40$ and area $40^2/2=800$. So
+(b) The point $(x,y)$ is uniform in the square $[0,60]^2$ of area 3600 (@def-geometric). The region $y\ge x+10$ is the triangle above the line $y=x+10$, with legs $60-10=50$ and area $50^2/2=1250$. The region $x\ge y+20$ is the triangle below the line $y=x-20$, with legs $60-20=40$ and area $40^2/2=800$. These are the two white corners in the picture below. So
 $$
 \Prob(\text{clash})=1-\frac{1250+800}{3600}=\frac{1550}{3600}=\frac{31}{72}\approx 0.431 .
 $$
@@ -367,15 +494,22 @@ $$
 (c) The clash band runs from the line $y=x-20$ up to the line $y=x+10$. Above the diagonal truck 1 came first, and truck 2 clashes if it arrives within 10 minutes, the time truck 1 needs. Below the diagonal truck 2 came first, and the dangerous stretch is 20 minutes long. So each side of the band is as wide as the unloading time of the truck that came first. If each truck needed 15 minutes, the band would be $|x-y|<15$, centred on the diagonal, the same region as in @exm-meeting, and $\Prob(\text{clash})=7/16\approx0.438$. In both cases the trucks need 30 minutes in total, and the two answers are close but not equal.
 
 ```{python}
-#| fig-alt: "A square of arrival times with a shaded band around the diagonal, reaching 10 minutes above it and 20 minutes below it."
+#| echo: false
+#| fig-alt: "A square of arrival times with a shaded band between the lines y = x + 10 and y = x - 20. The white triangle above the band has area 1250 and the one below has area 800; both mean no clash."
 import numpy as np
 import matplotlib.pyplot as plt
 
 x = np.linspace(0, 60, 200)
+lower, upper = np.maximum(x - 20, 0), np.minimum(x + 10, 60)
 fig, ax = plt.subplots(figsize=(4, 3.8))
-lower, upper = np.maximum(x - 20, 0), np.minimum(x + 10, 60)   # the clash band
 ax.fill_between(x, lower, upper, color="#4c8cc9", alpha=0.6)
 ax.plot([0, 60], [0, 60], color="black", lw=0.8, ls="--")
+ax.text(27.5, 32.5, "$y=x+10$", rotation=45, ha="center",
+        va="center", fontsize=9)
+ax.text(42.5, 27.5, "$y=x-20$", rotation=45, ha="center",
+        va="center", fontsize=9)
+ax.text(15, 46, "no clash\n1250", ha="center", va="center")
+ax.text(47, 11, "no clash\n800", ha="center", va="center")
 ax.set_xlim(0, 60)
 ax.set_ylim(0, 60)
 ax.set_aspect("equal")
@@ -392,7 +526,8 @@ n_trials = 1_000_000
 truck_1 = rng.uniform(0, 60, n_trials)
 truck_2 = rng.uniform(0, 60, n_trials)
 no_clash = (truck_2 >= truck_1 + 10) | (truck_1 >= truck_2 + 20)
-print(f"simulated P(clash) = {1 - np.mean(no_clash):.3f}, exact = {31 / 72:.3f}")
+p_clash = 1 - np.mean(no_clash)
+print(f"simulated P(clash) = {p_clash:.3f}, exact = {31 / 72:.3f}")
 ```
 :::
 
@@ -403,17 +538,57 @@ print(f"simulated P(clash) = {1 - np.mean(no_clash):.3f}, exact = {31 / 72:.3f}"
 A warehouse floor is an $8\times8$ grid of squares. Two robots, one white and one black, are put on two different squares chosen at random. They "see each other" if they stand in the same row or in the same column. What is the probability that they do not see each other?
 
 ::: sol
-Treat the placements as ordered, because the robots have different colours: $64\cdot63$ equally likely outcomes. Fix the white robot's square (64 ways). The black robot must be outside its row and column, which leaves $64-8-8+1=49$ squares (the white robot's own square was subtracted twice). So
+Treat the placements as ordered, because the robots have different colours: $64\cdot63$ equally likely outcomes. Fix the white robot's square (64 ways). The black robot must be outside its row and column, which leaves $64-8-8+1=49$ squares, the blue ones in the picture (the white robot's own square was subtracted twice). So
 $$
 \Prob=\frac{64\cdot 49}{64\cdot 63}=\frac{49}{63}=\frac79\approx 0.778.
 $$
 A common wrong answer is $49/64$, which forgets that the black robot cannot take the same square as the white one.
 
 ```{python}
+#| echo: false
+#| fig-alt: "An 8 by 8 grid. The white robot stands in row 3, column 6. The other 14 squares of its row and column are red, marked sees; the remaining 49 squares are blue, marked safe."
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.colors import ListedColormap
+from matplotlib.patches import Patch
+from matplotlib.lines import Line2D
+
+row_white, col_white = 2, 5   # the white robot's square
+board = np.zeros((8, 8), dtype=int)   # 0 = safe
+board[row_white, :] = 1   # same row: sees
+board[:, col_white] = 1   # same column: sees
+board[row_white, col_white] = 2   # the white robot itself
+n_sees, n_safe = (board == 1).sum(), (board == 0).sum()
+assert n_sees + n_safe + 1 == 64
+colours = ListedColormap(["#4c8cc9", "#c0392b", "#b7c4d1"])
+fig, ax = plt.subplots(figsize=(3.4, 3.2))
+ax.pcolormesh(board, cmap=colours, vmin=0, vmax=2, alpha=0.6,
+              edgecolors="white", linewidth=1.5)
+ax.plot(col_white + 0.5, row_white + 0.5, "o", ms=13,
+        markerfacecolor="white", markeredgecolor="black")
+ax.legend(handles=[
+    Patch(color="#c0392b", alpha=0.6, label=f"sees ({n_sees})"),
+    Patch(color="#4c8cc9", alpha=0.6, label=f"safe ({n_safe})"),
+    Line2D([], [], ls="", marker="o", ms=9, markerfacecolor="white",
+           markeredgecolor="black", label="white robot"),
+], loc="upper center", bbox_to_anchor=(0.5, -0.2), ncol=3,
+    frameon=False, fontsize=9, handlelength=1.2, columnspacing=1)
+ax.set_xticks(np.arange(8) + 0.5, range(1, 9))
+ax.set_yticks(np.arange(8) + 0.5, range(1, 9))
+ax.set_xlabel("Column")
+ax.set_ylabel("Row")
+ax.invert_yaxis()
+ax.set_aspect("equal")
+ax.grid(False)
+plt.show()
+```
+
+```{python}
 from itertools import permutations
 
 squares = [(row, col) for row in range(8) for col in range(8)]
-n_safe = sum(1 for a, b in permutations(squares, 2) if a[0] != b[0] and a[1] != b[1])
+n_safe = sum(1 for a, b in permutations(squares, 2)
+             if a[0] != b[0] and a[1] != b[1])
 n_all = 64 * 63
 print(f"P(no sight line) = {n_safe}/{n_all} = {n_safe / n_all:.3f}")
 ```
@@ -430,7 +605,32 @@ Count the opposite: all 30 birthdays are different. Ordered, with $365^{30}$ equ
 $$
 \Prob(\text{some pair shares})=1-\frac{365\cdot364\cdots336}{365^{30}}\approx 0.706.
 $$
-Already 23 people give more than 50%. When I ask a group to guess, the guesses are usually far lower, because they compare their own birthday against 29 others, while the question allows any of the $\binom{30}{2}=435$ pairs.
+Already 23 people give more than 50% (see the picture). When I ask a group to guess, the guesses are usually far lower, because they compare their own birthday against 29 others, while the question allows any of the $\binom{30}{2}=435$ pairs.
+
+```{python}
+#| echo: false
+#| fig-alt: "A rising S-shaped curve of the probability of a shared birthday against team size from 1 to 60. It crosses one half at n = 23, where it is 0.507, and is 0.706 at n = 30."
+import numpy as np
+import matplotlib.pyplot as plt
+
+team_size = np.arange(1, 61)
+p_shared = [1 - np.prod((365 - np.arange(n)) / 365)
+            for n in team_size]
+fig, ax = plt.subplots(figsize=(5, 3.2))
+ax.plot(team_size, p_shared, color="#4c8cc9", lw=2)
+ax.axhline(0.5, color="black", lw=0.8, ls="--")
+for n in (23, 30):
+    p = p_shared[n - 1]
+    ax.plot(n, p, "o", color="#c0392b")
+    ax.annotate(f"n = {n}: {p:.3f}", (n, p), xytext=(8, -14),
+                textcoords="offset points", fontsize=9)
+ax.set_xlim(0, 60)
+ax.set_ylim(0, 1)
+ax.set_xlabel("Team size n")
+ax.set_ylabel("P(some pair shares)")
+plt.tight_layout()
+plt.show()
+```
 
 ```{python}
 import numpy as np
@@ -466,9 +666,12 @@ The three types do not overlap, so there are $5+20+10=35$ cups. Other books give
 ```{python}
 from itertools import combinations_with_replacement
 
-flavours = ["vanilla", "chocolate", "pistachio", "mango", "salted caramel"]
+flavours = ["vanilla", "chocolate", "pistachio", "mango",
+            "salted caramel"]
 cups = list(combinations_with_replacement(flavours, 3))
 print(f"different cups: {len(cups)}")
-print("the first three:", cups[:3])
+print("the first three:")
+for cup in cups[:3]:
+    print("  ", ", ".join(cup))
 ```
 :::
