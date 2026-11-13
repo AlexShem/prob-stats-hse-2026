@@ -77,12 +77,12 @@ After publishing, tag the version students saw: `git tag pub/2026-11-21` (then `
 
 - `main` always builds and is what you publish.
 - `unit/LNN-…` holds one week's lecture, slides and seminar, and is merged when you're happy.
-- `fix/…` is for corrections to merged material, `infra/…` for tooling, and `exam/midterm` / `exam/final` for exams (which are never published).
+- `fix/…` is for corrections to merged material, `infra/…` for tooling, and `exam/midterm` / `exam/final` / `exam/quiz-2-1` etc. for exams and quizzes (which are never published).
 - Agents never push, never merge without your OK, and never commit straight to `main` (enforced by the hooks). The exceptions are releasing solutions and refreshing the schedule, when you ask.
 
 ## Exams
 
-There's no command for exams. Ask in plain words, for example "draft the midterm on L1–L7, 90 minutes, two variants". The agent works on `exam/midterm` in `assessment/`. Then `make assessment` builds the papers and `make assessment-keys` the marking keys. None of this goes into the book.
+There's no command for exams. Ask in plain words, for example "draft the midterm on L1–L7, 90 minutes, two variants". The agent works on `exam/midterm` in `assessment/`. Then `make assessment` builds the papers and `make assessment-keys` the marking keys. Quizzes work the same way ("draft quiz 2-1 on L1–L2, 15 minutes, 5 multiple-choice questions"), in `assessment/quizzes/`, and you upload them to the LMS. None of this goes into the book.
 
 ## If something looks wrong
 
