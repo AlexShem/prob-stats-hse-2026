@@ -508,7 +508,7 @@ I find the chain easier to set up: you never have to decide what $\Omega$ is.
 
 . . .
 
-Seminar 1, Problem 9: with 30 people "all different" is about 0.294, so [a shared birthday has probability about 0.706]{.answer}.
+Seminar 1, Problem 16: with 30 people "all different" is about 0.294, so [a shared birthday has probability about 0.706]{.answer}.
 :::
 ::: {.column width="50%"}
 ```{python}
