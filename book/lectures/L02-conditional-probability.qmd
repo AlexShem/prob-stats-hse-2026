@@ -128,7 +128,7 @@ $$
 and two of the ten share a birthday with probability about $0.117$.
 :::
 
-Multiply out and the product is $365\cdot364\cdots356/365^{10}$, exactly what counting ordered outcomes gives with @thm-product. The chain rule and the counting are two readings of one fraction. I find the chain reading easier to set up, because you never have to decide what $\Omega$ is. Seminar 1 (Problem 9) asks about 30 people. For them "all different" has probability about 0.294, so the probability that at least two share a birthday is about 0.706.
+Multiply out and the product is $365\cdot364\cdots356/365^{10}$, exactly what counting ordered outcomes gives with @thm-product. The chain rule and the counting are two readings of one fraction. I find the chain reading easier to set up, because you never have to decide what $\Omega$ is. Seminar 1 (Problem 16) asks about 30 people. For them "all different" has probability about 0.294, so the probability that at least two share a birthday is about 0.706.
 
 When an experiment happens in stages, draw it as a **probability tree**. Each branch carries the conditional probability of that step, given the path that leads to it. The probabilities on the branches leaving one node add up to 1 (that is @thm-conditional-axioms). To get the probability of a whole path, multiply along it (the multiplication rule). To get the probability of an event, add the paths that make it up: different paths are mutually exclusive.
 

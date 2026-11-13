@@ -19,11 +19,11 @@ Keep entries short. Numbers (Def 1.4, Ex 1.7) are the book's numbers, taken from
 
 **Recurring devices in seminars.** Problems numbered by hand, easy to hard, solution by hand in `::: sol`, Python check at the end.
 
-**Contexts and names already used** (vary them, do not repeat without a reason): Ilya's croissant stand at Paveletskaya, promo code and mobile app store, coffee/dessert café chain, discounted items and instalments, yoghurt and expired packs, Wi-Fi passwords and PINs, sales managers and analysts, robots on a grid, courier in a 2-hour window, two people meeting in a café, birthdays. Names: Ilya, Priya, Kemal.
+**Contexts and names already used** (vary them, do not repeat without a reason): Ilya's croissant stand at Paveletskaya, promo code and mobile app store, coffee/dessert café chain, discounted items and instalments, yoghurt and expired packs, Wi-Fi passwords and PINs, sales managers and analysts, robots on a grid, courier in a 2-hour window, two people meeting in a café, birthdays; S01 also uses sushi-bar suppliers, a bank app and salary card, supermarket cashiers, a demo day, a student club, a bakery window, an office shuttle, a loading dock, an ice-cream kiosk. Names: Ilya, Priya, Kemal, Rustam, Lena, Anvar, Sofia.
 
 ## L01: Events, probability and counting
 
-Files: `book/lectures/L01-probability-basics.qmd`, `slides/L01-probability-basics.qmd` (49 slides), `book/seminars/S01-counting.qmd` (10 problems).
+Files: `book/lectures/L01-probability-basics.qmd`, `slides/L01-probability-basics.qmd` (49 slides), `book/seminars/S01-counting.qmd` (17 problems, the last one starred).
 Status: merged (PR #1, counting terminology). Permutation, arrangement and combination are separate definitions; the numbers below are the current ones.
 
 **Chapter.** Opens with Ilya's croissants ("will he sell at least 25?"). Order of sections:
@@ -43,7 +43,30 @@ Status: merged (PR #1, counting terminology). Permutation, arrangement and combi
 
 **Slides.** Break after classical probability. Tags give chapter numbers. Pitfall slides: forgetting the overlap, too coarse an $\Omega$, "at least one is 1 minus none", unequal sums of two dice.
 
-**Seminar S01.** Problems on events, counting, classical and geometric probability. Problem 9 is birthdays (leads into products of conditional probabilities). Problem 10 is a meeting problem that uses "independently" informally, so L02 defines independence formally.
+**Seminar S01.** 17 problems in the order of the lecture; 17 print pages with solutions (8 in the student PDF). Not in `solutions-released`. Revised before the first teaching (14 Nov) to match learning outcome 1 of the programme (definitions, axioms and derivations from them, counting): for each subtopic one problem repeats the lecture idea and one expands it (new business setting plus one twist). Intro paragraph and a `::: lecturer` timing cue as in S02: spine Problems 1, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14 (about 76 min); 2 and 9 marked *if time allows*; 15, 16, 17\* for a strong group or to take home. A visible "Useful formulas" note (unnumbered section before Problem 1) introduces the factorial ($n!$, $0!=1$, $4!=24$) and tabulates De Morgan, complement, union, classical, product rule, permutations, arrangements, combinations, swap test and geometric probability with their lecture numbers; Problem 9 builds on it.
+Figures (unnumbered, `echo: false`, inside `::: sol`, so hidden until release): Problem 1 four two-circle Venn panels (a)–(d); Problem 2 three-circle Venn, "exactly one" and "at least two"; Problem 12 timeline of one 12-minute cycle (first 7 min = wait > 5); Problem 13 square with band $|x-y|\le10$, corners "leg 50"; Problem 14 clash band with lines $y=x+10$, $y=x-20$ and no-clash areas 1250, 800; Problem 15 8×8 grid, robot's row and column (14, "sees") vs 49 safe squares; Problem 16 P(shared birthday) for n = 1…60 with n = 23 and 30 marked. Same colours as L01 (`#4c8cc9`, `#c0392b`, `#b7c4d1`).
+
+| Problem | Theme | Context, names | Cites |
+|---|---|---|---|
+| 1 | Events, repeat: set expressions for coffee/dessert | café chain | Thm 1.1 |
+| 2 | If time allows. Events, expand: three suppliers on time; none vs not all three via De Morgan for three events | sushi bar, Vladivostok | Thm 1.1 |
+| 3 | Axioms, repeat: $\Prob(A\cap B)=0.19$, neither 0.22, exactly one 0.59 | online store, discounts and instalments | Thm 1.2 |
+| 4 | Axioms, expand: prove $\Prob(A\cap B^c)=\Prob(A)-\Prob(A\cap B)$ and $\Prob(A\cap B)\ge\Prob(A)+\Prob(B)-1$; app 80%, salary card 70%, both between 0.50 and 0.70; mutually exclusive 0.7 and 0.5 impossible (old Problem 2). Mentions $A\setminus B$ as other books' notation for $A\cap B^c$ | regional bank, Yekaterinburg | Def 1.4, Thm 1.2 |
+| 5 | Classical, repeat: find the mistake, 11 sums (1/6, 1/36) | dice | Def 1.5 |
+| 6 | Classical, expand: 3 customers, 4 cashiers, $4^3=64$; all different 0.375, all same 0.0625, exactly two share 0.5625; Rustam's "three patterns, 1/3 each" is the coarse $\Omega$ | supermarket, Yaroslavl; Rustam | Thm 1.3, Def 1.7, Def 1.5, Sec 1.1 |
+| 7 | Counting, repeat: "does order matter?" drill: $6!=720$, $15\cdot14\cdot13=2730$, $\binom{15}3=455$, $26^3=17\,576$ | demo day in Skolkovo, student club, loyalty codes | Defs 1.6–1.8, Thm 1.3, Thm 1.4 |
+| 8 | Counting, expand: Wi-Fi password, at least one digit by complement, $\Prob(\text{no digit})\approx0.074$ | Wi-Fi | Thm 1.3 |
+| 9 | If time allows. Counting, expand: identical items, $8!/(3!3!2!)=560=\binom83\binom53$ | bakery at Chistye Prudy, Napoleon/medovik/cheesecake | Def 1.6, Thm 1.4, Thm 1.3 |
+| 10 | Combinations, repeat: expired packs, 40 shelf, 0.507 vs 0.491 | yoghurt shelf | Ex 1.7 |
+| 11 | Combinations, expand: at least 2 analysts by complement, 596/792 ≈ 0.753 | sales department | (none) |
+| 12 | Geometric 1D, repeat: shuttle every 12 min, wait > 5 is 7/12; exactly 5 has probability 0 but is not impossible | office shuttle, Rumyantsevo; Lena | Def 1.9, Ex 1.8, Sec 1.6 |
+| 13 | Geometric 2D, repeat: meeting with 10 min wait, 11/36 | bus stop; Priya, Kemal | Ex 1.9 |
+| 14 | Geometric 2D, expand: one dock, 10 and 20 min unloading, asymmetric band, $\Prob(\text{clash})=31/72\approx0.431$ vs 7/16 for 15+15; labelled figure in the solution | warehouse near Podolsk; Anvar | Def 1.9, Ex 1.9 |
+| 15 | If time allows. Robots on an 8×8 grid, 7/9 | warehouse robots | (none) |
+| 16 | If time allows. Birthdays in a team of 30, 0.706 (L02 Ex 2.2 cites it as Problem 16) | team | (none) |
+| 17\* | Past the lecture, not examinable: combinations with repetition, 3 scoops of 5 flavours, $5+20+10=35=\binom73$ | ice-cream kiosk, Gorky Park; Sofia | Thm 1.3, Def 1.8 |
+
+New contexts and names: suppliers of a sushi bar, bank app and salary card, supermarket cashiers, startup demo day, student club, loyalty codes, bakery window, office shuttle, loading dock, ice-cream kiosk. Names: Rustam, Lena, Anvar, Sofia. Problems 6, 13 and 14 use independence informally ("whatever the others chose", "independently", "has nothing to do with"); L02 defines it. Problem 12 sets up "probability zero is not impossible" for Lecture 4. Problem 16 (birthdays) leads into products of conditional probabilities in L02. Problem 17\* anticipates nothing examinable.
 
 ## L02: Conditional probability and Bayes' theorem
 
@@ -55,7 +78,7 @@ Status: chapter drafted on `unit/L02-conditional-probability`, under review.
 | Section | Items |
 |---|---|
 | 2.1 Conditional probability | Def 2.1; Fig 2.1 reduced sample space (conditioning panels); Ex 2.1 promo given app, $\Prob(A\mid B)\ne\Prob(B\mid A)$; Thm 2.1 $\Prob(\cdot\mid B)$ satisfies the axioms (proof-fold) |
-| 2.2 Multiplication rule | Thm 2.2 with chain rule (Eq 2.1); Ex 2.2 birthdays as a chain (team of 10, 0.883, ties to S01 Problem 9); Ex 2.3 two faulty bulbs out of 12, tree (Fig 2.2), checked by counting |
+| 2.2 Multiplication rule | Thm 2.2 with chain rule (Eq 2.1); Ex 2.2 birthdays as a chain (team of 10, 0.883, ties to S01 Problem 16); Ex 2.3 two faulty bulbs out of 12, tree (Fig 2.2), checked by counting |
 | 2.3 Independence | Def 2.2; Thm 2.3 complements; Def 2.3 mutual independence (pairwise is not enough, counterexample); Ex 2.4 gambler's fallacy, six tosses and the loan-officer version. **Break after this section.** |
 | 2.4 Total probability | Thm 2.4 (Eq 2.2), uses the partition from L01 Def 1.3; Ex 2.5 two phone-case factories (0.024); Ex 2.6 funnel by segment, overall rate 5.6% to 7.1% only because the mix changed |
 | 2.5 Bayes | Thm 2.5 (Eq 2.3); Ex 2.7 which factory made the defective case (0.75); Ex 2.8 fraud alerts, 100,000 payments, 0.2% fraud, 1% false alarms (198 / 2 / 998 / 98,802), Table 2.1; prior and posterior; prosecutor's fallacy |

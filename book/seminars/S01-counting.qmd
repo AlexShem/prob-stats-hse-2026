@@ -8,7 +8,29 @@ execute:
 {{< include ../../_shared/_macros.qmd >}}
 {{< include ../../_shared/_setup.qmd >}}
 
-Material from Lecture 1 (@sec-L01). Work by hand first. The Python at the end of a solution is there to check the number, not to find it.
+Material from Lecture 1 (@sec-L01). The problems follow the order of the lecture: events, the axioms, classical probability, counting, geometric probability. The firms on this sheet are made up, and so are their numbers. Problems marked *if time allows* are for a group that moves quickly. The starred Problem 17\* goes past the lecture and is not examinable. Work by hand first. The Python at the end of a solution is there to check the number, not to find it.
+
+::: lecturer
+80 minutes. Spine: Problems 1, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, about 76 min (4, 6, 8, 4, 8, 6, 7, 6, 8, 3, 7, 9). Problems 2 and 9 only if the group is quick. 15, 16 and 17\* for a strong group or to take home.
+:::
+
+## Useful formulas {.unnumbered}
+
+The **factorial** of a whole number $n\ge1$ is $n!=n(n-1)\cdots2\cdot1$, and $0!=1$. For example, $4!=4\cdot3\cdot2\cdot1=24$.
+
+| Rule | Formula | Lecture |
+|-----------------|----------------------------------|---------|
+| De Morgan's laws | $(A\cup B)^c=A^c\cap B^c$, $\ (A\cap B)^c=A^c\cup B^c$ | Thm [-@thm-demorgan] |
+| Complement | $\Prob(A^c)=1-\Prob(A)$ | Thm [-@thm-consequences] |
+| Union of two events | $\Prob(A\cup B)=\Prob(A)+\Prob(B)-\Prob(A\cap B)$ | Thm [-@thm-consequences] |
+| Classical (finitely many, equally likely outcomes) | $\Prob(A)=\lvert A\rvert/\lvert\Omega\rvert$ | Def [-@def-classical] |
+| Product rule | $k$ stages with $n_1,\dots,n_k$ choices (each $n_i$ the same whatever happened before): $n_1n_2\cdots n_k$ ways | Thm [-@thm-product] |
+| Permutations of $n$ | $n!$ | Def [-@def-permutation] |
+| Arrangements, $k$ of $n$, ordered | $n!/(n-k)!=n(n-1)\cdots(n-k+1)$ | Def [-@def-arrangement] |
+| Combinations, $k$ of $n$, unordered | $\binom{n}{k}=\frac{n!}{k!\,(n-k)!}$ | Def [-@def-combination], Eq [-@eq-binom] |
+| Geometric probability (a point chosen uniformly at random) | $\Prob(A)=$ size of $A$ / size of $\Omega$ (length, area or volume) | Def [-@def-geometric] |
+
+Permutations, arrangements and combinations are all about $n$ distinct objects, with no object used twice and $0\le k\le n$. Does order matter? Swap two chosen items. If you get a different outcome, count arrangements. If you get the same outcome, count combinations (@thm-counting).
 
 ## Problem 1 {.unnumbered}
 
@@ -24,14 +46,106 @@ A café chain surveys one random customer. Let $A$ be "ordered coffee" and $B$ "
 (b) $A^c\cap B^c$, which equals $(A\cup B)^c$ by @thm-demorgan.
 (c) $A\cup B$.
 (d) Either coffee without dessert or dessert without coffee: $(A\cap B^c)\cup(A^c\cap B)$. These two pieces are mutually exclusive, so their probabilities add. Do not write $A\cup B$ here: it also contains "both".
+
+Each answer is the shaded region in the matching panel of the picture.
+
+```{python}
+#| echo: false
+#| fig-alt: "Four Venn diagrams of two overlapping circles A and B. Shaded: A without B; everything outside both circles; both circles; both circles without their overlap."
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.patches import Circle, Rectangle
+
+xs, ys = np.meshgrid(np.linspace(-2, 2, 400),
+                     np.linspace(-1.4, 1.4, 280))
+in_a = (xs + 0.55) ** 2 + ys ** 2 < 1
+in_b = (xs - 0.55) ** 2 + ys ** 2 < 1
+panels = [
+    ("(a) $A\\cap B^c$", in_a & ~in_b),
+    ("(b) $A^c\\cap B^c$", ~in_a & ~in_b),
+    ("(c) $A\\cup B$", in_a | in_b),
+    ("(d) exactly one", in_a ^ in_b),
+]
+fig, axes = plt.subplots(1, 4, figsize=(6, 1.8))
+for ax, (title, region) in zip(axes, panels):
+    ax.contourf(xs, ys, region.astype(float), levels=[0.5, 1.5],
+                colors=["#4c8cc9"], alpha=0.6)
+    ax.add_patch(Circle((-0.55, 0), 1, fill=False, lw=1.2))
+    ax.add_patch(Circle((0.55, 0), 1, fill=False, lw=1.2))
+    ax.add_patch(Rectangle((-2, -1.4), 4, 2.8, fill=False, lw=1.2))
+    ax.text(-1.05, 0, "A", ha="center", va="center")
+    ax.text(1.05, 0, "B", ha="center", va="center")
+    ax.set_title(title, fontsize=10)
+    ax.set_xlim(-2.05, 2.05)
+    ax.set_ylim(-1.45, 1.45)
+    ax.set_aspect("equal")
+    ax.axis("off")
+plt.tight_layout()
+plt.show()
+```
 :::
 
 ## Problem 2 {.unnumbered}
 
-Can two mutually exclusive events have probabilities 0.7 and 0.5? One word, then a reason in one line.
+*If time allows.*
+
+Every Monday a sushi bar in Vladivostok gets fish, rice and vegetables from three different suppliers. The chef only really worries about the fish. Let $A$, $B$ and $C$ be the events that the fish, the rice and the vegetables arrive on time. Write as expressions in $A$, $B$ and $C$:
+
+(a) all three deliveries are on time;
+(b) none is on time;
+(c) exactly one is on time;
+(d) at least two are on time;
+(e) not all three are on time.
+
+Then use De Morgan's laws to write (b) and (e) in a second way. Are (b) and (e) the same event?
 
 ::: sol
-No. Mutually exclusive means $\Prob(A\cup B)=\Prob(A)+\Prob(B)=1.2$, and by @thm-consequences a probability cannot exceed 1. If the events are allowed to overlap, 0.7 and 0.5 are fine, and then $\Prob(A\cap B)\ge 0.2$.
+(a) $A\cap B\cap C$.
+
+(b) $A^c\cap B^c\cap C^c$.
+
+(c) Three mutually exclusive pieces, one for each supplier who is on time: $(A\cap B^c\cap C^c)\cup(A^c\cap B\cap C^c)\cup(A^c\cap B^c\cap C)$.
+
+(d) $(A\cap B)\cup(A\cap C)\cup(B\cap C)$. This union contains "all three on time" too, which is right: three is at least two. The picture shades (c) and (d).
+
+```{python}
+#| echo: false
+#| fig-alt: "Two Venn diagrams of three overlapping circles A, B and C. On the left the parts inside exactly one circle are shaded, on the right the parts inside at least two circles."
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.patches import Circle, Rectangle
+
+xs, ys = np.meshgrid(np.linspace(-2.2, 2.2, 440),
+                     np.linspace(-2, 1.7, 370))
+centres = [(-0.6, 0.35), (0.6, 0.35), (0, -0.65)]
+inside = [(xs - cx) ** 2 + (ys - cy) ** 2 < 1 for cx, cy in centres]
+n_on_time = sum(region.astype(int) for region in inside)
+panels = [("(c) exactly one", n_on_time == 1),
+          ("(d) at least two", n_on_time >= 2)]
+fig, axes = plt.subplots(1, 2, figsize=(5, 2.4))
+for ax, (title, region) in zip(axes, panels):
+    ax.contourf(xs, ys, region.astype(float), levels=[0.5, 1.5],
+                colors=["#4c8cc9"], alpha=0.6)
+    for cx, cy in centres:
+        ax.add_patch(Circle((cx, cy), 1, fill=False, lw=1.2))
+    ax.add_patch(Rectangle((-2.2, -2), 4.4, 3.7, fill=False, lw=1.2))
+    spots = [(-1.8, 1.3), (1.8, 1.3), (-1.3, -1.5)]
+    for name, (tx, ty) in zip("ABC", spots):
+        ax.text(tx, ty, name, ha="center", va="center")
+    ax.set_title(title, fontsize=11)
+    ax.set_xlim(-2.25, 2.25)
+    ax.set_ylim(-2.05, 1.75)
+    ax.set_aspect("equal")
+    ax.axis("off")
+plt.tight_layout()
+plt.show()
+```
+
+(e) $(A\cap B\cap C)^c$.
+
+De Morgan's laws (@thm-demorgan) work for three events with the same sentence: an outcome is outside $A\cup B\cup C$ exactly when it is outside each of the three. So (b) is $(A\cup B\cup C)^c$, "not even one on time", and (e) is $A^c\cup B^c\cup C^c$, "at least one is late".
+
+They are not the same event. In (b) every delivery is late, while (e) needs only one late delivery. A Monday when only the fish is late is in (e) and not in (b).
 :::
 
 ## Problem 3 {.unnumbered}
@@ -60,6 +174,34 @@ print(f"P(exactly one) = {p_either - p_both:.2f}")
 
 ## Problem 4 {.unnumbered}
 
+Two short proofs, then a use for them. In (a) and (b) use only the axioms of probability and their consequences from Lecture 1.
+
+(a) Show that $\Prob(A\cap B^c)=\Prob(A)-\Prob(A\cap B)$. The event $A\cap B^c$, "$A$ but not $B$", is written $A\setminus B$ in many books.
+(b) Show that $\Prob(A\cap B)\ge\Prob(A)+\Prob(B)-1$.
+(c) At a regional bank in Yekaterinburg, 80% of the clients use the mobile app and 70% get their salary on the bank's card. At least what share of the clients do both? What is the largest possible share? For each of the two extremes, describe in one sentence what the client base looks like.
+(d) Can two mutually exclusive events have probabilities 0.7 and 0.5? One word, then a reason in one line.
+
+::: sol
+(a) An outcome in $A$ is either in $B$ or not, so $A$ splits into two mutually exclusive pieces, $A\cap B$ and $A\cap B^c$. By axiom 3 of @def-probability, $\Prob(A)=\Prob(A\cap B)+\Prob(A\cap B^c)$. Move $\Prob(A\cap B)$ to the other side.
+
+(b) By @thm-consequences(4), $\Prob(A\cap B)=\Prob(A)+\Prob(B)-\Prob(A\cup B)$. By @thm-consequences(3), $\Prob(A\cup B)\le1$, so we subtract at most 1.
+
+(c) Let $A$ be "uses the app" and $B$ "has a salary card". By (b), $\Prob(A\cap B)\ge0.80+0.70-1=0.50$. The share is exactly 0.50 when $\Prob(A\cup B)=1$: every client has at least one of the two, so the 20% without the app all have a salary card and the 30% without a salary card all use the app.
+
+For the largest share: $A\cap B\subseteq B$, so by @thm-consequences(3) it is at most $\Prob(B)=0.70$. It equals 0.70 when every salary-card client also uses the app. Without data on the overlap, the bank can only say that between 50% and 70% of its clients do both.
+
+(d) No. Mutually exclusive means $\Prob(A\cap B)=0$, while (b) gives $\Prob(A\cap B)\ge0.7+0.5-1=0.2$. Put differently, $\Prob(A\cup B)$ would be $1.2$, and no probability exceeds 1.
+
+```{python}
+p_app, p_card = 0.80, 0.70
+lowest = max(0, p_app + p_card - 1)
+highest = min(p_app, p_card)
+print(f"share with both: between {lowest:.2f} and {highest:.2f}")
+```
+:::
+
+## Problem 5 {.unnumbered}
+
 Find the mistake in this solution.
 
 > *Two dice are rolled. The possible sums are 2, 3, …, 12, that is 11 values. So the probability that the sum is 7 is $1/11$.*
@@ -75,17 +217,83 @@ from collections import Counter
 
 sums = Counter(i + j for i, j in product(range(1, 7), repeat=2))
 for total in (2, 7, 12):
-    print(f"P(sum = {total}) = {sums[total]}/36 = {sums[total] / 36:.3f}")
+    n_ways = sums[total]
+    print(f"P(sum = {total}) = {n_ways}/36 = {n_ways / 36:.3f}")
 ```
 :::
 
-## Problem 5 {.unnumbered}
+## Problem 6 {.unnumbered}
+
+A small supermarket in Yaroslavl has four cashiers open. Three customers reach the tills at the same moment, and each picks a cashier at random: all four are equally likely, whatever the other two customers chose.
+
+(a) How many equally likely outcomes are there? Describe one outcome in words.
+(b) Find the probability that all three go to different cashiers, that all three go to the same cashier, and that exactly two of them share a cashier.
+(c) Rustam, a classmate, says: "There are only three patterns: all at one cashier, two at one and one at another, all at different cashiers. So each pattern has probability 1/3." Find his mistake.
+
+::: sol
+(a) An outcome records which cashier each customer picks, in order: customer 1, customer 2, customer 3. For example, $(2,2,4)$ means the first two go to cashier 2 and the third to cashier 4. Three stages with 4 choices each (@thm-product) give $|\Omega|=4^3=64$ ordered triples, all equally likely.
+
+(b) All different: the three customers take an arrangement of 3 cashiers out of 4 (@def-arrangement), $4\cdot3\cdot2=24$ outcomes, so $\Prob=24/64=0.375$.
+
+All at the same cashier: 4 outcomes, one for each cashier, so $\Prob=4/64=0.0625$.
+
+Exactly two share: what is left, $64-24-4=36$ outcomes, so $\Prob=36/64=0.5625$. A direct count agrees: choose the two customers who share ($\binom32=3$ ways), their cashier (4 ways) and the third customer's cashier (3 ways), which gives $3\cdot4\cdot3=36$.
+
+(c) The three patterns are a coarse sample space, the trap from @sec-L01-space and the same one as the eleven sums in Problem 5. They are not equally likely: they contain 4, 36 and 24 of the 64 outcomes. @def-classical needs equally likely outcomes, and only the 64 ordered triples are.
+
+```{python}
+from itertools import product
+from collections import Counter
+
+# one outcome = (cashier of customer 1, of customer 2, of customer 3)
+outcomes = list(product(range(1, 5), repeat=3))
+n_used = Counter(len(set(choice)) for choice in outcomes)
+names = {3: "all different", 1: "all the same",
+         2: "exactly two share"}
+for used, name in names.items():
+    share = n_used[used] / len(outcomes)
+    print(f"P({name}) = {n_used[used]}/{len(outcomes)} = {share:.4f}")
+```
+:::
+
+## Problem 7 {.unnumbered}
+
+Does order matter? For each situation say whether you count permutations, arrangements, combinations, or ordered choices with repetition (the product rule). Then count.
+
+(a) Six start-ups pitch at a demo day in Skolkovo. In how many orders can they go on stage?
+(b) A student club has 15 members. In how many ways can it elect a chair, a deputy and a treasurer (three different people)?
+(c) The same club sends 3 of its 15 members to a conference in Saint Petersburg. How many different delegations are possible?
+(d) A coffee shop prints a code of 3 capital Latin letters on each loyalty card, and letters may repeat (AAB is allowed). How many codes are there?
+
+::: sol
+Use the swap test: swap two chosen items and see whether the outcome changes.
+
+(a) All six go in a row and order matters: a permutation (@def-permutation), $6!=720$.
+
+(b) Swap the chair and the treasurer and you get a different board, so order matters, and nobody holds two posts: an arrangement of 3 from 15 (@def-arrangement), $15\cdot14\cdot13=2730$.
+
+(c) Swap two delegates and the delegation is the same group: a combination (@def-combination), $\binom{15}{3}=455$. Check with @thm-counting: $2730/3!=455$, because each delegation can share out the three posts of (b) in $3!=6$ ways.
+
+(d) Order matters (ABA is not AAB) and letters may repeat: three stages with 26 choices each (@thm-product), $26^3=17\,576$.
+
+```{python}
+from math import factorial, perm, comb
+
+print(f"(a) pitch orders: {factorial(6)}")
+print(f"(b) chair, deputy, treasurer: {perm(15, 3)}")
+print(f"(c) delegations: {comb(15, 3)}")
+print(f"    check: 2730 / 3! = {perm(15, 3) // factorial(3)}")
+print(f"(d) loyalty codes: {26 ** 3:,}")
+```
+:::
+
+## Problem 8 {.unnumbered}
 
 A Wi-Fi password has 8 characters. Each character is a lowercase Latin letter (26 options) or a digit (10 options).
 
 (a) How many passwords are possible?
 (b) How many contain at least one digit?
-(c) A password is generated at random. What is the probability that it contains no digit?
+(c) A password is generated at random: each character is one of the 36 symbols, all equally likely, chosen without looking at the others. What is the probability that it contains no digit?
 
 ::: sol
 (a) Eight stages with 36 choices each (@thm-product): $36^8=2\,821\,109\,907\,456$.
@@ -103,28 +311,32 @@ print(f"P(no digit) = {n_letters_only / n_all:.3f}")
 ```
 :::
 
-## Problem 6 {.unnumbered}
+## Problem 9 {.unnumbered}
 
-A sales department has 7 managers and 5 analysts. Five people are chosen at random for a trade fair. What is the probability that the group has at least 2 analysts?
+*If time allows.*
+
+A bakery near Chistye Prudy in Moscow puts 8 cakes in a row in its window: 3 Napoleons, 3 medoviks (Russian honey cakes) and 2 cheesecakes. Cakes of one kind look exactly the same. How many different-looking rows can the window have? Count it in two ways.
 
 ::: sol
-Order does not matter, so $|\Omega|=\binom{12}{5}=792$. "At least 2 analysts" means 2, 3, 4 or 5, which is four cases. The complement has only two: 0 or 1 analyst.
+First way. If all 8 cakes were different, there would be $8!=40\,320$ rows (@def-permutation). But swapping the three Napoleons among themselves does not change how the window looks, and the same holds for the medoviks and the cheesecakes. So each look is counted $3!\cdot3!\cdot2!=72$ times, the same argument as in the proof of @thm-counting, part 3:
+$$
+\frac{8!}{3!\,3!\,2!}=\frac{40\,320}{72}=560 .
+$$
 
-- 0 analysts: $\binom{5}{0}\binom{7}{5}=21$.
-- 1 analyst: $\binom{5}{1}\binom{7}{4}=5\cdot35=175$.
-
-So $\Prob=1-\dfrac{21+175}{792}=\dfrac{596}{792}\approx 0.753$.
+Second way. A look is fixed once we know which places hold which kind. Choose the 3 places for the Napoleons out of 8: $\binom83=56$. Then the 3 places for the medoviks out of the 5 left: $\binom53=10$. The cheesecakes take the last 2 places. By @thm-product, $56\cdot10=560$.
 
 ```{python}
-from scipy.special import comb
+from itertools import permutations
+from math import comb
 
-n_groups = comb(12, 5, exact=True)
-n_few_analysts = sum(comb(5, k, exact=True) * comb(7, 5 - k, exact=True) for k in (0, 1))
-print(f"P(at least 2 analysts) = {1 - n_few_analysts / n_groups:.3f}")
+window = "NNNMMMCC"   # N = Napoleon, M = medovik, C = cheesecake
+n_looks = len(set(permutations(window)))
+print(f"different-looking rows: {n_looks}")
+print(f"second way: C(8,3) * C(5,3) = {comb(8, 3) * comb(5, 3)}")
 ```
 :::
 
-## Problem 7 {.unnumbered}
+## Problem 10 {.unnumbered}
 
 A shelf has 20 packs of yoghurt and 3 are expired. An inspector takes 4 packs at random. @exm-quality gave the probabilities for one batch. Now a second shelf has 40 packs, 6 of them expired (the same 15%). The inspector again takes 4. Is the probability of finding no expired pack larger, smaller or about equal? Guess first, then compute.
 
@@ -141,32 +353,250 @@ from scipy import stats
 # stats.hypergeom(M=total packs, n=expired packs, N=packs taken)
 for total, expired in [(20, 3), (40, 6)]:
     p_none = stats.hypergeom(total, expired, 4).pmf(0)
-    print(f"{total} packs, {expired} expired: P(none expired) = {p_none:.3f}")
+    print(f"{total} packs, {expired} expired: P(none) = {p_none:.3f}")
 ```
 :::
 
-## Problem 8 {.unnumbered}
+## Problem 11 {.unnumbered}
+
+A sales department has 7 managers and 5 analysts. Five people are chosen at random for a trade fair. What is the probability that the group has at least 2 analysts?
+
+::: sol
+Order does not matter, so $|\Omega|=\binom{12}{5}=792$. "At least 2 analysts" means 2, 3, 4 or 5, which is four cases. The complement has only two: 0 or 1 analyst.
+
+- 0 analysts: $\binom{5}{0}\binom{7}{5}=21$.
+- 1 analyst: $\binom{5}{1}\binom{7}{4}=5\cdot35=175$.
+
+So $\Prob=1-\dfrac{21+175}{792}=\dfrac{596}{792}\approx 0.753$.
+
+```{python}
+from math import comb
+
+n_groups = comb(12, 5)
+n_few_analysts = sum(comb(5, k) * comb(7, 5 - k) for k in (0, 1))
+print(f"P(at least 2 analysts) = {1 - n_few_analysts / n_groups:.3f}")
+```
+:::
+
+## Problem 12 {.unnumbered}
+
+The shuttle from Rumyantsevo metro station to a business park leaves every 12 minutes. Lena comes to the stop at a random moment, without looking at the timetable.
+
+(a) What is the probability that she waits more than 5 minutes?
+(b) What is the probability that she waits exactly 5 minutes? Is this event impossible?
+
+::: sol
+(a) Look at one 12-minute gap between two departures. Lena's arrival is a uniform point in it (@def-geometric). She waits more than 5 minutes if she arrives in the first 7 minutes after a departure (the blue part of the picture), so $\Prob=7/12\approx0.583$. As in @exm-courier, it is a length divided by a length.
+
+```{python}
+#| echo: false
+#| fig-alt: "A timeline from 0 to 12 minutes between two shuttle departures. The first 7 minutes are shaded and labelled wait more than 5 minutes, the last 5 minutes are labelled wait at most 5 minutes."
+import matplotlib.pyplot as plt
+
+fig, ax = plt.subplots(figsize=(5.5, 1.4))
+ax.axvspan(0, 7, color="#4c8cc9", alpha=0.6)
+ax.axvspan(7, 12, color="#b7c4d1", alpha=0.6)
+ax.text(3.5, 0.5, "wait > 5 min\n7 minutes", ha="center",
+        va="center")
+ax.text(9.5, 0.5, "wait ≤ 5 min\n5 minutes", ha="center",
+        va="center")
+for departure in (0, 12):
+    ax.axvline(departure, color="#c0392b", lw=2.5)
+    ax.text(departure, 1.08, "shuttle leaves", color="#c0392b",
+            ha="center", va="bottom", fontsize=9)
+ax.set_xlim(-0.5, 12.5)
+ax.set_ylim(0, 1)
+ax.set_xticks(range(0, 13))
+ax.set_yticks([])
+ax.grid(False)
+ax.spines["left"].set_visible(False)
+ax.set_xlabel("Lena arrives (minutes after a departure)")
+plt.show()
+```
+
+(b) Waiting exactly 5 minutes means arriving at one single moment, an interval of length 0, so the probability is 0. The event is not impossible: Lena arrives at some moment, and every single moment has probability 0 (the remark at the end of @sec-L01-geometric).
+
+```{python}
+import numpy as np
+
+rng = np.random.default_rng(2026)
+# arrival = minutes after the last departure
+arrival = rng.uniform(0, 12, 1_000_000)
+wait = 12 - arrival
+p_sim = np.mean(wait > 5)
+print(f"simulated P(wait > 5) = {p_sim:.3f}, exact = {7 / 12:.3f}")
+print(f"simulated P(wait exactly 5) = {np.mean(wait == 5):.3f}")
+```
+:::
+
+## Problem 13 {.unnumbered}
+
+Priya and Kemal agree to meet at a bus stop between 18:00 and 19:00. Each arrives at a random moment of that hour, independently, and waits 10 minutes. What is the probability that they meet? Draw the region.
+
+::: sol
+As in @exm-meeting, $(x,y)$ is uniform in the square $[0,60]^2$ and they meet when $|x-y|\le10$, the shaded band in the picture. The two corner triangles outside the band have legs $60-10=50$, so together they have area $50^2$. Then
+$$
+\Prob(\text{meet})=1-\Big(\frac{50}{60}\Big)^2=\frac{11}{36}\approx 0.306.
+$$
+
+```{python}
+#| echo: false
+#| fig-alt: "A square of arrival times with a shaded band of width 10 minutes on each side of the diagonal. The two white corner triangles are labelled leg 50."
+import numpy as np
+import matplotlib.pyplot as plt
+
+t = np.linspace(0, 60, 200)
+fig, ax = plt.subplots(figsize=(4, 3.8))
+ax.fill_between(t, np.maximum(t - 10, 0), np.minimum(t + 10, 60),
+                color="#4c8cc9", alpha=0.6)
+ax.plot([0, 60], [0, 60], color="black", lw=0.8, ls="--")
+ax.text(43, 17, "leg 50", ha="center", va="center")
+ax.text(17, 43, "leg 50", ha="center", va="center")
+ax.text(36, 30, "they meet", rotation=45, ha="center", va="center",
+        fontsize=9)
+ax.set_xlim(0, 60)
+ax.set_ylim(0, 60)
+ax.set_aspect("equal")
+ax.set_xlabel("Priya arrives (minutes after 18:00)")
+ax.set_ylabel("Kemal arrives (minutes after 18:00)")
+plt.tight_layout()
+plt.show()
+```
+
+```{python}
+import numpy as np
+
+rng = np.random.default_rng(2026)
+n_trials = 1_000_000
+arrive_priya = rng.uniform(0, 60, n_trials)
+arrive_kemal = rng.uniform(0, 60, n_trials)
+p_meet = np.mean(np.abs(arrive_priya - arrive_kemal) <= 10)
+print(f"simulated P(meet) = {p_meet:.3f}, exact = {11 / 36:.3f}")
+```
+:::
+
+## Problem 14 {.unnumbered}
+
+A warehouse near Podolsk has one loading dock. Two trucks are due between 8:00 and 9:00. Each arrives at a random moment of that hour, and the moment one truck arrives has nothing to do with when the other one does. Truck 1 needs the dock for 10 minutes, truck 2 for 20 minutes. If a truck arrives while the other one is unloading, it has to wait, and Anvar, the dispatcher, calls that a clash. An unloading that runs past 9:00 is fine, because the dock is open until noon.
+
+(a) Let $x$ and $y$ be the arrival times of truck 1 and truck 2 in minutes after 8:00. Write the condition "no clash" in terms of $x$ and $y$.
+(b) Find the probability of a clash. Draw the square and shade the clash region.
+(c) The shaded band is not symmetric around the diagonal $y=x$. Why not? Compare with the case where each truck needs 15 minutes.
+
+::: sol
+(a) Truck 1 uses the dock from $x$ to $x+10$ and truck 2 from $y$ to $y+20$. No clash means that one truck is done before the other arrives: either $y\ge x+10$ (truck 1 came first and finished) or $x\ge y+20$ (truck 2 came first and finished).
+
+(b) The point $(x,y)$ is uniform in the square $[0,60]^2$ of area 3600 (@def-geometric). The region $y\ge x+10$ is the triangle above the line $y=x+10$, with legs $60-10=50$ and area $50^2/2=1250$. The region $x\ge y+20$ is the triangle below the line $y=x-20$, with legs $60-20=40$ and area $40^2/2=800$. These are the two white corners in the picture below. So
+$$
+\Prob(\text{clash})=1-\frac{1250+800}{3600}=\frac{1550}{3600}=\frac{31}{72}\approx 0.431 .
+$$
+
+(c) The clash band runs from the line $y=x-20$ up to the line $y=x+10$. Above the diagonal truck 1 came first, and truck 2 clashes if it arrives within 10 minutes, the time truck 1 needs. Below the diagonal truck 2 came first, and the dangerous stretch is 20 minutes long. So each side of the band is as wide as the unloading time of the truck that came first. If each truck needed 15 minutes, the band would be $|x-y|<15$, centred on the diagonal, the same region as in @exm-meeting, and $\Prob(\text{clash})=7/16\approx0.438$. In both cases the trucks need 30 minutes in total, and the two answers are close but not equal.
+
+```{python}
+#| echo: false
+#| fig-alt: "A square of arrival times with a shaded band between the lines y = x + 10 and y = x - 20. The white triangle above the band has area 1250 and the one below has area 800; both mean no clash."
+import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.linspace(0, 60, 200)
+lower, upper = np.maximum(x - 20, 0), np.minimum(x + 10, 60)
+fig, ax = plt.subplots(figsize=(4, 3.8))
+ax.fill_between(x, lower, upper, color="#4c8cc9", alpha=0.6)
+ax.plot([0, 60], [0, 60], color="black", lw=0.8, ls="--")
+ax.text(27.5, 32.5, "$y=x+10$", rotation=45, ha="center",
+        va="center", fontsize=9)
+ax.text(42.5, 27.5, "$y=x-20$", rotation=45, ha="center",
+        va="center", fontsize=9)
+ax.text(15, 46, "no clash\n1250", ha="center", va="center")
+ax.text(47, 11, "no clash\n800", ha="center", va="center")
+ax.set_xlim(0, 60)
+ax.set_ylim(0, 60)
+ax.set_aspect("equal")
+ax.set_xlabel("Truck 1 arrives (minutes after 8:00)")
+ax.set_ylabel("Truck 2 arrives (minutes after 8:00)")
+plt.show()
+```
+
+```{python}
+import numpy as np
+
+rng = np.random.default_rng(2026)
+n_trials = 1_000_000
+truck_1 = rng.uniform(0, 60, n_trials)
+truck_2 = rng.uniform(0, 60, n_trials)
+no_clash = (truck_2 >= truck_1 + 10) | (truck_1 >= truck_2 + 20)
+p_clash = 1 - np.mean(no_clash)
+print(f"simulated P(clash) = {p_clash:.3f}, exact = {31 / 72:.3f}")
+```
+:::
+
+## Problem 15 {.unnumbered}
+
+*If time allows.*
 
 A warehouse floor is an $8\times8$ grid of squares. Two robots, one white and one black, are put on two different squares chosen at random. They "see each other" if they stand in the same row or in the same column. What is the probability that they do not see each other?
 
 ::: sol
-Treat the placements as ordered, because the robots have different colours: $64\cdot63$ equally likely outcomes. Fix the white robot's square (64 ways). The black robot must be outside its row and column, which leaves $64-8-8+1=49$ squares (the white robot's own square was subtracted twice). So
+Treat the placements as ordered, because the robots have different colours: $64\cdot63$ equally likely outcomes. Fix the white robot's square (64 ways). The black robot must be outside its row and column, which leaves $64-8-8+1=49$ squares, the blue ones in the picture (the white robot's own square was subtracted twice). So
 $$
 \Prob=\frac{64\cdot 49}{64\cdot 63}=\frac{49}{63}=\frac79\approx 0.778.
 $$
 A common wrong answer is $49/64$, which forgets that the black robot cannot take the same square as the white one.
 
 ```{python}
+#| echo: false
+#| fig-alt: "An 8 by 8 grid. The white robot stands in row 3, column 6. The other 14 squares of its row and column are red, marked sees; the remaining 49 squares are blue, marked safe."
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.colors import ListedColormap
+from matplotlib.patches import Patch
+from matplotlib.lines import Line2D
+
+row_white, col_white = 2, 5   # the white robot's square
+board = np.zeros((8, 8), dtype=int)   # 0 = safe
+board[row_white, :] = 1   # same row: sees
+board[:, col_white] = 1   # same column: sees
+board[row_white, col_white] = 2   # the white robot itself
+n_sees, n_safe = (board == 1).sum(), (board == 0).sum()
+assert n_sees + n_safe + 1 == 64
+colours = ListedColormap(["#4c8cc9", "#c0392b", "#b7c4d1"])
+fig, ax = plt.subplots(figsize=(3.4, 3.2))
+ax.pcolormesh(board, cmap=colours, vmin=0, vmax=2, alpha=0.6,
+              edgecolors="white", linewidth=1.5)
+ax.plot(col_white + 0.5, row_white + 0.5, "o", ms=13,
+        markerfacecolor="white", markeredgecolor="black")
+ax.legend(handles=[
+    Patch(color="#c0392b", alpha=0.6, label=f"sees ({n_sees})"),
+    Patch(color="#4c8cc9", alpha=0.6, label=f"safe ({n_safe})"),
+    Line2D([], [], ls="", marker="o", ms=9, markerfacecolor="white",
+           markeredgecolor="black", label="white robot"),
+], loc="upper center", bbox_to_anchor=(0.5, -0.2), ncol=3,
+    frameon=False, fontsize=9, handlelength=1.2, columnspacing=1)
+ax.set_xticks(np.arange(8) + 0.5, range(1, 9))
+ax.set_yticks(np.arange(8) + 0.5, range(1, 9))
+ax.set_xlabel("Column")
+ax.set_ylabel("Row")
+ax.invert_yaxis()
+ax.set_aspect("equal")
+ax.grid(False)
+plt.show()
+```
+
+```{python}
 from itertools import permutations
 
 squares = [(row, col) for row in range(8) for col in range(8)]
-n_safe = sum(1 for a, b in permutations(squares, 2) if a[0] != b[0] and a[1] != b[1])
+n_safe = sum(1 for a, b in permutations(squares, 2)
+             if a[0] != b[0] and a[1] != b[1])
 n_all = 64 * 63
 print(f"P(no sight line) = {n_safe}/{n_all} = {n_safe / n_all:.3f}")
 ```
 :::
 
-## Problem 9 {.unnumbered}
+## Problem 16 {.unnumbered}
+
+*If time allows.*
 
 In a team of 30 employees, what is the probability that at least two share a birthday? Ignore 29 February and assume all 365 days are equally likely.
 
@@ -175,7 +605,32 @@ Count the opposite: all 30 birthdays are different. Ordered, with $365^{30}$ equ
 $$
 \Prob(\text{some pair shares})=1-\frac{365\cdot364\cdots336}{365^{30}}\approx 0.706.
 $$
-Already 23 people give more than 50%. Most students guess far lower, because they compare their own birthday against 29 others, while the question allows any of the $\binom{30}{2}=435$ pairs.
+Already 23 people give more than 50% (see the picture). When I ask a group to guess, the guesses are usually far lower, because they compare their own birthday against 29 others, while the question allows any of the $\binom{30}{2}=435$ pairs.
+
+```{python}
+#| echo: false
+#| fig-alt: "A rising S-shaped curve of the probability of a shared birthday against team size from 1 to 60. It crosses one half at n = 23, where it is 0.507, and is 0.706 at n = 30."
+import numpy as np
+import matplotlib.pyplot as plt
+
+team_size = np.arange(1, 61)
+p_shared = [1 - np.prod((365 - np.arange(n)) / 365)
+            for n in team_size]
+fig, ax = plt.subplots(figsize=(5, 3.2))
+ax.plot(team_size, p_shared, color="#4c8cc9", lw=2)
+ax.axhline(0.5, color="black", lw=0.8, ls="--")
+for n in (23, 30):
+    p = p_shared[n - 1]
+    ax.plot(n, p, "o", color="#c0392b")
+    ax.annotate(f"n = {n}: {p:.3f}", (n, p), xytext=(8, -14),
+                textcoords="offset points", fontsize=9)
+ax.set_xlim(0, 60)
+ax.set_ylim(0, 1)
+ax.set_xlabel("Team size n")
+ax.set_ylabel("P(some pair shares)")
+plt.tight_layout()
+plt.show()
+```
 
 ```{python}
 import numpy as np
@@ -191,24 +646,32 @@ print(f"simulation: {np.mean(has_match):.3f}")
 ```
 :::
 
-## Problem 10 {.unnumbered}
+## Problem 17\* {.unnumbered}
 
-Priya and Kemal agree to meet at a bus stop between 18:00 and 19:00. Each arrives at a random moment of that hour, independently, and waits 10 minutes. What is the probability that they meet? Draw the region.
+This problem goes past Lecture 1 and is not examinable.
+
+An ice-cream kiosk in Gorky Park sells cups of 3 scoops. There are 5 flavours, and a flavour may be repeated: three scoops of pistachio is a perfectly good cup. The order of the scoops in the cup does not matter. How many different cups can Sofia, who runs the kiosk, list on her menu board?
+
+None of the formulas from the lecture fits directly. Sort the cups by type: all three scoops the same, two the same and one different, all three different.
 
 ::: sol
-As in @exm-meeting, $(x,y)$ is uniform in the square $[0,60]^2$ and they meet when $|x-y|\le10$. The two corner triangles outside the band have legs $60-10=50$, so together they have area $50^2$. Then
-$$
-\Prob(\text{meet})=1-\Big(\frac{50}{60}\Big)^2=\frac{11}{36}\approx 0.306.
-$$
+All three the same: choose the flavour, 5 cups.
+
+Two the same and one different: choose the flavour that appears twice (5 ways), then the single flavour from the other 4 (4 ways), $5\cdot4=20$ cups by @thm-product. Here the two choices play different roles, since two vanilla and one mango is not the same cup as two mango and one vanilla.
+
+All three different: a set of 3 flavours from 5, $\binom53=10$ cups (@def-combination).
+
+The three types do not overlap, so there are $5+20+10=35$ cups. Other books give a shortcut for unordered choices with repetition, $k$ items from $n$ kinds: $\binom{n+k-1}{k}$. Here it is $\binom{7}{3}=35$.
 
 ```{python}
-import numpy as np
+from itertools import combinations_with_replacement
 
-rng = np.random.default_rng(2026)
-n_trials = 1_000_000
-arrive_priya = rng.uniform(0, 60, n_trials)
-arrive_kemal = rng.uniform(0, 60, n_trials)
-p_meet = np.mean(np.abs(arrive_priya - arrive_kemal) <= 10)
-print(f"simulated P(meet) = {p_meet:.3f}, exact = {11 / 36:.3f}")
+flavours = ["vanilla", "chocolate", "pistachio", "mango",
+            "salted caramel"]
+cups = list(combinations_with_replacement(flavours, 3))
+print(f"different cups: {len(cups)}")
+print("the first three:")
+for cup in cups[:3]:
+    print("  ", ", ".join(cup))
 ```
 :::
