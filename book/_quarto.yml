@@ -18,6 +18,7 @@ book:
         - lectures/L00-about-me.qmd
         - lectures/L01-probability-basics.qmd
         - lectures/L02-conditional-probability.qmd
+        - lectures/L03-discrete-random-variables.qmd
     - part: "Seminars"
       chapters:
         - seminars/S01-counting.qmd
