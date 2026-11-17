@@ -25,8 +25,6 @@ Marat doesn't care *which* customers order. He cares *how many*. The outcome of 
 A **random variable** is a rule that gives a number to every outcome of an experiment. In the language of Lecture 1, it is a function from the sample space $\Omega$ to the real numbers: each outcome gets exactly one number. We name random variables with capital letters: $X$, $Y$, $Z$.
 :::
 
-The rule itself is not random. The randomness is in which outcome happens, and once the outcome is known, so is the value of $X$.
-
 ::: {#exm-marat-outcomes}
 ## Marat's eight outcomes
 *Given:* 3 customers; each one orders glasses (O) or does not (N). $X$ is the number of customers who order.
@@ -44,7 +42,7 @@ $X$ counts the letters O. So $X(\text{OOO})=3$; $X(\text{OON})=X(\text{ONO})=X(\
 #| fig-alt: "A tree growing left to right in three levels, one per customer. Each node splits into O with 0.4 and N with 0.6. The eight leaves, top to bottom: OOO X=3 0.064; OON X=2 0.096; ONO X=2 0.096; ONN X=1 0.144; NOO X=2 0.096; NON X=1 0.144; NNO X=1 0.144; NNN X=0 0.216."
 import matplotlib.pyplot as plt
 
-fig, ax = plt.subplots(figsize=(6.4, 3.0))
+fig, ax = plt.subplots(figsize=(6.4, 2.6))
 node_style = dict(ha="center", va="center", fontsize=9,
                   bbox=dict(boxstyle="circle,pad=0.2", fc="white", ec="black"))
 prob = {"O": 0.4, "N": 0.6}
@@ -85,8 +83,6 @@ plt.show()
 
 ## The probability mass function {#sec-L03-pmf}
 
-Now we put probabilities on the values: a table with each value of $X$ and its probability.
-
 ::: {#def-pmf}
 ## Discrete random variable, PMF
 A random variable $X$ is **discrete** if its possible values can be listed: $x_1, x_2, x_3,\dots$. The **probability mass function** (PMF) of $X$ is
@@ -96,7 +92,7 @@ $$
 for each value $x$ of $X$.
 :::
 
-Think of one kilogram of probability: the PMF says how much of it sits on each value. Marat's $X$ has four values, so it is discrete. In Lecture 4 we meet random variables that are not, such as a waiting time.
+Marat's $X$ has four values, so it is discrete. In Lecture 4 we meet random variables that are not, such as a waiting time.
 
 ::: {.callout-note title="How to read $p(x)$"}
 $p(x)$ is read "p of x". It is a **function**: a machine that takes a number $x$ and gives back a probability. It is *not* $p$ times $x$. For Marat, $p(2)$ ("p of two") means $\Prob(X=2)$, the probability that exactly two customers order. We'll find in a moment that $p(2)=0.288$. For a number that $X$ never takes, the answer is zero: $p(1.5)=\Prob(X=1.5)=0$, since nobody orders one and a half pairs.
@@ -128,7 +124,7 @@ import matplotlib.pyplot as plt
 
 xs = [0, 1, 2, 3]
 ps = [0.216, 0.432, 0.288, 0.064]
-fig, ax = plt.subplots(figsize=(6.0, 2.2))
+fig, ax = plt.subplots(figsize=(6.0, 1.9))
 ax.bar(xs, ps, width=0.5, color="#4c8cc9")
 for x, p in zip(xs, ps):
     ax.text(x, p + 0.015, f"{p:.3f}", ha="center", fontsize=10)
@@ -143,10 +139,8 @@ plt.show()
 The most likely value is 1, not 0. Each customer is more likely to say no than yes, but there is only one way to get three noes and three ways to get exactly one yes.
 
 ::: lecturer
-Before computing, ask the room: "Which is most likely: 0, 1, 2 or 3 orders?" Most say 0, because "each one probably says no". Compute $p(0)$ and $p(1)$ and let the 3 paths win. Then copy the PMF table to the side board.
+Ask before computing: "Most likely: 0, 1, 2 or 3 orders?" Most say 0. Then copy the PMF table to the side board.
 :::
-
-The four numbers added up to 1. That is no accident, and to say it for every discrete random variable we need a short way to write "add up all of these".
 
 ::: {.callout-note title="How to read the summation sign $\sum$"}
 $\sum$ is the Greek capital letter sigma, an S for "sum". It means "add up". You saw it in the law of total probability (@eq-total); now we read it properly.
@@ -157,7 +151,11 @@ reads "the sum of p of x i, for i from 1 to 4". The letter $i$ is the **index**,
 
 $x_1, x_2, x_3, x_4$ ("x one, x two, …") are the values of $X$ in a list: $x_1$ is the first value, $x_2$ the second, and so on. The small number counts positions in the list; it is not the value itself. For Marat, $x_1=0$, $x_2=1$, $x_3=2$, $x_4=3$, so
 $$
-\sum_{i=1}^{4} p(x_i)=p(x_1)+p(x_2)+p(x_3)+p(x_4)=p(0)+p(1)+p(2)+p(3)=0.216+0.432+0.288+0.064=1.
+\begin{aligned}
+\sum_{i=1}^{4} p(x_i)&=p(x_1)+p(x_2)+p(x_3)+p(x_4)\\
+&=p(0)+p(1)+p(2)+p(3)\\
+&=0.216+0.432+0.288+0.064=1.
+\end{aligned}
 $$
 When the sum runs over *all* values of $X$, we often write just $\sum_i$ and leave out the start and the stop.
 :::
@@ -179,11 +177,9 @@ $$
 $$
 :::
 
-In practice @thm-pmf is a check. If your table does not add up to 1, a path is missing or counted twice. And if a table has one unknown probability, it is 1 minus the others.
+In practice @thm-pmf is a check: if your table does not add up to 1, a path is missing or counted twice.
 
 ## The cumulative distribution function {#sec-L03-cdf}
-
-Many business questions are "at most" questions. Will at most one customer order? The second way to describe a random variable collects exactly these probabilities.
 
 ::: {#def-cdf}
 ## Cumulative distribution function
@@ -243,18 +239,18 @@ for i, x in enumerate(xs):
 ax.vlines(1.5, 0, 0.648, color="#c0392b", ls="--", lw=1)
 ax.hlines(0.648, -1, 1.5, color="#c0392b", ls="--", lw=1)
 ax.text(1.55, 0.05, "x = 1.5", color="#c0392b", fontsize=9)
-ax.set_yticks(levels)
+for i in range(1, 5):
+    ax.text(edges[i + 1] - 0.08, levels[i] + 0.04, f"{levels[i]:.3f}", ha="right", va="bottom", fontsize=9)
+ax.set_yticks([0, 0.5, 1])
 ax.set_xlim(-1, 4)
-ax.set_ylim(-0.03, 1.08)
+ax.set_ylim(-0.03, 1.15)
 ax.set_xlabel("$x$")
 ax.set_ylabel("$F(x)=P(X\\leq x)$")
 plt.tight_layout()
 plt.show()
 ```
 
-Every discrete CDF is a staircase like this: 0 on the far left, 1 on the far right, never going down, and jumping only at the values of $X$, by $p(x)$.
-
-The CDF answers interval questions with one subtraction. If $a<b$, the event $\{X\le b\}$ splits into two mutually exclusive pieces, $\{X\le a\}$ and $\{a<X\le b\}$. So $F(b)=F(a)+\Prob(a<X\le b)$, which gives
+Every discrete CDF is a staircase like this. It answers interval questions with one subtraction. If $a<b$, the event $\{X\le b\}$ splits into two mutually exclusive pieces, $\{X\le a\}$ and $\{a<X\le b\}$. So $F(b)=F(a)+\Prob(a<X\le b)$, which gives
 $$
 \Prob(a<X\le b)=F(b)-F(a).
 $$ {#eq-cdf-interval}
@@ -263,14 +259,16 @@ For Marat ($F(1)=0.648$, $F(3)=1$), the probability that 2 or 3 customers order 
 Watch the signs in @eq-cdf-interval: $<$ on the left, $\le$ on the right. Students often use it for $\Prob(1\le X\le 3)$ and get 0.352 again, but that event also contains $X=1$. The correct answer is $\Prob(1\le X\le3)=F(3)-F(0)=1-0.216=0.784$. With a discrete $X$, always ask: is the boundary value included or not?
 
 ::: lecturer
-Draw the staircase from the side-board table, filled dots on top. Ask: "$\Prob(X<1)$ or $\Prob(X\le1)$, which is bigger, and by how much?" (By $p(1)=0.432$.)
-
-Break (80 min).
+Staircase from the side-board table, filled dots on top. Break (80 min).
 :::
 
 ## Expected value {#sec-L03-expectation}
 
 Back to Marat's first question: how many pairs should he expect to sell?
+
+::: lecturer
+Opening question for slot 2: "Marat expects 1.2 pairs. Will he ever sell 1.2 pairs?" Then do the 1,000 Saturdays on the board, next to the PMF table.
+:::
 
 ::: {#def-expectation}
 ## Expected value
@@ -286,7 +284,10 @@ $\E[X]$ reads "E of X" or "the expected value of X". The $\E$ is not a number mu
 
 In words, the formula says: multiply each value by its probability, then add. For Marat, written out with the four values:
 $$
-\E[X]=0\cdot p(0)+1\cdot p(1)+2\cdot p(2)+3\cdot p(3)=0\cdot0.216+1\cdot0.432+2\cdot0.288+3\cdot0.064 .
+\begin{aligned}
+\E[X]&=0\cdot p(0)+1\cdot p(1)+2\cdot p(2)+3\cdot p(3)\\
+&=0\cdot0.216+1\cdot0.432+2\cdot0.288+3\cdot0.064 .
+\end{aligned}
 $$
 :::
 
@@ -301,23 +302,15 @@ $$
 Marat should expect 1.2 pairs per Saturday morning.
 :::
 
-There are two ways to read this number.
-
 *A weighted average.* The plain average of the values 0, 1, 2, 3 is 1.5. But 3 is rare (0.064) and 0 is common (0.216). The expected value weights each value by its probability, and the weights pull it down to 1.2.
 
 *A long-run average.* Imagine 1,000 Saturdays like this one. About 216 of them end with no order, 432 with one, 288 with two and 64 with three. That is about $0\cdot216+1\cdot432+2\cdot288+3\cdot64=1{,}200$ pairs, or 1.2 per Saturday.
 
 "Expected" does not mean "most likely" (that is 1), and it does not mean "what will happen". Marat will never sell 1.2 pairs. The expected value does not have to be a value $X$ can take.
 
-::: lecturer
-Opening question for slot 2: "Marat expects 1.2 pairs. Will he ever sell 1.2 pairs?" Then do the 1,000 Saturdays on the board, next to the PMF table.
-:::
-
 ## Variance and standard deviation {#sec-L03-variance}
 
-Two shops can have the same mean and very different Saturdays: one always sells 1 or 2 pairs, the other swings between 0 and 3. We need a number for the swing.
-
-First, one tool. We will want the expected value of things like $X^2$. The rule is the same as for $\E[X]$: compute the new quantity from each value of $X$, weight it by the probability of that value, and add. For any function $g$,
+Marat's second question is how much the number of orders swings. First, one tool. We will want the expected value of things like $X^2$. The rule is the same as for $\E[X]$: compute the new quantity from each value of $X$, weight it by the probability of that value, and add. For any function $g$,
 $$
 \E[g(X)]=\sum_i g(x_i)\,p(x_i).
 $$ {#eq-lotus}
@@ -326,7 +319,7 @@ The reason: $g(X)$ is a new random variable, and it takes the value $g(x_i)$ exa
 ::: {.callout-note title="How to read squares, square roots and $\sigma$"}
 - $X^2$ reads "X squared": the random variable whose value is the square of the value of $X$. If $X=2$, then $X^2=4$. By @eq-lotus, for Marat $\E[X^2]=0^2\cdot0.216+1^2\cdot0.432+2^2\cdot0.288+3^2\cdot0.064$.
 - $(X-\mu)^2$ reads "X minus mu, all squared". Brackets first, then square. It is the squared distance of $X$ from its mean. For Marat with $\mu=1.2$: if $X=0$, then $(0-1.2)^2=(-1.2)^2=1.44$.
-- $\sqrt{\ }$ is the square root: $\sqrt{0.72}\approx0.85$ because $0.85^2\approx0.72$.
+- $\sqrt{0.72}$ reads "the square root of 0.72": the positive number whose square is 0.72. $\sqrt{0.72}\approx0.85$ because $0.85^2\approx0.72$.
 - $\sigma$ is the small Greek letter sigma. It is the standard deviation, and $\sigma^2$ ("sigma squared") is the variance.
 - Units. $X$ is in pairs of glasses, and so is $X-\mu$. Then $(X-\mu)^2$ is in "pairs squared", which means nothing to anyone. The square root brings us back to pairs.
 :::
@@ -352,7 +345,10 @@ $$
 ::: proof-fold
 Expand the square: $(x_i-\mu)^2=x_i^2-2\mu x_i+\mu^2$. Then
 $$
-\Var(X)=\sum_i x_i^2p(x_i)-2\mu\sum_i x_ip(x_i)+\mu^2\sum_i p(x_i)=\E[X^2]-2\mu\cdot\mu+\mu^2\cdot1=\E[X^2]-\mu^2,
+\begin{aligned}
+\Var(X)&=\sum_i x_i^2p(x_i)-2\mu\sum_i x_ip(x_i)+\mu^2\sum_i p(x_i)\\
+&=\E[X^2]-2\mu\cdot\mu+\mu^2\cdot1=\E[X^2]-\mu^2,
+\end{aligned}
 $$
 using @eq-lotus, @def-expectation and @thm-pmf.
 :::
@@ -379,17 +375,12 @@ The standard deviation is $\sigma=\sqrt{0.72}\approx0.85$ pairs: a typical Satur
 
 The most common mistake here: $\E[X^2]$ is not $(\E[X])^2$. For Marat, $\E[X^2]=2.16$ and $(\E[X])^2=1.44$. The gap between them *is* the variance, and it is never negative. If your variance comes out negative, you subtracted the wrong way round.
 
-::: lecturer
-Draw the five-column table and fill it with the room, one row each. Then do the shortcut in two lines and ask which they would rather do in an exam.
-:::
-
 ## Changing units: $aX+b$ {#sec-L03-linear}
 
 Marat thinks in rubles, not pairs. Each pair earns 2,000 rubles, and the three free tests cost $3\cdot500=1{,}500$ rubles whatever happens. His profit for the morning, in rubles, is
 $$
 Y=2000X-1500 .
 $$
-We don't need a new PMF for $Y$: its mean and spread follow from those of $X$.
 
 ::: {#thm-linear}
 ## Expectation and variance of $aX+b$
@@ -426,16 +417,14 @@ $$
 \operatorname{SD}(Y)&=2000\cdot\sqrt{0.72}\approx 1{,}697 .
 \end{aligned}
 $$
-So the expected profit is 900 rubles and the standard deviation about 1,697 rubles. The variance is 2,880,000 "rubles squared", a number nobody can picture: report the standard deviation.
+So the expected profit is 900 rubles and the standard deviation about 1,697 rubles. The variance is 2,880,000 "rubles squared", a number nobody can picture: report the standard deviation. The swing is almost twice the mean, and about one Saturday in five (probability 0.216, no orders) is a loss of 1,500 rubles.
 :::
-
-The swing is almost twice the mean. About one Saturday in five (probability 0.216, no orders) is a loss of 1,500 rubles.
 
 Two things go wrong here. First, $b$ disappears from the variance. Paying 1,500 rubles for the tests shifts every profit down by the same amount, which moves the mean but not the spread. A popular wrong answer is $\Var(Y)=2000\cdot0.72-1500$. Second, $a$ is squared, so its sign disappears too: $\Var(-X)=(-1)^2\Var(X)=\Var(X)$, never $-\Var(X)$. Lecture 5 uses @thm-linear for the normal distribution, so get it right now.
 
 ## Bernoulli and binomial distributions {#sec-L03-binomial}
 
-Some distributions appear so often that they get names. Look at one of Marat's customers alone: either they order or they don't.
+Look at one of Marat's customers alone: either they order or they don't.
 
 ::: {#def-bernoulli}
 ## Bernoulli distribution
@@ -453,8 +442,6 @@ $$
 \E[X]=0\cdot(1-p)+1\cdot p=p,\qquad \E[X^2]=0^2\cdot(1-p)+1^2\cdot p=p,
 $$
 so by @thm-var-shortcut, $\Var(X)=p-p^2=p(1-p)$. One of Marat's customers is Bernoulli(0.4): mean 0.4, variance $0.4\cdot0.6=0.24$.
-
-Now count successes over several such trials.
 
 ::: {#def-binomial}
 ## Binomial distribution
@@ -492,47 +479,16 @@ $$
 :::
 
 ::: proof-fold
-Idea. Let $X_j=1$ if trial $j$ is a success and $X_j=0$ if not. Each $X_j$ is Bernoulli($p$), and $X=X_1+X_2+\dots+X_n$ counts the successes. In Lecture 6 we prove that the expected value of a sum is the sum of the expected values, so $\E[X]=p+p+\dots+p=np$. For independent random variables the same holds for variances, so $\Var(X)=n\cdot p(1-p)$. The full argument needs those two facts from Lecture 6.
+Idea. Let $X_j=1$ if trial $j$ is a success and $X_j=0$ if not. Each $X_j$ is Bernoulli($p$), and $X=X_1+X_2+\dots+X_n$ counts the successes. In Lecture 6 we prove that the expected value of a sum is the sum of the expected values, so $\E[X]=p+p+\dots+p=np$. For independent random variables the same holds for variances, so $\Var(X)=n\cdot p(1-p)$.
 :::
 
-Check it on Marat, $X\sim\operatorname{Bin}(3,\,0.4)$: $\E[X]=3\cdot0.4=1.2$ and $\Var(X)=3\cdot0.4\cdot0.6=0.72$. These are the numbers from @exm-marat-mean and @exm-marat-var, in one line each instead of a table.
-
-::: lecturer
-Go back to the tree (@fig-marat-tree) and circle the three paths to $X=1$ before writing @eq-binom-pmf. Write the four conditions as a checklist; @exm-pharmacy ticks them off.
-:::
-
-::: {#exm-pharmacy}
-## Deliveries on time
-*Given:* Vera is a dispatcher at a hypothetical pharmacy delivery service in Novosibirsk. Today she has 10 orders. Each is delivered on time with probability 0.9, independently of the others. $X$ is the number of orders delivered on time.
-
-(a) Check that $X$ is binomial. (b) Find $\Prob(X=8)$. (c) Find the probability that at least 9 orders are on time. (d) Find $\E[X]$ and $\operatorname{SD}(X)$.
-
-**Solution.** (a) $n=10$ is fixed; each order is on time (success) or late (failure); each has $p=0.9$; they are independent. So $X\sim\operatorname{Bin}(10,\,0.9)$.
-
-(b) By @eq-binom-pmf with $n=10$, $p=0.9$, $k=8$: $\binom{10}{8}=\frac{10\cdot9}{2}=45$, so
-$$
-\Prob(X=8)=45\cdot0.9^8\cdot0.1^2\approx45\cdot0.4305\cdot0.01\approx0.194 .
-$$
-
-(c) "At least 9" means $X=9$ or $X=10$:
-$$
-\Prob(X=9)=\binom{10}{9}\,0.9^9\cdot0.1^1\approx10\cdot0.3874\cdot0.1\approx0.387,\qquad \Prob(X=10)=0.9^{10}\approx0.349,
-$$
-so $\Prob(X\ge9)\approx0.387+0.349=0.736$.
-
-(d) By @thm-binomial-moments with $n=10$, $p=0.9$: $\E[X]=10\cdot0.9=9$ orders, $\Var(X)=10\cdot0.9\cdot0.1=0.9$, and $\operatorname{SD}(X)=\sqrt{0.9}\approx0.95$ orders.
-:::
-
-Condition 4 is the one to doubt. In a snowstorm in Novosibirsk all the couriers are late together, the orders are no longer independent, and the binomial model is too optimistic about a really bad day.
+For Marat, $X\sim\operatorname{Bin}(3,\,0.4)$: $\E[X]=3\cdot0.4=1.2$ and $\Var(X)=3\cdot0.4\cdot0.6=0.72$, as in @exm-marat-mean and @exm-marat-var.
 
 ## Exercises {.unnumbered}
 
 1. A guesthouse in Suzdal gets $X$ late cancellations per weekend, with $\Prob(X=0)=0.5$, $\Prob(X=1)=0.3$ and $\Prob(X=2)=c$, and no other values. Find $c$, $F(1.5)$, $\Prob(X<1)$, $\E[X]$ and $\Var(X)$.
 2. The daily number of customers $W$ of a food truck has $\E[W]=50$ and $\Var(W)=16$. Each customer pays 300 rubles, and the spot costs 4,000 rubles a day, so the daily profit is $300W-4000$ rubles. Find its expected value and standard deviation. What is $\Var(-W)$?
-3. Find the mistake. "$X$ has $\E[X]=2$ and $\E[X^2]=5$, so $\Var(X)=2^2-5=-1$."
-4. Binomial or not? One word each, then one line of reason. (a) The number of heads in 6 tosses of a fair coin. (b) The number of faulty bulbs among 2 bulbs taken without putting back from a box of 12 that has 3 faulty ones. (c) The number of customers Marat tests until the first one orders.
-5. Each of 5 visitors to a car showroom in Kaliningrad books a test drive with probability 0.2, independently of the others. Let $X$ be the number who book. Find $\Prob(X=2)$, $\Prob(X\ge1)$, $\E[X]$ and $\Var(X)$.
+3. Binomial or not? One word each, then one line of reason. (a) The number of heads in 6 tosses of a fair coin. (b) The number of faulty bulbs among 2 bulbs taken without putting back from a box of 12 that has 3 faulty ones. (c) The number of customers Marat tests until the first one orders.
+4. Each of 5 visitors to a car showroom in Kaliningrad books a test drive with probability 0.2, independently of the others. Let $X$ be the number who book. Find $\Prob(X=2)$, $\Prob(X\ge1)$, $\E[X]$ and $\Var(X)$.
 
-Answers: (1) $c=1-0.5-0.3=0.2$; $F(1.5)=0.5+0.3=0.8$; $\Prob(X<1)=\Prob(X=0)=0.5$; $\E[X]=0.3+2\cdot0.2=0.7$; $\E[X^2]=0.3+4\cdot0.2=1.1$, so $\Var(X)=1.1-0.49=0.61$. (2) $300\cdot50-4000=11{,}000$ rubles; $\operatorname{SD}=300\cdot\sqrt{16}=1{,}200$ rubles; $\Var(-W)=16$. (3) The shortcut is $\E[X^2]-\mu^2$, not the other way round: $\Var(X)=5-4=1$. A variance is never negative. (4) (a) Yes, $\operatorname{Bin}(6,\,0.5)$. (b) No: the second draw has probability $2/11$ or $3/11$ depending on the first (Lecture 2), so $p$ is not the same and the trials are not independent. (c) No: the number of trials is not fixed in advance (this is the geometric distribution, Lecture 4). (5) $\binom52\cdot0.2^2\cdot0.8^3=10\cdot0.04\cdot0.512=0.2048$; $1-0.8^5=1-0.32768\approx0.672$; $\E[X]=5\cdot0.2=1$; $\Var(X)=5\cdot0.2\cdot0.8=0.8$.
-
-The full practice is in Seminar 3.
+Answers: (1) $c=1-0.5-0.3=0.2$; $F(1.5)=0.5+0.3=0.8$; $\Prob(X<1)=\Prob(X=0)=0.5$; $\E[X]=0.3+2\cdot0.2=0.7$; $\E[X^2]=0.3+4\cdot0.2=1.1$, so $\Var(X)=1.1-0.49=0.61$. (2) $300\cdot50-4000=11{,}000$ rubles; $\operatorname{SD}=300\cdot\sqrt{16}=1{,}200$ rubles; $\Var(-W)=16$. (3) (a) Yes, $\operatorname{Bin}(6,\,0.5)$. (b) No: after the first draw $p$ changes to $2/11$ or $3/11$ (Lecture 2), so the trials are not independent. (c) No: the number of trials is not fixed (geometric distribution, Lecture 4). (4) $\binom52\cdot0.2^2\cdot0.8^3=10\cdot0.04\cdot0.512=0.2048$; $1-0.8^5=1-0.32768\approx0.672$; $\E[X]=5\cdot0.2=1$; $\Var(X)=5\cdot0.2\cdot0.8=0.8$. The full practice is in Seminar 3.
