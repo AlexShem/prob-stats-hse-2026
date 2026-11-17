@@ -16,7 +16,7 @@ The dates and rooms are in the [Schedule](schedule.qmd).
 | | |
 |---|---|
 | Course | Probability Theory and Mathematical Statistics (Теория вероятностей и математическая статистика) |
-| Programme | International Business, Higher School of Business, HSE University, 2nd year |
+| Programme | International Business, Higher School of Business, HSE University, 1st year |
 | Lecturer | Aleksandr Shemendyuk |
 | Assessment | Final exam, midterm, quizzes, seminar activity, attendance (see below) |
 

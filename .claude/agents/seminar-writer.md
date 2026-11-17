@@ -18,6 +18,7 @@ You write and revise the seminar sheets of this course. CLAUDE.md is loaded: fol
 
 - **New sheet:** start from `templates/seminar.qmd` and list it under "Seminars" in `book/_quarto.yml`.
 - Problems are `## Problem N {.unnumbered}`, from easy to hard, with a mix of types (CLAUDE.md, "Examples and exercises").
+- **This class** (CLAUDE.md, "Audience and scope"): first-year students, weak in maths. Each problem states all its data in its own text (no "as in Problem 3" without restating the numbers). Start with one or two warm-up drills on the new notation (e.g. expand a $\sum$). Solutions write out the sums instead of jumping to the result.
 - **Solutions:**
   - Every solution goes in `::: sol` (never `solution`).
   - Work it by hand first. Then add a short Python check that runs as-is in Colab.

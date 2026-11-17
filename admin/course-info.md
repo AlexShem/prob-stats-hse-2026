@@ -5,7 +5,7 @@
 | Official title (RUZ) | Теория вероятностей и математическая статистика (анг) |
 | English title | Probability Theory and Mathematical Statistics (the working name "Probability and Statistics" is not the official one) |
 | School | Higher School of Business (ВШБ), HSE University, Moscow |
-| Programme | Б 38.03.02, Международный бизнес (International Business), 2nd year bachelor |
+| Programme | Б 38.03.02, Международный бизнес (International Business), 1st year bachelor |
 | Language | English |
 | Period | Modules 2–3: Nov 2026 – Mar 2027 (module 3 timetable not received yet) |
 | Lecturer / seminars | Aleksandr Shemendyuk (all lectures, all three seminar groups) |

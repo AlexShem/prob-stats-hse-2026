@@ -48,12 +48,17 @@ Go through the chapter section by section. Write one line per slide: `NN | title
 - **picture**: a figure, diagram or table that carries the idea, with at most two sentences.
 - **compare**: two columns, e.g. permutations against combinations, or with against without replacement.
 - **pitfall**: a common mistake from the chapter, showing wrong against right.
-- **your turn**: a short question for the room (`## Your turn {.yourturn}`), with the answer after a pause. Use 3–5 per deck, from the chapter's exercises or simple variants.
+- **your turn**: a short question for the room (`## Your turn {.yourturn}`), with the answer after a pause. Use 2–4 per deck, short and from the chapter's exercises or simple variants.
 - **break**: exactly one, at the chapter's break cue.
 
-Budget: 35–55 slides for a lecture day. **At least half of the slides have a visual** (figure, diagram, table, or a boxed result next to a picture). Before writing, check the plan against the chapter: every numbered item and every example is in it. List what you are cutting and why. The list should be short.
+Budget: about 30–40 slides for a lecture day (L02 had 50 and lost the room). **At least half of the slides have a visual** (figure, diagram, table, or a boxed result next to a picture). Before writing, check the plan against the chapter: every numbered item and every example is in it. List what you are cutting and why. The list should be short.
 
 ## Slide rules
+
+- **This class** (CLAUDE.md, "Audience and scope"): first-year students who could not follow L02 because an example's numbers sat on one slide and were used on later ones.
+  - Every number a worked step uses is visible on that slide. A slide that continues an example starts with a one-line `.muted` "Given: …" strip restating the data (a small table or tree counts).
+  - Every notation the chapter explains in a "How to read …" callout gets its own slide (or half of one): the symbol, how to say it, one instance written out with numbers.
+  - Fewer, slower worked examples beat more of them.
 
 - **Each slide holds one complete idea, 30–90 words.** Don't write stubs (a title plus two bullets) and don't write walls of text. A mostly empty slide gets merged with its neighbour or given a visual. An overflowing slide gets split.
 - **Visual hierarchy:** the title, then the key statement (boxed or large), then the supporting text, then a small `.muted` note if needed. Use **bold** for the term being defined and `.answer` for results. Use the theme classes (`.box-def`, `.box-thm`, `.box-ex`, `.answer`, `.muted`, `.small`, `{.yourturn}`) instead of ad-hoc styling.

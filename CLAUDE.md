@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Course materials for **Probability Theory and Mathematical Statistics** (RUZ: «Теория вероятностей и математическая статистика (анг)»), HSE University, Higher School of Business, International Business programme, 2nd year bachelor, taught in English, Nov 2026 – Mar 2027 (modules 2–3). Lecturer and seminar teacher for all three groups: Aleksandr Shemendyuk.
+Course materials for **Probability Theory and Mathematical Statistics** (RUZ: «Теория вероятностей и математическая статистика (анг)»), HSE University, Higher School of Business, International Business programme, 1st year bachelor, taught in English, Nov 2026 – Mar 2027 (modules 2–3). Lecturer and seminar teacher for all three groups: Aleksandr Shemendyuk.
 
 Aleksandr's how-to for the stage commands: `WORKFLOW.md`. Keep it in sync when commands change. Facts, grading and policies: `admin/course-info.md`. Dates and rooms: `admin/schedule.md`. Topic for each lecture and seminar: `admin/course-plan.md`. What each unit actually contains and how it is presented (numbered items, running examples, devices, names, promises to later units): `admin/content-tracker.md`.
 
@@ -19,6 +19,16 @@ Aleksandr's how-to for the stage commands: `WORKFLOW.md`. Keep it in sync when c
 - Python only appears at the end of seminar solutions, to show how the problem is solved numerically. We don't teach Python. Students should be able to read the code, run it and change a number.
 - Quizzes: 4 short online quizzes per module (10–15 min, multiple choice, short answer or a photo of a handwritten solution). They are assessment: drafted privately in `assessment/quizzes/`, never in `book/` or `slides/`, and Aleksandr uploads them to the LMS.
 - No homework. Seminar activity is graded on problems solved at the board.
+
+### This class (learned in L01–L02, Nov 2026)
+
+First-year students, weaker in maths than the course was first planned for. L01 and L02 had too many examples, and the students lost track of them. The main reason was not difficulty: an example's numbers were given on one slide and used several slides later, and by then nobody remembered them. Aleksandr ended L02 30 minutes early because the room had lost focus. Every unit from L03 on is written for this class:
+
+- **Clarity of notation beats the number of examples.** Fewer examples, each worked slowly and in full. Prefer one small running example that carries a whole section over several separate ones. If time is short, cut an example, never a notation explanation.
+- **Each example is self-contained where it is used.** Every number a step uses appears on the same slide (and in the same or the previous paragraph of the chapter). A slide that continues an example opens with a short "Given:" line restating the data. A running example is restated, never referred back to ("with the numbers from Example 3.1" is not enough).
+- **Every mathematical notation gets explained the first time it appears**, in the chapter and on the slides: what it means in words, how to read it aloud, and one small instance written out with numbers. Assume nothing beyond school algebra. This covers the summation sign $\sum$ and indices ($x_1,\dots,x_n$, $\sum_{i=1}^n$), function notation ($p(x)$, $F(x)$), $\le$/$<$ in events such as $\{X\le 2\}$, squares and square roots, and later integrals: before the first density (L04), give a short refresher on what $\int_a^b f(x)\,dx$ means (area under a curve), how to read it, and the few rules we actually use, worked on one example. Treat any symbol that L01–L02 did not use as new.
+- Notation explanations use one device: a callout titled "How to read …" (`::: {.callout-note title="How to read $\sum$"}`). They do not count toward the callout limit in "Writing style".
+- **Pace.** Plan for less material per lecture day than the old course, with slack for questions (see the size budgets under "Making a teaching unit"). Every lecture day still ends with its exercises.
 
 ## What students get
 
@@ -171,7 +181,7 @@ The coordination steps are in `.claude/skills/<stage>/SKILL.md`, and the working
 
 - Write content and fix mistakes in the chapter first. The slides and seminar follow it.
 - Complete enough for a student who missed the lecture: definitions, results, every worked example in full and the figures. Every theorem has a proof. Proofs of important results (those that teach a method or that later chapters lean on) go in `::: proof`, always visible. Proofs of lesser results go in `::: proof-fold`, a dropdown in HTML. Keep each proof short, and give the idea when the full argument is long.
-- About 8–12 pages in the print copy per lecture day. That fits 160 minutes at the board with examples worked live.
+- About 7–10 pages in the print copy per lecture day (L01–L02 had 12 and were too much for this class). That fits 160 minutes at the board with a few examples worked slowly and every new notation explained.
 - Number everything that will be referred to: `#def-`, `#thm-`, `#exm-`, `#fig-`, `#eq-`, `{#sec-}`. Seminars cite them with `@thm-…`, and the reference resolves across the book.
 - `::: lecturer` cues are for the board layout, timing, the question to ask the room, when to show a slide, and the break (once per lecture day, after the first 80 minutes). Keep them short, because they are notes to self.
 
@@ -183,7 +193,7 @@ The coordination steps are in `.claude/skills/<stage>/SKILL.md`, and the working
 - It cuts only the most cumbersome parts. Long proofs become a statement plus one line of idea and a pointer to the book, and long algebra shrinks to its key steps.
 - Built from the patterns in `templates/slides.qmd` (`.box-def`/`.box-thm`/`.box-ex`, `.answer`, `.muted`, `{.yourturn}`, columns) and the theme `_shared/slides.scss` (16:9, 1280×720).
 - Chapter numbers go in a tag: `## Complement rule [Thm 1.2]{.tag}`. Get the numbers from `make labels`, never by guessing.
-- 35–55 slides per lecture day, at least half of them with a visual. One `## Break` at the midpoint.
+- About 30–40 slides per lecture day (L02 had 50, too many for this class), at least half of them with a visual. One `## Break` at the midpoint. A worked example never relies on numbers shown only on an earlier slide ("This class" under "Audience and scope").
 - Every deck is checked by eye: `make snapshot` and then the contact-sheet images. A deck isn't done until no slide overflows and no slide is half empty.
 - The full rules are in `.claude/agents/slide-designer.md`.
 
@@ -231,7 +241,7 @@ The materials must read as written by this lecturer, not generated. These rules 
 - No fractal summaries. Say each thing once, in the place where it does the most work.
 - Vary sentence and paragraph length on purpose: some very short sentences, a few long ones, and paragraphs of uneven size. Chapters are prose. Bullets are for lists of discrete items, not for arguments.
 - Avoid the intro → three points → conclusion template, for sections and for slides alike. Don't group things in threes by reflex. Two or four is fine.
-- Callout boxes (other than `lecturer`/`sol`) only when they matter: no more than about two per chapter, and never a "Key takeaway" box.
+- Callout boxes (other than `lecturer`/`sol` and the "How to read …" notation notes) only when they matter: no more than about two per chapter, and never a "Key takeaway" box.
 
 **Sentences**
 - Banned constructions: "It's not X, it's Y" / "not just X but Y"; rhetorical Q&A ("The result? …"); "serves as", "stands as" (say "is"); participial tails ("…, highlighting the importance of…"); vague authority ("studies show", "experts agree"), so name the source or cut it; false suspense ("here's the kicker"); grand claims ("a pivotal concept that revolutionized…").
