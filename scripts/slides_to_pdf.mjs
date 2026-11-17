@@ -42,7 +42,11 @@ for (let i = 0; i < 300 && !ready; i++) {          // up to 60 s
 }
 if (!ready) fail("reveal never finished the print layout");
 const bounded = (p) => `Promise.race([${p}, new Promise((r) => setTimeout(() => r("timeout"), 15000))])`;
-const mj = await ev(bounded(`((window.MathJax && MathJax.startup && MathJax.startup.promise) ? MathJax.startup.promise.then(() => "done") : Promise.resolve("no MathJax"))`));
+// reveal's math plugin loads MathJax 2 after reveal is ready: wait for it, then for its typesetting queue.
+const mj = await ev(bounded(`new Promise((r) => { const t0 = Date.now(); (function poll() {
+  if (window.MathJax && MathJax.Hub && MathJax.Hub.Queue) MathJax.Hub.Queue(() => r("done"));
+  else if (!document.querySelector(".math") || Date.now() - t0 > 14000) r("no MathJax");
+  else setTimeout(poll, 100); })(); })`));
 console.error("MathJax:", mj);
 await ev(bounded(`document.fonts.ready.then(() => "ok")`));
 await sleep(1500);
