@@ -1,0 +1,1430 @@
+---
+title: "Discrete random variables"
+subtitle: "Lecture 3 · Probability Theory and Mathematical Statistics"
+date: "2026-11-18"
+---
+
+{{< include ../_shared/_macros.qmd >}}
+{{< include ../_shared/_setup.qmd >}}
+
+<!--
+PLAN  NN (slide number = PDF page - 1) | title | pattern | chapter item | visual
+01 | Marat's Saturday morning | hook | intro | three customers, 0.4 / 0.6 bars
+02 | Random variable | item | Def 3.1 + Ex 3.1 | 8 outcomes mapped to 0..3
+03 | Marat's morning as a tree | picture | Fig 3.1 | chapter tree, X = 2 leaves orange
+04 | How to read X, x and {X=2} | notation | callout 1 | table write / say / Marat
+05 | Probability mass function + how to read p(x) | item + notation | Def 3.2, callout 2 | "machine" x -> p -> probability
+06 | Marat's PMF: one path | worked | Ex 3.2 | strip O N N with factors
+07 | Marat's PMF: collect the paths | worked | Ex 3.2 | none (four reveals)
+08 | Marat's PMF as a bar chart | picture | Ex 3.2 table, Fig 3.2 | table + bars
+09 | How to read the summation sign | notation | callout 3 (part 1) | big formula + parts table
+10 | x_1..x_4: the values in a list | notation | callout 3 (part 2) | i / x_i / p(x_i) table, sum written out
+11 | Properties of a PMF | item | Thm 3.1 | Omega as a bar split into {X=x} pieces
+12 | Cumulative distribution function + how to read F(x) | item + notation | Def 3.3, callout 4 (part 1) | bars piled up to F(2)
+13 | How to read <= and < | notation + pitfall | callout 4 (part 2) | two panels X<=1 / X<1
+14 | Marat's CDF: add from the left | worked | Ex 3.3 | none (running sums, F(1.5))
+15 | The CDF is a staircase | picture | Ex 3.3 formula, Fig 3.3 | chapter staircase
+16 | Interval rule | item | Eq 3.1 | bars 2, 3 highlighted
+17 | Pitfall: is the boundary included? | pitfall | after Eq 3.1 | bars 1, 2, 3 highlighted (figure left)
+18 | Your turn: cancellations in Suzdal | your turn | Exercise 1 (c, F(1.5), P(X<1)) | table
+19 | Break | break | cue after Sec 3.3 |
+20 | Expected value + how to read E[X], mu | item + notation | Def 3.4, callout 5 | none (box + reading, Given strip)
+21 | How many pairs Marat should expect | worked | Ex 3.4 | x p(x) table
+22 | What 1.2 means | explain | weighted / long-run average, "not most likely" | bars with 1.2 and 1.5 marked
+23 | Expected value of g(X) | item | Eq 3.2 | x, x^2, p(x) table; E[X^2] = 2.16
+24 | How to read squares, square roots and sigma | notation | callout 6 | table
+25 | Variance and standard deviation | item + explain | Def 3.5, why squares | deviations from mu on a number line
+26 | Marat's variance by the definition | worked | Ex 3.5 (first half) | five-column table
+27 | Shortcut formula | item + worked | Thm 3.2, Ex 3.5 (second half) | bars with mu +- sigma band
+28 | Pitfall: E[X^2] is not (E[X])^2 | pitfall | after Ex 3.5 | two bars and the gap (figure left)
+29 | Your turn: Suzdal, mean and variance | your turn | Exercise 1 (E, Var) | table
+30 | Marat thinks in rubles | explain | Sec 3.6 intro | x -> y table
+31 | Expectation and variance of aX+b + how to read |a| | item + notation | Thm 3.3, callout 7 | number line |-3| = |3|
+32 | Marat's profit in rubles | worked | Ex 3.6 | none (three steps, full width)
+33 | What the profit numbers say | picture | Ex 3.6, closing remarks | profit bars with mean and SD band
+34 | Pitfall: b drops out, a is squared | pitfall | after Ex 3.6 | 2000X and 2000X-1500 shifted bars (figure left)
+35 | Bernoulli distribution | item | Def 3.6, mean and variance | two bars
+36 | Binomial distribution | item | Def 3.7, Eq 3.3 | conditions vs Marat table
+37 | How to read X ~ Bin(n, p) and p^k (1-p)^(n-k) | notation | callout 8 | table, k = 1 written out
+38 | Why the binomial formula works | explain | after callout 8 | three strips OON / ONO / NOO
+39 | Mean and variance of the binomial | item | Thm 3.4 | X = X1 + X2 + X3 strip
+40 | Your turn: binomial or not? | your turn | Exercise 3 | none
+41 | Your turn: test drives in Kaliningrad | your turn | Exercise 4 | none
+
+Ex 3.5 is split around Thm 3.2 on purpose: slide 26 is the definition route, slide 27 states the
+shortcut and finishes Ex 3.5 with it (same order as the chapter: table first, then shortcut).
+E[X^2] = 2.16 is computed on slide 23 (Eq 3.2), where the chapter's squares callout writes out the
+same sum; slide 27 restates it in its Given strip.
+
+CUT: proof of Thm 3.1 kept as one line (partition); proofs of Thm 3.2 and Thm 3.3 shortened to one
+line of idea plus "see the book"; proof of Thm 3.4 kept as its idea (sum of Bernoullis, Lecture 6);
+Exercise 2 (food truck) left to the seminar, slide 34 covers the same two mistakes; the coffee-machine
+detail from the opening dropped; the note on the letter F (an event in Lecture 2) and
+"same answer, less work" moved to speaker notes / dropped for space; the explicit sum
+sum_i (x_i - mu) p(x_i) = mu - mu = 0 on the variance slide is said in words only.
+-->
+
+```{python}
+#| include: false
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.patches import Rectangle
+plt.rcParams.update({"font.size": 14, "axes.titlesize": 14})
+BLUE, LIGHT, ORANGE, GREY, INK, MUTED, SOFT = "#1f5c99", "#9bb8d6", "#b4542a", "#c9d6e3", "#1d2733", "#5b6b7c", "#eaf1f8"
+XS, PS = [0, 1, 2, 3], [0.216, 0.432, 0.288, 0.064]
+
+def pmf_bars(ax, xs=XS, ps=PS, hot=None, xlabel="x = number of customers who order",
+             ylabel="p(x)", ymax=0.56, width=0.55, fs=13):
+    """Marat's PMF as bars; `hot` values in orange, the rest light."""
+    hot = set() if hot is None else set(hot)
+    cols = [ORANGE if x in hot else (LIGHT if hot else BLUE) for x in xs]
+    ax.bar(xs, ps, width=width, color=cols, zorder=2)
+    for x, p in zip(xs, ps):
+        ax.text(x, p + ymax * 0.02, f"{p:.3f}", ha="center", va="bottom", fontsize=fs,
+                color=ORANGE if x in hot else INK, fontweight="bold" if x in hot else "normal")
+    ax.set_xticks(xs)
+    ax.set_ylim(0, ymax)
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel(ylabel)
+    ax.grid(axis="x", visible=False)
+
+def strip(ax, seq, x0, y, cell=1.0, h=0.8, fs=16):
+    """One morning as letters: O blue, N grey."""
+    for k, c in enumerate(seq):
+        ax.add_patch(Rectangle((x0 + k * cell, y), cell * 0.9, h, fc=BLUE if c == "O" else GREY, ec=INK, lw=1))
+        ax.text(x0 + k * cell + cell * 0.45, y + h / 2, c, ha="center", va="center", fontsize=fs,
+                color="white" if c == "O" else INK, fontweight="bold")
+
+def marat_tree(ax, hot_k=None, fs=15):
+    """Chapter Fig 3.1: three customers, O with 0.4, N with 0.6; paths to leaves with X = hot_k in orange."""
+    ys, spread = {"": 0.0}, {1: 2.0, 2: 1.0, 3: 0.5}
+    for level in (1, 2, 3):
+        for path in [p for p in list(ys) if len(p) == level - 1]:
+            for letter in "ON":
+                ys[path + letter] = ys[path] + (spread[level] if letter == "O" else -spread[level])
+    node = dict(ha="center", va="center", fontsize=fs - 1,
+                bbox=dict(boxstyle="circle,pad=0.2", fc="white", ec=INK))
+    for child, y in ys.items():
+        if not child:
+            continue
+        level, k = len(child), child.count("O")
+        hot = hot_k is not None and 0 <= hot_k - k <= 3 - level
+        ax.plot([level - 1, level], [ys[child[:-1]], y], color=ORANGE if hot else BLUE,
+                lw=2.6 if hot else 1.5, zorder=0)
+        ax.text(level - 0.5, (ys[child[:-1]] + y) / 2, "0.4" if child[-1] == "O" else "0.6",
+                ha="center", va="center", fontsize=fs - 3, color=MUTED,
+                bbox=dict(boxstyle="square,pad=0.05", fc="white", ec="none"))
+        ax.text(level, y, child[-1], **node)
+        if level == 3:
+            h = k == hot_k
+            ax.text(3.25, y, f"{child}    X = {k}    {0.4 ** k * 0.6 ** (3 - k):.3f}", ha="left", va="center",
+                    fontsize=fs, color=ORANGE if h else INK, fontweight="bold" if h else "normal")
+    ax.text(-0.05, 0, "start", ha="right", va="center", fontsize=fs - 1)
+    for level in (1, 2, 3):
+        ax.text(level, 4.05, f"customer {level}", ha="center", fontsize=fs - 2, color=MUTED)
+    ax.set_xlim(-0.6, 5.0)
+    ax.set_ylim(-3.9, 4.4)
+    ax.axis("off")
+```
+
+## Marat's Saturday morning
+
+:::: {.columns}
+::: {.column width="55%"}
+Marat runs an optician's shop on Bauman Street in Kazan. This Saturday, 3 customers come for a free eye test.
+
+. . .
+
+Each orders glasses with probability 0.4, and they decide independently. A pair earns 2,000 rubles. Each free test costs 500 rubles.
+
+. . .
+
+Marat wants two numbers. How many pairs should he expect to sell? How far from that does a typical Saturday land?
+
+. . .
+
+Both are about one unknown number: how many of the 3 order.
+:::
+::: {.column width="45%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.6
+fig, ax = plt.subplots(figsize=(5, 3.6))
+for i in range(3):
+    y = 2 - i
+    ax.barh(y, 0.4, height=0.62, color=BLUE)
+    ax.barh(y, 0.6, left=0.4, height=0.62, color=GREY)
+    ax.text(0.2, y, "orders\n0.4", ha="center", va="center", color="white", fontsize=14, fontweight="bold")
+    ax.text(0.7, y, "does not\n0.6", ha="center", va="center", color=INK, fontsize=14)
+ax.set_yticks([2, 1, 0], ["customer 1", "customer 2", "customer 3"])
+ax.set_xlim(0, 1)
+ax.set_xticks([])
+ax.set_xlabel("each customer decides on their own")
+ax.grid(False)
+ax.spines[["left", "bottom"]].set_visible(False)
+ax.tick_params(left=False)
+plt.tight_layout()
+```
+:::
+::::
+
+::: {.notes}
+Timing. Slot 1: 0:00-0:10 Marat's case, 0:10-0:30 random variable and the tree, 0:30-0:55 PMF and the sum sign, 0:55-1:15 CDF, 5 min slack. Break. Slot 2: 0:00-0:20 expectation, 0:20-0:45 variance, 0:45-1:00 profit in rubles, 1:00-1:20 Bernoulli and binomial. Your-turn slides only if time is left.
+
+Board: a strip on the left side board, "Marat: 3 customers, P(order) = 0.4 each, independent, 2,000 per pair, 500 per test". From the PMF on, add the PMF table under it. Never erase it: every later step uses it.
+:::
+
+## Random variable [Def 3.1, Ex 3.1]{.tag}
+
+:::: {.columns}
+::: {.column width="58%"}
+::: {.box-def}
+A **random variable** is a rule that gives a number to every outcome: a function from $\Omega$ to the real numbers. Names: capital letters $X$, $Y$, $Z$.
+:::
+
+A morning is three letters, O = orders, N = does not. $2\cdot2\cdot2=8$ outcomes (product rule, Thm 1.3).
+
+. . .
+
+$X$ counts the O's: values 0, 1, 2, 3. Three mornings give $X=2$. $X$ keeps *how many*, not *who*.
+:::
+::: {.column width="42%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.6
+outs = [("OOO", 3), ("OON", 2), ("ONO", 2), ("NOO", 2), ("ONN", 1), ("NON", 1), ("NNO", 1), ("NNN", 0)]
+yv = {3: 7, 2: 5, 1: 2, 0: 0}
+fig, ax = plt.subplots(figsize=(5, 3.6))
+for i, (o, k) in enumerate(outs):
+    y = 7 - i
+    ax.annotate("", xy=(2.62, yv[k]), xytext=(0.95, y),
+                arrowprops=dict(arrowstyle="-|>", color=ORANGE if k == 2 else LIGHT, lw=1.8,
+                                shrinkA=2, shrinkB=14))
+    ax.text(0.5, y, o, ha="center", va="center", fontsize=14, family="monospace",
+            color=ORANGE if k == 2 else INK, fontweight="bold" if k == 2 else "normal")
+for k, y in yv.items():
+    ax.text(2.95, y, str(k), ha="center", va="center", fontsize=16, fontweight="bold",
+            bbox=dict(boxstyle="circle,pad=0.3", fc="white", ec=ORANGE if k == 2 else BLUE, lw=1.8))
+ax.text(0.5, 8.2, "outcome", ha="center", fontsize=13, color=MUTED)
+ax.text(2.95, 8.2, "value of X", ha="center", fontsize=13, color=MUTED)
+ax.set_xlim(0, 3.5)
+ax.set_ylim(-0.6, 8.8)
+ax.axis("off")
+plt.tight_layout()
+```
+:::
+::::
+
+## Marat's morning as a tree [Fig 3.1]{.tag} {.nostretch}
+
+Each branch: O with 0.4, N with 0.6; multiply along a path. Orange: the three mornings with $X=2$.
+
+```{python}
+#| fig-width: 10
+#| fig-height: 3.3
+fig, ax = plt.subplots(figsize=(10, 3.3))
+marat_tree(ax, hot_k=2)
+plt.tight_layout()
+```
+
+## How to read $X$, $x$ and $\{X=2\}$ [Sec 3.1]{.tag}
+
+| Write | Say | For Marat |
+|:---|:---|:---|
+| $X$ | "big X" | the number of orders on Saturday, not known yet |
+| $x$ | "small x" | a possible value: 0, 1, 2 or 3 |
+| $\{X=2\}$ | "the event that X equals 2" | $\{\text{OON},\text{ONO},\text{NOO}\}$, the orange leaves |
+| $\{X\le 1\}$ | "the event that X is at most 1" | $\{\text{NNN},\text{ONN},\text{NON},\text{NNO}\}$ |
+| $\Prob(X=2)$ | "the probability that X equals 2" | short for $\Prob(\{X=2\})$ |
+
+. . .
+
+[$\{X=2\}$ is a set of outcomes, so it is an event (Lecture 1). Inside $\Prob$ we drop the curly brackets.]{.small}
+
+## Probability mass function [Def 3.2]{.tag}
+
+::: {.box-def}
+$X$ is **discrete** if its values can be listed: $x_1, x_2, x_3,\dots$ The **probability mass function** (PMF) of $X$ is $p(x)=\Prob(X=x)$, for each value $x$ of $X$.
+:::
+
+:::: {.columns}
+::: {.column width="52%"}
+[How to read $p(x)$]{.tag}
+
+$p(x)$ reads "p of x": a function, a number in, a probability out. It is *not* $p$ times $x$.
+
+$p(2)$, "p of two", is $\Prob(X=2)$. We find $p(2)=0.288$ in a moment.
+
+[Marat's $X$ has 4 values: discrete. Lecture 4: a waiting time is not.]{.muted .small}
+:::
+::: {.column width="48%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 2.6
+fig, ax = plt.subplots(figsize=(5, 2.6))
+rows = [("x = 2", "0.288", "= P(X = 2)"), ("x = 1.5", "0", "X is never 1.5")]
+for i, (inp, out, note) in enumerate(rows):
+    y = 1.6 - 1.5 * i
+    ax.text(0.5, y, inp, ha="center", va="center", fontsize=16)
+    ax.annotate("", xy=(1.55, y), xytext=(1.08, y), arrowprops=dict(arrowstyle="-|>", color=MUTED, lw=1.6))
+    ax.add_patch(Rectangle((1.6, y - 0.36), 0.85, 0.72, fc=SOFT, ec=BLUE, lw=2))
+    ax.text(2.025, y, "p", ha="center", va="center", fontsize=22, fontstyle="italic", color=BLUE)
+    ax.annotate("", xy=(2.98, y), xytext=(2.5, y), arrowprops=dict(arrowstyle="-|>", color=MUTED, lw=1.6))
+    ax.text(3.5, y + 0.1, out, ha="center", va="center", fontsize=19, color=ORANGE, fontweight="bold")
+    ax.text(3.5, y - 0.4, note, ha="center", va="center", fontsize=12, color=MUTED)
+ax.set_xlim(0, 4.3)
+ax.set_ylim(-0.75, 2.2)
+ax.axis("off")
+plt.tight_layout()
+```
+:::
+::::
+
+## Marat's PMF: one path [Ex 3.2]{.tag}
+
+::: {.muted .small}
+Given: 3 customers; each orders (O) with 0.4, does not (N) with 0.6; independent; $X$ = number who order
+:::
+
+:::: {.columns}
+::: {.column width="52%"}
+Guess first: which is most likely, 0, 1, 2 or 3 orders?
+
+. . .
+
+Take one path, say ONN. The customers are independent (Def 2.3), so multiply along the path:
+$$\Prob(\text{ONN})=0.4\cdot0.6\cdot0.6=0.144$$
+
+. . .
+
+NON and NNO have the same three factors in another order, so each of them is also 0.144.
+:::
+::: {.column width="48%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 2.6
+fig, ax = plt.subplots(figsize=(5, 2.6))
+for k, (c, pr) in enumerate(zip("ONN", ["0.4", "0.6", "0.6"])):
+    x = 1.15 * k
+    ax.add_patch(Rectangle((x, 1.0), 1.0, 0.9, fc=BLUE if c == "O" else GREY, ec=INK))
+    ax.text(x + 0.5, 1.45, c, ha="center", va="center", fontsize=20, fontweight="bold",
+            color="white" if c == "O" else INK)
+    ax.text(x + 0.5, 2.15, f"customer {k + 1}", ha="center", fontsize=12, color=MUTED)
+    ax.text(x + 0.5, 0.55, pr, ha="center", va="center", fontsize=18)
+for k in (0, 1):
+    ax.text(1.15 * k + 1.075, 0.55, "×", ha="center", va="center", fontsize=16, color=MUTED)
+ax.text(3.45, 0.55, "= 0.144", ha="left", va="center", fontsize=19, color=ORANGE, fontweight="bold")
+ax.set_xlim(-0.1, 4.9)
+ax.set_ylim(0.2, 2.5)
+ax.axis("off")
+plt.tight_layout()
+```
+:::
+::::
+
+::: {.notes}
+Ask before computing: "Most likely: 0, 1, 2 or 3 orders?" Most say 0. Collect the guesses, come back to them on the bar chart.
+:::
+
+## Marat's PMF: collect the paths [Ex 3.2]{.tag}
+
+::: {.muted .small}
+Given: O with 0.4, N with 0.6, independent; a path's probability is the product along it
+:::
+
+Different paths are mutually exclusive, so their probabilities add.
+
+::: {.incremental}
+- $X=0$: only NNN. $\quad p(0)=0.6\cdot0.6\cdot0.6=0.216$
+- $X=1$: ONN, NON, NNO, each $0.4\cdot0.6\cdot0.6=0.144$. $\quad p(1)=3\cdot0.144=0.432$
+- $X=2$: OON, ONO, NOO, each $0.4\cdot0.4\cdot0.6=0.096$. $\quad p(2)=3\cdot0.096=0.288$
+- $X=3$: only OOO. $\quad p(3)=0.4\cdot0.4\cdot0.4=0.064$
+:::
+
+. . .
+
+Check: $0.216+0.432+0.288+0.064=$ [1]{.answer}. Nothing is missing.
+
+## Marat's PMF as a bar chart [Ex 3.2, Fig 3.2]{.tag}
+
+:::: {.columns}
+::: {.column width="48%"}
+| $x$ | 0 | 1 | 2 | 3 |
+|:---|:-:|:-:|:-:|:-:|
+| $p(x)$ | 0.216 | 0.432 | 0.288 | 0.064 |
+
+. . .
+
+The most likely value is [1, not 0]{.answer}.
+
+Each customer is more likely to say no than yes. But there is only one way to get three noes, and three ways to get exactly one yes.
+:::
+::: {.column width="52%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.6
+fig, ax = plt.subplots(figsize=(5, 3.6))
+pmf_bars(ax)
+plt.tight_layout()
+```
+:::
+::::
+
+::: {.notes}
+Copy the PMF table to the side board, under the Marat strip. It stays there for the rest of the lecture.
+:::
+
+## How to read the summation sign $\sum$ [Sec 3.2]{.tag}
+
+:::: {.columns}
+::: {.column width="45%"}
+$\sum$ is the Greek capital letter sigma, an S for "sum". It means "add up". You met it in the law of total probability (Eq 2.2).
+
+::: {.big}
+$$\sum_{i=1}^{4} p(x_i)$$
+:::
+
+Say: "the sum of p of x i, for i from 1 to 4".
+:::
+::: {.column width="55%"}
+| Part | What it does |
+|:---|:---|
+| $i$ | the **index**, a counter |
+| $i=1$ under the sign | where $i$ starts |
+| $4$ on top | where $i$ stops |
+| $p(x_i)$ | what we add, once for each $i$ |
+
+. . .
+
+Put $i=1$, then $i=2$, $i=3$, $i=4$ into $p(x_i)$, and add the four results.
+:::
+::::
+
+## $x_1,\dots,x_4$: the values in a list [Sec 3.2]{.tag}
+
+$x_1, x_2, x_3, x_4$ read "x one, x two, …". The small number is a position in the list, not the value.
+
+| $i$ (position) | 1 | 2 | 3 | 4 |
+|:---|:-:|:-:|:-:|:-:|
+| $x_i$ (value) | 0 | 1 | 2 | 3 |
+| $p(x_i)$ | 0.216 | 0.432 | 0.288 | 0.064 |
+
+. . .
+
+$$
+\begin{aligned}
+\sum_{i=1}^{4} p(x_i)&=p(x_1)+p(x_2)+p(x_3)+p(x_4)=p(0)+p(1)+p(2)+p(3)\\
+&=0.216+0.432+0.288+0.064=1
+\end{aligned}
+$$
+
+[When the sum runs over *all* values of $X$, we write just $\sum_i$.]{.muted}
+
+## Properties of a PMF [Thm 3.1]{.tag}
+
+:::: {.columns}
+::: {.column width="50%"}
+::: {.box-thm}
+Let $X$ be discrete with values $x_1, x_2,\dots$ and PMF $p$. Then
+
+1. $p(x_i)\ge 0$ for every $i$;
+2. $\sum_i p(x_i)=1$.
+:::
+
+. . .
+
+Each outcome gives $X$ one value, so the events $\{X=x_i\}$ form a partition of $\Omega$ (Def 1.3). Their probabilities add up to $\Prob(\Omega)=1$.
+:::
+::: {.column width="50%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 2.6
+fig, ax = plt.subplots(figsize=(5, 2.6))
+left = 0
+for x, p, c in zip(XS, PS, [BLUE, LIGHT, BLUE, LIGHT]):
+    ax.barh(0, p, left=left, height=0.55, color=c, ec="white", lw=2)
+    ax.text(left + p / 2, 0.36, f"X={x}", ha="center", va="bottom", fontsize=13)
+    ax.text(left + p / 2, -0.36, f"{p:.3f}", ha="center", va="top", fontsize=13)
+    left += p
+ax.text(0.5, 0.95, r"all of $\Omega$, cut by the value of X", ha="center", fontsize=13, color=MUTED)
+ax.text(0.5, -1.05, "0.216 + 0.432 + 0.288 + 0.064 = 1", ha="center", fontsize=14,
+        color=ORANGE, fontweight="bold")
+ax.set_xlim(-0.02, 1.04)
+ax.set_ylim(-1.3, 1.25)
+ax.axis("off")
+plt.tight_layout()
+```
+
+. . .
+
+In practice it is a check: if your table does not add up to 1, a path is missing or counted twice.
+:::
+::::
+
+## Cumulative distribution function [Def 3.3]{.tag}
+
+:::: {.columns}
+::: {.column width="58%"}
+::: {.box-def}
+The **cumulative distribution function** (CDF) of $X$ is $F(x)=\Prob(X\le x)$, for every real number $x$.
+:::
+
+[How to read $F(x)$]{.tag}
+
+$F(x)$ reads "F of x": a number in, a probability out. $F(2)=\Prob(X\le 2)$ reads "the probability that $X$ is at most 2".
+:::
+::: {.column width="42%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.6
+fig, ax = plt.subplots(figsize=(5, 3.6))
+pmf_bars(ax, hot={0, 1, 2}, ymax=0.6)
+ax.set_title("cumulative = piling up from the left:\nF(2) = 0.216 + 0.432 + 0.288 = 0.936", fontsize=13)
+plt.tight_layout()
+```
+:::
+::::
+
+::: {.notes}
+A note on letters: in Lecture 2, F was an event (a faulty bulb, a fraudulent payment). From now on F is the CDF.
+:::
+
+## How to read $\le$ and $<$ [Sec 3.3]{.tag}
+
+::: {.muted .small}
+Given: Marat's PMF $p(0)=0.216$, $p(1)=0.432$, $p(2)=0.288$, $p(3)=0.064$
+:::
+
+:::: {.columns}
+::: {.column width="56%"}
+| Write | Say |
+|:---|:---|
+| $\le$ | "less than or equal to", "at most" |
+| $<$ | "less than", "strictly less than" |
+
+. . .
+
+$X\le1$ means $X=0$ or $X=1$:\
+$\Prob(X\le1)=0.216+0.432=$ [0.648]{.answer}
+
+$X<1$ means $X=0$ only:\
+$\Prob(X<1)=$ [0.216]{.answer}
+
+. . .
+
+The two signs differ whenever the boundary (here 1) is a value $X$ can take.
+:::
+::: {.column width="44%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.6
+fig, axes = plt.subplots(2, 1, figsize=(5, 3.6), sharex=True)
+for ax, hot, t in [(axes[0], {0, 1}, r"$X\leq 1$: 0.216 + 0.432 = 0.648"),
+                   (axes[1], {0}, r"$X<1$: only 0.216")]:
+    pmf_bars(ax, hot=hot, xlabel="", ylabel="", ymax=0.6, fs=11)
+    ax.set_yticks([])
+    ax.set_title(t, fontsize=13, color=ORANGE)
+axes[1].set_xlabel("x")
+plt.tight_layout()
+```
+:::
+::::
+
+## Marat's CDF: add from the left [Ex 3.3]{.tag}
+
+::: {.muted .small}
+Given: $p(0)=0.216$, $p(1)=0.432$, $p(2)=0.288$, $p(3)=0.064$
+:::
+
+:::: {.columns}
+::: {.column width="48%"}
+Add the probabilities from the left:
+
+. . .
+
+$F(0)=0.216$
+
+. . .
+
+$F(1)=0.216+0.432=0.648$
+
+. . .
+
+$F(2)=0.648+0.288=0.936$
+
+. . .
+
+$F(3)=0.936+0.064=1$
+:::
+::: {.column width="52%"}
+. . .
+
+Between the values nothing new is added.
+
+$F(1.5)=\Prob(X\le1.5)$. The values at most 1.5 are 0 and 1, so
+$F(1.5)=0.216+0.432=$ [0.648]{.answer}, the same as $F(1)$.
+
+. . .
+
+$F(-1)=0$, because $X$ is never negative.
+
+$F(5)=1$, because $X$ is always at most 5.
+:::
+::::
+
+## The CDF is a staircase [Ex 3.3, Fig 3.3]{.tag}
+
+:::: {.columns}
+::: {.column width="45%"}
+$$
+F(x)=\begin{cases}
+0, & x<0,\\
+0.216, & 0\le x<1,\\
+0.648, & 1\le x<2,\\
+0.936, & 2\le x<3,\\
+1, & x\ge 3.
+\end{cases}
+$$
+
+Flat between the values of $X$. At 0, 1, 2, 3 it jumps by $p(x)$.
+
+The filled dot is the value of $F$ at the jump. The dashed line reads off $F(1.5)=0.648$.
+:::
+::: {.column width="55%"}
+```{python}
+#| fig-width: 5.4
+#| fig-height: 3.9
+levels = [0, 0.216, 0.648, 0.936, 1.0]
+edges = [-1, 0, 1, 2, 3, 4]
+fig, ax = plt.subplots(figsize=(5.4, 3.9))
+for i in range(5):
+    ax.hlines(levels[i], edges[i], edges[i + 1], color=BLUE, lw=2.5)
+for i, x in enumerate(XS):
+    ax.plot(x, levels[i], "o", mfc="white", mec=BLUE, ms=8, mew=2)
+    ax.plot(x, levels[i + 1], "o", color=BLUE, ms=8)
+ax.vlines(1.5, 0, 0.648, color=ORANGE, ls="dashed", lw=1.6)
+ax.hlines(0.648, -1, 1.5, color=ORANGE, ls="dashed", lw=1.6)
+ax.text(1.57, 0.05, "x = 1.5", color=ORANGE, fontsize=13)
+for i in range(1, 5):
+    ax.text(edges[i + 1] - 0.08, levels[i] + 0.035, f"{levels[i]:.3f}", ha="right", va="bottom", fontsize=13)
+ax.set_yticks([0, 0.5, 1])
+ax.set_xlim(-1, 4)
+ax.set_ylim(-0.03, 1.15)
+ax.set_xlabel("x")
+ax.set_ylabel(r"$F(x)=P(X\leq x)$")
+plt.tight_layout()
+```
+:::
+::::
+
+::: {.notes}
+Draw the staircase from the side-board table, filled dots on top.
+:::
+
+## Interval rule [Eq 3.1]{.tag}
+
+::: {.muted .small}
+Given: $F(1)=0.648$, $F(3)=1$; $p(2)=0.288$, $p(3)=0.064$
+:::
+
+:::: {.columns}
+::: {.column width="58%"}
+::: {.box-thm}
+For $a<b$:\
+$\Prob(a<X\le b)=F(b)-F(a)$
+:::
+
+$\{X\le b\}$ splits into $\{X\le a\}$ and $\{a<X\le b\}$, mutually exclusive. So $F(b)=F(a)+\Prob(a<X\le b)$.
+
+. . .
+
+Marat, 2 or 3 customers order:
+$\Prob(1<X\le3)=F(3)-F(1)=1-0.648=$ [0.352]{.answer}
+
+[Check: $p(2)+p(3)=0.288+0.064=0.352$.]{.small}
+:::
+::: {.column width="42%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.4
+fig, ax = plt.subplots(figsize=(5, 3.4))
+pmf_bars(ax, hot={2, 3}, ymax=0.6)
+ax.set_title(r"$1<X\leq 3$: the bars at 2 and 3", fontsize=13)
+plt.tight_layout()
+```
+:::
+::::
+
+## Pitfall: is the boundary included? [Eq 3.1]{.tag}
+
+::: {.muted .small}
+Given: $p(0)=0.216$, $p(1)=0.432$, $p(2)=0.288$, $p(3)=0.064$; $F(0)=0.216$, $F(1)=0.648$, $F(3)=1$
+:::
+
+:::: {.columns}
+::: {.column width="42%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.4
+fig, ax = plt.subplots(figsize=(5, 3.4))
+pmf_bars(ax, hot={1, 2, 3}, ymax=0.6)
+ax.set_title(r"$1\leq X\leq 3$: the bars at 1, 2 and 3", fontsize=13)
+plt.tight_layout()
+```
+:::
+::: {.column width="58%"}
+::: {.box-ex}
+**Wrong.** $\Prob(1\le X\le3)=F(3)-F(1)=0.352$
+:::
+
+. . .
+
+::: {.box-def}
+**Right.** The event also contains $X=1$:
+$$
+\begin{aligned}
+\Prob(1\le X\le3)&=F(3)-F(0)\\
+&=1-0.216=0.784
+\end{aligned}
+$$
+:::
+
+Eq 3.1 has $<$ on the left, $\le$ on the right. Always ask: is the boundary value included?
+:::
+::::
+
+## Your turn: cancellations in Suzdal [Exercise 1]{.tag} {.yourturn}
+
+:::: {.columns}
+::: {.column width="45%"}
+A guesthouse in Suzdal gets $X$ late cancellations per weekend:
+
+| $x$ | 0 | 1 | 2 |
+|:---|:-:|:-:|:-:|
+| $\Prob(X=x)$ | 0.5 | 0.3 | $c$ |
+
+No other values. Find $c$, $F(1.5)$ and $\Prob(X<1)$.
+:::
+::: {.column width="55%"}
+. . .
+
+$c=1-0.5-0.3=$ [0.2]{.answer} (Thm 3.1)
+
+. . .
+
+$F(1.5)=\Prob(X\le1.5)=0.5+0.3=$ [0.8]{.answer}
+
+. . .
+
+$\Prob(X<1)=\Prob(X=0)=$ [0.5]{.answer}
+:::
+::::
+
+## Break
+
+Back in 10 minutes.
+
+::: {.notes}
+Break after Section 3.3 (80 min). The second half starts with Section 3.4, expected value.
+:::
+
+## Expected value [Def 3.4]{.tag}
+
+::: {.muted .small}
+Given: Marat, 3 customers, 0.4 each, independent; $p(0)=0.216$, $p(1)=0.432$, $p(2)=0.288$, $p(3)=0.064$
+:::
+
+:::: {.columns}
+::: {.column width="52%"}
+::: {.box-def}
+The **expected value** (also **expectation** or **mean**) of a discrete $X$ with values $x_1,x_2,\dots$ and PMF $p$ is\
+$\displaystyle\E[X]=\sum_i x_i\,p(x_i)$.\
+We also write $\mu$ for $\E[X]$.
+:::
+:::
+::: {.column width="48%"}
+[How to read $\E[X]$ and $\mu$]{.tag}
+
+$\E[X]$ reads "E of X", the expected value of X. $\E$ is an operation done to $X$, not a number times $X$.
+
+$\mu$, the Greek letter mu, said "myoo", is the same number as $\E[X]$.
+:::
+::::
+
+. . .
+
+In words: multiply each value by its probability, then add. For Marat:
+$$\E[X]=0\cdot p(0)+1\cdot p(1)+2\cdot p(2)+3\cdot p(3)$$
+
+::: {.notes}
+Opening question for slot 2: "Marat expects 1.2 pairs. Will he ever sell 1.2 pairs?" Then do the 1,000 Saturdays on the board, next to the PMF table.
+:::
+
+## How many pairs Marat should expect [Ex 3.4]{.tag}
+
+::: {.muted .small}
+Given: $p(0)=0.216$, $p(1)=0.432$, $p(2)=0.288$, $p(3)=0.064$
+:::
+
+:::: {.columns}
+::: {.column width="62%"}
+Multiply each value by its probability:
+
+. . .
+
+$$
+\begin{aligned}
+\E[X]&=0\cdot0.216+1\cdot0.432\\
+&\quad+2\cdot0.288+3\cdot0.064
+\end{aligned}
+$$
+
+. . .
+
+$$=0+0.432+0.576+0.192=1.2$$
+
+. . .
+
+[Marat should expect 1.2 pairs per Saturday morning.]{.answer}
+:::
+::: {.column width="38%"}
+::: {.fragment}
+| $x$ | $p(x)$ | $x\cdot p(x)$ |
+|:-:|:-:|:-:|
+| 0 | 0.216 | 0 |
+| 1 | 0.432 | 0.432 |
+| 2 | 0.288 | 0.576 |
+| 3 | 0.064 | 0.192 |
+| | sum | **1.2** |
+:::
+:::
+::::
+
+## What 1.2 means [Sec 3.4]{.tag}
+
+::: {.muted .small}
+Given: $p(0)=0.216$, $p(1)=0.432$, $p(2)=0.288$, $p(3)=0.064$; $\E[X]=1.2$
+:::
+
+:::: {.columns}
+::: {.column width="55%"}
+*A weighted average.* The plain average of 0, 1, 2, 3 is 1.5. But 3 is rare (0.064) and 0 is common (0.216), and the weights pull the mean down to 1.2.
+
+. . .
+
+*A long-run average.* In 1,000 such Saturdays, about 216 have no order, 432 one, 288 two and 64 three: $0\cdot216+1\cdot432+2\cdot288+3\cdot64=1{,}200$ pairs, 1.2 per Saturday.
+
+. . .
+
+"Expected" is not "most likely" (that is 1). Marat will never sell 1.2 pairs.
+:::
+::: {.column width="45%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.6
+fig, ax = plt.subplots(figsize=(5, 3.6))
+pmf_bars(ax, ymax=0.68)
+ax.axvline(1.2, color=ORANGE, lw=2.5, zorder=3)
+ax.axvline(1.5, color=MUTED, lw=1.5, ls="dashed", zorder=3)
+ax.text(1.15, 0.6, "E[X] = 1.2", ha="right", va="center", fontsize=13, color=ORANGE, fontweight="bold")
+ax.text(1.55, 0.6, "plain average 1.5", ha="left", va="center", fontsize=13, color=MUTED)
+plt.tight_layout()
+```
+:::
+::::
+
+## Expected value of $g(X)$ [Eq 3.2]{.tag}
+
+::: {.muted .small}
+Given: $p(0)=0.216$, $p(1)=0.432$, $p(2)=0.288$, $p(3)=0.064$
+:::
+
+::: {.box-thm}
+For any function $g$:
+$\displaystyle \E[g(X)]=\sum_i g(x_i)\,p(x_i)$
+:::
+
+Compute the new quantity from each value of $X$, weight it by the probability of that value, add. The reason: $g(X)$ takes the value $g(x_i)$ exactly when $X=x_i$.
+
+. . .
+
+:::: {.columns}
+::: {.column width="40%"}
+With $g(x)=x^2$:
+
+| $x$ | 0 | 1 | 2 | 3 |
+|:---|:-:|:-:|:-:|:-:|
+| $x^2$ | 0 | 1 | 4 | 9 |
+| $p(x)$ | 0.216 | 0.432 | 0.288 | 0.064 |
+:::
+::: {.column width="60%"}
+$$
+\begin{aligned}
+\E[X^2]&=0\cdot0.216+1\cdot0.432\\
+&\quad+4\cdot0.288+9\cdot0.064\\
+&=0.432+1.152+0.576=2.16
+\end{aligned}
+$$
+:::
+::::
+
+## How to read squares, square roots and $\sigma$ [Sec 3.5]{.tag}
+
+| Write | Say | For Marat, $\mu=1.2$ |
+|:---|:---|:---|
+| $X^2$ | "X squared" | if $X=2$, then $X^2=4$ |
+| $(X-\mu)^2$ | "X minus mu, all squared": brackets first, then square | if $X=0$: $(0-1.2)^2=(-1.2)^2=1.44$ |
+| $\sqrt{0.72}$ | "the square root of 0.72" | $\approx0.85$, because $0.85^2\approx0.72$ |
+| $\sigma$, $\sigma^2$ | "sigma", "sigma squared" | the standard deviation and the variance |
+
+. . .
+
+Units. $X$ is in pairs of glasses, and so is $X-\mu$. Then $(X-\mu)^2$ is in "pairs squared", which means nothing to anyone. The square root brings us back to pairs.
+
+## Variance and standard deviation [Def 3.5]{.tag}
+
+:::: {.columns}
+::: {.column width="57%"}
+::: {.box-def}
+With $\mu=\E[X]$, the **variance** of $X$ is
+$$
+\begin{aligned}
+\Var(X)&=\E\big[(X-\mu)^2\big]\\
+&=\sum_i (x_i-\mu)^2\,p(x_i).
+\end{aligned}
+$$
+**Standard deviation**: $\sigma=\operatorname{SD}(X)=\sqrt{\Var(X)}$.
+:::
+
+. . .
+
+Why squares: plain deviations cancel on average. Squares make every deviation count, big ones much more.
+:::
+::: {.column width="43%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.4
+mu = 1.2
+fig, ax = plt.subplots(figsize=(5, 3.4))
+ax.axhline(0, color=INK, lw=1)
+for x, p in zip(XS, PS):
+    ax.plot(x, 0, "o", ms=7 + 30 * p, color=BLUE, zorder=3)
+    ax.text(x, -0.35, f"x = {x}", ha="center", va="top", fontsize=12)
+ax.axvline(mu, color=ORANGE, ls=":", lw=1.5)
+ax.plot(mu, 0, "^", ms=14, color=ORANGE, zorder=4)
+ax.text(mu, 3.35, "μ = 1.2", ha="center", fontsize=13, color=ORANGE, fontweight="bold")
+ax.text(3.95, 3.35, "squared", ha="center", fontsize=12, color=MUTED)
+for i, x in enumerate(XS):
+    y = 0.75 + 0.62 * i
+    d = x - mu
+    ax.annotate("", xy=(x, y), xytext=(mu, y),
+                arrowprops=dict(arrowstyle="-|>", color=ORANGE if d < 0 else BLUE, lw=2.2))
+    ax.text((x + mu) / 2 if abs(d) > 0.5 else x - 0.3, y + 0.1, f"{d:+.1f}".replace("-", "−"),
+            ha="center", va="bottom", fontsize=12)
+    ax.text(3.95, y, f"{d * d:.2f}", ha="center", va="center", fontsize=13)
+ax.set_xlim(-0.5, 4.4)
+ax.set_ylim(-0.9, 3.7)
+ax.axis("off")
+ax.set_title("deviations from the mean", fontsize=13)
+plt.tight_layout()
+```
+:::
+::::
+
+## Marat's variance by the definition [Ex 3.5]{.tag}
+
+::: {.muted .small}
+Given: $p(0)=0.216$, $p(1)=0.432$, $p(2)=0.288$, $p(3)=0.064$; $\mu=1.2$
+:::
+
+One row per value: subtract 1.2, square, multiply by $p(x)$.
+
+| $x$ | $x-1.2$ | $(x-1.2)^2$ | $p(x)$ | $(x-1.2)^2\,p(x)$ |
+|:-:|:-:|:-:|:-:|:-:|
+| 0 | $-1.2$ | 1.44 | 0.216 | 0.31104 |
+| 1 | $-0.2$ | 0.04 | 0.432 | 0.01728 |
+| 2 | 0.8 | 0.64 | 0.288 | 0.18432 |
+| 3 | 1.8 | 3.24 | 0.064 | 0.20736 |
+
+. . .
+
+Add the last column:
+$$\Var(X)=0.31104+0.01728+0.18432+0.20736=0.72$$
+
+## Shortcut formula for the variance [Thm 3.2, Ex 3.5]{.tag}
+
+::: {.muted .small}
+Given: $\E[X^2]=2.16$ (from Eq 3.2); $\mu=\E[X]=1.2$
+:::
+
+:::: {.columns}
+::: {.column width="52%"}
+::: {.box-thm}
+$$\Var(X)=\E[X^2]-\mu^2$$
+:::
+
+[Idea: expand the square. Proof: see the book, Section 3.5.]{.muted .small}
+
+. . .
+
+$$
+\begin{aligned}
+\Var(X)&=2.16-1.2^2\\
+&=2.16-1.44=0.72
+\end{aligned}
+$$
+
+. . .
+
+$\sigma=\sqrt{0.72}\approx$ [0.85 pairs]{.answer}. Same 0.72 as the table.
+:::
+::: {.column width="48%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.4
+fig, ax = plt.subplots(figsize=(5, 3.4))
+ax.axvspan(1.2 - 0.85, 1.2 + 0.85, color=ORANGE, alpha=0.12, zorder=0)
+pmf_bars(ax, ymax=0.7)
+ax.axvline(1.2, color=ORANGE, lw=2.5, zorder=3)
+ax.annotate("", xy=(2.05, 0.58), xytext=(0.35, 0.58),
+            arrowprops=dict(arrowstyle="<->", color=ORANGE, lw=1.8))
+ax.text(1.2, 0.61, "1.2 − 0.85  to  1.2 + 0.85", ha="center", va="bottom", fontsize=12, color=ORANGE,
+        bbox=dict(boxstyle="square,pad=0.1", fc="white", ec="none"))
+ax.set_title("a typical Saturday: about 0.85 pairs from 1.2", fontsize=13)
+plt.tight_layout()
+```
+:::
+::::
+
+## Pitfall: $\E[X^2]$ is not $(\E[X])^2$ [Thm 3.2]{.tag}
+
+::: {.muted .small}
+Given: $\E[X^2]=2.16$; $\E[X]=1.2$
+:::
+
+:::: {.columns}
+::: {.column width="46%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.2
+fig, ax = plt.subplots(figsize=(5, 3.2))
+ax.barh([1, 0], [2.16, 1.44], height=0.42, color=[BLUE, LIGHT])
+ax.set_yticks([1, 0], [r"$E[X^2]$", r"$(E[X])^2$"])
+ax.text(2.21, 1, "2.16", va="center", fontsize=14)
+ax.text(1.49, 0, "1.44", va="center", fontsize=14)
+ax.annotate("", xy=(2.16, 0.5), xytext=(1.44, 0.5), arrowprops=dict(arrowstyle="<->", color=ORANGE, lw=2))
+ax.text(1.80, 0.57, "gap = Var(X) = 0.72", ha="center", va="bottom", fontsize=13,
+        color=ORANGE, fontweight="bold")
+ax.set_xlim(0, 2.75)
+ax.set_xlabel("value")
+ax.grid(axis="y", visible=False)
+plt.tight_layout()
+```
+:::
+::: {.column width="54%"}
+::: {.box-ex}
+**Wrong.** $\E[X^2]=(\E[X])^2=1.44$
+:::
+
+::: {.box-def}
+**Right.** $\E[X^2]=2.16$, $(\E[X])^2=1.44$. The gap *is* the variance: $0.72$.
+:::
+
+. . .
+
+The gap is never negative. If your variance comes out negative, you subtracted the wrong way round.
+:::
+::::
+
+## Your turn: Suzdal, mean and variance [Exercise 1]{.tag} {.yourturn}
+
+:::: {.columns}
+::: {.column width="44%"}
+Late cancellations $X$ per weekend at the Suzdal guesthouse:
+
+| $x$ | 0 | 1 | 2 |
+|:---|:-:|:-:|:-:|
+| $\Prob(X=x)$ | 0.5 | 0.3 | 0.2 |
+
+Find $\E[X]$ and $\Var(X)$. Use the shortcut.
+:::
+::: {.column width="56%"}
+. . .
+
+$\E[X]=0\cdot0.5+1\cdot0.3+2\cdot0.2=$ [0.7]{.answer}
+
+. . .
+
+$\E[X^2]=0\cdot0.5+1\cdot0.3+4\cdot0.2=1.1$
+
+. . .
+
+$\Var(X)=1.1-0.7^2=1.1-0.49=$ [0.61]{.answer}
+:::
+::::
+
+## Marat thinks in rubles [Sec 3.6]{.tag}
+
+::: {.muted .small}
+Given: 2,000 rubles per pair; 3 free tests at 500 rubles; $p(0)=0.216$, $p(1)=0.432$, $p(2)=0.288$, $p(3)=0.064$
+:::
+
+The three tests cost $3\cdot500=1{,}500$ rubles whatever happens. Marat's profit for the morning, in rubles:
+$$Y=2000X-1500$$
+
+. . .
+
+| $x$ | 0 | 1 | 2 | 3 |
+|:---|:-:|:-:|:-:|:-:|
+| profit $y=2000x-1500$ | $-1{,}500$ | 500 | 2,500 | 4,500 |
+| probability | 0.216 | 0.432 | 0.288 | 0.064 |
+
+. . .
+
+Same probabilities, new values. The next theorem gets the mean and variance of $Y$ straight from $\E[X]$ and $\Var(X)$.
+
+## Expectation and variance of $aX+b$ [Thm 3.3]{.tag}
+
+:::: {.columns}
+::: {.column width="54%"}
+::: {.box-thm}
+Let $a$ and $b$ be numbers. Then
+$$
+\begin{aligned}
+\E[aX+b]&=a\,\E[X]+b,\\
+\Var(aX+b)&=a^2\Var(X),\\
+\operatorname{SD}(aX+b)&=|a|\operatorname{SD}(X).
+\end{aligned}
+$$
+:::
+
+[Idea: the deviation of $aX+b$ from its mean is $a(X-\mu)$. The $b$ is gone, and squaring turns $a$ into $a^2$. Proof: see the book, Section 3.6.]{.muted .small}
+
+[Lecture 2: $|B|$ around a *set* was its number of elements. Around a *number* the bars mean absolute value.]{.muted .small}
+:::
+::: {.column width="46%"}
+[How to read $|a|$]{.tag}
+
+$|a|$, "the absolute value of a": $a$ without its sign.
+
+```{python}
+#| fig-width: 5
+#| fig-height: 1.5
+fig, ax = plt.subplots(figsize=(5, 1.5))
+ax.hlines(0, -4.3, 4.3, color=INK, lw=1)
+for t in range(-4, 5):
+    ax.plot([t, t], [-0.07, 0.07], color=INK, lw=1)
+    ax.text(t, -0.2, f"{t}".replace("-", "−"), ha="center", va="top", fontsize=12)
+for end, lab in [(-3, "|−3| = 3"), (3, "|3| = 3")]:
+    ax.annotate("", xy=(end, 0.3), xytext=(0, 0.3), arrowprops=dict(arrowstyle="<->", color=ORANGE, lw=2))
+    ax.text(end / 2, 0.42, lab, ha="center", va="bottom", fontsize=14, color=ORANGE, fontweight="bold")
+    ax.plot(end, 0, "o", color=ORANGE, ms=8)
+ax.set_xlim(-4.5, 4.5)
+ax.set_ylim(-0.6, 0.8)
+ax.axis("off")
+plt.tight_layout()
+```
+
+$\operatorname{SD}(-X)=|-1|\cdot\operatorname{SD}(X)=\operatorname{SD}(X)$
+:::
+::::
+
+## Marat's profit in rubles [Ex 3.6]{.tag}
+
+::: {.muted .small}
+Given: $Y=2000X-1500$ rubles; $\E[X]=1.2$; $\Var(X)=0.72$; $\operatorname{SD}(X)=\sqrt{0.72}\approx0.85$
+:::
+
+Here $a=2000$ and $b=-1500$. By Thm 3.3:
+
+. . .
+
+$$\E[Y]=2000\cdot1.2-1500=2400-1500=900$$
+
+. . .
+
+$$\Var(Y)=2000^2\cdot0.72=4{,}000{,}000\cdot0.72=2{,}880{,}000$$
+
+. . .
+
+$$\operatorname{SD}(Y)=2000\cdot\sqrt{0.72}\approx1{,}697$$
+
+. . .
+
+[Expected profit 900 rubles, standard deviation about 1,697 rubles.]{.answer}
+
+## What the profit numbers say [Ex 3.6]{.tag}
+
+::: {.muted .small}
+Given: $\E[Y]=900$; $\Var(Y)=2{,}880{,}000$; $\operatorname{SD}(Y)\approx1{,}697$; bars: each profit and its probability
+:::
+
+:::: {.columns}
+::: {.column width="45%"}
+The variance, 2,880,000, is in "rubles squared", a number nobody can picture. Report the standard deviation.
+
+. . .
+
+The swing (1,697) is almost twice the mean (900).
+
+. . .
+
+About one Saturday in five (probability 0.216, no orders) is a [loss of 1,500 rubles]{.answer}.
+:::
+::: {.column width="55%"}
+```{python}
+#| fig-width: 5.4
+#| fig-height: 3.4
+yv = [-1500, 500, 2500, 4500]
+fig, ax = plt.subplots(figsize=(5.4, 3.4))
+ax.axvspan(900 - 1697, 900 + 1697, color=ORANGE, alpha=0.10, zorder=0)
+ax.bar(yv, PS, width=900, color=[ORANGE, BLUE, BLUE, BLUE], zorder=2)
+for y, p in zip(yv, PS):
+    ax.text(y, p + 0.012, f"{p:.3f}", ha="center", va="bottom", fontsize=12)
+ax.axvline(900, color=ORANGE, lw=2.2, zorder=3)
+ax.text(900, 0.585, "E[Y] = 900", ha="center", va="bottom", fontsize=13, color=ORANGE, fontweight="bold",
+        bbox=dict(boxstyle="square,pad=0.1", fc="white", ec="none"))
+ax.text(-1500, 0.1, "loss", ha="center", va="center", fontsize=12, color="white", fontweight="bold")
+ax.text(3000, 0.45, "shaded: 900 ± 1,697\n(one SD each side)", ha="left", va="center", fontsize=11, color=ORANGE)
+ax.set_xticks(yv, ["−1,500", "500", "2,500", "4,500"])
+ax.set_xlim(-2200, 5600)
+ax.set_ylim(0, 0.66)
+ax.set_xlabel("profit Y, rubles")
+ax.set_ylabel("probability")
+ax.grid(axis="x", visible=False)
+plt.tight_layout()
+```
+:::
+::::
+
+## Pitfall: $b$ drops out, $a$ is squared [Thm 3.3]{.tag}
+
+::: {.muted .small}
+Given: $Y=2000X-1500$; $\Var(X)=0.72$
+:::
+
+:::: {.columns}
+::: {.column width="46%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.4
+a_vals = [0, 2000, 4000, 6000]
+fig, ax = plt.subplots(figsize=(5, 3.4))
+ax.bar(a_vals, PS, width=600, color=LIGHT, label="2000X", zorder=2)
+ax.bar([v - 1500 for v in a_vals], PS, width=600, color=BLUE, label="2000X − 1500", zorder=2)
+for v, p in zip(a_vals, PS):
+    ax.annotate("", xy=(v - 1450, p + 0.03), xytext=(v, p + 0.03),
+                arrowprops=dict(arrowstyle="-|>", color=ORANGE, lw=1.6))
+ax.set_xticks([-1500, 0, 1500, 3000, 4500, 6000], ["−1,500", "0", "1,500", "3,000", "4,500", "6,000"], fontsize=11)
+ax.set_ylim(0, 0.6)
+ax.set_xlabel("rubles")
+ax.set_ylabel("probability")
+ax.legend(frameon=False, loc="upper right", fontsize=12)
+ax.set_title("same shape, moved 1,500 to the left", fontsize=13)
+ax.grid(axis="x", visible=False)
+plt.tight_layout()
+```
+:::
+::: {.column width="54%"}
+::: {.box-ex}
+**Wrong.** $\Var(Y)=2000\cdot0.72-1500$
+:::
+
+::: {.box-def}
+**Right.** $\Var(Y)=2000^2\cdot0.72=2{,}880{,}000$
+:::
+
+The 1,500 rubles shift every profit by the same amount: the mean moves, the spread does not.
+
+. . .
+
+$a$ is squared, so its sign goes too: $\Var(-X)=\Var(X)$, never $-\Var(X)$.
+:::
+::::
+
+::: {.notes}
+Lecture 5 uses this theorem for the normal distribution, so it has to be right now.
+:::
+
+## Bernoulli distribution [Def 3.6]{.tag}
+
+:::: {.columns}
+::: {.column width="56%"}
+::: {.box-def}
+$X$ has the **Bernoulli distribution** with parameter $p$, $0\le p\le1$, if it takes only two values:
+$\Prob(X=1)=p$, $\Prob(X=0)=1-p$.
+The value 1 is a **success**, 0 a **failure**.
+:::
+
+[A **parameter** picks one member of a family, such as Bernoulli(0.4) or Bernoulli(0.9). "Success" is just what we count, even a default.]{.small}
+
+. . .
+
+$\E[X]=0\cdot(1-p)+1\cdot p=p$, $\;\E[X^2]=p$, so $\Var(X)=p-p^2=p(1-p)$.
+:::
+::: {.column width="44%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.0
+fig, ax = plt.subplots(figsize=(5, 3.0))
+ax.bar([0, 1], [0.6, 0.4], width=0.5, color=[GREY, BLUE], zorder=2)
+for x, p in [(0, 0.6), (1, 0.4)]:
+    ax.text(x, p + 0.015, f"{p}", ha="center", va="bottom", fontsize=14)
+ax.set_xticks([0, 1], ["0\nfailure: no order", "1\nsuccess: order"])
+ax.set_ylim(0, 0.72)
+ax.set_ylabel("probability")
+ax.set_title("one of Marat's customers: Bernoulli(0.4)", fontsize=13)
+ax.grid(axis="x", visible=False)
+plt.tight_layout()
+```
+
+. . .
+
+Marat's customer: mean [0.4]{.answer}, variance $0.4\cdot0.6=$ [0.24]{.answer}.
+:::
+::::
+
+## Binomial distribution [Def 3.7, Eq 3.3]{.tag}
+
+::: {.box-def}
+Repeat a trial $n$ times under the four conditions below, and let $X$ be the number of successes. Then $X$ has the **binomial distribution**, $X\sim\operatorname{Bin}(n,p)$, and
+$$\Prob(X=k)=\binom{n}{k}p^k(1-p)^{n-k},\qquad k=0,1,\dots,n.$$
+:::
+
+| Condition | Marat |
+|:---|:---|
+| 1. $n$ is fixed in advance | 3 customers have booked, $n=3$ |
+| 2. each trial: success or failure | orders (O) or does not (N) |
+| 3. the same $p$ in every trial | 0.4 for each customer |
+| 4. the trials are independent | they don't know each other |
+
+## How to read $X\sim\operatorname{Bin}(n,p)$ and $p^k(1-p)^{n-k}$ [Sec 3.7]{.tag}
+
+| Write | Say, and what it means |
+|:---|:---|
+| $\sim$ (tilde) | "has the distribution" |
+| $X\sim\operatorname{Bin}(3,\,0.4)$ | "X has the binomial distribution with $n=3$, $p=0.4$" |
+| $k$ | how many successes we ask about |
+| $p^k$ | $p$ times itself $k$ times; $p^0=1$ |
+
+. . .
+
+Marat, $k=1$: $\;p^1(1-p)^{3-1}=0.4\cdot0.6^2=0.4\cdot0.36=0.144$, one path such as ONN.
+
+$\binom31=3$ such paths (ONN, NON, NNO): $\;\Prob(X=1)=3\cdot0.144=$ [0.432]{.answer}
+
+[A Bernoulli($p$) variable is $\operatorname{Bin}(1,p)$.]{.muted .small}
+
+## Why the binomial formula works [Eq 3.3]{.tag}
+
+:::: {.columns}
+::: {.column width="52%"}
+A sequence of $n$ trials with $k$ successes and $n-k$ failures has probability $p^k(1-p)^{n-k}$, by independence (Def 2.3).
+
+. . .
+
+The number of such sequences is the number of ways to choose the $k$ positions of the successes: $\binom nk$ (Def 1.8).
+
+. . .
+
+Different sequences are mutually exclusive, so we add $\binom nk$ equal probabilities.
+:::
+::: {.column width="48%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.2
+fig, ax = plt.subplots(figsize=(5, 3.2))
+for r, seq in enumerate(["OON", "ONO", "NOO"]):
+    y = 2.2 - 1.0 * r
+    strip(ax, seq, 0, y, cell=0.75, h=0.7, fs=15)
+    factors = " · ".join("0.4" if c == "O" else "0.6" for c in seq)
+    ax.text(2.45, y + 0.35, f"{factors} = 0.096", ha="left", va="center", fontsize=14)
+ax.text(2.6, -0.05, "3 · 0.096 = 0.288", ha="center", va="center", fontsize=16,
+        color=ORANGE, fontweight="bold")
+ax.text(2.6, 3.25, "Marat, k = 2: choose 2 places for O", ha="center", fontsize=13, color=MUTED)
+ax.set_xlim(-0.05, 5.4)
+ax.set_ylim(-0.4, 3.5)
+ax.axis("off")
+plt.tight_layout()
+```
+
+[$\binom32\cdot0.4^2\cdot0.6=0.288$, as in Ex 3.2.]{.small}
+:::
+::::
+
+## Mean and variance of the binomial [Thm 3.4]{.tag}
+
+:::: {.columns}
+::: {.column width="58%"}
+::: {.box-thm}
+If $X\sim\operatorname{Bin}(n,p)$, then
+$$\E[X]=np,\qquad \Var(X)=np(1-p).$$
+:::
+
+[Idea: $X_j=1$ if trial $j$ is a success, 0 if not. Each $X_j$ is Bernoulli($p$), $X=X_1+\dots+X_n$. Lecture 6 proves that means add (variances too, for independent trials).]{.muted .small}
+
+. . .
+
+Marat, $n=3$, $p=0.4$:
+$\E[X]=3\cdot0.4=$ [1.2]{.answer}, $\Var(X)=3\cdot0.4\cdot0.6=$ [0.72]{.answer}
+
+The same as Ex 3.4 and Ex 3.5, without the table.
+:::
+::: {.column width="42%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 2.8
+fig, ax = plt.subplots(figsize=(5, 2.8))
+strip(ax, "ONO", 0.3, 1.3, cell=1.4, h=0.8, fs=18)
+for j, c in enumerate("ONO"):
+    ax.text(0.3 + 1.4 * j + 0.63, 0.95, f"$X_{j + 1}={1 if c == 'O' else 0}$", ha="center", va="center", fontsize=15)
+ax.text(2.4, 0.2, "X = 1 + 0 + 1 = 2", ha="center", va="center", fontsize=17, color=ORANGE, fontweight="bold")
+ax.text(2.4, 2.4, "one morning, ONO", ha="center", fontsize=13, color=MUTED)
+ax.set_xlim(0, 4.8)
+ax.set_ylim(-0.2, 2.7)
+ax.axis("off")
+plt.tight_layout()
+```
+:::
+::::
+
+## Your turn: binomial or not? [Exercise 3]{.tag} {.yourturn}
+
+One word each, then one line of reason.
+
+(a) The number of heads in 6 tosses of a fair coin.
+
+(b) The number of faulty bulbs among 2 bulbs taken without putting back from a box of 12 that has 3 faulty ones.
+
+(c) The number of customers Marat tests until the first one orders.
+
+. . .
+
+(a) [Yes]{.answer}, $\operatorname{Bin}(6,\,0.5)$.
+
+(b) [No]{.answer}: after the first draw $p$ changes to $2/11$ or $3/11$ (Lecture 2), so the trials are not independent.
+
+(c) [No]{.answer}: the number of trials is not fixed (geometric distribution, Lecture 4).
+
+## Your turn: test drives in Kaliningrad [Exercise 4]{.tag} {.yourturn}
+
+Each of 5 visitors to a car showroom in Kaliningrad books a test drive with probability 0.2, independently of the others. $X$ is the number who book.
+
+Find $\Prob(X=2)$, $\Prob(X\ge1)$, $\E[X]$ and $\Var(X)$.
+
+. . .
+
+$X\sim\operatorname{Bin}(5,\,0.2)$.
+$\Prob(X=2)=\binom52\cdot0.2^2\cdot0.8^3=10\cdot0.04\cdot0.512=$ [0.2048]{.answer}
+
+. . .
+
+$\Prob(X\ge1)=1-\Prob(X=0)=1-0.8^5=1-0.32768\approx$ [0.672]{.answer}
+
+. . .
+
+$\E[X]=5\cdot0.2=$ [1]{.answer}, $\quad\Var(X)=5\cdot0.2\cdot0.8=$ [0.8]{.answer}
+
+::: {.notes}
+The full practice is in Seminar 3, including the first binomial with a larger n.
+:::
