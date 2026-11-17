@@ -40,6 +40,10 @@ format:
     theme: cosmo
     number-sections: true
     css: ../_shared/book.css
+    # The default MathJax 4 comes from cdn.jsdelivr.net, which browsers here often cannot reach.
+    html-math-method:
+      method: mathjax
+      url: "https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-chtml-full.js"
   pdf:
     documentclass: scrbook
     classoption: [oneside, open=any]

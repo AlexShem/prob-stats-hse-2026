@@ -39,25 +39,19 @@ printable = html.with_name(f"{stem}.print.html")
 src = html.read_text(encoding="utf-8")
 src = re.sub(r'<script src="[^"]*reveal-chalkboard/plugin\.js"></script>', "", src)
 src = src.replace("RevealChalkboard, ", "")
-# Headless Chrome cannot always reach the MathJax CDN (TLS errors, or it simply hangs), and then
-# reveal never finishes the layout. Use a local copy, fetched once with npm into ~/.cache.
-mj_dir = Path.home() / ".cache/prob-stats-mathjax"
-mj = mj_dir / "core/tex-chtml.local.js"   # next to sre/, which MathJax loads relative to itself
+# Headless Chrome has no network access here, and then the formulas stay as raw TeX. Use a local
+# copy of the MathJax version the deck loads (slides/_quarto.yml), fetched once with npm into ~/.cache.
+MATHJAX_URL = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js"
+mj_dir = Path.home() / ".cache/prob-stats-mathjax2"
+mj = mj_dir / "package/MathJax.js"
 if not mj.exists() and shutil.which("npm"):
     mj_dir.mkdir(parents=True, exist_ok=True)
-    for pkg in ("mathjax@4", "@mathjax/mathjax-newcm-font@4"):
-        subprocess.run(["npm", "pack", pkg], cwd=mj_dir, check=True, capture_output=True)
-    subprocess.run("mkdir -p core fonts/@mathjax/mathjax-newcm-font"
-                   " && tar xzf mathjax-4*.tgz -C core --strip-components=1"
-                   " && tar xzf mathjax-mathjax-newcm-font-*.tgz -C fonts/@mathjax/mathjax-newcm-font --strip-components=1",
-                   shell=True, cwd=mj_dir, check=True)
-    code = (mj_dir / "core/tex-chtml.js").read_text(encoding="utf-8")
-    code = code.replace('"https://cdn.jsdelivr.net/npm/@mathjax"', '"' + (mj_dir / "fonts/@mathjax").as_uri() + '"')
-    # no speech/braille: its worker fetches files over file:// and hangs the typesetting
-    code = code.replace("enableSpeech:!0", "enableSpeech:!1").replace("enableBraille:!0", "enableBraille:!1")
-    mj.write_text(code, encoding="utf-8")
+    subprocess.run(["npm", "pack", "mathjax@2.7.9"], cwd=mj_dir, check=True, capture_output=True)
+    subprocess.run("tar xzf mathjax-2.7.9.tgz", shell=True, cwd=mj_dir, check=True)
+if MATHJAX_URL not in src:
+    sys.exit(f"{html.name} does not load {MATHJAX_URL}. Update MATHJAX_URL to match slides/_quarto.yml.")
 if mj.exists():
-    src = src.replace("https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js", mj.as_uri())
+    src = src.replace(MATHJAX_URL, mj.as_uri())
 # Source Sans 3 normally comes from Google Fonts. Without network the text falls back to a wider
 # font, slides overflow and drop out of the PDF. Use a local copy through @font-face.
 ss_dir = Path.home() / ".cache/prob-stats-fonts"
