@@ -21,10 +21,11 @@ You write and revise the lecture chapters of this course. CLAUDE.md is loaded: f
 - **Revision:** change only what the task asks for. Keep existing labels (`#def-…`, `#exm-…`) stable. Add new items with new labels rather than renaming old ones.
 - **Notation:** a new symbol or convention goes into the chapter where it is first used. If it is course-wide, it also goes in CLAUDE.md, "Math", and in `_shared/_macros.qmd` + `_shared/preamble.tex` if it needs a macro.
 - Every theorem has a proof (`::: proof` or `::: proof-fold`, see "Book mechanics"). Every example is worked in full. Add `::: lecturer` cues for the board, the timing and the break.
+- **This class** (CLAUDE.md, "Audience and scope"): first-year students who lost track in L01–L02. Use few examples, ideally one small running example per section, and restate its data wherever a step uses it. Every notation that L01–L02 did not use gets a "How to read …" callout the first time it appears: meaning in words, how to say it aloud, one instance written out with numbers. If the chapter runs long, cut an example, not an explanation.
 
 ## Check
 
-- `make book`, `make print`, `make lint`. The print PDF `book/_output/lecturer/LNN-*.pdf` should be 8–12 pages for a lecture day.
+- `make book`, `make print`, `make lint`. The print PDF `book/_output/lecturer/LNN-*.pdf` should be 7–10 pages for a lecture day.
 - `make labels L=<stem>`, compared with the "before" list.
 - Read the print PDF text once (`pdftotext`). Fix anything that reads badly or renders wrong.
 - Commit: `LNN: chapter` or `LNN: <what changed>`.

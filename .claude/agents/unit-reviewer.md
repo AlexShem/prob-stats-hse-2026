@@ -21,8 +21,8 @@ Check, in this order:
    - overflow, half-empty slides, figures too small to read, raw LaTeX
    - runs of text-only slides
    - fewer than half of the slides with a visual
-4. **Audience fit:** clear for non-native-English business students? Flag undefined jargon, skipped steps, and examples that aren't business-like.
+4. **Audience fit:** clear for first-year, non-native-English business students who are weak in maths (CLAUDE.md, "This class")? Flag undefined jargon, skipped steps, examples that aren't business-like, any notation used before its "How to read …" explanation, and any worked step (chapter or slide) that uses numbers not restated where it is used.
 5. **Writing style:** `make lint`, then read for what lint can't catch (CLAUDE.md, "Writing style"): uniform rhythm, recap paragraphs, rule-of-three lists, sentences that only tell the reader what something meant, generic examples.
-6. **Size:** print PDF 8–12 pages, deck 35–55 slides.
+6. **Size:** print PDF 7–10 pages, deck about 30–40 slides.
 
 Report findings ranked by severity, each as `file:line` (or slide number), what is wrong, and a suggested fix. End with a one-line verdict: ready to merge, or not yet.

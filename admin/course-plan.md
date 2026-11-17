@@ -50,6 +50,8 @@ All eight topics are in. If module 3 has fewer lecture days than topics, items 1
 
 ## Decisions
 
+- Audience (Nov 2026): first-year students, weaker in maths than planned (CLAUDE.md, "This class"). From L03 on, fewer examples per lecture and every new notation explained. L4 needs a short refresher on integrals before the first density, which makes the L4 row heavy: decide what moves (e.g. hypergeometric to S4 only, or exponential to L5) before writing L4.
+
 - Quizzes: 4 online quizzes in module 2 and 4 in module 3 (5% each block). Dates and topics not fixed yet. Drafted privately in `assessment/quizzes/`.
 - No homework.
 - Regression is part of module 3.
