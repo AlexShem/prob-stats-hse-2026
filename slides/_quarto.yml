@@ -18,12 +18,7 @@ format:
     slide-number: c/t
     logo: img/logo-hse-wide.png
     transition: none
-    # Quarto's reveal math plugin is written for MathJax 2 (it calls MathJax.Hub), and Quarto 1.10
-    # would point it at MathJax 4 on cdn.jsdelivr.net, which browsers here often cannot reach.
-    # cdnjs loads from Russian networks; the PDF script swaps in a local copy of the same version.
-    html-math-method:
-      method: mathjax
-      url: "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js"
+    html-math-method: mathjax
     chalkboard:
       buttons: false
     pdf-separate-fragments: false
