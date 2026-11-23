@@ -27,7 +27,7 @@ book:
     - schedule.qmd
 
 # Seminars whose solutions students can see (by number prefix). Add one after each seminar.
-solutions-released: []
+solutions-released: [S01, S02]
 
 filters:
   - ../_shared/course.lua
