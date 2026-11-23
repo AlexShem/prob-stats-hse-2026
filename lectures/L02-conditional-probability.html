@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>2&nbsp; Conditional probability and Bayes’ theorem – Probability Theory and Mathematical Statistics</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../lectures/L03-discrete-random-variables.html" rel="next">
+<link href="../lectures/L01-probability-basics.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-fde786507b123b2ba480ba3caec7cd03.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../_shared/book.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L00-about-me.html">Lectures</a></li><li class="breadcrumb-item"><a href="../lectures/L02-conditional-probability.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Conditional probability and Bayes’ theorem</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Probability Theory and Mathematical Statistics</a> 
+        <div class="sidebar-tools-main">
+    <a href="../Probability-Theory-and-Mathematical-Statistics.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">About this book</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Lectures</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L00-about-me.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">About the course and about me</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L01-probability-basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Events, probability and counting</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L02-conditional-probability.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Conditional probability and Bayes’ theorem</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L03-discrete-random-variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Discrete random variables</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Seminars</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../seminars/S01-counting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Seminar 1: events, counting, classical and geometric probability</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../seminars/S02-conditional-probability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Seminar 2: conditional probability, independence and Bayes</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../schedule.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Schedule</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sec-L02-conditional" id="toc-sec-L02-conditional" class="nav-link active" data-scroll-target="#sec-L02-conditional"><span class="header-section-number">2.1</span> Conditional probability</a></li>
+  <li><a href="#sec-L02-multiplication" id="toc-sec-L02-multiplication" class="nav-link" data-scroll-target="#sec-L02-multiplication"><span class="header-section-number">2.2</span> Multiplication rule</a></li>
+  <li><a href="#sec-L02-independence" id="toc-sec-L02-independence" class="nav-link" data-scroll-target="#sec-L02-independence"><span class="header-section-number">2.3</span> Independence</a></li>
+  <li><a href="#sec-L02-total" id="toc-sec-L02-total" class="nav-link" data-scroll-target="#sec-L02-total"><span class="header-section-number">2.4</span> Law of total probability</a></li>
+  <li><a href="#sec-L02-bayes" id="toc-sec-L02-bayes" class="nav-link" data-scroll-target="#sec-L02-bayes"><span class="header-section-number">2.5</span> Bayes’ theorem</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L00-about-me.html">Lectures</a></li><li class="breadcrumb-item"><a href="../lectures/L02-conditional-probability.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Conditional probability and Bayes’ theorem</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-L02" class="quarto-section-identifier"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Conditional probability and Bayes’ theorem</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="chapter-downloads">
+<p><a href="../pdf/L02-conditional-probability.pdf">PDF</a> · <a href="../slides/L02-conditional-probability.html">Slides</a> (<a href="../slides/L02-conditional-probability.pdf">PDF</a>)</p>
+</div>
+<!-- Math macros for HTML/revealjs (MathJax). PDF gets the same ones from _shared/preamble.tex. Keep both in sync. -->
+<div class="hidden">
+<p><span class="math display">\[
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\Corr}{\operatorname{Corr}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\R}{\mathbb{R}}
+\]</span></p>
+</div>
+<p>Go back to the online store of <a href="L01-probability-basics.html#exm-promo-prob" class="quarto-xref">Example&nbsp;<span>1.3</span></a>: 40% of orders use a promo code, 55% come through the mobile app, and 20% do both. Priya, a marketing analyst there, sees that a customer has just opened the app. Should she still count on a 40% chance that this order uses a promo code?</p>
+<p>No.&nbsp;Among app orders, the ones with a promo code make up 0.20 out of 0.55, so the chance is <span class="math display">\[
+\frac{0.20}{0.55}\approx 0.36 .
+\]</span> Knowing “this is an app order” moved the probability from 0.40 to about 0.36. A small move, but a real one, and that one division is the starting point for everything below: conditional probability, independence, the law of total probability and Bayes’ theorem.</p>
+<section id="sec-L02-conditional" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="sec-L02-conditional"><span class="header-section-number">2.1</span> Conditional probability</h2>
+<div id="def-conditional" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.1 (Conditional probability)</strong></span> Let <span class="math inline">\(B\)</span> be an event with <span class="math inline">\(\Prob(B)&gt;0\)</span>. The <strong>conditional probability</strong> of <span class="math inline">\(A\)</span> given <span class="math inline">\(B\)</span> is <span class="math display">\[
+\Prob(A\mid B)=\frac{\Prob(A\cap B)}{\Prob(B)}.
+\]</span></p>
+</div>
+<p>Read <span class="math inline">\(\Prob(A\mid B)\)</span> as “the probability of <span class="math inline">\(A\)</span> given <span class="math inline">\(B\)</span>”. The idea is in <a href="#fig-conditional" class="quarto-xref">Figure&nbsp;<span>2.1</span></a>. Once we know that <span class="math inline">\(B\)</span> has occurred, every outcome outside <span class="math inline">\(B\)</span> is ruled out. <span class="math inline">\(B\)</span> becomes the new sample space, and the only part of <span class="math inline">\(A\)</span> that can still happen is <span class="math inline">\(A\cap B\)</span>. Dividing by <span class="math inline">\(\Prob(B)\)</span> rescales things so that the new space has total probability 1 again.</p>
+<div id="cell-fig-conditional" class="cell" data-execution_count="2">
+<div class="cell-output cell-output-display">
+<div id="fig-conditional" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Two panels with overlapping circles A and B inside a rectangle. In both the overlap is shaded blue. In the right panel everything outside circle B is greyed out.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-conditional-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="L02-conditional-probability_files/figure-html/fig-conditional-output-1.png" alt="Two panels with overlapping circles A and B inside a rectangle. In both the overlap is shaded blue. In the right panel everything outside circle B is greyed out." width="926" height="360" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-conditional-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.1: Conditioning on <span class="math inline">\(B\)</span>. Left: the whole sample space, with <span class="math inline">\(A\cap B\)</span> shaded. Right: once we know <span class="math inline">\(B\)</span> occurred, everything outside <span class="math inline">\(B\)</span> (grey) is ruled out, and <span class="math inline">\(\Prob(A\mid B)\)</span> is the share of <span class="math inline">\(B\)</span> taken by <span class="math inline">\(A\cap B\)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>When all outcomes are equally likely (<a href="L01-probability-basics.html#def-classical" class="quarto-xref">Definition&nbsp;<span>1.5</span></a>), the division turns into a ratio of counts: <span class="math inline">\(\Prob(A\mid B)=|A\cap B|/|B|\)</span>. Roll the two dice of Lecture 1 (<a href="L01-probability-basics.html#exm-two-dice" class="quarto-xref">Example&nbsp;<span>1.4</span></a>), one red and one blue, and suppose you can see only the red one. It shows a 6. Now the sum is at least 10 exactly when the blue die shows 4, 5 or 6, which is 3 of the 6 remaining outcomes, so the probability is <span class="math inline">\(1/2\)</span>. Before you looked at the red die it was <span class="math inline">\(6/36=1/6\)</span>.</p>
+<div id="exm-promo-conditional" class="theorem example">
+<p><span class="theorem-title"><strong>Example 2.1 (Promo code given app, and the other way round)</strong></span> Take the store of <a href="L01-probability-basics.html#exm-promo-prob" class="quarto-xref">Example&nbsp;<span>1.3</span></a>, with <span class="math inline">\(A\)</span> “the order uses a promo code” and <span class="math inline">\(B\)</span> “the order comes through the app”. Find</p>
+<ol type="a">
+<li><span class="math inline">\(\Prob(A\mid B)\)</span>;</li>
+<li><span class="math inline">\(\Prob(B\mid A)\)</span>;</li>
+<li><span class="math inline">\(\Prob(A^c\mid B)\)</span>.</li>
+</ol>
+<p><strong>Solution.</strong> (a) <span class="math inline">\(\Prob(A\mid B)=0.20/0.55=4/11\approx 0.364\)</span>. (b) <span class="math inline">\(\Prob(B\mid A)=0.20/0.40=0.50\)</span>. (c) The app orders without a promo code have probability <span class="math inline">\(\Prob(A^c\cap B)=0.35\)</span>, found in <a href="L01-probability-basics.html#exm-promo-prob" class="quarto-xref">Example&nbsp;<span>1.3</span></a>(c). So <span class="math inline">\(\Prob(A^c\mid B)=0.35/0.55\approx 0.636\)</span>. Notice that (a) and (c) add up to 1.</p>
+</div>
+<p>Parts (a) and (b) answer different questions. (a) asks: among app orders, what share used a promo code? (b) asks: among promo-code orders, what share came through the app? The numerator is the same, the denominator is not. Swapping <span class="math inline">\(\Prob(A\mid B)\)</span> and <span class="math inline">\(\Prob(B\mid A)\)</span> is the most common mistake of this whole lecture, and you will find it in newspapers too. “Half of promo-code users order through the app” is true here. “Half of app users use a promo code” is false: it is 36%.</p>
+<p>Part (c) is no accident. For a fixed <span class="math inline">\(B\)</span>, conditional probabilities obey all the rules of Lecture 1.</p>
+<div id="thm-conditional-axioms" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 2.1 (Conditional probability is a probability)</strong></span> Fix an event <span class="math inline">\(B\)</span> with <span class="math inline">\(\Prob(B)&gt;0\)</span>. Then <span class="math inline">\(A\mapsto\Prob(A\mid B)\)</span> satisfies the three axioms of <a href="L01-probability-basics.html#def-probability" class="quarto-xref">Definition&nbsp;<span>1.4</span></a>. So every rule of <a href="L01-probability-basics.html#thm-consequences" class="quarto-xref">Theorem&nbsp;<span>1.2</span></a> holds for it, for example <span class="math inline">\(\Prob(A^c\mid B)=1-\Prob(A\mid B)\)</span> and <span class="math inline">\(\Prob(A_1\cup A_2\mid B)=\Prob(A_1\mid B)+\Prob(A_2\mid B)-\Prob(A_1\cap A_2\mid B)\)</span>.</p>
+</div>
+<details class="proof-fold"><summary>Proof</summary><div class="proof-body">
+<p>Axiom 1: <span class="math inline">\(\Prob(A\cap B)\ge 0\)</span> and <span class="math inline">\(\Prob(B)&gt;0\)</span>, so the ratio is non-negative. Axiom 2: <span class="math inline">\(\Prob(\Omega\mid B)=\Prob(\Omega\cap B)/\Prob(B)=\Prob(B)/\Prob(B)=1\)</span>. Axiom 3: if <span class="math inline">\(A_1,A_2,\dots\)</span> are pairwise mutually exclusive, so are <span class="math inline">\(A_1\cap B, A_2\cap B,\dots\)</span>, and their union is <span class="math inline">\((A_1\cup A_2\cup\dots)\cap B\)</span>. Apply axiom 3 for <span class="math inline">\(\Prob\)</span> to these pieces and divide by <span class="math inline">\(\Prob(B)\)</span>.</p>
+</div></details>
+<p>The complement goes in front of the bar, never behind it. <span class="math inline">\(\Prob(A\mid B^c)\)</span> is not <span class="math inline">\(1-\Prob(A\mid B)\)</span>. In the store, <span class="math inline">\(\Prob(A\mid B^c)=\Prob(A\cap B^c)/\Prob(B^c)=0.20/0.45\approx 0.444\)</span>, while <span class="math inline">\(1-\Prob(A\mid B)\approx 0.636\)</span>. Two unrelated numbers.</p>
+</section>
+<section id="sec-L02-multiplication" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="sec-L02-multiplication"><span class="header-section-number">2.2</span> Multiplication rule</h2>
+<p>Turn the definition around and you get <span class="math inline">\(\Prob(A\cap B)=\Prob(B)\,\Prob(A\mid B)\)</span>. In practice this is how most joint probabilities are found. We think in steps: first <span class="math inline">\(B\)</span> happens, then <span class="math inline">\(A\)</span> happens given <span class="math inline">\(B\)</span>.</p>
+<div id="thm-multiplication" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 2.2 (Multiplication rule)</strong></span> If <span class="math inline">\(\Prob(A)&gt;0\)</span> and <span class="math inline">\(\Prob(B)&gt;0\)</span>, then <span class="math display">\[
+\Prob(A\cap B)=\Prob(A)\,\Prob(B\mid A)=\Prob(B)\,\Prob(A\mid B).
+\]</span> More generally, if <span class="math inline">\(\Prob(A_1\cap\dots\cap A_{n-1})&gt;0\)</span>, then <span id="eq-chain"><span class="math display">\[
+\Prob(A_1\cap A_2\cap\dots\cap A_n)=\Prob(A_1)\,\Prob(A_2\mid A_1)\,\Prob(A_3\mid A_1\cap A_2)\cdots\Prob(A_n\mid A_1\cap\dots\cap A_{n-1}).
+\tag{2.1}\]</span></span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>The first line is <a href="#def-conditional" class="quarto-xref">Definition&nbsp;<span>2.1</span></a> multiplied by <span class="math inline">\(\Prob(A)\)</span>, or by <span class="math inline">\(\Prob(B)\)</span>. For <a href="#eq-chain" class="quarto-xref">Equation&nbsp;<span>2.1</span></a>, write each conditional probability on the right as a fraction: <span class="math display">\[
+\Prob(A_1)\cdot\frac{\Prob(A_1\cap A_2)}{\Prob(A_1)}\cdot\frac{\Prob(A_1\cap A_2\cap A_3)}{\Prob(A_1\cap A_2)}\cdots\frac{\Prob(A_1\cap\dots\cap A_n)}{\Prob(A_1\cap\dots\cap A_{n-1})}.
+\]</span> Each numerator cancels the next denominator, and only <span class="math inline">\(\Prob(A_1\cap\dots\cap A_n)\)</span> is left. The denominators are positive: each of them is the probability of an event that contains <span class="math inline">\(A_1\cap\dots\cap A_{n-1}\)</span>, so it is at least <span class="math inline">\(\Prob(A_1\cap\dots\cap A_{n-1})&gt;0\)</span> by <a href="L01-probability-basics.html#thm-consequences" class="quarto-xref">Theorem&nbsp;<span>1.2</span></a>(3).</p>
+</div>
+<p><a href="#eq-chain" class="quarto-xref">Equation&nbsp;<span>2.1</span></a> reads like a story. First <span class="math inline">\(A_1\)</span> happens. Then <span class="math inline">\(A_2\)</span> happens, given <span class="math inline">\(A_1\)</span>. Then <span class="math inline">\(A_3\)</span>, given both earlier ones. Each factor answers one question: what is the chance of the next step, given everything so far?</p>
+<div id="exm-birthday-chain" class="theorem example">
+<p><span class="theorem-title"><strong>Example 2.2 (Birthdays, one person at a time)</strong></span> Kemal’s department has 10 people. Ignore 29 February, and assume each person’s birthday is equally likely to be any of the 365 days, whatever the others’ birthdays are. What is the probability that all 10 birthdays are different?</p>
+<p><strong>Solution.</strong> Line the people up. Let <span class="math inline">\(A_k\)</span> be “person <span class="math inline">\(k\)</span> has a birthday different from persons <span class="math inline">\(1,\dots,k-1\)</span>”. Person 1 has nobody to clash with. Given that persons <span class="math inline">\(1,\dots,k-1\)</span> have <span class="math inline">\(k-1\)</span> different birthdays, person <span class="math inline">\(k\)</span> must avoid those <span class="math inline">\(k-1\)</span> days, so the conditional probability of <span class="math inline">\(A_k\)</span> is <span class="math inline">\((365-k+1)/365\)</span>. By <a href="#eq-chain" class="quarto-xref">Equation&nbsp;<span>2.1</span></a>, <span class="math display">\[
+\Prob(\text{all different})=\frac{364}{365}\cdot\frac{363}{365}\cdots\frac{356}{365}\approx 0.883,
+\]</span> and two of the ten share a birthday with probability about <span class="math inline">\(0.117\)</span>.</p>
+</div>
+<p>Multiply out and the product is <span class="math inline">\(365\cdot364\cdots356/365^{10}\)</span>, exactly what counting ordered outcomes gives with <a href="L01-probability-basics.html#thm-product" class="quarto-xref">Theorem&nbsp;<span>1.3</span></a>. The chain rule and the counting are two readings of one fraction. I find the chain reading easier to set up, because you never have to decide what <span class="math inline">\(\Omega\)</span> is. Seminar 1 (Problem 16) asks about 30 people. For them “all different” has probability about 0.294, so the probability that at least two share a birthday is about 0.706.</p>
+<p>When an experiment happens in stages, draw it as a <strong>probability tree</strong>. Each branch carries the conditional probability of that step, given the path that leads to it. The probabilities on the branches leaving one node add up to 1 (that is <a href="#thm-conditional-axioms" class="quarto-xref">Theorem&nbsp;<span>2.1</span></a>). To get the probability of a whole path, multiply along it (the multiplication rule). To get the probability of an event, add the paths that make it up: different paths are mutually exclusive.</p>
+<div id="exm-two-faulty" class="theorem example">
+<p><span class="theorem-title"><strong>Example 2.3 (Two faulty bulbs in a row)</strong></span> A hypothetical lighting wholesaler in Kazan ships LED bulbs in boxes of 12. One box has 3 faulty bulbs in it. Oksana, a buyer, tests two bulbs from this box, one after the other, and does not put the first one back. Find the probability that</p>
+<ol type="a">
+<li>both bulbs are faulty;</li>
+<li>exactly one is faulty.</li>
+</ol>
+<p><strong>Solution.</strong> Let <span class="math inline">\(F_1\)</span> be “the first bulb is faulty” and <span class="math inline">\(F_2\)</span> “the second bulb is faulty”. <a href="#fig-tree" class="quarto-xref">Figure&nbsp;<span>2.2</span></a> shows the tree. On the first draw, <span class="math inline">\(\Prob(F_1)=3/12\)</span>. If the first bulb was faulty, 11 bulbs are left and 2 of them are faulty, so <span class="math inline">\(\Prob(F_2\mid F_1)=2/11\)</span>. If the first was good, 3 of the remaining 11 are faulty, so <span class="math inline">\(\Prob(F_2\mid F_1^c)=3/11\)</span>.</p>
+<ol type="a">
+<li><p><span class="math inline">\(\Prob(F_1\cap F_2)=\frac{3}{12}\cdot\frac{2}{11}=\frac{6}{132}=\frac{1}{22}\approx 0.045\)</span>.</p></li>
+<li><p>Two paths: faulty then good, or good then faulty. <span class="math display">\[
+\frac{3}{12}\cdot\frac{9}{11}+\frac{9}{12}\cdot\frac{3}{11}=\frac{27}{132}+\frac{27}{132}=\frac{9}{22}\approx 0.409 .
+\]</span></p></li>
+</ol>
+<p>A check by counting, as in <a href="L01-probability-basics.html#exm-quality" class="quarto-xref">Example&nbsp;<span>1.7</span></a>. Order does not matter, so there are <span class="math inline">\(\binom{12}{2}=66\)</span> equally likely pairs. Both faulty: <span class="math inline">\(\binom{3}{2}=3\)</span> pairs, <span class="math inline">\(3/66=1/22\)</span>. Exactly one faulty: <span class="math inline">\(3\cdot 9=27\)</span> pairs, <span class="math inline">\(27/66=9/22\)</span>. Same answers.</p>
+</div>
+<div id="cell-fig-tree" class="cell" data-execution_count="3">
+<div class="cell-output cell-output-display">
+<div id="fig-tree" class="quarto-float quarto-figure quarto-figure-center anchored" alt="A tree growing from left to right. The root splits into F with 3/12 and G with 9/12. F splits into F with 2/11 and G with 9/11; G splits into F with 3/11 and G with 8/11. The four leaves show the path probabilities 6/132, 27/132, 27/132 and 72/132.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-tree-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="L02-conditional-probability_files/figure-html/fig-tree-output-1.png" alt="A tree growing from left to right. The root splits into F with 3/12 and G with 9/12. F splits into F with 2/11 and G with 9/11; G splits into F with 3/11 and G with 8/11. The four leaves show the path probabilities 6/132, 27/132, 27/132 and 72/132." width="940" height="460" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tree-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.2: Probability tree for <a href="#exm-two-faulty" class="quarto-xref">Example&nbsp;<span>2.3</span></a>. F = faulty, G = good. Branches carry conditional probabilities; the number at the end of a path is the product along it.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>One more question about the same box: what is the probability that the <em>second</em> bulb is faulty, if we do not know anything about the first? Add the two paths that end in F: <span class="math display">\[
+\Prob(F_2)=\frac{3}{12}\cdot\frac{2}{11}+\frac{9}{12}\cdot\frac{3}{11}=\frac{6+27}{132}=\frac{1}{4}.
+\]</span> Exactly the same as for the first bulb, <span class="math inline">\(3/12\)</span>. Many people expect the second draw to be different because the box “has changed”, but it has changed in a way you do not know about. Summing over the branches like this is the law of total probability, which we meet properly in <a href="#sec-L02-total" class="quarto-xref"><span>Section 2.4</span></a>.</p>
+</section>
+<section id="sec-L02-independence" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="sec-L02-independence"><span class="header-section-number">2.3</span> Independence</h2>
+<p>Sometimes the extra information changes nothing at all: <span class="math inline">\(\Prob(A\mid B)=\Prob(A)\)</span>. A fair coin does not care what it showed last time.</p>
+<div id="def-independent" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.2 (Independent events)</strong></span> Events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are <strong>independent</strong> if <span class="math display">\[
+\Prob(A\cap B)=\Prob(A)\,\Prob(B).
+\]</span> If <span class="math inline">\(\Prob(B)&gt;0\)</span>, this is the same as <span class="math inline">\(\Prob(A\mid B)=\Prob(A)\)</span>. If <span class="math inline">\(\Prob(A)&gt;0\)</span>, it is the same as <span class="math inline">\(\Prob(B\mid A)=\Prob(B)\)</span>.</p>
+</div>
+<p>The equivalence is one line: divide <span class="math inline">\(\Prob(A\cap B)=\Prob(A)\Prob(B)\)</span> by <span class="math inline">\(\Prob(B)\)</span>, and the left side becomes <span class="math inline">\(\Prob(A\mid B)\)</span>. We take the product form as the definition because it is symmetric in <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> and still makes sense when <span class="math inline">\(\Prob(B)=0\)</span>.</p>
+<p>In the store of <a href="L01-probability-basics.html#exm-promo-prob" class="quarto-xref">Example&nbsp;<span>1.3</span></a>, <span class="math inline">\(\Prob(A)\Prob(B)=0.40\cdot0.55=0.22\)</span>, while <span class="math inline">\(\Prob(A\cap B)=0.20\)</span>. So promo code and app are not independent: app customers use promo codes a bit less often, 36% against 40% overall. Whether a gap like 0.22 against 0.20 is real or just noise in one day of orders is a question for module 3.</p>
+<p>In practice independence is usually assumed, not computed. You assume it when there is a physical reason: two customers who do not know each other, two machines on separate power lines, two tosses of a coin. Be suspicious otherwise. Rain on Monday and rain on Tuesday are not independent, and neither are defaults of two firms in the same industry.</p>
+<p>Students often mix up independent and mutually exclusive, because both sound like “the events have nothing to do with each other”. They are close to opposites. If <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are mutually exclusive and both have positive probability, then <span class="math inline">\(\Prob(A\cap B)=0\)</span> while <span class="math inline">\(\Prob(A)\Prob(B)&gt;0\)</span>, so they are <em>dependent</em>: as soon as you learn that <span class="math inline">\(A\)</span> happened, you know that <span class="math inline">\(B\)</span> did not. A customer at a shop in Tula pays by card with probability 0.8 or in cash with probability 0.2, never both. Learning “paid by card” pushes the probability of cash from 0.2 down to 0. That is about as dependent as two events can be.</p>
+<div id="thm-complements" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 2.3 (Complements of independent events)</strong></span> If <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are independent, then so are <span class="math inline">\(A\)</span> and <span class="math inline">\(B^c\)</span>, so are <span class="math inline">\(A^c\)</span> and <span class="math inline">\(B\)</span>, and so are <span class="math inline">\(A^c\)</span> and <span class="math inline">\(B^c\)</span>.</p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span><span class="math inline">\(A\)</span> is the union of the mutually exclusive events <span class="math inline">\(A\cap B\)</span> and <span class="math inline">\(A\cap B^c\)</span>, so <span class="math display">\[
+\Prob(A\cap B^c)=\Prob(A)-\Prob(A\cap B)=\Prob(A)-\Prob(A)\Prob(B)=\Prob(A)\big(1-\Prob(B)\big)=\Prob(A)\Prob(B^c).
+\]</span> That is the first claim. Swap the roles of <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> to get the second. Apply the first claim to the independent pair <span class="math inline">\(A^c\)</span> and <span class="math inline">\(B\)</span> to get the third.</p>
+</div>
+<p>This is what makes “none of them” easy. If <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are independent, the probability that neither happens is <span class="math inline">\(\big(1-\Prob(A)\big)\big(1-\Prob(B)\big)\)</span>, and “at least one” is 1 minus that.</p>
+<p>For more than two events we need the product rule for every sub-group of them, not only for pairs.</p>
+<div id="def-mutual" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.3 (Mutual independence)</strong></span> Events <span class="math inline">\(A_1,\dots,A_n\)</span> are <strong>mutually independent</strong> if for every choice of two or more of them, the probability that all the chosen events occur is the product of their probabilities: <span class="math display">\[
+\Prob(A_{i_1}\cap\dots\cap A_{i_k})=\Prob(A_{i_1})\cdots\Prob(A_{i_k}).
+\]</span></p>
+</div>
+<p>Repeated tosses of a coin and the answers of unrelated customers are the standard examples. <a href="#thm-complements" class="quarto-xref">Theorem&nbsp;<span>2.3</span></a> extends: replace any of the <span class="math inline">\(A_i\)</span> by their complements and they stay mutually independent (we use this without proof). So if three suppliers are each late with probability 0.1, independently of each other, the probability that at least one of them is late is <span class="math inline">\(1-0.9^3=0.271\)</span>.</p>
+<p>Asking for the product only for pairs is not enough. Toss a fair coin twice, and let <span class="math inline">\(A\)</span> be “the first toss is heads”, <span class="math inline">\(B\)</span> “the second toss is heads”, <span class="math inline">\(C\)</span> “the two tosses agree”. Each has probability <span class="math inline">\(1/2\)</span>. Each pair meets only in the outcome HH, so each pairwise intersection has probability <span class="math inline">\(1/4=\frac12\cdot\frac12\)</span>, and the three events are pairwise independent. But <span class="math inline">\(A\cap B\cap C\)</span> is again just HH, with probability <span class="math inline">\(1/4\)</span>, not <span class="math inline">\(1/8\)</span>. Knowing <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> tells you <span class="math inline">\(C\)</span> for sure. In this course “independent” for several events always means mutually independent.</p>
+<div id="exm-gambler" class="theorem example">
+<p><span class="theorem-title"><strong>Example 2.4 (The gambler’s fallacy)</strong></span> A fair coin is tossed six times, and the tosses are mutually independent. Write H for heads and T for tails.</p>
+<ol type="a">
+<li>What is the probability of TTTTTT? Of HHHHHT?</li>
+<li>What is the probability of exactly five heads and one tail, in any order?</li>
+<li>The first five tosses were all tails. What is the probability that the sixth is heads?</li>
+</ol>
+<p><strong>Solution.</strong> (a) By <a href="#def-mutual" class="quarto-xref">Definition&nbsp;<span>2.3</span></a> each fixed sequence has probability <span class="math inline">\((1/2)^6=1/64\)</span>. Six tails in a row are exactly as likely as HHHHHT, or as any sequence that “looks random”. (b) The tail can be in any of six positions, so six sequences, each <span class="math inline">\(1/64\)</span>. They are mutually exclusive, so the answer is <span class="math inline">\(6/64=3/32\)</span>. (c) Let <span class="math inline">\(T_i\)</span> be “toss <span class="math inline">\(i\)</span> is tails” and <span class="math inline">\(H_6\)</span> “toss 6 is heads”. Then <span class="math display">\[
+\Prob(H_6\mid T_1\cap\dots\cap T_5)=\frac{\Prob(T_1\cap\dots\cap T_5\cap H_6)}{\Prob(T_1\cap\dots\cap T_5)}=\frac{1/64}{1/32}=\frac12 .
+\]</span></p>
+</div>
+<p>The coin has no memory. The belief that after five tails heads is “due” is called the <strong>gambler’s fallacy</strong>. Part of it comes from mixing up (a) and (b): “five heads and one tail” feels ordinary because it is a family of six sequences, and “six tails” feels special because it is a single one. Any single sequence, including HTHHTH, is as rare as six tails.</p>
+<p>The same mistake happens in offices. A loan officer at a hypothetical bank in Novosibirsk approves 30% of small-business applications, and the applications in her queue come from unrelated firms, so treat them as independent. She has just rejected five in a row (probability <span class="math inline">\(0.7^5\approx 0.17\)</span>, not rare at all). Is the sixth applicant more likely to be approved? No, still 0.30. Like the coin, her queue has no memory.</p>
+<p>Now the mirror image, which is where real life gets messier. If <em>one</em> firm has been turned down by five banks, the sixth bank’s decision is not a new toss of a coin. The five rejections tell you something about the application, and the sixth bank will probably reject it as well. Those events are not independent, because they share a cause. Bayes’ theorem, at the end of this lecture, is the tool for that kind of reasoning.</p>
+</section>
+<section id="sec-L02-total" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="sec-L02-total"><span class="header-section-number">2.4</span> Law of total probability</h2>
+<p>Lecture 1 promised that partitions would come back. Here they are. Often <span class="math inline">\(\Prob(A)\)</span> is hard to see directly but easy within groups: we know the defect rate for each supplier, or the conversion rate for each customer segment. The law of total probability puts the groups back together.</p>
+<div id="thm-total" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 2.4 (Law of total probability)</strong></span> Let <span class="math inline">\(H_1,\dots,H_n\)</span> be a partition of <span class="math inline">\(\Omega\)</span> (<a href="L01-probability-basics.html#def-disjoint" class="quarto-xref">Definition&nbsp;<span>1.3</span></a>) with <span class="math inline">\(\Prob(H_i)&gt;0\)</span> for every <span class="math inline">\(i\)</span>. Then for every event <span class="math inline">\(A\)</span> <span id="eq-total"><span class="math display">\[
+\Prob(A)=\Prob(A\mid H_1)\Prob(H_1)+\dots+\Prob(A\mid H_n)\Prob(H_n)=\sum_{i=1}^n\Prob(A\mid H_i)\Prob(H_i).
+\tag{2.2}\]</span></span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>Exactly one of the <span class="math inline">\(H_i\)</span> occurs, so <span class="math inline">\(A\)</span> splits into the pieces <span class="math inline">\(A\cap H_1,\dots,A\cap H_n\)</span>. They are pairwise mutually exclusive, because the <span class="math inline">\(H_i\)</span> are, and their union is <span class="math inline">\(A\)</span>. By axiom 3, <span class="math inline">\(\Prob(A)=\sum_i\Prob(A\cap H_i)\)</span>. By <a href="#thm-multiplication" class="quarto-xref">Theorem&nbsp;<span>2.2</span></a>, <span class="math inline">\(\Prob(A\cap H_i)=\Prob(A\mid H_i)\Prob(H_i)\)</span>.</p>
+</div>
+<p>Two ways to picture it. On a tree, the first level is the partition <span class="math inline">\(H_1,\dots,H_n\)</span> and the second level is “<span class="math inline">\(A\)</span> or not <span class="math inline">\(A\)</span>”. Then <span class="math inline">\(\Prob(A)\)</span> is the sum over all paths that end in <span class="math inline">\(A\)</span>, which is what we did for the second bulb in <a href="#sec-L02-multiplication" class="quarto-xref"><span>Section 2.2</span></a>. As a formula, <span class="math inline">\(\Prob(A)\)</span> is a <strong>weighted average</strong> of the group rates <span class="math inline">\(\Prob(A\mid H_i)\)</span>, with the group sizes <span class="math inline">\(\Prob(H_i)\)</span> as weights. A weighted average always lies between the smallest and the largest rate.</p>
+<div id="exm-two-suppliers" class="theorem example">
+<p><span class="theorem-title"><strong>Example 2.5 (Phone cases from two factories)</strong></span> A hypothetical marketplace seller in Yekaterinburg sells phone cases. 60% of them come from a factory in Guangzhou and 40% from a workshop in Chelyabinsk. The Chelyabinsk cases cost 90 rubles more each, which is why the seller still buys mostly from Guangzhou. 3% of the Guangzhou cases are defective, and 1.5% of the Chelyabinsk ones. A customer receives a random case. What is the probability that it is defective?</p>
+<p><strong>Solution.</strong> Let <span class="math inline">\(H_1\)</span> be “from Guangzhou”, <span class="math inline">\(H_2\)</span> “from Chelyabinsk” (a partition), and <span class="math inline">\(D\)</span> “defective”. By <a href="#eq-total" class="quarto-xref">Equation&nbsp;<span>2.2</span></a>, <span class="math display">\[
+\Prob(D)=0.03\cdot 0.60+0.015\cdot 0.40=0.018+0.006=0.024 .
+\]</span> So 2.4% of the cases are defective. That is between 1.5% and 3%, and closer to 3%, because Guangzhou supplies more.</p>
+<p>In counts: out of 1000 cases, 600 come from Guangzhou and 18 of those are defective; 400 come from Chelyabinsk and 6 of those are defective. That makes 24 defective cases in 1000.</p>
+</div>
+<div id="exm-funnel" class="theorem example">
+<p><span class="theorem-title"><strong>Example 2.6 (Conversion by customer segment)</strong></span> A hypothetical online school of English tracks visitors to its pricing page. 50% of them are new, 35% are returning and 15% were referred by a friend. The share who buy a course is 2% for new visitors, 8% for returning ones and 12% for referred ones.</p>
+<ol type="a">
+<li>What share of all visitors buy?</li>
+<li>A referral campaign changes the mix to 35% new, 35% returning, 30% referred. The rate in each segment stays the same. What is the overall share now?</li>
+</ol>
+<p><strong>Solution.</strong> (a) The segments form a partition. By <a href="#eq-total" class="quarto-xref">Equation&nbsp;<span>2.2</span></a>, <span class="math display">\[
+\Prob(\text{buy})=0.02\cdot0.50+0.08\cdot0.35+0.12\cdot0.15=0.010+0.028+0.018=0.056 .
+\]</span> (b) The same rates with the new weights: <span class="math display">\[
+\Prob(\text{buy})=0.02\cdot0.35+0.08\cdot0.35+0.12\cdot0.30=0.007+0.028+0.036=0.071 .
+\]</span></p>
+</div>
+<p>The overall conversion went from 5.6% to 7.1%, and not a single segment converts better than before. Only the mix changed. Keep this in mind whenever a dashboard shows one overall rate going up or down: first ask whether the rates moved or the mix did. Marketing teams like to report (b) as “the new landing page works”.</p>
+</section>
+<section id="sec-L02-bayes" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="sec-L02-bayes"><span class="header-section-number">2.5</span> Bayes’ theorem</h2>
+<p>The law of total probability goes forward, from the cause (which supplier, which segment) to the effect (a defect, a purchase). In practice we often see the effect and want the cause. This case is defective: which factory made it? This payment was flagged: is it fraud? Bayes’ theorem turns the conditioning around.</p>
+<div id="thm-bayes" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 2.5 (Bayes’ theorem)</strong></span> Let <span class="math inline">\(H_1,\dots,H_n\)</span> be a partition of <span class="math inline">\(\Omega\)</span> with <span class="math inline">\(\Prob(H_i)&gt;0\)</span> for every <span class="math inline">\(i\)</span>, and let <span class="math inline">\(A\)</span> be an event with <span class="math inline">\(\Prob(A)&gt;0\)</span>. Then for each <span class="math inline">\(k\)</span> <span id="eq-bayes"><span class="math display">\[
+\Prob(H_k\mid A)=\frac{\Prob(A\mid H_k)\Prob(H_k)}{\sum_{i=1}^n\Prob(A\mid H_i)\Prob(H_i)}.
+\tag{2.3}\]</span></span> In particular, for two events with <span class="math inline">\(\Prob(A)&gt;0\)</span> and <span class="math inline">\(\Prob(B)&gt;0\)</span>, <span class="math display">\[
+\Prob(B\mid A)=\frac{\Prob(A\mid B)\Prob(B)}{\Prob(A)}.
+\]</span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>By <a href="#def-conditional" class="quarto-xref">Definition&nbsp;<span>2.1</span></a>, <span class="math inline">\(\Prob(H_k\mid A)=\Prob(H_k\cap A)/\Prob(A)\)</span>. The numerator is <span class="math inline">\(\Prob(A\mid H_k)\Prob(H_k)\)</span> by <a href="#thm-multiplication" class="quarto-xref">Theorem&nbsp;<span>2.2</span></a>, and the denominator is the sum in <a href="#eq-total" class="quarto-xref">Equation&nbsp;<span>2.2</span></a>. The two-event form is <a href="#thm-multiplication" class="quarto-xref">Theorem&nbsp;<span>2.2</span></a> written both ways, <span class="math inline">\(\Prob(A)\Prob(B\mid A)=\Prob(B)\Prob(A\mid B)\)</span>, divided by <span class="math inline">\(\Prob(A)\)</span>.</p>
+</div>
+<p>Two words go with the theorem. <span class="math inline">\(\Prob(H_k)\)</span> is the <strong>prior</strong> probability of <span class="math inline">\(H_k\)</span>: what we believe before we see <span class="math inline">\(A\)</span>. <span class="math inline">\(\Prob(H_k\mid A)\)</span> is the <strong>posterior</strong> probability: what we believe after. The numerator of <a href="#eq-bayes" class="quarto-xref">Equation&nbsp;<span>2.3</span></a> is “how well <span class="math inline">\(H_k\)</span> explains <span class="math inline">\(A\)</span>” times the prior. The denominator is the same for every <span class="math inline">\(k\)</span>. It only makes the posteriors add up to 1.</p>
+<div id="exm-supplier-bayes" class="theorem example">
+<p><span class="theorem-title"><strong>Example 2.7 (Which factory made the defective case?)</strong></span> Continue <a href="#exm-two-suppliers" class="quarto-xref">Example&nbsp;<span>2.5</span></a>. A customer sends back a defective case. What is the probability that it came from Guangzhou?</p>
+<p><strong>Solution.</strong> By <a href="#eq-bayes" class="quarto-xref">Equation&nbsp;<span>2.3</span></a>, <span class="math display">\[
+\Prob(H_1\mid D)=\frac{0.03\cdot0.60}{0.024}=\frac{0.018}{0.024}=0.75,\qquad \Prob(H_2\mid D)=\frac{0.006}{0.024}=0.25 .
+\]</span> The counts give the same thing in one glance: 18 of the 24 defective cases are from Guangzhou.</p>
+</div>
+<p>The prior for Guangzhou was 60%, and after seeing a defect it is 75%. A defect points towards Guangzhou, because defects are twice as common there. It is not proof: one defective case in four is from Chelyabinsk.</p>
+<p>Gerd Gigerenzer and his co-authors put questions like the next one, about screening tests, to doctors, and most of the doctors in their studies got them wrong (Gigerenzer et al., 2007, <em>Psychological Science in the Public Interest</em>). Before you read the solution, write down your own guess.</p>
+<div id="exm-fraud" class="theorem example">
+<p><span class="theorem-title"><strong>Example 2.8 (Fraud alerts)</strong></span> A hypothetical bank processes 100,000 card payments a day, and 0.2% of them are fraudulent. Its fraud filter flags 99% of fraudulent payments, and it also flags 1% of legitimate ones by mistake. The vendor’s brochure calls this “99% accurate”. A payment has just been flagged. What is the probability that it is fraud?</p>
+<p><strong>Solution.</strong> Let <span class="math inline">\(F\)</span> be “the payment is fraudulent” and <span class="math inline">\(L\)</span> “the payment is flagged”. We know <span class="math inline">\(\Prob(F)=0.002\)</span>, <span class="math inline">\(\Prob(L\mid F)=0.99\)</span> and <span class="math inline">\(\Prob(L\mid F^c)=0.01\)</span>. The partition is <span class="math inline">\(F\)</span>, <span class="math inline">\(F^c\)</span>. By <a href="#eq-bayes" class="quarto-xref">Equation&nbsp;<span>2.3</span></a>, <span class="math display">\[
+\Prob(F\mid L)=\frac{0.99\cdot0.002}{0.99\cdot0.002+0.01\cdot0.998}=\frac{0.00198}{0.00198+0.00998}=\frac{0.00198}{0.01196}\approx 0.166 .
+\]</span> Only about one flagged payment in six is fraud. <a href="#tbl-bayes" class="quarto-xref">Table&nbsp;<span>2.1</span></a> shows the same calculation in counts for one day.</p>
+</div>
+<div id="tbl-bayes" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-bayes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2.1: One day of payments in <a href="#exm-fraud" class="quarto-xref">Example&nbsp;<span>2.8</span></a>. Of the 1,196 flagged payments, 198 are fraud: <span class="math inline">\(198/1196\approx 0.166\)</span>.
+</figcaption>
+<div aria-describedby="tbl-bayes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th style="text-align: right;">Flagged</th>
+<th style="text-align: right;">Not flagged</th>
+<th style="text-align: right;">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Fraudulent</td>
+<td style="text-align: right;">198</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">200</td>
+</tr>
+<tr class="even">
+<td>Legitimate</td>
+<td style="text-align: right;">998</td>
+<td style="text-align: right;">98,802</td>
+<td style="text-align: right;">99,800</td>
+</tr>
+<tr class="odd">
+<td>Total</td>
+<td style="text-align: right;">1,196</td>
+<td style="text-align: right;">98,804</td>
+<td style="text-align: right;">100,000</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>Read the table row by row first. The filter flags 198 of the 200 frauds, which is the 99% from the brochure. But there are so many legitimate payments, 99,800, that 1% of them gives 998 false alarms, five times as many as the 198 real ones. The <strong>base rate</strong>, the share of all cases that really have the property (here 0.2% of payments are fraud), matters as much as the accuracy of the test. Whenever the thing you are looking for is rare, expect most alarms to be false, even from a good test.</p>
+<p>That does not make the filter useless. The prior was 0.002 and the posterior is 0.166, more than 80 times higher. A flag is strong evidence, not a verdict. This is why the bank sends you an SMS to confirm a flagged payment instead of blocking your card.</p>
+<p>And here is the swap from <a href="#exm-promo-conditional" class="quarto-xref">Example&nbsp;<span>2.1</span></a> once again. “99% accurate” describes <span class="math inline">\(\Prob(L\mid F)=0.99\)</span>. The question was about <span class="math inline">\(\Prob(F\mid L)\)</span>. People who answer “99%” have swapped the two. In court the same error is called the <strong>prosecutor’s fallacy</strong>: the court treats the probability of the evidence if the accused is innocent, <span class="math inline">\(\Prob(\text{evidence}\mid\text{innocent})\)</span>, as if it were the probability that the accused is innocent given the evidence, <span class="math inline">\(\Prob(\text{innocent}\mid\text{evidence})\)</span>. It appeared in the 1999 trial of Sally Clark in England, together with a worse mistake: the expert witness squared the probability of one sudden infant death to get the probability of two, as if the two deaths in one family were independent. Her conviction was overturned in 2003, mainly because of medical evidence that had not been disclosed.</p>
+</section>
+<section id="exercises" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="exercises">Exercises</h2>
+<ol type="1">
+<li>Two dice are rolled and the sum is 8. What is the probability that at least one die shows a 3?</li>
+<li>Events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are independent, <span class="math inline">\(\Prob(A)=0.3\)</span> and <span class="math inline">\(\Prob(B)=0.5\)</span>. Find <span class="math inline">\(\Prob(A\cup B)\)</span> and the probability that neither occurs.</li>
+<li><span class="math inline">\(\Prob(A)=0.2\)</span>, <span class="math inline">\(\Prob(B)=0.3\)</span>, and <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are mutually exclusive. Are they independent? One word, then one line of reason.</li>
+<li>Priya runs a courier service. On 30% of days the weather is bad. On those days 20% of deliveries are late, on other days 5%. What is the probability that a random delivery is late? A delivery was late: what is the probability that the weather was bad that day?</li>
+<li>Find the mistake. “An HR screening test is passed by 90% of strong candidates and by 20% of weak ones. 30% of applicants are strong. Ilya passed the test, so he is a strong candidate with probability 90%.”</li>
+</ol>
+<p>Answers: (1) <span class="math inline">\(2/5\)</span>: the sum 8 comes from <span class="math inline">\((2,6),(3,5),(4,4),(5,3),(6,2)\)</span>, and two of these contain a 3. (2) <span class="math inline">\(0.3+0.5-0.15=0.65\)</span>; neither: <span class="math inline">\(0.7\cdot0.5=0.35\)</span>. (3) No: <span class="math inline">\(\Prob(A\cap B)=0\)</span> but <span class="math inline">\(\Prob(A)\Prob(B)=0.06\)</span>. (4) <span class="math inline">\(0.2\cdot0.3+0.05\cdot0.7=0.095\)</span>; <span class="math inline">\(0.06/0.095\approx 0.632\)</span>. (5) 90% is <span class="math inline">\(\Prob(\text{pass}\mid\text{strong})\)</span>, but the question asks for <span class="math inline">\(\Prob(\text{strong}\mid\text{pass})=0.27/(0.27+0.14)=0.27/0.41\approx 0.659\)</span>.</p>
+<p>The full practice is in Seminar 2.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../lectures/L01-probability-basics.html" class="pagination-link" aria-label="Events, probability and counting">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Events, probability and counting</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../lectures/L03-discrete-random-variables.html" class="pagination-link" aria-label="Discrete random variables">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Discrete random variables</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

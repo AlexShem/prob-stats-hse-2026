@@ -1,0 +1,1512 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Seminar 1: events, counting, classical and geometric probability – Probability Theory and Mathematical Statistics</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../seminars/S02-conditional-probability.html" rel="next">
+<link href="../lectures/L03-discrete-random-variables.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-fde786507b123b2ba480ba3caec7cd03.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../_shared/book.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../seminars/S01-counting.html">Seminars</a></li><li class="breadcrumb-item"><a href="../seminars/S01-counting.html">Seminar 1: events, counting, classical and geometric probability</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Probability Theory and Mathematical Statistics</a> 
+        <div class="sidebar-tools-main">
+    <a href="../Probability-Theory-and-Mathematical-Statistics.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">About this book</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Lectures</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L00-about-me.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">About the course and about me</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L01-probability-basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Events, probability and counting</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L02-conditional-probability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Conditional probability and Bayes’ theorem</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L03-discrete-random-variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Discrete random variables</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Seminars</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../seminars/S01-counting.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Seminar 1: events, counting, classical and geometric probability</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../seminars/S02-conditional-probability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Seminar 2: conditional probability, independence and Bayes</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../schedule.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Schedule</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#useful-formulas" id="toc-useful-formulas" class="nav-link active" data-scroll-target="#useful-formulas">Useful formulas</a></li>
+  <li><a href="#problem-1" id="toc-problem-1" class="nav-link" data-scroll-target="#problem-1">Problem 1</a></li>
+  <li><a href="#problem-2" id="toc-problem-2" class="nav-link" data-scroll-target="#problem-2">Problem 2</a></li>
+  <li><a href="#problem-3" id="toc-problem-3" class="nav-link" data-scroll-target="#problem-3">Problem 3</a></li>
+  <li><a href="#problem-4" id="toc-problem-4" class="nav-link" data-scroll-target="#problem-4">Problem 4</a></li>
+  <li><a href="#problem-5" id="toc-problem-5" class="nav-link" data-scroll-target="#problem-5">Problem 5</a></li>
+  <li><a href="#problem-6" id="toc-problem-6" class="nav-link" data-scroll-target="#problem-6">Problem 6</a></li>
+  <li><a href="#problem-7" id="toc-problem-7" class="nav-link" data-scroll-target="#problem-7">Problem 7</a></li>
+  <li><a href="#problem-8" id="toc-problem-8" class="nav-link" data-scroll-target="#problem-8">Problem 8</a></li>
+  <li><a href="#problem-9" id="toc-problem-9" class="nav-link" data-scroll-target="#problem-9">Problem 9</a></li>
+  <li><a href="#problem-10" id="toc-problem-10" class="nav-link" data-scroll-target="#problem-10">Problem 10</a></li>
+  <li><a href="#problem-11" id="toc-problem-11" class="nav-link" data-scroll-target="#problem-11">Problem 11</a></li>
+  <li><a href="#problem-12" id="toc-problem-12" class="nav-link" data-scroll-target="#problem-12">Problem 12</a></li>
+  <li><a href="#problem-13" id="toc-problem-13" class="nav-link" data-scroll-target="#problem-13">Problem 13</a></li>
+  <li><a href="#problem-14" id="toc-problem-14" class="nav-link" data-scroll-target="#problem-14">Problem 14</a></li>
+  <li><a href="#problem-15" id="toc-problem-15" class="nav-link" data-scroll-target="#problem-15">Problem 15</a></li>
+  <li><a href="#problem-16" id="toc-problem-16" class="nav-link" data-scroll-target="#problem-16">Problem 16</a></li>
+  <li><a href="#problem-17" id="toc-problem-17" class="nav-link" data-scroll-target="#problem-17">Problem 17*</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../seminars/S01-counting.html">Seminars</a></li><li class="breadcrumb-item"><a href="../seminars/S01-counting.html">Seminar 1: events, counting, classical and geometric probability</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-S01" class="quarto-section-identifier">Seminar 1: events, counting, classical and geometric probability</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="chapter-downloads">
+<p><a href="../pdf/S01-counting.pdf">PDF</a></p>
+</div>
+<!-- Math macros for HTML/revealjs (MathJax). PDF gets the same ones from _shared/preamble.tex. Keep both in sync. -->
+<div class="hidden">
+<p><span class="math display">\[
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\Corr}{\operatorname{Corr}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\R}{\mathbb{R}}
+\]</span></p>
+</div>
+<p>Material from Lecture 1 (<a href="../lectures/L01-probability-basics.html" class="quarto-xref"><span>1&nbsp; Events, probability and counting</span></a>). The problems follow the order of the lecture: events, the axioms, classical probability, counting, geometric probability. The firms on this sheet are made up, and so are their numbers. Problems marked <em>if time allows</em> are for a group that moves quickly. The starred Problem 17* goes past the lecture and is not examinable. Work by hand first. The Python at the end of a solution is there to check the number, not to find it.</p>
+<section id="useful-formulas" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="useful-formulas">Useful formulas</h2>
+<p>The <strong>factorial</strong> of a whole number <span class="math inline">\(n\ge1\)</span> is <span class="math inline">\(n!=n(n-1)\cdots2\cdot1\)</span>, and <span class="math inline">\(0!=1\)</span>. For example, <span class="math inline">\(4!=4\cdot3\cdot2\cdot1=24\)</span>.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 28%">
+<col style="width: 56%">
+<col style="width: 15%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Rule</th>
+<th>Formula</th>
+<th>Lecture</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>De Morgan’s laws</td>
+<td><span class="math inline">\((A\cup B)^c=A^c\cap B^c\)</span>, <span class="math inline">\(\ (A\cap B)^c=A^c\cup B^c\)</span></td>
+<td>Thm <a href="../lectures/L01-probability-basics.html#thm-demorgan" class="quarto-xref"><span>1.1</span></a></td>
+</tr>
+<tr class="even">
+<td>Complement</td>
+<td><span class="math inline">\(\Prob(A^c)=1-\Prob(A)\)</span></td>
+<td>Thm <a href="../lectures/L01-probability-basics.html#thm-consequences" class="quarto-xref"><span>1.2</span></a></td>
+</tr>
+<tr class="odd">
+<td>Union of two events</td>
+<td><span class="math inline">\(\Prob(A\cup B)=\Prob(A)+\Prob(B)-\Prob(A\cap B)\)</span></td>
+<td>Thm <a href="../lectures/L01-probability-basics.html#thm-consequences" class="quarto-xref"><span>1.2</span></a></td>
+</tr>
+<tr class="even">
+<td>Classical (finitely many, equally likely outcomes)</td>
+<td><span class="math inline">\(\Prob(A)=\lvert A\rvert/\lvert\Omega\rvert\)</span></td>
+<td>Def <a href="../lectures/L01-probability-basics.html#def-classical" class="quarto-xref"><span>1.5</span></a></td>
+</tr>
+<tr class="odd">
+<td>Product rule</td>
+<td><span class="math inline">\(k\)</span> stages with <span class="math inline">\(n_1,\dots,n_k\)</span> choices (each <span class="math inline">\(n_i\)</span> the same whatever happened before): <span class="math inline">\(n_1n_2\cdots n_k\)</span> ways</td>
+<td>Thm <a href="../lectures/L01-probability-basics.html#thm-product" class="quarto-xref"><span>1.3</span></a></td>
+</tr>
+<tr class="even">
+<td>Permutations of <span class="math inline">\(n\)</span></td>
+<td><span class="math inline">\(n!\)</span></td>
+<td>Def <a href="../lectures/L01-probability-basics.html#def-permutation" class="quarto-xref"><span>1.6</span></a></td>
+</tr>
+<tr class="odd">
+<td>Arrangements, <span class="math inline">\(k\)</span> of <span class="math inline">\(n\)</span>, ordered</td>
+<td><span class="math inline">\(n!/(n-k)!=n(n-1)\cdots(n-k+1)\)</span></td>
+<td>Def <a href="../lectures/L01-probability-basics.html#def-arrangement" class="quarto-xref"><span>1.7</span></a></td>
+</tr>
+<tr class="even">
+<td>Combinations, <span class="math inline">\(k\)</span> of <span class="math inline">\(n\)</span>, unordered</td>
+<td><span class="math inline">\(\binom{n}{k}=\frac{n!}{k!\,(n-k)!}\)</span></td>
+<td>Def <a href="../lectures/L01-probability-basics.html#def-combination" class="quarto-xref"><span>1.8</span></a>, Eq <a href="../lectures/L01-probability-basics.html#eq-binom" class="quarto-xref"><span>1.2</span></a></td>
+</tr>
+<tr class="odd">
+<td>Geometric probability (a point chosen uniformly at random)</td>
+<td><span class="math inline">\(\Prob(A)=\)</span> size of <span class="math inline">\(A\)</span> / size of <span class="math inline">\(\Omega\)</span> (length, area or volume)</td>
+<td>Def <a href="../lectures/L01-probability-basics.html#def-geometric" class="quarto-xref"><span>1.9</span></a></td>
+</tr>
+</tbody>
+</table>
+<p>Permutations, arrangements and combinations are all about <span class="math inline">\(n\)</span> distinct objects, with no object used twice and <span class="math inline">\(0\le k\le n\)</span>. Does order matter? Swap two chosen items. If you get a different outcome, count arrangements. If you get the same outcome, count combinations (<a href="../lectures/L01-probability-basics.html#thm-counting" class="quarto-xref">Theorem&nbsp;<span>1.4</span></a>).</p>
+</section>
+<section id="problem-1" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="problem-1">Problem 1</h2>
+<p>A café chain surveys one random customer. Let <span class="math inline">\(A\)</span> be “ordered coffee” and <span class="math inline">\(B\)</span> “ordered a dessert”. Write each statement as an expression in <span class="math inline">\(A\)</span>, <span class="math inline">\(B\)</span> and the set operations:</p>
+<ol type="a">
+<li>coffee and no dessert;</li>
+<li>neither coffee nor dessert;</li>
+<li>at least one of the two;</li>
+<li>exactly one of the two.</li>
+</ol>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="a">
+<li><span class="math inline">\(A\cap B^c\)</span>.</li>
+<li><span class="math inline">\(A^c\cap B^c\)</span>, which equals <span class="math inline">\((A\cup B)^c\)</span> by <a href="../lectures/L01-probability-basics.html#thm-demorgan" class="quarto-xref">Theorem&nbsp;<span>1.1</span></a>.</li>
+<li><span class="math inline">\(A\cup B\)</span>.</li>
+<li>Either coffee without dessert or dessert without coffee: <span class="math inline">\((A\cap B^c)\cup(A^c\cap B)\)</span>. These two pieces are mutually exclusive, so their probabilities add. Do not write <span class="math inline">\(A\cup B\)</span> here: it also contains “both”.</li>
+</ol>
+<p>Each answer is the shaded region in the matching panel of the picture.</p>
+<div id="cdc51a99" class="cell" data-execution_count="2">
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="S01-counting_files/figure-html/cell-3-output-1.png" alt="Four Venn diagrams of two overlapping circles A and B. Shaded: A without B; everything outside both circles; both circles; both circles without their overlap." width="880" height="196" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="problem-2" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="problem-2">Problem 2</h2>
+<p><em>If time allows.</em></p>
+<p>Every Monday a sushi bar in Vladivostok gets fish, rice and vegetables from three different suppliers. The chef only really worries about the fish. Let <span class="math inline">\(A\)</span>, <span class="math inline">\(B\)</span> and <span class="math inline">\(C\)</span> be the events that the fish, the rice and the vegetables arrive on time. Write as expressions in <span class="math inline">\(A\)</span>, <span class="math inline">\(B\)</span> and <span class="math inline">\(C\)</span>:</p>
+<ol type="a">
+<li>all three deliveries are on time;</li>
+<li>none is on time;</li>
+<li>exactly one is on time;</li>
+<li>at least two are on time;</li>
+<li>not all three are on time.</li>
+</ol>
+<p>Then use De Morgan’s laws to write (b) and (e) in a second way. Are (b) and (e) the same event?</p>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="a">
+<li><p><span class="math inline">\(A\cap B\cap C\)</span>.</p></li>
+<li><p><span class="math inline">\(A^c\cap B^c\cap C^c\)</span>.</p></li>
+<li><p>Three mutually exclusive pieces, one for each supplier who is on time: <span class="math inline">\((A\cap B^c\cap C^c)\cup(A^c\cap B\cap C^c)\cup(A^c\cap B^c\cap C)\)</span>.</p></li>
+<li><p><span class="math inline">\((A\cap B)\cup(A\cap C)\cup(B\cap C)\)</span>. This union contains “all three on time” too, which is right: three is at least two. The picture shades (c) and (d).</p></li>
+</ol>
+<div id="40d30f0b" class="cell" data-execution_count="3">
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="S01-counting_files/figure-html/cell-4-output-1.png" alt="Two Venn diagrams of three overlapping circles A, B and C. On the left the parts inside exactly one circle are shaded, on the right the parts inside at least two circles." width="730" height="345" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<ol start="5" type="a">
+<li><span class="math inline">\((A\cap B\cap C)^c\)</span>.</li>
+</ol>
+<p>De Morgan’s laws (<a href="../lectures/L01-probability-basics.html#thm-demorgan" class="quarto-xref">Theorem&nbsp;<span>1.1</span></a>) work for three events with the same sentence: an outcome is outside <span class="math inline">\(A\cup B\cup C\)</span> exactly when it is outside each of the three. So (b) is <span class="math inline">\((A\cup B\cup C)^c\)</span>, “not even one on time”, and (e) is <span class="math inline">\(A^c\cup B^c\cup C^c\)</span>, “at least one is late”.</p>
+<p>They are not the same event. In (b) every delivery is late, while (e) needs only one late delivery. A Monday when only the fish is late is in (e) and not in (b).</p>
+</div>
+</div>
+</section>
+<section id="problem-3" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="problem-3">Problem 3</h2>
+<p>At an online store, <span class="math inline">\(\Prob(A)=0.62\)</span> for “the order contains a discounted item”, <span class="math inline">\(\Prob(B)=0.35\)</span> for “the order is paid in instalments”, and <span class="math inline">\(\Prob(A\cup B)=0.78\)</span>. Find</p>
+<ol type="a">
+<li><span class="math inline">\(\Prob(A\cap B)\)</span>;</li>
+<li>the probability of an order with neither;</li>
+<li>the probability of an order with exactly one of the two.</li>
+</ol>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="a">
+<li><p>From <a href="../lectures/L01-probability-basics.html#thm-consequences" class="quarto-xref">Theorem&nbsp;<span>1.2</span></a>(4), <span class="math inline">\(\Prob(A\cap B)=\Prob(A)+\Prob(B)-\Prob(A\cup B)=0.62+0.35-0.78=0.19\)</span>.</p></li>
+<li><p><span class="math inline">\(1-\Prob(A\cup B)=0.22\)</span>.</p></li>
+<li><p>Exactly one is the union minus the overlap: <span class="math inline">\(0.78-0.19=0.59\)</span>. Check by pieces: discount only <span class="math inline">\(0.62-0.19=0.43\)</span>, instalments only <span class="math inline">\(0.35-0.19=0.16\)</span>, and <span class="math inline">\(0.43+0.16=0.59\)</span>.</p></li>
+</ol>
+<div id="f1ff2209" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>p_discount, p_instalment, p_either <span class="op">=</span> <span class="fl">0.62</span>, <span class="fl">0.35</span>, <span class="fl">0.78</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>p_both <span class="op">=</span> p_discount <span class="op">+</span> p_instalment <span class="op">-</span> p_either</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"P(both) = </span><span class="sc">{</span>p_both<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"P(neither) = </span><span class="sc">{</span><span class="dv">1</span> <span class="op">-</span> p_either<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"P(exactly one) = </span><span class="sc">{</span>p_either <span class="op">-</span> p_both<span class="sc">:.2f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>P(both) = 0.19
+P(neither) = 0.22
+P(exactly one) = 0.59</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="problem-4" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="problem-4">Problem 4</h2>
+<p>Two short proofs, then a use for them. In (a) and (b) use only the axioms of probability and their consequences from Lecture 1.</p>
+<ol type="a">
+<li>Show that <span class="math inline">\(\Prob(A\cap B^c)=\Prob(A)-\Prob(A\cap B)\)</span>. The event <span class="math inline">\(A\cap B^c\)</span>, “<span class="math inline">\(A\)</span> but not <span class="math inline">\(B\)</span>”, is written <span class="math inline">\(A\setminus B\)</span> in many books.</li>
+<li>Show that <span class="math inline">\(\Prob(A\cap B)\ge\Prob(A)+\Prob(B)-1\)</span>.</li>
+<li>At a regional bank in Yekaterinburg, 80% of the clients use the mobile app and 70% get their salary on the bank’s card. At least what share of the clients do both? What is the largest possible share? For each of the two extremes, describe in one sentence what the client base looks like.</li>
+<li>Can two mutually exclusive events have probabilities 0.7 and 0.5? One word, then a reason in one line.</li>
+</ol>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="a">
+<li><p>An outcome in <span class="math inline">\(A\)</span> is either in <span class="math inline">\(B\)</span> or not, so <span class="math inline">\(A\)</span> splits into two mutually exclusive pieces, <span class="math inline">\(A\cap B\)</span> and <span class="math inline">\(A\cap B^c\)</span>. By axiom 3 of <a href="../lectures/L01-probability-basics.html#def-probability" class="quarto-xref">Definition&nbsp;<span>1.4</span></a>, <span class="math inline">\(\Prob(A)=\Prob(A\cap B)+\Prob(A\cap B^c)\)</span>. Move <span class="math inline">\(\Prob(A\cap B)\)</span> to the other side.</p></li>
+<li><p>By <a href="../lectures/L01-probability-basics.html#thm-consequences" class="quarto-xref">Theorem&nbsp;<span>1.2</span></a>(4), <span class="math inline">\(\Prob(A\cap B)=\Prob(A)+\Prob(B)-\Prob(A\cup B)\)</span>. By <a href="../lectures/L01-probability-basics.html#thm-consequences" class="quarto-xref">Theorem&nbsp;<span>1.2</span></a>(3), <span class="math inline">\(\Prob(A\cup B)\le1\)</span>, so we subtract at most 1.</p></li>
+<li><p>Let <span class="math inline">\(A\)</span> be “uses the app” and <span class="math inline">\(B\)</span> “has a salary card”. By (b), <span class="math inline">\(\Prob(A\cap B)\ge0.80+0.70-1=0.50\)</span>. The share is exactly 0.50 when <span class="math inline">\(\Prob(A\cup B)=1\)</span>: every client has at least one of the two, so the 20% without the app all have a salary card and the 30% without a salary card all use the app.</p></li>
+</ol>
+<p>For the largest share: <span class="math inline">\(A\cap B\subseteq B\)</span>, so by <a href="../lectures/L01-probability-basics.html#thm-consequences" class="quarto-xref">Theorem&nbsp;<span>1.2</span></a>(3) it is at most <span class="math inline">\(\Prob(B)=0.70\)</span>. It equals 0.70 when every salary-card client also uses the app. Without data on the overlap, the bank can only say that between 50% and 70% of its clients do both.</p>
+<ol start="4" type="a">
+<li>No.&nbsp;Mutually exclusive means <span class="math inline">\(\Prob(A\cap B)=0\)</span>, while (b) gives <span class="math inline">\(\Prob(A\cap B)\ge0.7+0.5-1=0.2\)</span>. Put differently, <span class="math inline">\(\Prob(A\cup B)\)</span> would be <span class="math inline">\(1.2\)</span>, and no probability exceeds 1.</li>
+</ol>
+<div id="e5f3a0c1" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>p_app, p_card <span class="op">=</span> <span class="fl">0.80</span>, <span class="fl">0.70</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>lowest <span class="op">=</span> <span class="bu">max</span>(<span class="dv">0</span>, p_app <span class="op">+</span> p_card <span class="op">-</span> <span class="dv">1</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>highest <span class="op">=</span> <span class="bu">min</span>(p_app, p_card)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"share with both: between </span><span class="sc">{</span>lowest<span class="sc">:.2f}</span><span class="ss"> and </span><span class="sc">{</span>highest<span class="sc">:.2f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>share with both: between 0.50 and 0.70</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="problem-5" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="problem-5">Problem 5</h2>
+<p>Find the mistake in this solution.</p>
+<blockquote class="blockquote">
+<p><em>Two dice are rolled. The possible sums are 2, 3, …, 12, that is 11 values. So the probability that the sum is 7 is <span class="math inline">\(1/11\)</span>.</em></p>
+</blockquote>
+<p>Give the correct answer, and also the probability that the sum is 2.</p>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The 11 sums are not equally likely, so <a href="../lectures/L01-probability-basics.html#def-classical" class="quarto-xref">Definition&nbsp;<span>1.5</span></a> does not apply to them. The equally likely outcomes are the 36 ordered pairs. Six pairs give 7, so <span class="math inline">\(\Prob(\text{sum}=7)=6/36=1/6\approx 0.167\)</span>, while only <span class="math inline">\((1,1)\)</span> gives 2, so <span class="math inline">\(\Prob(\text{sum}=2)=1/36\approx 0.028\)</span>. The claimed <span class="math inline">\(1/11\approx 0.091\)</span> is wrong for both.</p>
+<div id="09c09fc0" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> itertools <span class="im">import</span> product</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> Counter</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>sums <span class="op">=</span> Counter(i <span class="op">+</span> j <span class="cf">for</span> i, j <span class="kw">in</span> product(<span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">7</span>), repeat<span class="op">=</span><span class="dv">2</span>))</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> total <span class="kw">in</span> (<span class="dv">2</span>, <span class="dv">7</span>, <span class="dv">12</span>):</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    n_ways <span class="op">=</span> sums[total]</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"P(sum = </span><span class="sc">{</span>total<span class="sc">}</span><span class="ss">) = </span><span class="sc">{</span>n_ways<span class="sc">}</span><span class="ss">/36 = </span><span class="sc">{</span>n_ways <span class="op">/</span> <span class="dv">36</span><span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>P(sum = 2) = 1/36 = 0.028
+P(sum = 7) = 6/36 = 0.167
+P(sum = 12) = 1/36 = 0.028</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="problem-6" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="problem-6">Problem 6</h2>
+<p>A small supermarket in Yaroslavl has four cashiers open. Three customers reach the tills at the same moment, and each picks a cashier at random: all four are equally likely, whatever the other two customers chose.</p>
+<ol type="a">
+<li>How many equally likely outcomes are there? Describe one outcome in words.</li>
+<li>Find the probability that all three go to different cashiers, that all three go to the same cashier, and that exactly two of them share a cashier.</li>
+<li>Rustam, a classmate, says: “There are only three patterns: all at one cashier, two at one and one at another, all at different cashiers. So each pattern has probability 1/3.” Find his mistake.</li>
+</ol>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="a">
+<li><p>An outcome records which cashier each customer picks, in order: customer 1, customer 2, customer 3. For example, <span class="math inline">\((2,2,4)\)</span> means the first two go to cashier 2 and the third to cashier 4. Three stages with 4 choices each (<a href="../lectures/L01-probability-basics.html#thm-product" class="quarto-xref">Theorem&nbsp;<span>1.3</span></a>) give <span class="math inline">\(|\Omega|=4^3=64\)</span> ordered triples, all equally likely.</p></li>
+<li><p>All different: the three customers take an arrangement of 3 cashiers out of 4 (<a href="../lectures/L01-probability-basics.html#def-arrangement" class="quarto-xref">Definition&nbsp;<span>1.7</span></a>), <span class="math inline">\(4\cdot3\cdot2=24\)</span> outcomes, so <span class="math inline">\(\Prob=24/64=0.375\)</span>.</p></li>
+</ol>
+<p>All at the same cashier: 4 outcomes, one for each cashier, so <span class="math inline">\(\Prob=4/64=0.0625\)</span>.</p>
+<p>Exactly two share: what is left, <span class="math inline">\(64-24-4=36\)</span> outcomes, so <span class="math inline">\(\Prob=36/64=0.5625\)</span>. A direct count agrees: choose the two customers who share (<span class="math inline">\(\binom32=3\)</span> ways), their cashier (4 ways) and the third customer’s cashier (3 ways), which gives <span class="math inline">\(3\cdot4\cdot3=36\)</span>.</p>
+<ol start="3" type="a">
+<li>The three patterns are a coarse sample space, the trap from <a href="../lectures/L01-probability-basics.html#sec-L01-space" class="quarto-xref"><span>Experiments and outcomes</span></a> and the same one as the eleven sums in Problem 5. They are not equally likely: they contain 4, 36 and 24 of the 64 outcomes. <a href="../lectures/L01-probability-basics.html#def-classical" class="quarto-xref">Definition&nbsp;<span>1.5</span></a> needs equally likely outcomes, and only the 64 ordered triples are.</li>
+</ol>
+<div id="6a873970" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> itertools <span class="im">import</span> product</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> Counter</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># one outcome = (cashier of customer 1, of customer 2, of customer 3)</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>outcomes <span class="op">=</span> <span class="bu">list</span>(product(<span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">5</span>), repeat<span class="op">=</span><span class="dv">3</span>))</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>n_used <span class="op">=</span> Counter(<span class="bu">len</span>(<span class="bu">set</span>(choice)) <span class="cf">for</span> choice <span class="kw">in</span> outcomes)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>names <span class="op">=</span> {<span class="dv">3</span>: <span class="st">"all different"</span>, <span class="dv">1</span>: <span class="st">"all the same"</span>,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>         <span class="dv">2</span>: <span class="st">"exactly two share"</span>}</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> used, name <span class="kw">in</span> names.items():</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    share <span class="op">=</span> n_used[used] <span class="op">/</span> <span class="bu">len</span>(outcomes)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"P(</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">) = </span><span class="sc">{</span>n_used[used]<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span><span class="bu">len</span>(outcomes)<span class="sc">}</span><span class="ss"> = </span><span class="sc">{</span>share<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>P(all different) = 24/64 = 0.3750
+P(all the same) = 4/64 = 0.0625
+P(exactly two share) = 36/64 = 0.5625</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="problem-7" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="problem-7">Problem 7</h2>
+<p>Does order matter? For each situation say whether you count permutations, arrangements, combinations, or ordered choices with repetition (the product rule). Then count.</p>
+<ol type="a">
+<li>Six start-ups pitch at a demo day in Skolkovo. In how many orders can they go on stage?</li>
+<li>A student club has 15 members. In how many ways can it elect a chair, a deputy and a treasurer (three different people)?</li>
+<li>The same club sends 3 of its 15 members to a conference in Saint Petersburg. How many different delegations are possible?</li>
+<li>A coffee shop prints a code of 3 capital Latin letters on each loyalty card, and letters may repeat (AAB is allowed). How many codes are there?</li>
+</ol>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Use the swap test: swap two chosen items and see whether the outcome changes.</p>
+<ol type="a">
+<li><p>All six go in a row and order matters: a permutation (<a href="../lectures/L01-probability-basics.html#def-permutation" class="quarto-xref">Definition&nbsp;<span>1.6</span></a>), <span class="math inline">\(6!=720\)</span>.</p></li>
+<li><p>Swap the chair and the treasurer and you get a different board, so order matters, and nobody holds two posts: an arrangement of 3 from 15 (<a href="../lectures/L01-probability-basics.html#def-arrangement" class="quarto-xref">Definition&nbsp;<span>1.7</span></a>), <span class="math inline">\(15\cdot14\cdot13=2730\)</span>.</p></li>
+<li><p>Swap two delegates and the delegation is the same group: a combination (<a href="../lectures/L01-probability-basics.html#def-combination" class="quarto-xref">Definition&nbsp;<span>1.8</span></a>), <span class="math inline">\(\binom{15}{3}=455\)</span>. Check with <a href="../lectures/L01-probability-basics.html#thm-counting" class="quarto-xref">Theorem&nbsp;<span>1.4</span></a>: <span class="math inline">\(2730/3!=455\)</span>, because each delegation can share out the three posts of (b) in <span class="math inline">\(3!=6\)</span> ways.</p></li>
+<li><p>Order matters (ABA is not AAB) and letters may repeat: three stages with 26 choices each (<a href="../lectures/L01-probability-basics.html#thm-product" class="quarto-xref">Theorem&nbsp;<span>1.3</span></a>), <span class="math inline">\(26^3=17\,576\)</span>.</p></li>
+</ol>
+<div id="a69e6c0b" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> math <span class="im">import</span> factorial, perm, comb</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"(a) pitch orders: </span><span class="sc">{</span>factorial(<span class="dv">6</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"(b) chair, deputy, treasurer: </span><span class="sc">{</span>perm(<span class="dv">15</span>, <span class="dv">3</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"(c) delegations: </span><span class="sc">{</span>comb(<span class="dv">15</span>, <span class="dv">3</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"    check: 2730 / 3! = </span><span class="sc">{</span>perm(<span class="dv">15</span>, <span class="dv">3</span>) <span class="op">//</span> factorial(<span class="dv">3</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"(d) loyalty codes: </span><span class="sc">{</span><span class="dv">26</span> <span class="op">**</span> <span class="dv">3</span><span class="sc">:,}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(a) pitch orders: 720
+(b) chair, deputy, treasurer: 2730
+(c) delegations: 455
+    check: 2730 / 3! = 455
+(d) loyalty codes: 17,576</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="problem-8" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="problem-8">Problem 8</h2>
+<p>A Wi-Fi password has 8 characters. Each character is a lowercase Latin letter (26 options) or a digit (10 options).</p>
+<ol type="a">
+<li>How many passwords are possible?</li>
+<li>How many contain at least one digit?</li>
+<li>A password is generated at random: each character is one of the 36 symbols, all equally likely, chosen without looking at the others. What is the probability that it contains no digit?</li>
+</ol>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="a">
+<li><p>Eight stages with 36 choices each (<a href="../lectures/L01-probability-basics.html#thm-product" class="quarto-xref">Theorem&nbsp;<span>1.3</span></a>): <span class="math inline">\(36^8=2\,821\,109\,907\,456\)</span>.</p></li>
+<li><p>“At least one” is a job for the complement. Passwords with no digit use only letters: <span class="math inline">\(26^8=208\,827\,064\,576\)</span>. So <span class="math inline">\(36^8-26^8=2\,612\,282\,842\,880\)</span>.</p></li>
+<li><p><span class="math inline">\(26^8/36^8=(26/36)^8\approx 0.074\)</span>.</p></li>
+</ol>
+<div id="0940d42b" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>n_all <span class="op">=</span> <span class="dv">36</span> <span class="op">**</span> <span class="dv">8</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>n_letters_only <span class="op">=</span> <span class="dv">26</span> <span class="op">**</span> <span class="dv">8</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"all passwords: </span><span class="sc">{</span>n_all<span class="sc">:,}</span><span class="ss">"</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"with at least one digit: </span><span class="sc">{</span>n_all <span class="op">-</span> n_letters_only<span class="sc">:,}</span><span class="ss">"</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"P(no digit) = </span><span class="sc">{</span>n_letters_only <span class="op">/</span> n_all<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>all passwords: 2,821,109,907,456
+with at least one digit: 2,612,282,842,880
+P(no digit) = 0.074</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="problem-9" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="problem-9">Problem 9</h2>
+<p><em>If time allows.</em></p>
+<p>A bakery near Chistye Prudy in Moscow puts 8 cakes in a row in its window: 3 Napoleons, 3 medoviks (Russian honey cakes) and 2 cheesecakes. Cakes of one kind look exactly the same. How many different-looking rows can the window have? Count it in two ways.</p>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>First way. If all 8 cakes were different, there would be <span class="math inline">\(8!=40\,320\)</span> rows (<a href="../lectures/L01-probability-basics.html#def-permutation" class="quarto-xref">Definition&nbsp;<span>1.6</span></a>). But swapping the three Napoleons among themselves does not change how the window looks, and the same holds for the medoviks and the cheesecakes. So each look is counted <span class="math inline">\(3!\cdot3!\cdot2!=72\)</span> times, the same argument as in the proof of <a href="../lectures/L01-probability-basics.html#thm-counting" class="quarto-xref">Theorem&nbsp;<span>1.4</span></a>, part 3: <span class="math display">\[
+\frac{8!}{3!\,3!\,2!}=\frac{40\,320}{72}=560 .
+\]</span></p>
+<p>Second way. A look is fixed once we know which places hold which kind. Choose the 3 places for the Napoleons out of 8: <span class="math inline">\(\binom83=56\)</span>. Then the 3 places for the medoviks out of the 5 left: <span class="math inline">\(\binom53=10\)</span>. The cheesecakes take the last 2 places. By <a href="../lectures/L01-probability-basics.html#thm-product" class="quarto-xref">Theorem&nbsp;<span>1.3</span></a>, <span class="math inline">\(56\cdot10=560\)</span>.</p>
+<div id="2edd48c5" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> itertools <span class="im">import</span> permutations</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> math <span class="im">import</span> comb</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>window <span class="op">=</span> <span class="st">"NNNMMMCC"</span>   <span class="co"># N = Napoleon, M = medovik, C = cheesecake</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>n_looks <span class="op">=</span> <span class="bu">len</span>(<span class="bu">set</span>(permutations(window)))</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"different-looking rows: </span><span class="sc">{</span>n_looks<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"second way: C(8,3) * C(5,3) = </span><span class="sc">{</span>comb(<span class="dv">8</span>, <span class="dv">3</span>) <span class="op">*</span> comb(<span class="dv">5</span>, <span class="dv">3</span>)<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>different-looking rows: 560
+second way: C(8,3) * C(5,3) = 560</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="problem-10" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="problem-10">Problem 10</h2>
+<p>A shelf has 20 packs of yoghurt and 3 are expired. An inspector takes 4 packs at random. <a href="../lectures/L01-probability-basics.html#exm-quality" class="quarto-xref">Example&nbsp;<span>1.7</span></a> gave the probabilities for one batch. Now a second shelf has 40 packs, 6 of them expired (the same 15%). The inspector again takes 4. Is the probability of finding no expired pack larger, smaller or about equal? Guess first, then compute.</p>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Number of ways to take 4 packs with none expired, over all ways: <span class="math display">\[
+\frac{\binom{34}{4}}{\binom{40}{4}}=\frac{46\,376}{91\,390}\approx 0.507.
+\]</span> For the first shelf it was <span class="math inline">\(0.491\)</span>. A bigger shelf with the same share of bad packs makes it slightly easier to miss them, because taking one pack changes the remaining share less. The difference is small.</p>
+<div id="760f7fcb" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy <span class="im">import</span> stats</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co"># stats.hypergeom(M=total packs, n=expired packs, N=packs taken)</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> total, expired <span class="kw">in</span> [(<span class="dv">20</span>, <span class="dv">3</span>), (<span class="dv">40</span>, <span class="dv">6</span>)]:</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    p_none <span class="op">=</span> stats.hypergeom(total, expired, <span class="dv">4</span>).pmf(<span class="dv">0</span>)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>total<span class="sc">}</span><span class="ss"> packs, </span><span class="sc">{</span>expired<span class="sc">}</span><span class="ss"> expired: P(none) = </span><span class="sc">{</span>p_none<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>20 packs, 3 expired: P(none) = 0.491
+40 packs, 6 expired: P(none) = 0.507</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="problem-11" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="problem-11">Problem 11</h2>
+<p>A sales department has 7 managers and 5 analysts. Five people are chosen at random for a trade fair. What is the probability that the group has at least 2 analysts?</p>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Order does not matter, so <span class="math inline">\(|\Omega|=\binom{12}{5}=792\)</span>. “At least 2 analysts” means 2, 3, 4 or 5, which is four cases. The complement has only two: 0 or 1 analyst.</p>
+<ul>
+<li>0 analysts: <span class="math inline">\(\binom{5}{0}\binom{7}{5}=21\)</span>.</li>
+<li>1 analyst: <span class="math inline">\(\binom{5}{1}\binom{7}{4}=5\cdot35=175\)</span>.</li>
+</ul>
+<p>So <span class="math inline">\(\Prob=1-\dfrac{21+175}{792}=\dfrac{596}{792}\approx 0.753\)</span>.</p>
+<div id="ec4a9f33" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> math <span class="im">import</span> comb</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>n_groups <span class="op">=</span> comb(<span class="dv">12</span>, <span class="dv">5</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>n_few_analysts <span class="op">=</span> <span class="bu">sum</span>(comb(<span class="dv">5</span>, k) <span class="op">*</span> comb(<span class="dv">7</span>, <span class="dv">5</span> <span class="op">-</span> k) <span class="cf">for</span> k <span class="kw">in</span> (<span class="dv">0</span>, <span class="dv">1</span>))</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"P(at least 2 analysts) = </span><span class="sc">{</span><span class="dv">1</span> <span class="op">-</span> n_few_analysts <span class="op">/</span> n_groups<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>P(at least 2 analysts) = 0.753</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="problem-12" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="problem-12">Problem 12</h2>
+<p>The shuttle from Rumyantsevo metro station to a business park leaves every 12 minutes. Lena comes to the stop at a random moment, without looking at the timetable.</p>
+<ol type="a">
+<li>What is the probability that she waits more than 5 minutes?</li>
+<li>What is the probability that she waits exactly 5 minutes? Is this event impossible?</li>
+</ol>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="a">
+<li>Look at one 12-minute gap between two departures. Lena’s arrival is a uniform point in it (<a href="../lectures/L01-probability-basics.html#def-geometric" class="quarto-xref">Definition&nbsp;<span>1.9</span></a>). She waits more than 5 minutes if she arrives in the first 7 minutes after a departure (the blue part of the picture), so <span class="math inline">\(\Prob=7/12\approx0.583\)</span>. As in <a href="../lectures/L01-probability-basics.html#exm-courier" class="quarto-xref">Example&nbsp;<span>1.8</span></a>, it is a length divided by a length.</li>
+</ol>
+<div id="23d0180e" class="cell" data-execution_count="13">
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="S01-counting_files/figure-html/cell-14-output-1.png" alt="A timeline from 0 to 12 minutes between two shuttle departures. The first 7 minutes are shaded and labelled wait more than 5 minutes, the last 5 minutes are labelled wait at most 5 minutes." width="753" height="292" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<ol start="2" type="a">
+<li>Waiting exactly 5 minutes means arriving at one single moment, an interval of length 0, so the probability is 0. The event is not impossible: Lena arrives at some moment, and every single moment has probability 0 (the remark at the end of <a href="../lectures/L01-probability-basics.html#sec-L01-geometric" class="quarto-xref"><span>Geometric probability</span></a>).</li>
+</ol>
+<div id="a414088d" class="cell" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">2026</span>)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co"># arrival = minutes after the last departure</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>arrival <span class="op">=</span> rng.uniform(<span class="dv">0</span>, <span class="dv">12</span>, <span class="dv">1_000_000</span>)</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>wait <span class="op">=</span> <span class="dv">12</span> <span class="op">-</span> arrival</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>p_sim <span class="op">=</span> np.mean(wait <span class="op">&gt;</span> <span class="dv">5</span>)</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"simulated P(wait &gt; 5) = </span><span class="sc">{</span>p_sim<span class="sc">:.3f}</span><span class="ss">, exact = </span><span class="sc">{</span><span class="dv">7</span> <span class="op">/</span> <span class="dv">12</span><span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"simulated P(wait exactly 5) = </span><span class="sc">{</span>np<span class="sc">.</span>mean(wait <span class="op">==</span> <span class="dv">5</span>)<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>simulated P(wait &gt; 5) = 0.584, exact = 0.583
+simulated P(wait exactly 5) = 0.000</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="problem-13" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="problem-13">Problem 13</h2>
+<p>Priya and Kemal agree to meet at a bus stop between 18:00 and 19:00. Each arrives at a random moment of that hour, independently, and waits 10 minutes. What is the probability that they meet? Draw the region.</p>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>As in <a href="../lectures/L01-probability-basics.html#exm-meeting" class="quarto-xref">Example&nbsp;<span>1.9</span></a>, <span class="math inline">\((x,y)\)</span> is uniform in the square <span class="math inline">\([0,60]^2\)</span> and they meet when <span class="math inline">\(|x-y|\le10\)</span>, the shaded band in the picture. The two corner triangles outside the band have legs <span class="math inline">\(60-10=50\)</span>, so together they have area <span class="math inline">\(50^2\)</span>. Then <span class="math display">\[
+\Prob(\text{meet})=1-\Big(\frac{50}{60}\Big)^2=\frac{11}{36}\approx 0.306.
+\]</span></p>
+<div id="85ed4906" class="cell" data-execution_count="15">
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="S01-counting_files/figure-html/cell-16-output-1.png" alt="A square of arrival times with a shaded band of width 10 minutes on each side of the diagonal. The two white corner triangles are labelled leg 50." width="562" height="550" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="cff1e2dc" class="cell" data-execution_count="16">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">2026</span>)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>n_trials <span class="op">=</span> <span class="dv">1_000_000</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>arrive_priya <span class="op">=</span> rng.uniform(<span class="dv">0</span>, <span class="dv">60</span>, n_trials)</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>arrive_kemal <span class="op">=</span> rng.uniform(<span class="dv">0</span>, <span class="dv">60</span>, n_trials)</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>p_meet <span class="op">=</span> np.mean(np.<span class="bu">abs</span>(arrive_priya <span class="op">-</span> arrive_kemal) <span class="op">&lt;=</span> <span class="dv">10</span>)</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"simulated P(meet) = </span><span class="sc">{</span>p_meet<span class="sc">:.3f}</span><span class="ss">, exact = </span><span class="sc">{</span><span class="dv">11</span> <span class="op">/</span> <span class="dv">36</span><span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>simulated P(meet) = 0.305, exact = 0.306</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="problem-14" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="problem-14">Problem 14</h2>
+<p>A warehouse near Podolsk has one loading dock. Two trucks are due between 8:00 and 9:00. Each arrives at a random moment of that hour, and the moment one truck arrives has nothing to do with when the other one does. Truck 1 needs the dock for 10 minutes, truck 2 for 20 minutes. If a truck arrives while the other one is unloading, it has to wait, and Anvar, the dispatcher, calls that a clash. An unloading that runs past 9:00 is fine, because the dock is open until noon.</p>
+<ol type="a">
+<li>Let <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> be the arrival times of truck 1 and truck 2 in minutes after 8:00. Write the condition “no clash” in terms of <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>.</li>
+<li>Find the probability of a clash. Draw the square and shade the clash region.</li>
+<li>The shaded band is not symmetric around the diagonal <span class="math inline">\(y=x\)</span>. Why not? Compare with the case where each truck needs 15 minutes.</li>
+</ol>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="a">
+<li><p>Truck 1 uses the dock from <span class="math inline">\(x\)</span> to <span class="math inline">\(x+10\)</span> and truck 2 from <span class="math inline">\(y\)</span> to <span class="math inline">\(y+20\)</span>. No clash means that one truck is done before the other arrives: either <span class="math inline">\(y\ge x+10\)</span> (truck 1 came first and finished) or <span class="math inline">\(x\ge y+20\)</span> (truck 2 came first and finished).</p></li>
+<li><p>The point <span class="math inline">\((x,y)\)</span> is uniform in the square <span class="math inline">\([0,60]^2\)</span> of area 3600 (<a href="../lectures/L01-probability-basics.html#def-geometric" class="quarto-xref">Definition&nbsp;<span>1.9</span></a>). The region <span class="math inline">\(y\ge x+10\)</span> is the triangle above the line <span class="math inline">\(y=x+10\)</span>, with legs <span class="math inline">\(60-10=50\)</span> and area <span class="math inline">\(50^2/2=1250\)</span>. The region <span class="math inline">\(x\ge y+20\)</span> is the triangle below the line <span class="math inline">\(y=x-20\)</span>, with legs <span class="math inline">\(60-20=40\)</span> and area <span class="math inline">\(40^2/2=800\)</span>. These are the two white corners in the picture below. So <span class="math display">\[
+\Prob(\text{clash})=1-\frac{1250+800}{3600}=\frac{1550}{3600}=\frac{31}{72}\approx 0.431 .
+\]</span></p></li>
+<li><p>The clash band runs from the line <span class="math inline">\(y=x-20\)</span> up to the line <span class="math inline">\(y=x+10\)</span>. Above the diagonal truck 1 came first, and truck 2 clashes if it arrives within 10 minutes, the time truck 1 needs. Below the diagonal truck 2 came first, and the dangerous stretch is 20 minutes long. So each side of the band is as wide as the unloading time of the truck that came first. If each truck needed 15 minutes, the band would be <span class="math inline">\(|x-y|&lt;15\)</span>, centred on the diagonal, the same region as in <a href="../lectures/L01-probability-basics.html#exm-meeting" class="quarto-xref">Example&nbsp;<span>1.9</span></a>, and <span class="math inline">\(\Prob(\text{clash})=7/16\approx0.438\)</span>. In both cases the trucks need 30 minutes in total, and the two answers are close but not equal.</p></li>
+</ol>
+<div id="22afc5ab" class="cell" data-execution_count="17">
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="S01-counting_files/figure-html/cell-18-output-1.png" alt="A square of arrival times with a shaded band between the lines y = x + 10 and y = x - 20. The white triangle above the band has area 1250 and the one below has area 800; both mean no clash." width="558" height="546" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="45fa76b6" class="cell" data-execution_count="18">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">2026</span>)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>n_trials <span class="op">=</span> <span class="dv">1_000_000</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>truck_1 <span class="op">=</span> rng.uniform(<span class="dv">0</span>, <span class="dv">60</span>, n_trials)</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>truck_2 <span class="op">=</span> rng.uniform(<span class="dv">0</span>, <span class="dv">60</span>, n_trials)</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>no_clash <span class="op">=</span> (truck_2 <span class="op">&gt;=</span> truck_1 <span class="op">+</span> <span class="dv">10</span>) <span class="op">|</span> (truck_1 <span class="op">&gt;=</span> truck_2 <span class="op">+</span> <span class="dv">20</span>)</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>p_clash <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> np.mean(no_clash)</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"simulated P(clash) = </span><span class="sc">{</span>p_clash<span class="sc">:.3f}</span><span class="ss">, exact = </span><span class="sc">{</span><span class="dv">31</span> <span class="op">/</span> <span class="dv">72</span><span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>simulated P(clash) = 0.430, exact = 0.431</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="problem-15" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="problem-15">Problem 15</h2>
+<p><em>If time allows.</em></p>
+<p>A warehouse floor is an <span class="math inline">\(8\times8\)</span> grid of squares. Two robots, one white and one black, are put on two different squares chosen at random. They “see each other” if they stand in the same row or in the same column. What is the probability that they do not see each other?</p>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Treat the placements as ordered, because the robots have different colours: <span class="math inline">\(64\cdot63\)</span> equally likely outcomes. Fix the white robot’s square (64 ways). The black robot must be outside its row and column, which leaves <span class="math inline">\(64-8-8+1=49\)</span> squares, the blue ones in the picture (the white robot’s own square was subtracted twice). So <span class="math display">\[
+\Prob=\frac{64\cdot 49}{64\cdot 63}=\frac{49}{63}=\frac79\approx 0.778.
+\]</span> A common wrong answer is <span class="math inline">\(49/64\)</span>, which forgets that the black robot cannot take the same square as the white one.</p>
+<div id="5071825e" class="cell" data-execution_count="19">
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="S01-counting_files/figure-html/cell-20-output-1.png" alt="An 8 by 8 grid. The white robot stands in row 3, column 6. The other 14 squares of its row and column are red, marked sees; the remaining 49 squares are blue, marked safe." width="497" height="516" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="97b5814d" class="cell" data-execution_count="20">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> itertools <span class="im">import</span> permutations</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>squares <span class="op">=</span> [(row, col) <span class="cf">for</span> row <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">8</span>) <span class="cf">for</span> col <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">8</span>)]</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>n_safe <span class="op">=</span> <span class="bu">sum</span>(<span class="dv">1</span> <span class="cf">for</span> a, b <span class="kw">in</span> permutations(squares, <span class="dv">2</span>)</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>             <span class="cf">if</span> a[<span class="dv">0</span>] <span class="op">!=</span> b[<span class="dv">0</span>] <span class="kw">and</span> a[<span class="dv">1</span>] <span class="op">!=</span> b[<span class="dv">1</span>])</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>n_all <span class="op">=</span> <span class="dv">64</span> <span class="op">*</span> <span class="dv">63</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"P(no sight line) = </span><span class="sc">{</span>n_safe<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>n_all<span class="sc">}</span><span class="ss"> = </span><span class="sc">{</span>n_safe <span class="op">/</span> n_all<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>P(no sight line) = 3136/4032 = 0.778</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="problem-16" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="problem-16">Problem 16</h2>
+<p><em>If time allows.</em></p>
+<p>In a team of 30 employees, what is the probability that at least two share a birthday? Ignore 29 February and assume all 365 days are equally likely.</p>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Count the opposite: all 30 birthdays are different. Ordered, with <span class="math inline">\(365^{30}\)</span> equally likely outcomes, the favourable ones are <span class="math inline">\(365\cdot364\cdots336\)</span>. So <span class="math display">\[
+\Prob(\text{some pair shares})=1-\frac{365\cdot364\cdots336}{365^{30}}\approx 0.706.
+\]</span> Already 23 people give more than 50% (see the picture). When I ask a group to guess, the guesses are usually far lower, because they compare their own birthday against 29 others, while the question allows any of the <span class="math inline">\(\binom{30}{2}=435\)</span> pairs.</p>
+<div id="1ad812c1" class="cell" data-execution_count="21">
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="S01-counting_files/figure-html/cell-22-output-1.png" alt="A rising S-shaped curve of the probability of a shared birthday against team size from 1 to 60. It crosses one half at n = 23, where it is 0.507, and is 0.706 at n = 30." width="729" height="460" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="0e7b6be5" class="cell" data-execution_count="22">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>n_people <span class="op">=</span> <span class="dv">30</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>p_all_different <span class="op">=</span> np.prod([(<span class="dv">365</span> <span class="op">-</span> i) <span class="op">/</span> <span class="dv">365</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n_people)])</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"exact: P(shared birthday) = </span><span class="sc">{</span><span class="dv">1</span> <span class="op">-</span> p_all_different<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">2026</span>)</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>birthdays <span class="op">=</span> rng.integers(<span class="dv">0</span>, <span class="dv">365</span>, size<span class="op">=</span>(<span class="dv">100_000</span>, n_people))</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>has_match <span class="op">=</span> [<span class="bu">len</span>(<span class="bu">set</span>(row)) <span class="op">&lt;</span> n_people <span class="cf">for</span> row <span class="kw">in</span> birthdays]</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"simulation: </span><span class="sc">{</span>np<span class="sc">.</span>mean(has_match)<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>exact: P(shared birthday) = 0.706
+simulation: 0.708</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="problem-17" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="problem-17">Problem 17*</h2>
+<p>This problem goes past Lecture 1 and is not examinable.</p>
+<p>An ice-cream kiosk in Gorky Park sells cups of 3 scoops. There are 5 flavours, and a flavour may be repeated: three scoops of pistachio is a perfectly good cup. The order of the scoops in the cup does not matter. How many different cups can Sofia, who runs the kiosk, list on her menu board?</p>
+<p>None of the formulas from the lecture fits directly. Sort the cups by type: all three scoops the same, two the same and one different, all three different.</p>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>All three the same: choose the flavour, 5 cups.</p>
+<p>Two the same and one different: choose the flavour that appears twice (5 ways), then the single flavour from the other 4 (4 ways), <span class="math inline">\(5\cdot4=20\)</span> cups by <a href="../lectures/L01-probability-basics.html#thm-product" class="quarto-xref">Theorem&nbsp;<span>1.3</span></a>. Here the two choices play different roles, since two vanilla and one mango is not the same cup as two mango and one vanilla.</p>
+<p>All three different: a set of 3 flavours from 5, <span class="math inline">\(\binom53=10\)</span> cups (<a href="../lectures/L01-probability-basics.html#def-combination" class="quarto-xref">Definition&nbsp;<span>1.8</span></a>).</p>
+<p>The three types do not overlap, so there are <span class="math inline">\(5+20+10=35\)</span> cups. Other books give a shortcut for unordered choices with repetition, <span class="math inline">\(k\)</span> items from <span class="math inline">\(n\)</span> kinds: <span class="math inline">\(\binom{n+k-1}{k}\)</span>. Here it is <span class="math inline">\(\binom{7}{3}=35\)</span>.</p>
+<div id="9a3515da" class="cell" data-execution_count="23">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> itertools <span class="im">import</span> combinations_with_replacement</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>flavours <span class="op">=</span> [<span class="st">"vanilla"</span>, <span class="st">"chocolate"</span>, <span class="st">"pistachio"</span>, <span class="st">"mango"</span>,</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>            <span class="st">"salted caramel"</span>]</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>cups <span class="op">=</span> <span class="bu">list</span>(combinations_with_replacement(flavours, <span class="dv">3</span>))</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"different cups: </span><span class="sc">{</span><span class="bu">len</span>(cups)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"the first three:"</span>)</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> cup <span class="kw">in</span> cups[:<span class="dv">3</span>]:</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"  "</span>, <span class="st">", "</span>.join(cup))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>different cups: 35
+the first three:
+   vanilla, vanilla, vanilla
+   vanilla, vanilla, chocolate
+   vanilla, vanilla, pistachio</code></pre>
+</div>
+</div>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../lectures/L03-discrete-random-variables.html" class="pagination-link" aria-label="Discrete random variables">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Discrete random variables</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../seminars/S02-conditional-probability.html" class="pagination-link" aria-label="Seminar 2: conditional probability, independence and Bayes">
+        <span class="nav-page-text">Seminar 2: conditional probability, independence and Bayes</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Seminar 2: conditional probability, independence and Bayes – Probability Theory and Mathematical Statistics</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../schedule.html" rel="next">
+<link href="../seminars/S01-counting.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-fde786507b123b2ba480ba3caec7cd03.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../_shared/book.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../seminars/S01-counting.html">Seminars</a></li><li class="breadcrumb-item"><a href="../seminars/S02-conditional-probability.html">Seminar 2: conditional probability, independence and Bayes</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Probability Theory and Mathematical Statistics</a> 
+        <div class="sidebar-tools-main">
+    <a href="../Probability-Theory-and-Mathematical-Statistics.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">About this book</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Lectures</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L00-about-me.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">About the course and about me</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L01-probability-basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Events, probability and counting</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L02-conditional-probability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Conditional probability and Bayes’ theorem</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L03-discrete-random-variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Discrete random variables</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Seminars</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../seminars/S01-counting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Seminar 1: events, counting, classical and geometric probability</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../seminars/S02-conditional-probability.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Seminar 2: conditional probability, independence and Bayes</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../schedule.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Schedule</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#problem-1" id="toc-problem-1" class="nav-link active" data-scroll-target="#problem-1">Problem 1</a></li>
+  <li><a href="#problem-2" id="toc-problem-2" class="nav-link" data-scroll-target="#problem-2">Problem 2</a></li>
+  <li><a href="#problem-3" id="toc-problem-3" class="nav-link" data-scroll-target="#problem-3">Problem 3</a></li>
+  <li><a href="#problem-4" id="toc-problem-4" class="nav-link" data-scroll-target="#problem-4">Problem 4</a></li>
+  <li><a href="#problem-5" id="toc-problem-5" class="nav-link" data-scroll-target="#problem-5">Problem 5</a></li>
+  <li><a href="#problem-6" id="toc-problem-6" class="nav-link" data-scroll-target="#problem-6">Problem 6</a></li>
+  <li><a href="#problem-7" id="toc-problem-7" class="nav-link" data-scroll-target="#problem-7">Problem 7</a></li>
+  <li><a href="#problem-8" id="toc-problem-8" class="nav-link" data-scroll-target="#problem-8">Problem 8</a></li>
+  <li><a href="#problem-9" id="toc-problem-9" class="nav-link" data-scroll-target="#problem-9">Problem 9*</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../seminars/S01-counting.html">Seminars</a></li><li class="breadcrumb-item"><a href="../seminars/S02-conditional-probability.html">Seminar 2: conditional probability, independence and Bayes</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-S02" class="quarto-section-identifier">Seminar 2: conditional probability, independence and Bayes</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="chapter-downloads">
+<p><a href="../pdf/S02-conditional-probability.pdf">PDF</a></p>
+</div>
+<!-- Math macros for HTML/revealjs (MathJax). PDF gets the same ones from _shared/preamble.tex. Keep both in sync. -->
+<div class="hidden">
+<p><span class="math display">\[
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\Corr}{\operatorname{Corr}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\R}{\mathbb{R}}
+\]</span></p>
+</div>
+<p>Material from Lecture 2 (<a href="../lectures/L02-conditional-probability.html" class="quarto-xref"><span>2&nbsp; Conditional probability and Bayes’ theorem</span></a>). The firms on this sheet are made up, and so are their numbers. The short drills in Problems 1, 3 and 4 and parts 3(c) and 5(d) are marked <em>if time allows</em>. The starred Problem 9* goes past the lecture and is not examinable: it is for a strong group or for homework. As in Seminar 1, work by hand first and let the Python check you.</p>
+<section id="problem-1" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="problem-1">Problem 1</h2>
+<p><em>Short drill, if time allows.</em></p>
+<p>HR at an IT outsourcing firm in Nizhny Novgorod asked all 504 employees two questions: do you work mostly from home or from the office, and are you satisfied with your job? Four people did not answer and are left out. The other 500 answers are in the table.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th style="text-align: right;">Satisfied</th>
+<th style="text-align: right;">Not satisfied</th>
+<th style="text-align: right;">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Remote</td>
+<td style="text-align: right;">168</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">210</td>
+</tr>
+<tr class="even">
+<td>Office</td>
+<td style="text-align: right;">174</td>
+<td style="text-align: right;">116</td>
+<td style="text-align: right;">290</td>
+</tr>
+<tr class="odd">
+<td>Total</td>
+<td style="text-align: right;">342</td>
+<td style="text-align: right;">158</td>
+<td style="text-align: right;">500</td>
+</tr>
+</tbody>
+</table>
+<p>One of the 500 is picked at random. Let <span class="math inline">\(S\)</span> be “satisfied” and <span class="math inline">\(R\)</span> “works remotely”.</p>
+<ol type="a">
+<li>Find <span class="math inline">\(\Prob(S\mid R)\)</span> and <span class="math inline">\(\Prob(R\mid S)\)</span>.</li>
+<li>In one or two sentences of words, without formulas: why are the two numbers different?</li>
+<li>Are <span class="math inline">\(S\)</span> and <span class="math inline">\(R\)</span> independent? One word, then the number that shows it.</li>
+</ol>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="a">
+<li><p>Every employee is equally likely, so <a href="../lectures/L02-conditional-probability.html#def-conditional" class="quarto-xref">Definition&nbsp;<span>2.1</span></a> becomes a ratio of counts: <span class="math display">\[
+\Prob(S\mid R)=\frac{168}{210}=0.80,\qquad \Prob(R\mid S)=\frac{168}{342}\approx 0.491 .
+\]</span></p></li>
+<li><p>The numerator is the same, 168 people, but the group we look inside is not. The first number asks what share of remote workers are satisfied. The second asks what share of satisfied people work remotely, and since most of the firm sits in the office, the satisfied group is split almost half and half even though remote workers are happier. It is the swap from <a href="../lectures/L02-conditional-probability.html#exm-promo-conditional" class="quarto-xref">Example&nbsp;<span>2.1</span></a>.</p></li>
+<li><p>No.&nbsp;<span class="math inline">\(\Prob(S)=342/500=0.684\)</span>, while <span class="math inline">\(\Prob(S\mid R)=0.80\)</span>. For independent events these two would be equal (<a href="../lectures/L02-conditional-probability.html#def-independent" class="quarto-xref">Definition&nbsp;<span>2.2</span></a>). In the office the share is <span class="math inline">\(174/290=0.60\)</span>.</p></li>
+</ol>
+<p>Two warnings. The table does not say that working from home makes people happier. It could go the other way: managers may let their most satisfied people go remote. And whether a gap like 0.80 against 0.60 in one survey could be chance is a question for a test we meet in module 3.</p>
+<div id="046ef53d" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>survey <span class="op">=</span> pd.DataFrame({<span class="st">"satisfied"</span>: [<span class="dv">168</span>, <span class="dv">174</span>], <span class="st">"not satisfied"</span>: [<span class="dv">42</span>, <span class="dv">116</span>]},</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>                      index<span class="op">=</span>[<span class="st">"remote"</span>, <span class="st">"office"</span>])</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>n_total <span class="op">=</span> survey.values.<span class="bu">sum</span>()</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>both <span class="op">=</span> survey.loc[<span class="st">"remote"</span>, <span class="st">"satisfied"</span>]</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"P(S | R) = </span><span class="sc">{</span>both <span class="op">/</span> survey<span class="sc">.</span>loc[<span class="st">'remote'</span>]<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"P(R | S) = </span><span class="sc">{</span>both <span class="op">/</span> survey[<span class="st">'satisfied'</span>]<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"P(S)     = </span><span class="sc">{</span>survey[<span class="st">'satisfied'</span>]<span class="sc">.</span><span class="bu">sum</span>() <span class="op">/</span> n_total<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>P(S | R) = 0.800
+P(R | S) = 0.491
+P(S)     = 0.684</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="problem-2" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="problem-2">Problem 2</h2>
+<p>Zarina is at the New Year party of a logistics company in Tyumen. The raffle box holds 40 tickets. Four of them win something: a weekend in Sochi, two pairs of headphones and a cake. She draws 3 tickets, one after another, and does not put any back.</p>
+<ol type="a">
+<li>What is the probability that she wins nothing?</li>
+<li>What is the probability that she wins exactly one prize?</li>
+</ol>
+<p>Solve both with a probability tree (you only need to draw the branches you use). Then check both answers by counting, as in Lecture 1.</p>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Let <span class="math inline">\(W_i\)</span> be “ticket <span class="math inline">\(i\)</span> wins” and <span class="math inline">\(N_i\)</span> “ticket <span class="math inline">\(i\)</span> does not win”.</p>
+<ol type="a">
+<li><p>The path <span class="math inline">\(N_1N_2N_3\)</span>. After each losing ticket there is one ticket fewer in the box and one losing ticket fewer. By <a href="../lectures/L02-conditional-probability.html#eq-chain" class="quarto-xref">Equation&nbsp;<span>2.1</span></a>, <span class="math display">\[
+\Prob(N_1\cap N_2\cap N_3)=\frac{36}{40}\cdot\frac{35}{39}\cdot\frac{34}{38}=\frac{42\,840}{59\,280}=\frac{357}{494}\approx 0.723 .
+\]</span></p></li>
+<li><p>Three paths end with exactly one prize: <span class="math inline">\(W_1N_2N_3\)</span>, <span class="math inline">\(N_1W_2N_3\)</span> and <span class="math inline">\(N_1N_2W_3\)</span>. For example, <span class="math display">\[
+\Prob(N_1\cap W_2\cap N_3)=\frac{36}{40}\cdot\frac{4}{39}\cdot\frac{35}{38}=\frac{5040}{59\,280}.
+\]</span> The other two paths have the same numbers in a different order, so the same product. The paths are mutually exclusive, and <span class="math display">\[
+\Prob(\text{exactly one})=3\cdot\frac{5040}{59\,280}=\frac{15\,120}{59\,280}=\frac{63}{247}\approx 0.255 .
+\]</span></p></li>
+</ol>
+<p>Check by counting, exactly as in <a href="../lectures/L02-conditional-probability.html#exm-two-faulty" class="quarto-xref">Example&nbsp;<span>2.3</span></a>. Order does not matter, so the outcomes are the <span class="math inline">\(\binom{40}{3}=9880\)</span> sets of three tickets (<a href="../lectures/L01-probability-basics.html#def-combination" class="quarto-xref">Definition&nbsp;<span>1.8</span></a>). No prize: <span class="math inline">\(\binom{36}{3}=7140\)</span> sets, and <span class="math inline">\(7140/9880=357/494\)</span>. Exactly one prize: <span class="math inline">\(\binom41\binom{36}{2}=4\cdot630=2520\)</span> sets, and <span class="math inline">\(2520/9880=63/247\)</span>. Same answers.</p>
+<p>The usual mistake is to use <span class="math inline">\(4/40\)</span> at every step, as if tickets went back into the box. That gives <span class="math inline">\(3\cdot0.1\cdot0.9^2=0.243\)</span> for (b), close but wrong.</p>
+<div id="19d88530" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> math <span class="im">import</span> comb</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>p_none <span class="op">=</span> (<span class="dv">36</span> <span class="op">/</span> <span class="dv">40</span>) <span class="op">*</span> (<span class="dv">35</span> <span class="op">/</span> <span class="dv">39</span>) <span class="op">*</span> (<span class="dv">34</span> <span class="op">/</span> <span class="dv">38</span>)            <span class="co"># chain rule</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>p_one <span class="op">=</span> <span class="dv">3</span> <span class="op">*</span> (<span class="dv">36</span> <span class="op">/</span> <span class="dv">40</span>) <span class="op">*</span> (<span class="dv">4</span> <span class="op">/</span> <span class="dv">39</span>) <span class="op">*</span> (<span class="dv">35</span> <span class="op">/</span> <span class="dv">38</span>)          <span class="co"># three paths</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>count_none <span class="op">=</span> comb(<span class="dv">36</span>, <span class="dv">3</span>) <span class="op">/</span> comb(<span class="dv">40</span>, <span class="dv">3</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>count_one <span class="op">=</span> comb(<span class="dv">4</span>, <span class="dv">1</span>) <span class="op">*</span> comb(<span class="dv">36</span>, <span class="dv">2</span>) <span class="op">/</span> comb(<span class="dv">40</span>, <span class="dv">3</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"P(no prize)          = </span><span class="sc">{</span>p_none<span class="sc">:.3f}</span><span class="ss">, by counting </span><span class="sc">{</span>count_none<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"P(exactly one prize) = </span><span class="sc">{</span>p_one<span class="sc">:.3f}</span><span class="ss">, by counting </span><span class="sc">{</span>count_one<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>P(no prize)          = 0.723, by counting 0.723
+P(exactly one prize) = 0.255, by counting 0.255</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="problem-3" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="problem-3">Problem 3</h2>
+<p><em>Short drill, if time allows.</em></p>
+<p>A furniture delivery firm in Samara keeps a record of two kinds of trouble with an order: the sofa or wardrobe arrives damaged, or it arrives late. Let <span class="math inline">\(D\)</span> be “the item arrives damaged”, usually a scratch picked up while loading the van, and <span class="math inline">\(L\)</span> “the delivery is late”. Last month’s records give <span class="math display">\[
+\Prob(D)=0.10,\qquad \Prob(L)=0.20,\qquad \Prob(D\cap L)=0.02 .
+\]</span></p>
+<ol type="a">
+<li>Are <span class="math inline">\(D\)</span> and <span class="math inline">\(L\)</span> independent? Find <span class="math inline">\(\Prob(L\mid D)\)</span> as well.</li>
+<li>Find the probability that an order had at least one of the two problems, and the probability that it had neither.</li>
+<li><em>Optional, if time allows.</em> At a second firm, the driver checks every item at the customer’s door. A damaged item is not handed over: the delivery is cancelled and a new item is sent later as a new order, so a delivery with a damaged item is never recorded as late. Again <span class="math inline">\(\Prob(D)=0.10\)</span> and <span class="math inline">\(\Prob(L)=0.20\)</span>. Answer (a) and (b) for this firm and say what has changed.</li>
+</ol>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="a">
+<li><p><span class="math inline">\(\Prob(D)\Prob(L)=0.10\cdot0.20=0.02=\Prob(D\cap L)\)</span>, so <span class="math inline">\(D\)</span> and <span class="math inline">\(L\)</span> are independent by <a href="../lectures/L02-conditional-probability.html#def-independent" class="quarto-xref">Definition&nbsp;<span>2.2</span></a>. In conditional form, <span class="math inline">\(\Prob(L\mid D)=0.02/0.10=0.20=\Prob(L)\)</span>: learning that the item was damaged does not change the chance that the delivery was late. That fits the story, because scratches come from loading in the warehouse and delays come from traffic.</p></li>
+<li><p>At least one: <span class="math inline">\(\Prob(D\cup L)=0.10+0.20-0.02=0.28\)</span> (<a href="../lectures/L01-probability-basics.html#thm-consequences" class="quarto-xref">Theorem&nbsp;<span>1.2</span></a>). Neither: by <a href="../lectures/L02-conditional-probability.html#thm-complements" class="quarto-xref">Theorem&nbsp;<span>2.3</span></a>, <span class="math inline">\(D^c\)</span> and <span class="math inline">\(L^c\)</span> are independent too, so <span class="math inline">\(\Prob(D^c\cap L^c)=0.90\cdot0.80=0.72\)</span>, which is <span class="math inline">\(1-0.28\)</span> as it should be.</p></li>
+<li><p>Now <span class="math inline">\(D\)</span> and <span class="math inline">\(L\)</span> are mutually exclusive, <span class="math inline">\(\Prob(D\cap L)=0\)</span>. That is not <span class="math inline">\(0.02\)</span>, so they are <em>not</em> independent. <span class="math inline">\(\Prob(L\mid D)=0\)</span>: once you know the item was damaged, you know the delivery was not recorded as late. At least one: <span class="math inline">\(0.10+0.20=0.30\)</span>. Neither: <span class="math inline">\(1-0.30=0.70\)</span>. The product <span class="math inline">\(0.90\cdot0.80=0.72\)</span> is wrong here, because <a href="../lectures/L02-conditional-probability.html#thm-complements" class="quarto-xref">Theorem&nbsp;<span>2.3</span></a> needs independence.</p></li>
+</ol>
+<div id="eead065d" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>p_damaged, p_late <span class="op">=</span> <span class="fl">0.10</span>, <span class="fl">0.20</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> firm, p_both <span class="kw">in</span> [(<span class="st">"firm 1"</span>, <span class="fl">0.02</span>), (<span class="st">"firm 2"</span>, <span class="fl">0.00</span>)]:</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    p_either <span class="op">=</span> p_damaged <span class="op">+</span> p_late <span class="op">-</span> p_both</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>firm<span class="sc">}</span><span class="ss">: P(L | D) = </span><span class="sc">{</span>p_both <span class="op">/</span> p_damaged<span class="sc">:.2f}</span><span class="ss">, "</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f"P(at least one) = </span><span class="sc">{</span>p_either<span class="sc">:.2f}</span><span class="ss">, P(neither) = </span><span class="sc">{</span><span class="dv">1</span> <span class="op">-</span> p_either<span class="sc">:.2f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>firm 1: P(L | D) = 0.20, P(at least one) = 0.28, P(neither) = 0.72
+firm 2: P(L | D) = 0.00, P(at least one) = 0.30, P(neither) = 0.70</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="problem-4" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="problem-4">Problem 4</h2>
+<p><em>Short drill, if time allows.</em></p>
+<p>Find the mistakes. The problem was:</p>
+<blockquote class="blockquote">
+<p><em>A cinema chain in Tver sells its tickets through a website that runs on two servers in two different data centres. On a given day each server fails with probability 0.05. The site goes down only if both servers fail. What is the probability that the site goes down on a given day?</em></p>
+</blockquote>
+<p>Gleb from the IT department wrote this solution.</p>
+<blockquote class="blockquote">
+<p><em>Let <span class="math inline">\(A\)</span> be “server 1 fails” and <span class="math inline">\(B\)</span> “server 2 fails”. The site goes down when <span class="math inline">\(A\cap B\)</span> happens. By the definition of conditional probability, <span class="math inline">\(\Prob(A\cap B)=\Prob(A\mid B)/\Prob(B)\)</span>. Server 1 fails with probability 0.05 whatever server 2 does, so <span class="math inline">\(\Prob(A\mid B)=0.05\)</span>. Then <span class="math inline">\(\Prob(A\cap B)=0.05/0.05=1\)</span>. The site goes down every day, and the second server does not help at all.</em></p>
+</blockquote>
+<ol type="a">
+<li>There are two mistakes, one in a formula and one in what Gleb does not say. Find both and give the correct answer.</li>
+<li>To save money, the chain moves both servers into one data centre with a single power supply. Does the probability that the site goes down go up, go down or stay the same? No number needed.</li>
+</ol>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="a">
+<li><em>The formula.</em> <a href="../lectures/L02-conditional-probability.html#def-conditional" class="quarto-xref">Definition&nbsp;<span>2.1</span></a> says <span class="math inline">\(\Prob(A\mid B)=\Prob(A\cap B)/\Prob(B)\)</span>. Multiplying both sides by <span class="math inline">\(\Prob(B)\)</span> gives <span class="math inline">\(\Prob(A\cap B)=\Prob(A\mid B)\,\Prob(B)\)</span>, which is <a href="../lectures/L02-conditional-probability.html#thm-multiplication" class="quarto-xref">Theorem&nbsp;<span>2.2</span></a>. Gleb divided by <span class="math inline">\(\Prob(B)\)</span> where he should have multiplied by it. A quick check shows that something is wrong: <span class="math inline">\(A\cap B\)</span> is inside <span class="math inline">\(A\)</span>, so <span class="math inline">\(\Prob(A\cap B)\le\Prob(A)=0.05\)</span> by <a href="../lectures/L01-probability-basics.html#thm-consequences" class="quarto-xref">Theorem&nbsp;<span>1.2</span></a>. An answer of 1 cannot be right.</li>
+</ol>
+<p><em>What is not said.</em> “Server 1 fails with probability 0.05 whatever server 2 does” means <span class="math inline">\(\Prob(A\mid B)=\Prob(A)\)</span>, which is the assumption that <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are independent (<a href="../lectures/L02-conditional-probability.html#def-independent" class="quarto-xref">Definition&nbsp;<span>2.2</span></a>). The assumption is reasonable here, since the servers sit in different data centres, but it is an assumption. A solution has to say it, and say why it is believable.</p>
+<p>Correct answer, assuming independence: <span class="math display">\[
+\Prob(A\cap B)=0.05\cdot0.05=0.0025,
+\]</span> about one day in 400. The simulation below gives the same number, up to random variation.</p>
+<ol start="2" type="a">
+<li>It goes up. With one power supply, a power cut takes down both servers at once. Then learning that server 2 failed makes it more likely that server 1 failed too, so <span class="math inline">\(\Prob(A\mid B)&gt;0.05\)</span> and <span class="math inline">\(\Prob(A\cap B)=\Prob(A\mid B)\Prob(B)&gt;0.0025\)</span>. If, say, half of server 2’s failures were power cuts, <span class="math inline">\(\Prob(A\mid B)\)</span> would be at least 0.5 and the site would go down at least ten times as often.</li>
+</ol>
+<div id="d9e0d0ee" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">2026</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>n_days, p_fail <span class="op">=</span> <span class="dv">1_000_000</span>, <span class="fl">0.05</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>server1_down <span class="op">=</span> rng.random(n_days) <span class="op">&lt;</span> p_fail</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>server2_down <span class="op">=</span> rng.random(n_days) <span class="op">&lt;</span> p_fail  <span class="co"># drawn separately: independent</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>p_site_down <span class="op">=</span> np.mean(server1_down <span class="op">&amp;</span> server2_down)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"simulated P(site down) = </span><span class="sc">{</span>p_site_down<span class="sc">:.4f}</span><span class="ss">, formula = </span><span class="sc">{</span>p_fail <span class="op">*</span> p_fail<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>simulated P(site down) = 0.0024, formula = 0.0025</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="problem-5" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="problem-5">Problem 5</h2>
+<p>Timur buys online ads for a flower delivery service in Moscow. From a year of data he knows that 30% of the clicks from one ad channel turn into an order. Treat clicks from different people as mutually independent. On the Monday before 8 March, the first six clicks of the day all turn into orders.</p>
+<ol type="a">
+<li>Is the seventh click more likely than 30% to turn into an order? One word, then one line.</li>
+<li>On Sunday evening, what was the probability that the first six clicks on Monday would all convert?</li>
+<li>What was the probability that at least one of the first six would not convert?</li>
+<li><em>Optional, if time allows.</em> Timur’s manager says: “Six orders in a row! This channel suddenly sells much better, double the budget!” What would you look at before you agree or disagree?</li>
+</ol>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="a">
+<li><p>No.&nbsp;Under the model the clicks are mutually independent, so by <a href="../lectures/L02-conditional-probability.html#def-mutual" class="quarto-xref">Definition&nbsp;<span>2.3</span></a> the conditional probability that click 7 converts, given that clicks 1 to 6 did, is still <span class="math inline">\(0.30\)</span>. It is <a href="../lectures/L02-conditional-probability.html#exm-gambler" class="quarto-xref">Example&nbsp;<span>2.4</span></a>(c) again, with clicks in place of coin tosses.</p></li>
+<li><p>By <a href="../lectures/L02-conditional-probability.html#def-mutual" class="quarto-xref">Definition&nbsp;<span>2.3</span></a>, <span class="math inline">\(0.3^6=0.000729\)</span>, about 7 in 10,000.</p></li>
+<li><p>The complement of (b): <span class="math inline">\(1-0.000729=0.999271\)</span>. Read the question carefully: “at least one does not convert” is not “none converts”. The second would be <span class="math inline">\(0.7^6\approx0.118\)</span>.</p></li>
+<li><p>Part (b) is the interesting number. Six conversions in a row has probability about 0.0007 if the model is right, which is rare enough to make you doubt the model. Something may have changed. The days before 8 March are the busiest week of the year for flowers, so people who click on a flower ad that week probably buy much more often than 30%. A tracking bug that counts one order six times is another candidate. If the rate itself has gone up, the manager may be right, though the reason is the season and not the streak: the 30% from ordinary months does not apply this week. Problem 9*(d) shows how Bayes’ theorem updates a belief like this, one observation at a time.</p></li>
+</ol>
+<p>The simulation below agrees with (a) and (b), up to random variation. Only about 1,500 of the two million simulated Mondays have a streak, so the last line rests on far fewer cases than the first and is the least precise.</p>
+<div id="9f3becef" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">2026</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>p_convert, n_mondays <span class="op">=</span> <span class="fl">0.30</span>, <span class="dv">2_000_000</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>clicks <span class="op">=</span> rng.random((n_mondays, <span class="dv">7</span>)) <span class="op">&lt;</span> p_convert   <span class="co"># True = order</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>streak <span class="op">=</span> clicks[:, :<span class="dv">6</span>].<span class="bu">all</span>(axis<span class="op">=</span><span class="dv">1</span>)                <span class="co"># first six all converted</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"P(first six convert) = </span><span class="sc">{</span>streak<span class="sc">.</span>mean()<span class="sc">:.5f}</span><span class="ss">, formula = </span><span class="sc">{</span>p_convert<span class="op">**</span><span class="dv">6</span><span class="sc">:.5f}</span><span class="ss">"</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Mondays with a streak: </span><span class="sc">{</span>streak<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"P(7th converts | streak) = </span><span class="sc">{</span>clicks[streak, <span class="dv">6</span>]<span class="sc">.</span>mean()<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>P(first six convert) = 0.00075, formula = 0.00073
+Mondays with a streak: 1490
+P(7th converts | streak) = 0.299</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="problem-6" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="problem-6">Problem 6</h2>
+<p>Calls to the support line of an online electronics shop go to three call centres: 50% to Kazan, 30% to Ufa and 20% to Izhevsk. The Izhevsk centre opened in the spring, and most of its staff are still on probation, the trial months of a new job. A call ends with a written complaint in 1% of cases in Kazan, 2% in Ufa and 4% in Izhevsk.</p>
+<p>What share of all calls ends with a complaint?</p>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Let <span class="math inline">\(H_1\)</span>, <span class="math inline">\(H_2\)</span>, <span class="math inline">\(H_3\)</span> be “the call went to Kazan”, “to Ufa”, “to Izhevsk”. Every call goes to exactly one centre, so these three events form a partition. Let <span class="math inline">\(K\)</span> be “the call ends with a complaint”. By <a href="../lectures/L02-conditional-probability.html#eq-total" class="quarto-xref">Equation&nbsp;<span>2.2</span></a>, <span class="math display">\[
+\Prob(K)=0.01\cdot0.50+0.02\cdot0.30+0.04\cdot0.20=0.005+0.006+0.008=0.019 ,
+\]</span> so 1.9% of calls. In counts: of 10,000 calls, 5000 go to Kazan and 50 of them end with a complaint, 3000 go to Ufa with 60 complaints, and 2000 go to Izhevsk with 80. That is 190 complaints in 10,000 calls.</p>
+<p>A quick check: by <a href="../lectures/L02-conditional-probability.html#thm-total" class="quarto-xref">Theorem&nbsp;<span>2.4</span></a> the answer is a weighted average of 1%, 2% and 4%, an average in which each rate counts as much as its centre’s share of calls. So anything outside the range from 1% to 4% would be wrong.</p>
+<div id="29762de6" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>share <span class="op">=</span> np.array([<span class="fl">0.50</span>, <span class="fl">0.30</span>, <span class="fl">0.20</span>])              <span class="co"># Kazan, Ufa, Izhevsk</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>p_complaint_given <span class="op">=</span> np.array([<span class="fl">0.01</span>, <span class="fl">0.02</span>, <span class="fl">0.04</span>])</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>p_complaint <span class="op">=</span> np.<span class="bu">sum</span>(share <span class="op">*</span> p_complaint_given)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"P(complaint) = </span><span class="sc">{</span>p_complaint<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>kazan, ufa, izhevsk <span class="op">=</span> np.<span class="bu">round</span>(<span class="dv">10_000</span> <span class="op">*</span> share <span class="op">*</span> p_complaint_given).astype(<span class="bu">int</span>)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Complaints per 10,000 calls: Kazan </span><span class="sc">{</span>kazan<span class="sc">}</span><span class="ss">, Ufa </span><span class="sc">{</span>ufa<span class="sc">}</span><span class="ss">, Izhevsk </span><span class="sc">{</span>izhevsk<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>P(complaint) = 0.019
+Complaints per 10,000 calls: Kazan 50, Ufa 60, Izhevsk 80</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="problem-7" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="problem-7">Problem 7</h2>
+<p>Continue Problem 6. A written complaint reaches head office, and it does not say which centre took the call. Aigerim, the quality manager, will listen to the recordings of one centre first.</p>
+<ol type="a">
+<li>Find the probability that the call went to each of the three centres. Which centre should Aigerim start with?</li>
+<li>In (a), Izhevsk takes only 20% of the calls, yet it is the most likely source. Explain why in one sentence.</li>
+<li>Next year the shop sends 70% of the calls to Kazan, 20% to Ufa and 10% to Izhevsk. The complaint rates stay the same. Answer (a) again.</li>
+</ol>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="a">
+<li><p>By <a href="../lectures/L02-conditional-probability.html#eq-bayes" class="quarto-xref">Equation&nbsp;<span>2.3</span></a>, with the denominator <span class="math inline">\(\Prob(K)=0.019\)</span> from Problem 6, <span class="math display">\[
+\Prob(H_1\mid K)=\frac{0.005}{0.019}=\frac{5}{19}\approx0.263,\quad
+\Prob(H_2\mid K)=\frac{0.006}{0.019}=\frac{6}{19}\approx0.316,\quad
+\Prob(H_3\mid K)=\frac{0.008}{0.019}=\frac{8}{19}\approx0.421 .
+\]</span> The counts from Problem 6 say the same: of 190 complaints, 50, 60 and 80 came from the three centres. The three answers add up to 1, which is a free check. Aigerim should start with Izhevsk.</p></li>
+<li><p>Its complaint rate is four times that of Kazan, and that beats its share of calls being 2.5 times smaller: <span class="math inline">\(0.20\cdot0.04=0.008\)</span> against <span class="math inline">\(0.50\cdot0.01=0.005\)</span>.</p></li>
+<li><p>New denominator: <span class="math inline">\(\Prob(K)=0.01\cdot0.70+0.02\cdot0.20+0.04\cdot0.10=0.007+0.004+0.004=0.015\)</span>. Then <span class="math display">\[
+\Prob(H_1\mid K)=\frac{0.007}{0.015}\approx0.467,\qquad
+\Prob(H_2\mid K)=\Prob(H_3\mid K)=\frac{0.004}{0.015}\approx0.267 .
+\]</span> Now Kazan is the most likely source, and Aigerim should start there. The complaint rates are the same as before; only the priors moved.</p></li>
+</ol>
+<div id="03f94bb1" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>centres <span class="op">=</span> [<span class="st">"Kazan"</span>, <span class="st">"Ufa"</span>, <span class="st">"Izhevsk"</span>]</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>p_complaint_given <span class="op">=</span> np.array([<span class="fl">0.01</span>, <span class="fl">0.02</span>, <span class="fl">0.04</span>])</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> share <span class="kw">in</span> ([<span class="fl">0.50</span>, <span class="fl">0.30</span>, <span class="fl">0.20</span>], [<span class="fl">0.70</span>, <span class="fl">0.20</span>, <span class="fl">0.10</span>]):</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    joint <span class="op">=</span> np.array(share) <span class="op">*</span> p_complaint_given     <span class="co"># P(K and H_i)</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    posterior <span class="op">=</span> joint <span class="op">/</span> joint.<span class="bu">sum</span>()                 <span class="co"># Bayes: divide by P(K)</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Shares of calls </span><span class="sc">{</span>share<span class="sc">}</span><span class="ss">, P(complaint) = </span><span class="sc">{</span>joint<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">:.3f}</span><span class="ss">:"</span>)</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> centre, p <span class="kw">in</span> <span class="bu">zip</span>(centres, posterior):</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  P(call went to </span><span class="sc">{</span>centre<span class="sc">}</span><span class="ss"> | complaint) = </span><span class="sc">{</span>p<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Shares of calls [0.5, 0.3, 0.2], P(complaint) = 0.019:
+  P(call went to Kazan | complaint) = 0.263
+  P(call went to Ufa | complaint) = 0.316
+  P(call went to Izhevsk | complaint) = 0.421
+Shares of calls [0.7, 0.2, 0.1], P(complaint) = 0.015:
+  P(call went to Kazan | complaint) = 0.467
+  P(call went to Ufa | complaint) = 0.267
+  P(call went to Izhevsk | complaint) = 0.267</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="problem-8" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="problem-8">Problem 8</h2>
+<p>At a consumer-loan bank in Krasnoyarsk, 5% of clients default, that is, do not repay. Diego from the credit-risk team is testing a scoring model. On old clients, the model flagged 80% of those who later defaulted and 10% of those who repaid.</p>
+<ol type="a">
+<li>Imagine 10,000 applicants. Fill in a table with rows “default” and “repay”, columns “flagged” and “not flagged”, and totals.</li>
+<li>A sales manager reads the test report and says: “The model catches 80% of defaulters, so a flagged client defaults with probability 0.8.” Find the correct probability with Bayes’ theorem and check it in your table.</li>
+<li>What share of the clients who are not flagged default?</li>
+<li>In a recession the default rate rises to 10%, and the model flags defaulters and good clients at the same rates as before. Find the probability that a flagged client defaults now.</li>
+</ol>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Let <span class="math inline">\(D\)</span> be “the client defaults” and <span class="math inline">\(F\)</span> “the model flags the client”. We know <span class="math inline">\(\Prob(D)=0.05\)</span>, <span class="math inline">\(\Prob(F\mid D)=0.80\)</span> and <span class="math inline">\(\Prob(F\mid D^c)=0.10\)</span>.</p>
+<ol type="a">
+<li>500 of the 10,000 default and 9500 repay. The model flags 80% of the 500, which is 400, and 10% of the 9500, which is 950.</li>
+</ol>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th style="text-align: right;">Flagged</th>
+<th style="text-align: right;">Not flagged</th>
+<th style="text-align: right;">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Default</td>
+<td style="text-align: right;">400</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">500</td>
+</tr>
+<tr class="even">
+<td>Repay</td>
+<td style="text-align: right;">950</td>
+<td style="text-align: right;">8,550</td>
+<td style="text-align: right;">9,500</td>
+</tr>
+<tr class="odd">
+<td>Total</td>
+<td style="text-align: right;">1,350</td>
+<td style="text-align: right;">8,650</td>
+<td style="text-align: right;">10,000</td>
+</tr>
+</tbody>
+</table>
+<ol start="2" type="a">
+<li><p>The manager has swapped <span class="math inline">\(\Prob(F\mid D)\)</span> and <span class="math inline">\(\Prob(D\mid F)\)</span>, the mistake of <a href="../lectures/L02-conditional-probability.html#exm-promo-conditional" class="quarto-xref">Example&nbsp;<span>2.1</span></a> and <a href="../lectures/L02-conditional-probability.html#exm-fraud" class="quarto-xref">Example&nbsp;<span>2.8</span></a>. By <a href="../lectures/L02-conditional-probability.html#eq-bayes" class="quarto-xref">Equation&nbsp;<span>2.3</span></a> with the partition <span class="math inline">\(D\)</span>, <span class="math inline">\(D^c\)</span>, <span class="math display">\[
+\Prob(D\mid F)=\frac{0.80\cdot0.05}{0.80\cdot0.05+0.10\cdot0.95}=\frac{0.040}{0.040+0.095}=\frac{0.040}{0.135}\approx0.296 .
+\]</span> In the table: 400 of the 1,350 flagged clients default, and <span class="math inline">\(400/1350\approx0.296\)</span>. So of 100 flagged loans, about 30 default and about 70 would have been repaid. The flag still means a lot: it raises the chance of default from 5% to about 30%, six times higher. It is just far from 80%, because good clients are 19 times as many as defaulters and 10% of a big group is a lot of people.</p></li>
+<li><p><span class="math inline">\(\Prob(D\mid F^c)=100/8650\approx0.012\)</span>. A client who is not flagged is about four times safer than an average client.</p></li>
+<li><p>Same formula, new prior: <span class="math display">\[
+\Prob(D\mid F)=\frac{0.80\cdot0.10}{0.80\cdot0.10+0.10\cdot0.90}=\frac{0.08}{0.17}\approx0.471 .
+\]</span> The model has not changed at all, yet a flag now means almost a 50% chance of default.</p></li>
+</ol>
+<div id="79dcb341" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>n_clients <span class="op">=</span> <span class="dv">10_000</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> p_default <span class="kw">in</span> (<span class="fl">0.05</span>, <span class="fl">0.10</span>):</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    n_default <span class="op">=</span> n_clients <span class="op">*</span> p_default</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    flagged_default <span class="op">=</span> <span class="fl">0.80</span> <span class="op">*</span> n_default</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    flagged_repay <span class="op">=</span> <span class="fl">0.10</span> <span class="op">*</span> (n_clients <span class="op">-</span> n_default)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    p_default_given_flag <span class="op">=</span> flagged_default <span class="op">/</span> (flagged_default <span class="op">+</span> flagged_repay)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"default rate </span><span class="sc">{</span>p_default<span class="sc">:.0%}</span><span class="ss">: flagged </span><span class="sc">{</span>flagged_default<span class="sc">:.0f}</span><span class="ss"> default "</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f"+ </span><span class="sc">{</span>flagged_repay<span class="sc">:.0f}</span><span class="ss"> repay, P(D | F) = </span><span class="sc">{</span>p_default_given_flag<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>default rate 5%: flagged 400 default + 950 repay, P(D | F) = 0.296
+default rate 10%: flagged 800 default + 900 repay, P(D | F) = 0.471</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="problem-9" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="problem-9">Problem 9*</h2>
+<p>This problem goes beyond Lecture 2 and is not examinable. It uses Bayes’ theorem several times in a row, and the new idea is simple: after each piece of evidence, the posterior becomes the prior for the next one.</p>
+<ol type="a">
+<li>Diego’s bank from Problem 8 (default rate 5%) adds a second check, a report from a credit bureau. The report comes out “bad” for 70% of the clients who will default and for 20% of the clients who will repay. Assume that the model and the bureau report are <em>conditionally independent given the type of client</em>. In plain words: among defaulters, a bad report is no more and no less likely for flagged clients than for unflagged ones, and the same holds among clients who repay. The model looks at the application form and the bureau at old loans, so once you know what kind of client it is, one check tells you nothing new about the other.</li>
+</ol>
+<p>An applicant is flagged by the model. Take the answer of Problem 8(b) as the new prior. What is the probability of default if the bureau report is bad? If it is clean?</p>
+<ol start="2" type="a">
+<li><p>Check the “bad report” answer in one step. Find the probability that a defaulter is both flagged and has a bad report, the same for a client who repays, and apply Bayes’ theorem once with the prior 0.05.</p></li>
+<li><p>Now the money. Every client borrows 300,000 rubles. A default costs the bank 200,000 rubles (it gets part of the money back), and a repaid loan earns 30,000 rubles of interest. The bank compares two rules with lending to everyone:</p></li>
+</ol>
+<ul>
+<li>Rule 1: reject every applicant the model flags.</li>
+<li>Rule 2: for a flagged applicant, also get the bureau report, and reject only if it is bad.</li>
+</ul>
+<p>For 10,000 applicants, how much loss does each rule avoid, how much interest does it give up, and what is the difference? Which rule is better? Ignore the price of the bureau reports.</p>
+<ol start="4" type="a">
+<li><p>Lecture 2 left one case open: a firm rejected by five banks in a row (<a href="../lectures/L02-conditional-probability.html#sec-L02-independence" class="quarto-xref"><span>Independence</span></a>). Suppose that 20% of the small firms that apply for loans are poor payers and 80% are ordinary. A bank rejects a poor payer with probability 0.90 and an ordinary firm with probability 0.65, so overall it rejects <span class="math inline">\(0.2\cdot0.90+0.8\cdot0.65=0.70\)</span> of applications, like the loan officer in the lecture. Given the type of firm, different banks decide conditionally independently. One firm is rejected by bank after bank. Find the probability that it is a poor payer after each of the first five rejections. Then find the probability that a sixth bank also rejects it.</p></li>
+<li><p>Is the conditional independence in (d) believable? One or two sentences.</p></li>
+</ol>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="a">
+<li><p>The prior is now <span class="math inline">\(\Prob(D\mid F)=0.04/0.135=8/27\approx0.296\)</span>, and <span class="math inline">\(\Prob(D^c\mid F)=19/27\)</span>. Let <span class="math inline">\(R\)</span> be “the report is bad”. Conditional independence says that <span class="math inline">\(\Prob(R\mid D\cap F)=\Prob(R\mid D)=0.70\)</span> and <span class="math inline">\(\Prob(R\mid D^c\cap F)=\Prob(R\mid D^c)=0.20\)</span>, so <a href="../lectures/L02-conditional-probability.html#eq-bayes" class="quarto-xref">Equation&nbsp;<span>2.3</span></a> is used exactly as before, only with the new prior: <span class="math display">\[
+\Prob(D\mid F\cap R)=\frac{0.70\cdot\frac{8}{27}}{0.70\cdot\frac{8}{27}+0.20\cdot\frac{19}{27}}=\frac{5.6}{5.6+3.8}=\frac{28}{47}\approx0.596 .
+\]</span> A clean report has probability 0.30 for defaulters and 0.80 for good clients: <span class="math display">\[
+\Prob(D\mid F\cap R^c)=\frac{0.30\cdot\frac{8}{27}}{0.30\cdot\frac{8}{27}+0.80\cdot\frac{19}{27}}=\frac{2.4}{2.4+15.2}=\frac{3}{22}\approx0.136 .
+\]</span> Both signals together take the applicant from 5% to about 60%. A flag with a clean report leaves about 14%, still well above the 5% we started from.</p></li>
+<li><p>By conditional independence, <span class="math inline">\(\Prob(F\cap R\mid D)=0.80\cdot0.70=0.56\)</span> and <span class="math inline">\(\Prob(F\cap R\mid D^c)=0.10\cdot0.20=0.02\)</span>. Then <span class="math display">\[
+\Prob(D\mid F\cap R)=\frac{0.56\cdot0.05}{0.56\cdot0.05+0.02\cdot0.95}=\frac{0.028}{0.028+0.019}=\frac{28}{47},
+\]</span> the same as updating twice. The order of the two checks does not matter either.</p></li>
+</ol>
+<p>The flag and the bad report are <em>not</em> independent events. <span class="math inline">\(\Prob(F)=0.135\)</span> and <span class="math inline">\(\Prob(R)=0.70\cdot0.05+0.20\cdot0.95=0.225\)</span>, whose product is about 0.030, while <span class="math inline">\(\Prob(F\cap R)=0.028+0.019=0.047\)</span>. Both checks react to the same hidden thing, the type of client. Independence <em>given the type</em> and independence are different statements.</p>
+<ol start="3" type="a">
+<li>Start from the table of Problem 8(a): 400 of the 500 defaulters and 950 of the 9,500 good clients are flagged.</li>
+</ol>
+<p>Rule 1 avoids 400 defaults, <span class="math inline">\(400\cdot200{,}000=80{,}000{,}000\)</span> rubles, and rejects 950 good clients, who would have paid <span class="math inline">\(950\cdot30{,}000=28{,}500{,}000\)</span> rubles of interest. The net gain for the bank is <span class="math inline">\(51{,}500{,}000\)</span> rubles.</p>
+<p>Rule 2. By conditional independence, the report is bad for 70% of the 400 flagged defaulters, which is 280, and for 20% of the 950 flagged good clients, which is 190. The rule avoids <span class="math inline">\(280\cdot200{,}000=56{,}000{,}000\)</span> rubles and gives up <span class="math inline">\(190\cdot30{,}000=5{,}700{,}000\)</span>. The net gain is <span class="math inline">\(50{,}300{,}000\)</span> rubles.</p>
+<p>Rule 1 wins, by 1.2 million rubles. The two rules differ only on the 880 flagged applicants with a clean report, 120 defaulters and 760 good clients. Rule 2 lends to them: it earns <span class="math inline">\(760\cdot30{,}000=22{,}800{,}000\)</span> rubles and loses <span class="math inline">\(120\cdot200{,}000=24{,}000{,}000\)</span>. In probabilities, their default rate is <span class="math inline">\(3/22\approx0.136\)</span> from (a), and lending to a group pays only if its default rate is below <span class="math inline">\(30{,}000/230{,}000\approx0.130\)</span>. So with these prices the bank should reject a flagged applicant even when the report is clean, and the bureau report is not worth buying for this decision. With 32,000 rubles of interest per loan instead of 30,000, the break-even rate would be <span class="math inline">\(32{,}000/232{,}000\approx0.138\)</span>, and Rule 2 would win.</p>
+<ol start="4" type="a">
+<li>Let <span class="math inline">\(P\)</span> be “poor payer”, with prior <span class="math inline">\(\Prob(P)=0.20\)</span>. After the first rejection, by <a href="../lectures/L02-conditional-probability.html#eq-bayes" class="quarto-xref">Equation&nbsp;<span>2.3</span></a>, <span class="math display">\[
+\Prob(P\mid\text{1 rejection})=\frac{0.90\cdot0.20}{0.90\cdot0.20+0.65\cdot0.80}=\frac{0.18}{0.70}\approx0.257 .
+\]</span> This becomes the prior for the second rejection, and so on. Each step takes the current <span class="math inline">\(p\)</span> to <span class="math inline">\(0.90p/\big(0.90p+0.65(1-p)\big)\)</span>:</li>
+</ol>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 11%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Rejections so far</th>
+<th style="text-align: right;">0</th>
+<th style="text-align: right;">1</th>
+<th style="text-align: right;">2</th>
+<th style="text-align: right;">3</th>
+<th style="text-align: right;">4</th>
+<th style="text-align: right;">5</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(\Prob(\text{poor payer})\)</span></td>
+<td style="text-align: right;">0.200</td>
+<td style="text-align: right;">0.257</td>
+<td style="text-align: right;">0.324</td>
+<td style="text-align: right;">0.399</td>
+<td style="text-align: right;">0.479</td>
+<td style="text-align: right;">0.560</td>
+</tr>
+</tbody>
+</table>
+<p>For the sixth bank, use <a href="../lectures/L02-conditional-probability.html#eq-total" class="quarto-xref">Equation&nbsp;<span>2.2</span></a> with the current beliefs as weights: <span class="math display">\[
+\Prob(\text{6th rejects}\mid\text{5 rejections})=0.90\cdot0.560+0.65\cdot0.440\approx0.790,
+\]</span> against 0.70 for a firm we know nothing about. So the lecture was right that the sixth bank is not a new toss of a coin. Still, each rejection is weak evidence, since poor payers are rejected only <span class="math inline">\(0.90/0.65\approx1.4\)</span> times as often as ordinary firms, and even after five rejections the firm is a poor payer with probability only 0.56.</p>
+<ol start="5" type="a">
+<li>Not fully. Banks buy reports from the same credit bureaux and use similar rules, so even for an ordinary firm one rejection makes the next more likely. Then the five rejections partly repeat one piece of evidence, and 0.56 is too high. If all banks decided exactly alike, five rejections would carry no more information than one, and the answer would be 0.257. The real answer lies between 0.257 and 0.56.</li>
+</ol>
+<p>A simulation of one million applicants for (a) and (b). The bureau report is drawn separately from the flag, given the client’s type, which is exactly conditional independence.</p>
+<div id="59e4a8a4" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">2026</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>n_clients <span class="op">=</span> <span class="dv">1_000_000</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>default <span class="op">=</span> rng.random(n_clients) <span class="op">&lt;</span> <span class="fl">0.05</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>flagged <span class="op">=</span> rng.random(n_clients) <span class="op">&lt;</span> np.where(default, <span class="fl">0.80</span>, <span class="fl">0.10</span>)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>bad_report <span class="op">=</span> rng.random(n_clients) <span class="op">&lt;</span> np.where(default, <span class="fl">0.70</span>, <span class="fl">0.20</span>)</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"P(D | flagged, bad report)   = </span><span class="sc">{</span>default[flagged <span class="op">&amp;</span> bad_report]<span class="sc">.</span>mean()<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"P(D | flagged, clean report) = </span><span class="sc">{</span>default[flagged <span class="op">&amp;</span> <span class="op">~</span>bad_report]<span class="sc">.</span>mean()<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>P(D | flagged, bad report)   = 0.596
+P(D | flagged, clean report) = 0.137</code></pre>
+</div>
+</div>
+<p>The two rules of (c), from the counts per 10,000 applicants:</p>
+<div id="d4e86e49" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>n_clients, p_default <span class="op">=</span> <span class="dv">10_000</span>, <span class="fl">0.05</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>cost_default, interest <span class="op">=</span> <span class="dv">200_000</span>, <span class="dv">30_000</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>n_default <span class="op">=</span> <span class="bu">round</span>(n_clients <span class="op">*</span> p_default)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>n_repay <span class="op">=</span> n_clients <span class="op">-</span> n_default</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co"># share of defaulters and of good clients that each rule rejects</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>rules <span class="op">=</span> {<span class="st">"Rule 1"</span>: (<span class="fl">0.80</span>, <span class="fl">0.10</span>), <span class="st">"Rule 2"</span>: (<span class="fl">0.80</span> <span class="op">*</span> <span class="fl">0.70</span>, <span class="fl">0.10</span> <span class="op">*</span> <span class="fl">0.20</span>)}</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> rule, (reject_default, reject_repay) <span class="kw">in</span> rules.items():</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    avoided <span class="op">=</span> <span class="bu">round</span>(reject_default <span class="op">*</span> n_default) <span class="op">*</span> cost_default</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    given_up <span class="op">=</span> <span class="bu">round</span>(reject_repay <span class="op">*</span> n_repay) <span class="op">*</span> interest</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>rule<span class="sc">}</span><span class="ss">: avoids </span><span class="sc">{</span>avoided<span class="sc">:,}</span><span class="ss"> rubles, gives up </span><span class="sc">{</span>given_up<span class="sc">:,}</span><span class="ss">, "</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f"net gain </span><span class="sc">{</span>avoided <span class="op">-</span> given_up<span class="sc">:,}</span><span class="ss"> rubles"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rule 1: avoids 80,000,000 rubles, gives up 28,500,000, net gain 51,500,000 rubles
+Rule 2: avoids 56,000,000 rubles, gives up 5,700,000, net gain 50,300,000 rubles</code></pre>
+</div>
+</div>
+<p>The sequence of rejections in (d):</p>
+<div id="fc9745f9" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>p_poor <span class="op">=</span> <span class="fl">0.20</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>p_reject_poor, p_reject_ordinary <span class="op">=</span> <span class="fl">0.90</span>, <span class="fl">0.65</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">6</span>):</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    p_reject <span class="op">=</span> p_reject_poor <span class="op">*</span> p_poor <span class="op">+</span> p_reject_ordinary <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> p_poor)</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    p_poor <span class="op">=</span> p_reject_poor <span class="op">*</span> p_poor <span class="op">/</span> p_reject     <span class="co"># posterior becomes the prior</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"rejections so far: </span><span class="sc">{</span>k<span class="sc">}</span><span class="ss">, P(poor payer) = </span><span class="sc">{</span>p_poor<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>p_sixth <span class="op">=</span> p_reject_poor <span class="op">*</span> p_poor <span class="op">+</span> p_reject_ordinary <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> p_poor)</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"P(sixth bank rejects) = </span><span class="sc">{</span>p_sixth<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>rejections so far: 1, P(poor payer) = 0.257
+rejections so far: 2, P(poor payer) = 0.324
+rejections so far: 3, P(poor payer) = 0.399
+rejections so far: 4, P(poor payer) = 0.479
+rejections so far: 5, P(poor payer) = 0.560
+P(sixth bank rejects) = 0.790</code></pre>
+</div>
+</div>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../seminars/S01-counting.html" class="pagination-link" aria-label="Seminar 1: events, counting, classical and geometric probability">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Seminar 1: events, counting, classical and geometric probability</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../schedule.html" class="pagination-link" aria-label="Schedule">
+        <span class="nav-page-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Schedule</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

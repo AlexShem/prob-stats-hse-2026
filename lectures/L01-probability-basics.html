@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>1&nbsp; Events, probability and counting – Probability Theory and Mathematical Statistics</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../lectures/L02-conditional-probability.html" rel="next">
+<link href="../lectures/L00-about-me.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-fde786507b123b2ba480ba3caec7cd03.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../_shared/book.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L00-about-me.html">Lectures</a></li><li class="breadcrumb-item"><a href="../lectures/L01-probability-basics.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Events, probability and counting</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Probability Theory and Mathematical Statistics</a> 
+        <div class="sidebar-tools-main">
+    <a href="../Probability-Theory-and-Mathematical-Statistics.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">About this book</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Lectures</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L00-about-me.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">About the course and about me</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L01-probability-basics.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Events, probability and counting</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L02-conditional-probability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Conditional probability and Bayes’ theorem</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L03-discrete-random-variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Discrete random variables</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Seminars</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../seminars/S01-counting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Seminar 1: events, counting, classical and geometric probability</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../seminars/S02-conditional-probability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Seminar 2: conditional probability, independence and Bayes</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../schedule.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Schedule</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sec-L01-space" id="toc-sec-L01-space" class="nav-link active" data-scroll-target="#sec-L01-space"><span class="header-section-number">1.1</span> Experiments and outcomes</a></li>
+  <li><a href="#sec-L01-events" id="toc-sec-L01-events" class="nav-link" data-scroll-target="#sec-L01-events"><span class="header-section-number">1.2</span> Events and set operations</a></li>
+  <li><a href="#sec-L01-axioms" id="toc-sec-L01-axioms" class="nav-link" data-scroll-target="#sec-L01-axioms"><span class="header-section-number">1.3</span> The axioms of probability</a></li>
+  <li><a href="#sec-L01-classical" id="toc-sec-L01-classical" class="nav-link" data-scroll-target="#sec-L01-classical"><span class="header-section-number">1.4</span> Classical probability</a></li>
+  <li><a href="#sec-L01-counting" id="toc-sec-L01-counting" class="nav-link" data-scroll-target="#sec-L01-counting"><span class="header-section-number">1.5</span> Counting</a></li>
+  <li><a href="#sec-L01-geometric" id="toc-sec-L01-geometric" class="nav-link" data-scroll-target="#sec-L01-geometric"><span class="header-section-number">1.6</span> Geometric probability</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L00-about-me.html">Lectures</a></li><li class="breadcrumb-item"><a href="../lectures/L01-probability-basics.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Events, probability and counting</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-L01" class="quarto-section-identifier"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Events, probability and counting</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="chapter-downloads">
+<p><a href="../pdf/L01-probability-basics.pdf">PDF</a> · <a href="../slides/L01-probability-basics.html">Slides</a> (<a href="../slides/L01-probability-basics.pdf">PDF</a>)</p>
+</div>
+<!-- Math macros for HTML/revealjs (MathJax). PDF gets the same ones from _shared/preamble.tex. Keep both in sync. -->
+<div class="hidden">
+<p><span class="math display">\[
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\Corr}{\operatorname{Corr}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\R}{\mathbb{R}}
+\]</span></p>
+</div>
+<p>Ilya opens a coffee stand near Paveletskaya station and bakes 30 croissants every morning. Will he sell all of them? Nobody knows. Some days he sells 22, some days all 30 by ten o’clock. A better question is how likely it is that he sells at least 25, because that one he can plan around: how much dough to prepare, whether to hire a second person for the rush.</p>
+<p>Probability theory is the language for questions of this second kind. Before we can compute anything we need a vocabulary: what exactly is “an outcome”, what is “an event”, and what rules a probability must obey. Then we will see how far plain counting takes us.</p>
+<section id="sec-L01-space" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="sec-L01-space"><span class="header-section-number">1.1</span> Experiments and outcomes</h2>
+<div id="def-experiment" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 1.1 (Random experiment and sample space)</strong></span> A <strong>random experiment</strong> is a procedure whose result we cannot predict with certainty, but whose possible results we can list in advance. Each possible result is an <strong>outcome</strong>. The set of all outcomes is the <strong>sample space</strong>, written <span class="math inline">\(\Omega\)</span>.</p>
+</div>
+<p>The list of outcomes is something you choose. It depends on what you decide to record.</p>
+<div id="exm-spaces" class="theorem example">
+<p><span class="theorem-title"><strong>Example 1.1 (Four experiments, four sample spaces)</strong></span> &nbsp;</p>
+<ol type="1">
+<li>One customer walks up to Ilya’s stand and either buys something or leaves. <span class="math inline">\(\Omega=\{\text{buys},\ \text{leaves}\}\)</span>.</li>
+<li>Two customers walk up one after another. We now record both, in order: <span class="math inline">\(\Omega=\{BB,\ BL,\ LB,\ LL\}\)</span>, where <span class="math inline">\(B\)</span> means buys and <span class="math inline">\(L\)</span> means leaves. Four outcomes, and <span class="math inline">\(BL\)</span> is not the same as <span class="math inline">\(LB\)</span>.</li>
+<li>We count the croissants sold in a day. <span class="math inline">\(\Omega=\{0,1,2,\dots,30\}\)</span>.</li>
+<li>We measure how many minutes a customer waits in the queue. <span class="math inline">\(\Omega=[0,\infty)\)</span>. This sample space is not a list at all, it is a whole interval of numbers.</li>
+</ol>
+</div>
+<p>Experiment 3 deserves a second look. If Ilya sold croissants without limit, the space would be <span class="math inline">\(\{0,1,2,\dots\}\)</span>, infinite but still a list. Experiment 4 is a different kind of infinity: you cannot number the possible waiting times one by one. We will keep this difference in mind until Lecture 4.</p>
+<p>A habit to avoid: choosing <span class="math inline">\(\Omega\)</span> too coarse. If you record only “customer 1 buys” and “customer 2 buys” as one number (how many bought, 0, 1 or 2), you lose the difference between <span class="math inline">\(BL\)</span> and <span class="math inline">\(LB\)</span>, and the three remaining outcomes are no longer equally likely. We will meet exactly this trap with dice in <a href="#sec-L01-classical" class="quarto-xref"><span>Section 1.4</span></a>.</p>
+</section>
+<section id="sec-L01-events" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="sec-L01-events"><span class="header-section-number">1.2</span> Events and set operations</h2>
+<div id="def-event" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 1.2 (Event)</strong></span> An <strong>event</strong> is a set of outcomes, a subset <span class="math inline">\(A\subseteq\Omega\)</span>. We say that <span class="math inline">\(A\)</span> <strong>occurs</strong> if the outcome of the experiment belongs to <span class="math inline">\(A\)</span>.</p>
+</div>
+<p>The whole space <span class="math inline">\(\Omega\)</span> is the <strong>sure event</strong>, since something always happens. The empty set <span class="math inline">\(\varnothing\)</span> is the <strong>impossible event</strong>.</p>
+<p>Events are sets, so we combine them with set operations. Each operation has a plain-language reading, and you should be able to go both ways without thinking.</p>
+<div id="tbl-operations" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-operations-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1.1: Set operations on events
+</figcaption>
+<div aria-describedby="tbl-operations-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Notation</th>
+<th>Reads as</th>
+<th>Occurs when</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(A\cup B\)</span></td>
+<td><span class="math inline">\(A\)</span> or <span class="math inline">\(B\)</span></td>
+<td>at least one of them occurs</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(A\cap B\)</span></td>
+<td><span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span></td>
+<td>both occur</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(A^c\)</span></td>
+<td>not <span class="math inline">\(A\)</span></td>
+<td><span class="math inline">\(A\)</span> does not occur</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(A\cap B^c\)</span></td>
+<td><span class="math inline">\(A\)</span> but not <span class="math inline">\(B\)</span></td>
+<td><span class="math inline">\(A\)</span> occurs and <span class="math inline">\(B\)</span> does not</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p><a href="#fig-venn" class="quarto-xref">Figure&nbsp;<span>1.1</span></a> shows them as regions of a rectangle. The rectangle is <span class="math inline">\(\Omega\)</span>.</p>
+<div id="cell-fig-venn" class="cell" data-execution_count="2">
+<div class="cell-output cell-output-display">
+<div id="fig-venn" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Four Venn diagrams of two overlapping circles A and B inside a rectangle, with the union, the intersection, the complement of A and the difference shaded.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-venn-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="L01-probability-basics_files/figure-html/fig-venn-output-1.png" alt="Four Venn diagrams of two overlapping circles A and B inside a rectangle, with the union, the intersection, the complement of A and the difference shaded." width="1180" height="249" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-venn-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1.1: The four operations from <a href="#tbl-operations" class="quarto-xref">Table&nbsp;<span>1.1</span></a>. The shaded region is the event named above each panel.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div id="exm-promo-events" class="theorem example">
+<p><span class="theorem-title"><strong>Example 1.2 (Promo code and mobile app)</strong></span> An online store picks one customer at random from yesterday’s orders. Let <span class="math inline">\(A\)</span> be “the customer used a promo code” and <span class="math inline">\(B\)</span> “the customer ordered through the mobile app”. Then <span class="math inline">\(A\cap B^c\)</span> is an order with a promo code placed on the website, and <span class="math inline">\((A\cup B)^c\)</span> is an order with no promo code that was not placed in the app. The event <span class="math inline">\(A^c\cap B^c\)</span> reads the same way, and that is no coincidence: the two events are equal, and the next result says why.</p>
+</div>
+<div id="def-disjoint" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 1.3 (Mutually exclusive events, partition)</strong></span> Events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are <strong>mutually exclusive</strong> (or <strong>disjoint</strong>) if <span class="math inline">\(A\cap B=\varnothing\)</span>: they cannot occur together. Events <span class="math inline">\(H_1,\dots,H_n\)</span> form a <strong>partition</strong> of <span class="math inline">\(\Omega\)</span> if they are pairwise mutually exclusive and <span class="math inline">\(H_1\cup\dots\cup H_n=\Omega\)</span>. Exactly one of them occurs.</p>
+</div>
+<p>For any event <span class="math inline">\(A\)</span>, the pair <span class="math inline">\(A\)</span> and <span class="math inline">\(A^c\)</span> is the simplest partition. Partitions come back in Lecture 2, in the law of total probability.</p>
+<div id="thm-demorgan" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 1.1 (De Morgan’s laws)</strong></span> <span class="math display">\[
+(A\cup B)^c = A^c\cap B^c,\qquad (A\cap B)^c = A^c\cup B^c .
+\]</span></p>
+</div>
+<details class="proof-fold"><summary>Proof</summary><div class="proof-body">
+<p>An outcome is outside <span class="math inline">\(A\cup B\)</span> exactly when it is outside <span class="math inline">\(A\)</span> and outside <span class="math inline">\(B\)</span>, which is the first law. The second law is the same sentence with “and” and “or” swapped. In words: “not (promo or app)” is “no promo and no app”. This is the equality in <a href="#exm-promo-events" class="quarto-xref">Example&nbsp;<span>1.2</span></a>.</p>
+</div></details>
+</section>
+<section id="sec-L01-axioms" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="sec-L01-axioms"><span class="header-section-number">1.3</span> The axioms of probability</h2>
+<p>What should a probability be? Think of the share of days on which an event happens, over a very long run. That share is never negative, it equals 1 for the sure event, and for events that cannot happen together the shares add up. Kolmogorov turned these three observations into the definition.</p>
+<div id="def-probability" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 1.4 (Probability)</strong></span> A <strong>probability</strong> assigns to every event <span class="math inline">\(A\)</span> a number <span class="math inline">\(\Prob(A)\)</span> so that</p>
+<ol type="1">
+<li><span class="math inline">\(\Prob(A)\ge 0\)</span>;</li>
+<li><span class="math inline">\(\Prob(\Omega)=1\)</span>;</li>
+<li>if <span class="math inline">\(A_1, A_2,\dots\)</span> are pairwise mutually exclusive, then <span class="math inline">\(\Prob(A_1\cup A_2\cup\dots)=\Prob(A_1)+\Prob(A_2)+\dots\)</span></li>
+</ol>
+</div>
+<p>For an infinite sample space such as <span class="math inline">\([0,\infty)\)</span> one cannot assign probabilities to literally every subset, and the full theory restricts the events allowed. We will not need that. Everything in this course that looks like an event is an event.</p>
+<p>Everything else follows from these three lines.</p>
+<div id="thm-consequences" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 1.2 (Consequences of the axioms)</strong></span> For any events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>:</p>
+<ol type="1">
+<li><span class="math inline">\(\Prob(\varnothing)=0\)</span>.</li>
+<li><span class="math inline">\(\Prob(A^c)=1-\Prob(A)\)</span>.</li>
+<li>If <span class="math inline">\(A\subseteq B\)</span>, then <span class="math inline">\(\Prob(A)\le\Prob(B)\)</span>. In particular <span class="math inline">\(\Prob(A)\le 1\)</span>.</li>
+<li><span class="math inline">\(\Prob(A\cup B)=\Prob(A)+\Prob(B)-\Prob(A\cap B)\)</span>.</li>
+</ol>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>For (1): take <span class="math inline">\(A_1=\Omega\)</span> and <span class="math inline">\(A_2=A_3=\dots=\varnothing\)</span> in axiom 3. They are mutually exclusive and their union is <span class="math inline">\(\Omega\)</span>, so <span class="math inline">\(\Prob(\Omega)=\Prob(\Omega)+\Prob(\varnothing)+\Prob(\varnothing)+\dots\)</span> The left side is finite, and every term on the right is non-negative, so <span class="math inline">\(\Prob(\varnothing)=0\)</span>.</p>
+<p>For (2): <span class="math inline">\(A\)</span> and <span class="math inline">\(A^c\)</span> are mutually exclusive and <span class="math inline">\(A\cup A^c=\Omega\)</span>, so by axioms 3 and 2, <span class="math inline">\(\Prob(A)+\Prob(A^c)=\Prob(\Omega)=1\)</span>.</p>
+<p>For (3): if <span class="math inline">\(A\subseteq B\)</span>, then <span class="math inline">\(B\)</span> is the union of the mutually exclusive events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\cap A^c\)</span>. So <span class="math inline">\(\Prob(B)=\Prob(A)+\Prob(B\cap A^c)\ge\Prob(A)\)</span>, since the last term is non-negative. Taking <span class="math inline">\(B=\Omega\)</span> gives <span class="math inline">\(\Prob(A)\le 1\)</span>.</p>
+<p>For (4): write <span class="math inline">\(A\cup B\)</span> as two mutually exclusive pieces, <span class="math inline">\(A\)</span> and <span class="math inline">\(B\cap A^c\)</span>. Then <span class="math inline">\(\Prob(A\cup B)=\Prob(A)+\Prob(B\cap A^c)\)</span>. Also <span class="math inline">\(B\)</span> splits into <span class="math inline">\(B\cap A\)</span> and <span class="math inline">\(B\cap A^c\)</span>, so <span class="math inline">\(\Prob(B\cap A^c)=\Prob(B)-\Prob(A\cap B)\)</span>. Substitute.</p>
+</div>
+<p>Property (4) is the formula you will use most often, and the mistake you will make most often is to forget the last term. Add <span class="math inline">\(\Prob(A)\)</span> and <span class="math inline">\(\Prob(B)\)</span>, and the outcomes in both events are counted twice. For three events the correction goes one step further:</p>
+<p><span id="eq-incl-excl"><span class="math display">\[
+\Prob(A\cup B\cup C)=\Prob(A)+\Prob(B)+\Prob(C)-\Prob(A\cap B)-\Prob(A\cap C)-\Prob(B\cap C)+\Prob(A\cap B\cap C).
+\tag{1.1}\]</span></span></p>
+<div id="exm-promo-prob" class="theorem example">
+<p><span class="theorem-title"><strong>Example 1.3 (Promo code and mobile app, with numbers)</strong></span> In a hypothetical online store 40% of orders use a promo code, 55% come through the mobile app, and 20% do both. Take <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> as in <a href="#exm-promo-events" class="quarto-xref">Example&nbsp;<span>1.2</span></a>. Find the probability that a random order</p>
+<ol type="a">
+<li>uses a promo code or the app;</li>
+<li>uses neither;</li>
+<li>comes through the app without a promo code.</li>
+</ol>
+<p><strong>Solution.</strong> (a) By <a href="#thm-consequences" class="quarto-xref">Theorem&nbsp;<span>1.2</span></a>(4), <span class="math inline">\(\Prob(A\cup B)=0.40+0.55-0.20=0.75\)</span>. (b) This is the complement of (a): <span class="math inline">\(\Prob\big((A\cup B)^c\big)=1-0.75=0.25\)</span>. (c) <span class="math inline">\(\Prob(B\cap A^c)=\Prob(B)-\Prob(A\cap B)=0.55-0.20=0.35\)</span>.</p>
+<p>A check: promo only (0.20), app only (0.35), both (0.20) and neither (0.25) are four mutually exclusive pieces, and <span class="math inline">\(0.20+0.35+0.20+0.25=1\)</span>.</p>
+</div>
+<p>The complement rule is the tool for any “at least one” question. Computing the probability that something happens at least once is usually hard, while the probability that it never happens is often a single product. Then subtract from 1. We will use it in the lecture on counting and again in every later lecture.</p>
+</section>
+<section id="sec-L01-classical" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="sec-L01-classical"><span class="header-section-number">1.4</span> Classical probability</h2>
+<p>The axioms say what a probability must satisfy, and not how to find it. The oldest recipe is the one for games of chance.</p>
+<div id="def-classical" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 1.5 (Classical probability)</strong></span> Suppose <span class="math inline">\(\Omega\)</span> has finitely many outcomes and, by the symmetry of the experiment, all of them are equally likely. Then for every event <span class="math inline">\(A\)</span> <span class="math display">\[
+\Prob(A)=\frac{|A|}{|\Omega|}=\frac{\text{number of outcomes in } A}{\text{number of outcomes in }\Omega}.
+\]</span></p>
+</div>
+<p>Check that this satisfies the axioms: it is never negative, <span class="math inline">\(\Prob(\Omega)=1\)</span>, and for mutually exclusive events the counts add up. So it is a legitimate probability. The entire difficulty is hidden in the phrase “equally likely”.</p>
+<div id="exm-two-dice" class="theorem example">
+<p><span class="theorem-title"><strong>Example 1.4 (Two dice)</strong></span> Roll a red die and a blue die. The sample space has 36 outcomes <span class="math inline">\((i,j)\)</span>, where <span class="math inline">\(i\)</span> is the red number and <span class="math inline">\(j\)</span> the blue number, and all 36 are equally likely. What is the probability that the sum is 7?</p>
+<p><strong>Solution.</strong> The outcomes with sum 7 are <span class="math inline">\((1,6),(2,5),(3,4),(4,3),(5,2),(6,1)\)</span>. There are 6 of them (<a href="#fig-dice" class="quarto-xref">Figure&nbsp;<span>1.2</span></a>), so <span class="math inline">\(\Prob(\text{sum}=7)=6/36=1/6\)</span>.</p>
+</div>
+<div id="cell-fig-dice" class="cell" data-execution_count="3">
+<div class="cell-output cell-output-display">
+<div id="fig-dice" class="quarto-float quarto-figure quarto-figure-center anchored" alt="A six by six grid of points. Points on the anti-diagonal where the red and blue numbers add to seven are drawn in a darker colour.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-dice-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="L01-probability-basics_files/figure-html/fig-dice-output-1.png" alt="A six by six grid of points. Points on the anti-diagonal where the red and blue numbers add to seven are drawn in a darker colour." width="580" height="490" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dice-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1.2: The 36 equally likely outcomes of two dice. The six outcomes with sum 7 are highlighted.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Now the trap. The possible sums are <span class="math inline">\(2,3,\dots,12\)</span>, eleven values. Many students conclude that each sum has probability <span class="math inline">\(1/11\)</span>. It does not. The sum 7 can happen in six ways and the sum 2 in only one, <span class="math inline">\((1,1)\)</span>. The eleven sums are the coarse sample space we warned about in <a href="#sec-L01-space" class="quarto-xref"><span>Section 1.1</span></a>, and its outcomes are not equally likely. The 36 pairs are. When you use <a href="#def-classical" class="quarto-xref">Definition&nbsp;<span>1.5</span></a>, first ask: what is the finest description of the experiment in which every outcome is equally likely?</p>
+<p>The same trap catches grown-ups. Toss a fair coin twice and ask for exactly one head. The answer is <span class="math inline">\(2/4=1/2\)</span> (outcomes <span class="math inline">\(HT\)</span> and <span class="math inline">\(TH\)</span>), not <span class="math inline">\(1/3\)</span>.</p>
+<p>Classical probability is the right tool for dice, cards, lotteries and drawing a random name from a list. It is the wrong tool for most business questions. “A customer either buys or does not, so the probability is 1/2” is the same mistake in a suit: the two outcomes are not equally likely, and for such cases the probability has to come from data or from a model. That is what the rest of the course is about.</p>
+</section>
+<section id="sec-L01-counting" class="level2" data-number="1.5">
+<h2 data-number="1.5" class="anchored" data-anchor-id="sec-L01-counting"><span class="header-section-number">1.5</span> Counting</h2>
+<p>To use <a href="#def-classical" class="quarto-xref">Definition&nbsp;<span>1.5</span></a> we must count outcomes, and the lists get too long to write out. A lottery with 6 numbers out of 45 has millions of outcomes. Three rules cover almost everything we need.</p>
+<div id="thm-product" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 1.3 (Product rule)</strong></span> If a procedure has <span class="math inline">\(k\)</span> stages, the first stage can be done in <span class="math inline">\(n_1\)</span> ways, the second in <span class="math inline">\(n_2\)</span> ways (whatever happened in the first), and so on, then the whole procedure can be done in <span class="math inline">\(n_1 n_2\cdots n_k\)</span> ways.</p>
+</div>
+<details class="proof-fold"><summary>Proof</summary><div class="proof-body">
+<p>After the first stage there are <span class="math inline">\(n_1\)</span> possible situations. Each of them continues in <span class="math inline">\(n_2\)</span> ways, which gives <span class="math inline">\(n_1n_2\)</span> pairs of choices. Each pair continues in <span class="math inline">\(n_3\)</span> ways, which gives <span class="math inline">\(n_1n_2n_3\)</span> triples, and so on up to stage <span class="math inline">\(k\)</span>.</p>
+</div></details>
+<div id="exm-pin" class="theorem example">
+<p><span class="theorem-title"><strong>Example 1.5 (PIN codes)</strong></span> A bank card has a four-digit PIN. Each of the four positions has 10 choices, so there are <span class="math inline">\(10^4=10\,000\)</span> PINs. If the digits must all be different, the first position has 10 choices, the second 9, then 8 and 7, giving <span class="math inline">\(10\cdot 9\cdot 8\cdot 7=5040\)</span>.</p>
+<p>A thief who guesses one PIN at random hits it with probability <span class="math inline">\(1/10\,000\)</span>.</p>
+</div>
+<p>The two PIN counts are of different kinds. With repeats allowed, each digit is chosen afresh and we get <span class="math inline">\(n^k\)</span> (here <span class="math inline">\(10^4\)</span>); this is an ordered selection <em>with</em> repetition, and the product rule is all it needs. Without repeats the choices shrink by one at each step. That case, and two related ones, come up so often that they have classical names. Write <span class="math inline">\(n!=n(n-1)\cdots 2\cdot 1\)</span> (“<span class="math inline">\(n\)</span> factorial”), with <span class="math inline">\(0!=1\)</span>.</p>
+<div id="def-permutation" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 1.6 (Permutation)</strong></span> A <strong>permutation</strong> of <span class="math inline">\(n\)</span> distinct objects is an ordering of all of them in a row. There are <span class="math inline">\(n!\)</span> permutations (<a href="#thm-counting" class="quarto-xref">Theorem&nbsp;<span>1.4</span></a>).</p>
+<p>Kemal drives a delivery van and has 5 shops to visit this morning. Each route is a permutation of the 5 shops, so he can choose among <span class="math inline">\(5!=120\)</span> routes. Exercise 3 at the end of the chapter, the order of six job interviews, is also about permutations.</p>
+</div>
+<div id="def-arrangement" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 1.7 (Arrangement)</strong></span> An <strong>arrangement</strong> of <span class="math inline">\(k\)</span> objects from <span class="math inline">\(n\)</span> distinct objects (<span class="math inline">\(k\le n\)</span>) is an ordered selection without repetition: we pick a first, a second, up to a <span class="math inline">\(k\)</span>-th, and no object is used twice. There are <span class="math display">\[
+\frac{n!}{(n-k)!}=n(n-1)\cdots(n-k+1)
+\]</span> arrangements (<a href="#thm-counting" class="quarto-xref">Theorem&nbsp;<span>1.4</span></a>).</p>
+<p>A supermarket has 12 brands of tea and 3 slots at eye level: left, middle and right. Putting three brands into the three slots is an arrangement, and there are <span class="math inline">\(12\cdot11\cdot10=1320\)</span> of them. The PINs with four different digits in <a href="#exm-pin" class="quarto-xref">Example&nbsp;<span>1.5</span></a> are arrangements of 4 digits from 10: <span class="math inline">\(10!/6!=5040\)</span>.</p>
+</div>
+<p>A permutation is the arrangement with <span class="math inline">\(k=n\)</span>, and then the formula gives <span class="math inline">\(n!/0!=n!\)</span>. That is one reason to set <span class="math inline">\(0!=1\)</span>.</p>
+<div id="def-combination" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 1.8 (Combination)</strong></span> A <strong>combination</strong> of <span class="math inline">\(k\)</span> objects from <span class="math inline">\(n\)</span> distinct objects (<span class="math inline">\(0\le k\le n\)</span>) is an unordered selection without repetition, that is, a subset of size <span class="math inline">\(k\)</span>. The number of combinations is written <span class="math inline">\(\binom{n}{k}\)</span>, read “<span class="math inline">\(n\)</span> choose <span class="math inline">\(k\)</span>” and called the binomial coefficient. Its formula is <a href="#eq-binom" class="quarto-xref">Equation&nbsp;<span>1.2</span></a> below.</p>
+<p>The same supermarket picks 3 of its 12 tea brands for a weekend discount. Now the three brands form a set, and nothing is first or last. The lottery in <a href="#exm-lottery" class="quarto-xref">Example&nbsp;<span>1.6</span></a> and the inspector’s sample in <a href="#exm-quality" class="quarto-xref">Example&nbsp;<span>1.7</span></a> are combinations too.</p>
+</div>
+<p>Other textbooks use other words and symbols for the same things, and you should recognise them. An arrangement is also called a <span class="math inline">\(k\)</span>-permutation, a partial permutation or a variation, and other books write <span class="math inline">\(A_n^k\)</span>, <span class="math inline">\(P(n,k)\)</span> or <span class="math inline">\({}_nP_k\)</span> for the number of them. For <span class="math inline">\(\binom{n}{k}\)</span> other books write <span class="math inline">\(C_n^k\)</span> or <span class="math inline">\({}_nC_k\)</span>. Be careful with the word “arrangement” in English books: many of them use it loosely for any ordering, a full permutation included. In this course it always means an ordered selection of <span class="math inline">\(k\)</span> from <span class="math inline">\(n\)</span>.</p>
+<div id="thm-counting" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 1.4 (Orderings and selections)</strong></span> From <span class="math inline">\(n\)</span> distinct objects:</p>
+<ol type="1">
+<li>There are <span class="math inline">\(n!\)</span> permutations.</li>
+<li>There are <span class="math inline">\(\dfrac{n!}{(n-k)!}=n(n-1)\cdots(n-k+1)\)</span> arrangements of <span class="math inline">\(k\)</span> objects.</li>
+<li>There are <span id="eq-binom"><span class="math display">\[
+\binom{n}{k}=\frac{n!}{k!\,(n-k)!}
+\tag{1.2}\]</span></span> combinations of <span class="math inline">\(k\)</span> objects.</li>
+</ol>
+<p>Parts 2 and 3 are linked by <span class="math inline">\(\dfrac{n!}{(n-k)!}=k!\binom{n}{k}\)</span>.</p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>Part 1 is the product rule with <span class="math inline">\(n,n-1,\dots,1\)</span> choices. Part 2 is the same with <span class="math inline">\(k\)</span> stages. For part 3, each combination of <span class="math inline">\(k\)</span> objects appears in the count of part 2 exactly <span class="math inline">\(k!\)</span> times, once for each permutation of its <span class="math inline">\(k\)</span> objects. So the number of arrangements is <span class="math inline">\(k!\binom{n}{k}\)</span>. Divide by <span class="math inline">\(k!\)</span>.</p>
+</div>
+<p>In the tea example, <span class="math inline">\(1320=3!\cdot 220\)</span>: each set of three discounted brands can be put into the three eye-level slots in <span class="math inline">\(3!=6\)</span> ways, and <span class="math inline">\(\binom{12}{3}=220\)</span>.</p>
+<p>Two useful facts: <span class="math inline">\(\binom{n}{k}=\binom{n}{n-k}\)</span> (choosing who goes in is the same as choosing who stays out) and <span class="math inline">\(\binom{n}{0}=\binom{n}{n}=1\)</span>.</p>
+<p>The practical question is always the same: does order matter? Swap two chosen items. If the result is a different outcome, count arrangements. If it is the same outcome, count combinations. Three candidates for gold, silver and bronze: ordered, <span class="math inline">\(10\cdot9\cdot8=720\)</span> from ten. Three candidates for a project team: unordered, <span class="math inline">\(\binom{10}{3}=120\)</span>. Check: <span class="math inline">\(720/3!=120\)</span>.</p>
+<div id="exm-lottery" class="theorem example">
+<p><span class="theorem-title"><strong>Example 1.6 (A 6-from-45 lottery)</strong></span> You pick 6 different numbers from 1 to 45, and the draw produces 6 numbers. Order is irrelevant. The number of possible draws is <span class="math display">\[
+\binom{45}{6}=\frac{45\cdot44\cdot43\cdot42\cdot41\cdot40}{720}=8\,145\,060,
+\]</span> so a single ticket wins the jackpot with probability <span class="math inline">\(1/8\,145\,060\approx 1.2\cdot10^{-7}\)</span>. If you bought a ticket every week, you would wait on average about 157 000 years.</p>
+</div>
+<p>The next example is the one to remember. It is a typical quality-control calculation, and we will see it again in Lecture 4 as the <em>hypergeometric</em> distribution.</p>
+<div id="exm-quality" class="theorem example">
+<p><span class="theorem-title"><strong>Example 1.7 (Expired packs)</strong></span> A warehouse shelf holds 20 packs of yoghurt, and 3 of them are past their date. An inspector takes 4 packs at random. Find the probability that</p>
+<ol type="a">
+<li>exactly one is expired;</li>
+<li>none is expired;</li>
+<li>at least one is expired.</li>
+</ol>
+<p><strong>Solution.</strong> Order does not matter, so <span class="math inline">\(|\Omega|=\binom{20}{4}=4845\)</span>. For (a), choose 1 of the 3 expired packs and 3 of the 17 good ones, which is <span class="math inline">\(\binom{3}{1}\binom{17}{3}=3\cdot 680=2040\)</span> outcomes (product rule). So <span class="math inline">\(\Prob=2040/4845\approx 0.421\)</span>. For (b), all 4 come from the 17 good packs: <span class="math inline">\(\binom{17}{4}/\binom{20}{4}=2380/4845\approx 0.491\)</span>. For (c), use the complement: <span class="math inline">\(1-0.491=0.509\)</span>.</p>
+</div>
+<p>Notice that the inspector checks four packs out of twenty and finds a problem in barely more than half of the cases, although 15% of the packs are bad. Sampling a small part of a batch is a weak control. That is a point about sample sizes, and we will come back to it in module 3.</p>
+</section>
+<section id="sec-L01-geometric" class="level2" data-number="1.6">
+<h2 data-number="1.6" class="anchored" data-anchor-id="sec-L01-geometric"><span class="header-section-number">1.6</span> Geometric probability</h2>
+<p>Sometimes the outcomes cannot be listed at all: a moment in time, a point on a map. If we pick one “at random”, the natural meaning is that every place is equally good, and probability becomes proportional to size.</p>
+<div id="def-geometric" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 1.9 (Geometric probability)</strong></span> Let <span class="math inline">\(\Omega\)</span> be a segment, a region in the plane, or a region in space, with finite length, area or volume. An outcome is chosen <strong>uniformly at random</strong> from <span class="math inline">\(\Omega\)</span> if for every event <span class="math inline">\(A\subseteq\Omega\)</span> <span class="math display">\[
+\Prob(A)=\frac{\text{size of }A}{\text{size of }\Omega},
+\]</span> where “size” means length, area or volume.</p>
+</div>
+<div id="exm-courier" class="theorem example">
+<p><span class="theorem-title"><strong>Example 1.8 (A courier in a two-hour window)</strong></span> A courier promises to arrive between 10:00 and 12:00, and the exact moment is uniform over those 120 minutes. You will be out from 10:30 to 11:15. The probability that the courier comes while you are out is the length of the interval (45 minutes) divided by 120: <span class="math inline">\(45/120=3/8\)</span>.</p>
+</div>
+<p>The more interesting case has two random moments.</p>
+<div id="exm-meeting" class="theorem example">
+<p><span class="theorem-title"><strong>Example 1.9 (Two people, one café)</strong></span> Zarina and Oksana agree to meet at a café between 12:00 and 13:00. Each arrives at a random moment of that hour, independently of the other, and waits 15 minutes before leaving. What is the probability that they meet?</p>
+<p><strong>Solution.</strong> Let <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> be the arrival times in minutes after 12:00. The pair <span class="math inline">\((x,y)\)</span> is a uniform point in the square <span class="math inline">\([0,60]\times[0,60]\)</span>, area 3600. They meet when <span class="math inline">\(|x-y|\le 15\)</span>, which is the band around the diagonal in <a href="#fig-meeting" class="quarto-xref">Figure&nbsp;<span>1.3</span></a>. It is easier to find the area outside the band: two right triangles with legs <span class="math inline">\(60-15=45\)</span>, each of area <span class="math inline">\(45^2/2\)</span>. The band has area <span class="math inline">\(3600-45^2=1575\)</span>, so <span class="math display">\[
+\Prob(\text{meet})=\frac{3600-45^2}{3600}=1-\Big(\frac{45}{60}\Big)^2=\frac{7}{16}\approx 0.44.
+\]</span></p>
+</div>
+<div id="cell-fig-meeting" class="cell" data-execution_count="4">
+<div class="cell-output cell-output-display">
+<div id="fig-meeting" class="quarto-float quarto-figure quarto-figure-center anchored" alt="A square with a diagonal band shaded. The band contains the points where the two arrival times differ by at most fifteen minutes.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-meeting-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="L01-probability-basics_files/figure-html/fig-meeting-output-1.png" alt="A square with a diagonal band shaded. The band contains the points where the two arrival times differ by at most fifteen minutes." width="562" height="550" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-meeting-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1.3: All pairs of arrival times (<a href="#exm-meeting" class="quarto-xref">Example&nbsp;<span>1.9</span></a>). They meet when the point lies in the shaded band <span class="math inline">\(|x-y|\le 15\)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>People find 7/16 low. Fifteen minutes feels generous, and yet they miss each other more than half of the time. Writing the meeting problem on the board as a square is the entire trick: two numbers become one point.</p>
+<p>A remark that will matter in Lecture 4. In a geometric setting the probability of any single point is zero, because a point has no length. The probability that the courier arrives at exactly 10:47:12.000 is 0, and still she arrives at some moment. Probability zero does not mean impossible once <span class="math inline">\(\Omega\)</span> is a continuum.</p>
+</section>
+<section id="exercises" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="exercises">Exercises</h2>
+<ol type="1">
+<li>Two dice are rolled. What is the probability that the sum is at least 10?</li>
+<li>A manager says: “The chance of a delay at the supplier is 0.5, the chance of a customs problem is 0.6, and they never happen together.” What is wrong with that statement?</li>
+<li>Six candidates, including Ilya and Priya, are interviewed in random order. What is the probability that Ilya is interviewed before Priya? That the two are interviewed one right after the other, in either order?</li>
+<li>A password has 4 characters, each a lowercase letter. How many passwords have at least one repeated letter? (Use the complement.)</li>
+<li>A point is chosen uniformly in a square of side 2. What is the probability that it lies within distance 1 of the centre?</li>
+</ol>
+<p>Answers: (1) <span class="math inline">\(1/6\)</span>. (2) Two mutually exclusive events with probabilities 0.5 and 0.6 would give <span class="math inline">\(\Prob(A\cup B)=1.1&gt;1\)</span>. (3) <span class="math inline">\(1/2\)</span>; <span class="math inline">\(\frac{5\cdot 2\cdot 4!}{6!}=1/3\)</span>. (4) <span class="math inline">\(26^4-26\cdot25\cdot24\cdot23=456\,976-358\,800=98\,176\)</span>. (5) <span class="math inline">\(\pi/4\approx 0.785\)</span>.</p>
+<p>The full practice is in Seminar 1.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../lectures/L00-about-me.html" class="pagination-link" aria-label="About the course and about me">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">About the course and about me</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../lectures/L02-conditional-probability.html" class="pagination-link" aria-label="Conditional probability and Bayes' theorem">
+        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Conditional probability and Bayes’ theorem</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

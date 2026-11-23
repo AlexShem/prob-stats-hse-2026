@@ -1,0 +1,1966 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="L03-discrete-random-variables_files/libs/clipboard/clipboard.min.js"></script>
+<script src="L03-discrete-random-variables_files/libs/quarto-html/tabby.min.js"></script>
+<script src="L03-discrete-random-variables_files/libs/quarto-html/popper.min.js"></script>
+<script src="L03-discrete-random-variables_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="L03-discrete-random-variables_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="L03-discrete-random-variables_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="L03-discrete-random-variables_files/libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.18">
+
+  <meta name="dcterms.date" content="2026-11-18">
+  <title>Discrete random variables</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="L03-discrete-random-variables_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="L03-discrete-random-variables_files/libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="L03-discrete-random-variables_files/libs/revealjs/dist/theme/quarto-163e8e93e1b23b4468d8c093fdfe744f.css">
+  <link href="L03-discrete-random-variables_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="L03-discrete-random-variables_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="L03-discrete-random-variables_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="L03-discrete-random-variables_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="L03-discrete-random-variables_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="L03-discrete-random-variables_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Discrete random variables</h1>
+  <p class="subtitle">Lecture 3 · Probability Theory and Mathematical Statistics</p>
+
+<div class="quarto-title-authors">
+</div>
+
+  <p class="date">2026-11-18</p>
+</section>
+<section id="marats-saturday-morning" class="slide level2">
+<h2>Marat’s Saturday morning</h2>
+<!-- Math macros for HTML/revealjs (MathJax). PDF gets the same ones from _shared/preamble.tex. Keep both in sync. -->
+<div class="hidden">
+<p><span class="math display">\[
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\Corr}{\operatorname{Corr}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\R}{\mathbb{R}}
+\]</span></p>
+</div>
+<!--
+PLAN  NN (slide number = PDF page - 1) | title | pattern | chapter item | visual
+01 | Marat's Saturday morning | hook | intro | three customers, 0.4 / 0.6 bars
+02 | Random variable | item | Def 3.1 + Ex 3.1 | 8 outcomes mapped to 0..3
+03 | Marat's morning as a tree | picture | Fig 3.1 | chapter tree, X = 2 leaves orange
+04 | How to read X, x and {X=2} | notation | callout 1 | table write / say / Marat
+05 | Probability mass function + how to read p(x) | item + notation | Def 3.2, callout 2 | "machine" x -> p -> probability
+06 | Marat's PMF: one path | worked | Ex 3.2 | strip O N N with factors
+07 | Marat's PMF: collect the paths | worked | Ex 3.2 | none (four reveals)
+08 | Marat's PMF as a bar chart | picture | Ex 3.2 table, Fig 3.2 | table + bars
+09 | How to read the summation sign | notation | callout 3 (part 1) | big formula + parts table
+10 | x_1..x_4: the values in a list | notation | callout 3 (part 2) | i / x_i / p(x_i) table, sum written out
+11 | Properties of a PMF | item | Thm 3.1 | Omega as a bar split into {X=x} pieces
+12 | Cumulative distribution function + how to read F(x) | item + notation | Def 3.3, callout 4 (part 1) | bars piled up to F(2)
+13 | How to read <= and < | notation + pitfall | callout 4 (part 2) | two panels X<=1 / X<1
+14 | Marat's CDF: add from the left | worked | Ex 3.3 | none (running sums, F(1.5))
+15 | The CDF is a staircase | picture | Ex 3.3 formula, Fig 3.3 | chapter staircase
+16 | Interval rule | item | Eq 3.1 | bars 2, 3 highlighted
+17 | Pitfall: is the boundary included? | pitfall | after Eq 3.1 | bars 1, 2, 3 highlighted (figure left)
+18 | Your turn: cancellations in Suzdal | your turn | Exercise 1 (c, F(1.5), P(X<1)) | table
+19 | Break | break | cue after Sec 3.3 |
+20 | Expected value + how to read E[X], mu | item + notation | Def 3.4, callout 5 | none (box + reading, Given strip)
+21 | How many pairs Marat should expect | worked | Ex 3.4 | x p(x) table
+22 | What 1.2 means | explain | weighted / long-run average, "not most likely" | bars with 1.2 and 1.5 marked
+23 | Expected value of g(X) | item | Eq 3.2 | x, x^2, p(x) table; E[X^2] = 2.16
+24 | How to read squares, square roots and sigma | notation | callout 6 | table
+25 | Variance and standard deviation | item + explain | Def 3.5, why squares | deviations from mu on a number line
+26 | Marat's variance by the definition | worked | Ex 3.5 (first half) | five-column table
+27 | Shortcut formula | item + worked | Thm 3.2, Ex 3.5 (second half) | bars with mu +- sigma band
+28 | Pitfall: E[X^2] is not (E[X])^2 | pitfall | after Ex 3.5 | two bars and the gap (figure left)
+29 | Your turn: Suzdal, mean and variance | your turn | Exercise 1 (E, Var) | table
+30 | Marat thinks in rubles | explain | Sec 3.6 intro | x -> y table
+31 | Expectation and variance of aX+b + how to read |a| | item + notation | Thm 3.3, callout 7 | number line |-3| = |3|
+32 | Marat's profit in rubles | worked | Ex 3.6 | none (three steps, full width)
+33 | What the profit numbers say | picture | Ex 3.6, closing remarks | profit bars with mean and SD band
+34 | Pitfall: b drops out, a is squared | pitfall | after Ex 3.6 | 2000X and 2000X-1500 shifted bars (figure left)
+35 | Bernoulli distribution | item | Def 3.6, mean and variance | two bars
+36 | Binomial distribution | item | Def 3.7, Eq 3.3 | conditions vs Marat table
+37 | How to read X ~ Bin(n, p) and p^k (1-p)^(n-k) | notation | callout 8 | table, k = 1 written out
+38 | Why the binomial formula works | explain | after callout 8 | three strips OON / ONO / NOO
+39 | Mean and variance of the binomial | item | Thm 3.4 | X = X1 + X2 + X3 strip
+40 | Your turn: binomial or not? | your turn | Exercise 3 | none
+41 | Your turn: test drives in Kaliningrad | your turn | Exercise 4 | none
+
+Ex 3.5 is split around Thm 3.2 on purpose: slide 26 is the definition route, slide 27 states the
+shortcut and finishes Ex 3.5 with it (same order as the chapter: table first, then shortcut).
+E[X^2] = 2.16 is computed on slide 23 (Eq 3.2), where the chapter's squares callout writes out the
+same sum; slide 27 restates it in its Given strip.
+
+CUT: proof of Thm 3.1 kept as one line (partition); proofs of Thm 3.2 and Thm 3.3 shortened to one
+line of idea plus "see the book"; proof of Thm 3.4 kept as its idea (sum of Bernoullis, Lecture 6);
+Exercise 2 (food truck) left to the seminar, slide 34 covers the same two mistakes; the coffee-machine
+detail from the opening dropped; the note on the letter F (an event in Lecture 2) and
+"same answer, less work" moved to speaker notes / dropped for space; the explicit sum
+sum_i (x_i - mu) p(x_i) = mu - mu = 0 on the variance slide is said in words only.
+-->
+<div class="columns">
+<div class="column" style="width:55%;">
+<p>Marat runs an optician’s shop on Bauman Street in Kazan. This Saturday, 3 customers come for a free eye test.</p>
+<div class="fragment">
+<p>Each orders glasses with probability 0.4, and they decide independently. A pair earns 2,000 rubles. Each free test costs 500 rubles.</p>
+</div>
+<div class="fragment">
+<p>Marat wants two numbers. How many pairs should he expect to sell? How far from that does a typical Saturday land?</p>
+</div>
+<div class="fragment">
+<p>Both are about one unknown number: how many of the 3 order.</p>
+</div>
+</div><div class="column" style="width:45%;">
+<div id="fde674c6" class="cell" data-fig-height="3.6" data-fig-width="5" data-execution_count="3">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L03-discrete-random-variables_files/figure-revealjs/cell-4-output-1.png" width="727" height="507"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+<aside class="notes">
+<p>Timing. Slot 1: 0:00-0:10 Marat’s case, 0:10-0:30 random variable and the tree, 0:30-0:55 PMF and the sum sign, 0:55-1:15 CDF, 5 min slack. Break. Slot 2: 0:00-0:20 expectation, 0:20-0:45 variance, 0:45-1:00 profit in rubles, 1:00-1:20 Bernoulli and binomial. Your-turn slides only if time is left.</p>
+<p>Board: a strip on the left side board, “Marat: 3 customers, P(order) = 0.4 each, independent, 2,000 per pair, 500 per test”. From the PMF on, add the PMF table under it. Never erase it: every later step uses it.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="random-variable-def-3.1-ex-3.1" class="slide level2">
+<h2>Random variable <span class="tag">Def 3.1, Ex 3.1</span></h2>
+<div class="columns">
+<div class="column" style="width:58%;">
+<div class="box-def">
+<p>A <strong>random variable</strong> is a rule that gives a number to every outcome: a function from <span class="math inline">\(\Omega\)</span> to the real numbers. Names: capital letters <span class="math inline">\(X\)</span>, <span class="math inline">\(Y\)</span>, <span class="math inline">\(Z\)</span>.</p>
+</div>
+<p>A morning is three letters, O = orders, N = does not. <span class="math inline">\(2\cdot2\cdot2=8\)</span> outcomes (product rule, Thm 1.3).</p>
+<div class="fragment">
+<p><span class="math inline">\(X\)</span> counts the O’s: values 0, 1, 2, 3. Three mornings give <span class="math inline">\(X=2\)</span>. <span class="math inline">\(X\)</span> keeps <em>how many</em>, not <em>who</em>.</p>
+</div>
+</div><div class="column" style="width:42%;">
+<div id="6c55212f" class="cell" data-fig-height="3.6" data-fig-width="5" data-execution_count="4">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L03-discrete-random-variables_files/figure-revealjs/cell-5-output-1.png" width="717" height="507"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="marats-morning-as-a-tree-fig-3.1" class="slide level2 nostretch">
+<h2>Marat’s morning as a tree <span class="tag">Fig 3.1</span></h2>
+<p>Each branch: O with 0.4, N with 0.6; multiply along a path. Orange: the three mornings with <span class="math inline">\(X=2\)</span>.</p>
+<div id="43ec3e13" class="cell" data-fig-height="3.3" data-fig-width="10" data-execution_count="5">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L03-discrete-random-variables_files/figure-revealjs/cell-6-output-1.png" width="1467" height="460"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="how-to-read-x-x-and-x2-sec-3.1" class="slide level2">
+<h2>How to read <span class="math inline">\(X\)</span>, <span class="math inline">\(x\)</span> and <span class="math inline">\(\{X=2\}\)</span> <span class="tag">Sec 3.1</span></h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Write</th>
+<th style="text-align: left;">Say</th>
+<th style="text-align: left;">For Marat</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(X\)</span></td>
+<td style="text-align: left;">“big X”</td>
+<td style="text-align: left;">the number of orders on Saturday, not known yet</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(x\)</span></td>
+<td style="text-align: left;">“small x”</td>
+<td style="text-align: left;">a possible value: 0, 1, 2 or 3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(\{X=2\}\)</span></td>
+<td style="text-align: left;">“the event that X equals 2”</td>
+<td style="text-align: left;"><span class="math inline">\(\{\text{OON},\text{ONO},\text{NOO}\}\)</span>, the orange leaves</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(\{X\le 1\}\)</span></td>
+<td style="text-align: left;">“the event that X is at most 1”</td>
+<td style="text-align: left;"><span class="math inline">\(\{\text{NNN},\text{ONN},\text{NON},\text{NNO}\}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(\Prob(X=2)\)</span></td>
+<td style="text-align: left;">“the probability that X equals 2”</td>
+<td style="text-align: left;">short for <span class="math inline">\(\Prob(\{X=2\})\)</span></td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p><span class="small"><span class="math inline">\(\{X=2\}\)</span> is a set of outcomes, so it is an event (Lecture 1). Inside <span class="math inline">\(\Prob\)</span> we drop the curly brackets.</span></p>
+</div>
+</section>
+<section id="probability-mass-function-def-3.2" class="slide level2">
+<h2>Probability mass function <span class="tag">Def 3.2</span></h2>
+<div class="box-def">
+<p><span class="math inline">\(X\)</span> is <strong>discrete</strong> if its values can be listed: <span class="math inline">\(x_1, x_2, x_3,\dots\)</span> The <strong>probability mass function</strong> (PMF) of <span class="math inline">\(X\)</span> is <span class="math inline">\(p(x)=\Prob(X=x)\)</span>, for each value <span class="math inline">\(x\)</span> of <span class="math inline">\(X\)</span>.</p>
+</div>
+<div class="columns">
+<div class="column" style="width:52%;">
+<p><span class="tag">How to read <span class="math inline">\(p(x)\)</span></span></p>
+<p><span class="math inline">\(p(x)\)</span> reads “p of x”: a function, a number in, a probability out. It is <em>not</em> <span class="math inline">\(p\)</span> times <span class="math inline">\(x\)</span>.</p>
+<p><span class="math inline">\(p(2)\)</span>, “p of two”, is <span class="math inline">\(\Prob(X=2)\)</span>. We find <span class="math inline">\(p(2)=0.288\)</span> in a moment.</p>
+<p><span class="muted small">Marat’s <span class="math inline">\(X\)</span> has 4 values: discrete. Lecture 4: a waiting time is not.</span></p>
+</div><div class="column" style="width:48%;">
+<div id="ec1641c5" class="cell" data-fig-height="2.6" data-fig-width="5" data-execution_count="6">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L03-discrete-random-variables_files/figure-revealjs/cell-7-output-1.png" width="717" height="357"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="marats-pmf-one-path-ex-3.2" class="slide level2">
+<h2>Marat’s PMF: one path <span class="tag">Ex 3.2</span></h2>
+<div class="muted small">
+<p>Given: 3 customers; each orders (O) with 0.4, does not (N) with 0.6; independent; <span class="math inline">\(X\)</span> = number who order</p>
+</div>
+<div class="columns">
+<div class="column" style="width:52%;">
+<p>Guess first: which is most likely, 0, 1, 2 or 3 orders?</p>
+<div class="fragment">
+<p>Take one path, say ONN. The customers are independent (Def 2.3), so multiply along the path: <span class="math display">\[\Prob(\text{ONN})=0.4\cdot0.6\cdot0.6=0.144\]</span></p>
+</div>
+<div class="fragment">
+<p>NON and NNO have the same three factors in another order, so each of them is also 0.144.</p>
+</div>
+</div><div class="column" style="width:48%;">
+<div id="7fa772e5" class="cell" data-fig-height="2.6" data-fig-width="5" data-execution_count="7">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L03-discrete-random-variables_files/figure-revealjs/cell-8-output-1.png" width="709" height="357"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+<aside class="notes">
+<p>Ask before computing: “Most likely: 0, 1, 2 or 3 orders?” Most say 0. Collect the guesses, come back to them on the bar chart.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="marats-pmf-collect-the-paths-ex-3.2" class="slide level2">
+<h2>Marat’s PMF: collect the paths <span class="tag">Ex 3.2</span></h2>
+<div class="muted small">
+<p>Given: O with 0.4, N with 0.6, independent; a path’s probability is the product along it</p>
+</div>
+<p>Different paths are mutually exclusive, so their probabilities add.</p>
+<ul>
+<li class="fragment"><span class="math inline">\(X=0\)</span>: only NNN. <span class="math inline">\(\quad p(0)=0.6\cdot0.6\cdot0.6=0.216\)</span></li>
+<li class="fragment"><span class="math inline">\(X=1\)</span>: ONN, NON, NNO, each <span class="math inline">\(0.4\cdot0.6\cdot0.6=0.144\)</span>. <span class="math inline">\(\quad p(1)=3\cdot0.144=0.432\)</span></li>
+<li class="fragment"><span class="math inline">\(X=2\)</span>: OON, ONO, NOO, each <span class="math inline">\(0.4\cdot0.4\cdot0.6=0.096\)</span>. <span class="math inline">\(\quad p(2)=3\cdot0.096=0.288\)</span></li>
+<li class="fragment"><span class="math inline">\(X=3\)</span>: only OOO. <span class="math inline">\(\quad p(3)=0.4\cdot0.4\cdot0.4=0.064\)</span></li>
+</ul>
+<div class="fragment">
+<p>Check: <span class="math inline">\(0.216+0.432+0.288+0.064=\)</span> <span class="answer">1</span>. Nothing is missing.</p>
+</div>
+</section>
+<section id="marats-pmf-as-a-bar-chart-ex-3.2-fig-3.2" class="slide level2">
+<h2>Marat’s PMF as a bar chart <span class="tag">Ex 3.2, Fig 3.2</span></h2>
+<div class="columns">
+<div class="column" style="width:48%;">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;"><span class="math inline">\(x\)</span></th>
+<th style="text-align: center;">0</th>
+<th style="text-align: center;">1</th>
+<th style="text-align: center;">2</th>
+<th style="text-align: center;">3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(p(x)\)</span></td>
+<td style="text-align: center;">0.216</td>
+<td style="text-align: center;">0.432</td>
+<td style="text-align: center;">0.288</td>
+<td style="text-align: center;">0.064</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p>The most likely value is <span class="answer">1, not 0</span>.</p>
+<p>Each customer is more likely to say no than yes. But there is only one way to get three noes, and three ways to get exactly one yes.</p>
+</div>
+</div><div class="column" style="width:52%;">
+<div id="897cd5fe" class="cell" data-fig-height="3.6" data-fig-width="5" data-execution_count="8">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L03-discrete-random-variables_files/figure-revealjs/cell-9-output-1.png" width="718" height="507"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+<aside class="notes">
+<p>Copy the PMF table to the side board, under the Marat strip. It stays there for the rest of the lecture.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="how-to-read-the-summation-sign-sum-sec-3.2" class="slide level2">
+<h2>How to read the summation sign <span class="math inline">\(\sum\)</span> <span class="tag">Sec 3.2</span></h2>
+<div class="columns">
+<div class="column" style="width:45%;">
+<p><span class="math inline">\(\sum\)</span> is the Greek capital letter sigma, an S for “sum”. It means “add up”. You met it in the law of total probability (Eq 2.2).</p>
+<div class="big">
+<p><span class="math display">\[\sum_{i=1}^{4} p(x_i)\]</span></p>
+</div>
+<p>Say: “the sum of p of x i, for i from 1 to 4”.</p>
+</div><div class="column" style="width:55%;">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Part</th>
+<th style="text-align: left;">What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(i\)</span></td>
+<td style="text-align: left;">the <strong>index</strong>, a counter</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(i=1\)</span> under the sign</td>
+<td style="text-align: left;">where <span class="math inline">\(i\)</span> starts</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(4\)</span> on top</td>
+<td style="text-align: left;">where <span class="math inline">\(i\)</span> stops</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(p(x_i)\)</span></td>
+<td style="text-align: left;">what we add, once for each <span class="math inline">\(i\)</span></td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p>Put <span class="math inline">\(i=1\)</span>, then <span class="math inline">\(i=2\)</span>, <span class="math inline">\(i=3\)</span>, <span class="math inline">\(i=4\)</span> into <span class="math inline">\(p(x_i)\)</span>, and add the four results.</p>
+</div>
+</div></div>
+</section>
+<section id="x_1dotsx_4-the-values-in-a-list-sec-3.2" class="slide level2">
+<h2><span class="math inline">\(x_1,\dots,x_4\)</span>: the values in a list <span class="tag">Sec 3.2</span></h2>
+<p><span class="math inline">\(x_1, x_2, x_3, x_4\)</span> read “x one, x two, …”. The small number is a position in the list, not the value.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;"><span class="math inline">\(i\)</span> (position)</th>
+<th style="text-align: center;">1</th>
+<th style="text-align: center;">2</th>
+<th style="text-align: center;">3</th>
+<th style="text-align: center;">4</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(x_i\)</span> (value)</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(p(x_i)\)</span></td>
+<td style="text-align: center;">0.216</td>
+<td style="text-align: center;">0.432</td>
+<td style="text-align: center;">0.288</td>
+<td style="text-align: center;">0.064</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p><span class="math display">\[
+\begin{aligned}
+\sum_{i=1}^{4} p(x_i)&amp;=p(x_1)+p(x_2)+p(x_3)+p(x_4)=p(0)+p(1)+p(2)+p(3)\\
+&amp;=0.216+0.432+0.288+0.064=1
+\end{aligned}
+\]</span></p>
+<p><span class="muted">When the sum runs over <em>all</em> values of <span class="math inline">\(X\)</span>, we write just <span class="math inline">\(\sum_i\)</span>.</span></p>
+</div>
+</section>
+<section id="properties-of-a-pmf-thm-3.1" class="slide level2">
+<h2>Properties of a PMF <span class="tag">Thm 3.1</span></h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="box-thm">
+<p>Let <span class="math inline">\(X\)</span> be discrete with values <span class="math inline">\(x_1, x_2,\dots\)</span> and PMF <span class="math inline">\(p\)</span>. Then</p>
+<ol type="1">
+<li><span class="math inline">\(p(x_i)\ge 0\)</span> for every <span class="math inline">\(i\)</span>;</li>
+<li><span class="math inline">\(\sum_i p(x_i)=1\)</span>.</li>
+</ol>
+</div>
+<div class="fragment">
+<p>Each outcome gives <span class="math inline">\(X\)</span> one value, so the events <span class="math inline">\(\{X=x_i\}\)</span> form a partition of <span class="math inline">\(\Omega\)</span> (Def 1.3). Their probabilities add up to <span class="math inline">\(\Prob(\Omega)=1\)</span>.</p>
+</div>
+</div><div class="column" style="width:50%;">
+<div id="1f18c287" class="cell" data-fig-height="2.6" data-fig-width="5" data-execution_count="9">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L03-discrete-random-variables_files/figure-revealjs/cell-10-output-1.png" width="717" height="357"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>In practice it is a check: if your table does not add up to 1, a path is missing or counted twice.</p>
+</div>
+</div></div>
+</section>
+<section id="cumulative-distribution-function-def-3.3" class="slide level2">
+<h2>Cumulative distribution function <span class="tag">Def 3.3</span></h2>
+<div class="columns">
+<div class="column" style="width:58%;">
+<div class="box-def">
+<p>The <strong>cumulative distribution function</strong> (CDF) of <span class="math inline">\(X\)</span> is <span class="math inline">\(F(x)=\Prob(X\le x)\)</span>, for every real number <span class="math inline">\(x\)</span>.</p>
+</div>
+<p><span class="tag">How to read <span class="math inline">\(F(x)\)</span></span></p>
+<p><span class="math inline">\(F(x)\)</span> reads “F of x”: a number in, a probability out. <span class="math inline">\(F(2)=\Prob(X\le 2)\)</span> reads “the probability that <span class="math inline">\(X\)</span> is at most 2”.</p>
+</div><div class="column" style="width:42%;">
+<div id="b4dc0769" class="cell" data-fig-height="3.6" data-fig-width="5" data-execution_count="10">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L03-discrete-random-variables_files/figure-revealjs/cell-11-output-1.png" width="718" height="506"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+<aside class="notes">
+<p>A note on letters: in Lecture 2, F was an event (a faulty bulb, a fraudulent payment). From now on F is the CDF.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="how-to-read-le-and-sec-3.3" class="slide level2">
+<h2>How to read <span class="math inline">\(\le\)</span> and <span class="math inline">\(&lt;\)</span> <span class="tag">Sec 3.3</span></h2>
+<div class="muted small">
+<p>Given: Marat’s PMF <span class="math inline">\(p(0)=0.216\)</span>, <span class="math inline">\(p(1)=0.432\)</span>, <span class="math inline">\(p(2)=0.288\)</span>, <span class="math inline">\(p(3)=0.064\)</span></p>
+</div>
+<div class="columns">
+<div class="column" style="width:56%;">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Write</th>
+<th style="text-align: left;">Say</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(\le\)</span></td>
+<td style="text-align: left;">“less than or equal to”, “at most”</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(&lt;\)</span></td>
+<td style="text-align: left;">“less than”, “strictly less than”</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p><span class="math inline">\(X\le1\)</span> means <span class="math inline">\(X=0\)</span> or <span class="math inline">\(X=1\)</span>:<br>
+<span class="math inline">\(\Prob(X\le1)=0.216+0.432=\)</span> <span class="answer">0.648</span></p>
+<p><span class="math inline">\(X&lt;1\)</span> means <span class="math inline">\(X=0\)</span> only:<br>
+<span class="math inline">\(\Prob(X&lt;1)=\)</span> <span class="answer">0.216</span></p>
+</div>
+<div class="fragment">
+<p>The two signs differ whenever the boundary (here 1) is a value <span class="math inline">\(X\)</span> can take.</p>
+</div>
+</div><div class="column" style="width:44%;">
+<div id="4b823098" class="cell" data-fig-height="3.6" data-fig-width="5" data-execution_count="11">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L03-discrete-random-variables_files/figure-revealjs/cell-12-output-1.png" width="717" height="506"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="marats-cdf-add-from-the-left-ex-3.3" class="slide level2">
+<h2>Marat’s CDF: add from the left <span class="tag">Ex 3.3</span></h2>
+<div class="muted small">
+<p>Given: <span class="math inline">\(p(0)=0.216\)</span>, <span class="math inline">\(p(1)=0.432\)</span>, <span class="math inline">\(p(2)=0.288\)</span>, <span class="math inline">\(p(3)=0.064\)</span></p>
+</div>
+<div class="columns">
+<div class="column" style="width:48%;">
+<p>Add the probabilities from the left:</p>
+<div class="fragment">
+<p><span class="math inline">\(F(0)=0.216\)</span></p>
+</div>
+<div class="fragment">
+<p><span class="math inline">\(F(1)=0.216+0.432=0.648\)</span></p>
+</div>
+<div class="fragment">
+<p><span class="math inline">\(F(2)=0.648+0.288=0.936\)</span></p>
+</div>
+<div class="fragment">
+<p><span class="math inline">\(F(3)=0.936+0.064=1\)</span></p>
+</div>
+</div><div class="column" style="width:52%;">
+<div class="fragment">
+<p>Between the values nothing new is added.</p>
+<p><span class="math inline">\(F(1.5)=\Prob(X\le1.5)\)</span>. The values at most 1.5 are 0 and 1, so <span class="math inline">\(F(1.5)=0.216+0.432=\)</span> <span class="answer">0.648</span>, the same as <span class="math inline">\(F(1)\)</span>.</p>
+</div>
+<div class="fragment">
+<p><span class="math inline">\(F(-1)=0\)</span>, because <span class="math inline">\(X\)</span> is never negative.</p>
+<p><span class="math inline">\(F(5)=1\)</span>, because <span class="math inline">\(X\)</span> is always at most 5.</p>
+</div>
+</div></div>
+</section>
+<section id="the-cdf-is-a-staircase-ex-3.3-fig-3.3" class="slide level2">
+<h2>The CDF is a staircase <span class="tag">Ex 3.3, Fig 3.3</span></h2>
+<div class="columns">
+<div class="column" style="width:45%;">
+<p><span class="math display">\[
+F(x)=\begin{cases}
+0, &amp; x&lt;0,\\
+0.216, &amp; 0\le x&lt;1,\\
+0.648, &amp; 1\le x&lt;2,\\
+0.936, &amp; 2\le x&lt;3,\\
+1, &amp; x\ge 3.
+\end{cases}
+\]</span></p>
+<p>Flat between the values of <span class="math inline">\(X\)</span>. At 0, 1, 2, 3 it jumps by <span class="math inline">\(p(x)\)</span>.</p>
+<p>The filled dot is the value of <span class="math inline">\(F\)</span> at the jump. The dashed line reads off <span class="math inline">\(F(1.5)=0.648\)</span>.</p>
+</div><div class="column" style="width:55%;">
+<div id="93133a8a" class="cell" data-fig-height="3.9" data-fig-width="5.4" data-execution_count="12">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L03-discrete-random-variables_files/figure-revealjs/cell-13-output-1.png" width="777" height="552"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+<aside class="notes">
+<p>Draw the staircase from the side-board table, filled dots on top.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="interval-rule-eq-3.1" class="slide level2">
+<h2>Interval rule <span class="tag">Eq 3.1</span></h2>
+<div class="muted small">
+<p>Given: <span class="math inline">\(F(1)=0.648\)</span>, <span class="math inline">\(F(3)=1\)</span>; <span class="math inline">\(p(2)=0.288\)</span>, <span class="math inline">\(p(3)=0.064\)</span></p>
+</div>
+<div class="columns">
+<div class="column" style="width:58%;">
+<div class="box-thm">
+<p>For <span class="math inline">\(a&lt;b\)</span>:<br>
+<span class="math inline">\(\Prob(a&lt;X\le b)=F(b)-F(a)\)</span></p>
+</div>
+<p><span class="math inline">\(\{X\le b\}\)</span> splits into <span class="math inline">\(\{X\le a\}\)</span> and <span class="math inline">\(\{a&lt;X\le b\}\)</span>, mutually exclusive. So <span class="math inline">\(F(b)=F(a)+\Prob(a&lt;X\le b)\)</span>.</p>
+<div class="fragment">
+<p>Marat, 2 or 3 customers order: <span class="math inline">\(\Prob(1&lt;X\le3)=F(3)-F(1)=1-0.648=\)</span> <span class="answer">0.352</span></p>
+<p><span class="small">Check: <span class="math inline">\(p(2)+p(3)=0.288+0.064=0.352\)</span>.</span></p>
+</div>
+</div><div class="column" style="width:42%;">
+<div id="672c5056" class="cell" data-fig-height="3.4" data-fig-width="5" data-execution_count="13">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L03-discrete-random-variables_files/figure-revealjs/cell-14-output-1.png" width="718" height="477"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="pitfall-is-the-boundary-included-eq-3.1" class="slide level2">
+<h2>Pitfall: is the boundary included? <span class="tag">Eq 3.1</span></h2>
+<div class="muted small">
+<p>Given: <span class="math inline">\(p(0)=0.216\)</span>, <span class="math inline">\(p(1)=0.432\)</span>, <span class="math inline">\(p(2)=0.288\)</span>, <span class="math inline">\(p(3)=0.064\)</span>; <span class="math inline">\(F(0)=0.216\)</span>, <span class="math inline">\(F(1)=0.648\)</span>, <span class="math inline">\(F(3)=1\)</span></p>
+</div>
+<div class="columns">
+<div class="column" style="width:42%;">
+<div id="e320226b" class="cell" data-fig-height="3.4" data-fig-width="5" data-execution_count="14">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L03-discrete-random-variables_files/figure-revealjs/cell-15-output-1.png" width="718" height="477"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:58%;">
+<div class="box-ex">
+<p><strong>Wrong.</strong> <span class="math inline">\(\Prob(1\le X\le3)=F(3)-F(1)=0.352\)</span></p>
+</div>
+<div class="fragment">
+<div class="box-def">
+<p><strong>Right.</strong> The event also contains <span class="math inline">\(X=1\)</span>: <span class="math display">\[
+\begin{aligned}
+\Prob(1\le X\le3)&amp;=F(3)-F(0)\\
+&amp;=1-0.216=0.784
+\end{aligned}
+\]</span></p>
+</div>
+<p>Eq 3.1 has <span class="math inline">\(&lt;\)</span> on the left, <span class="math inline">\(\le\)</span> on the right. Always ask: is the boundary value included?</p>
+</div>
+</div></div>
+</section>
+<section id="your-turn-cancellations-in-suzdal-exercise-1" class="slide level2 yourturn">
+<h2>Your turn: cancellations in Suzdal <span class="tag">Exercise 1</span></h2>
+<div class="columns">
+<div class="column" style="width:45%;">
+<p>A guesthouse in Suzdal gets <span class="math inline">\(X\)</span> late cancellations per weekend:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;"><span class="math inline">\(x\)</span></th>
+<th style="text-align: center;">0</th>
+<th style="text-align: center;">1</th>
+<th style="text-align: center;">2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(\Prob(X=x)\)</span></td>
+<td style="text-align: center;">0.5</td>
+<td style="text-align: center;">0.3</td>
+<td style="text-align: center;"><span class="math inline">\(c\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>No other values. Find <span class="math inline">\(c\)</span>, <span class="math inline">\(F(1.5)\)</span> and <span class="math inline">\(\Prob(X&lt;1)\)</span>.</p>
+</div><div class="column" style="width:55%;">
+<div class="fragment">
+<p><span class="math inline">\(c=1-0.5-0.3=\)</span> <span class="answer">0.2</span> (Thm 3.1)</p>
+</div>
+<div class="fragment">
+<p><span class="math inline">\(F(1.5)=\Prob(X\le1.5)=0.5+0.3=\)</span> <span class="answer">0.8</span></p>
+</div>
+<div class="fragment">
+<p><span class="math inline">\(\Prob(X&lt;1)=\Prob(X=0)=\)</span> <span class="answer">0.5</span></p>
+</div>
+</div></div>
+</section>
+<section id="break" class="slide level2">
+<h2>Break</h2>
+<p>Back in 10 minutes.</p>
+<aside class="notes">
+<p>Break after Section 3.3 (80 min). The second half starts with Section 3.4, expected value.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="expected-value-def-3.4" class="slide level2">
+<h2>Expected value <span class="tag">Def 3.4</span></h2>
+<div class="muted small">
+<p>Given: Marat, 3 customers, 0.4 each, independent; <span class="math inline">\(p(0)=0.216\)</span>, <span class="math inline">\(p(1)=0.432\)</span>, <span class="math inline">\(p(2)=0.288\)</span>, <span class="math inline">\(p(3)=0.064\)</span></p>
+</div>
+<div class="columns">
+<div class="column" style="width:52%;">
+<div class="box-def">
+<p>The <strong>expected value</strong> (also <strong>expectation</strong> or <strong>mean</strong>) of a discrete <span class="math inline">\(X\)</span> with values <span class="math inline">\(x_1,x_2,\dots\)</span> and PMF <span class="math inline">\(p\)</span> is<br>
+<span class="math inline">\(\displaystyle\E[X]=\sum_i x_i\,p(x_i)\)</span>.<br>
+We also write <span class="math inline">\(\mu\)</span> for <span class="math inline">\(\E[X]\)</span>.</p>
+</div>
+</div><div class="column" style="width:48%;">
+<p><span class="tag">How to read <span class="math inline">\(\E[X]\)</span> and <span class="math inline">\(\mu\)</span></span></p>
+<p><span class="math inline">\(\E[X]\)</span> reads “E of X”, the expected value of X. <span class="math inline">\(\E\)</span> is an operation done to <span class="math inline">\(X\)</span>, not a number times <span class="math inline">\(X\)</span>.</p>
+<p><span class="math inline">\(\mu\)</span>, the Greek letter mu, said “myoo”, is the same number as <span class="math inline">\(\E[X]\)</span>.</p>
+</div></div>
+<div class="fragment">
+<p>In words: multiply each value by its probability, then add. For Marat: <span class="math display">\[\E[X]=0\cdot p(0)+1\cdot p(1)+2\cdot p(2)+3\cdot p(3)\]</span></p>
+<aside class="notes">
+<p>Opening question for slot 2: “Marat expects 1.2 pairs. Will he ever sell 1.2 pairs?” Then do the 1,000 Saturdays on the board, next to the PMF table.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section>
+<section id="how-many-pairs-marat-should-expect-ex-3.4" class="slide level2">
+<h2>How many pairs Marat should expect <span class="tag">Ex 3.4</span></h2>
+<div class="muted small">
+<p>Given: <span class="math inline">\(p(0)=0.216\)</span>, <span class="math inline">\(p(1)=0.432\)</span>, <span class="math inline">\(p(2)=0.288\)</span>, <span class="math inline">\(p(3)=0.064\)</span></p>
+</div>
+<div class="columns">
+<div class="column" style="width:62%;">
+<p>Multiply each value by its probability:</p>
+<div class="fragment">
+<p><span class="math display">\[
+\begin{aligned}
+\E[X]&amp;=0\cdot0.216+1\cdot0.432\\
+&amp;\quad+2\cdot0.288+3\cdot0.064
+\end{aligned}
+\]</span></p>
+</div>
+<div class="fragment">
+<p><span class="math display">\[=0+0.432+0.576+0.192=1.2\]</span></p>
+</div>
+<div class="fragment">
+<p><span class="answer">Marat should expect 1.2 pairs per Saturday morning.</span></p>
+</div>
+</div><div class="column" style="width:38%;">
+<div class="fragment">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: center;"><span class="math inline">\(x\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(p(x)\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(x\cdot p(x)\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0.216</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0.432</td>
+<td style="text-align: center;">0.432</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">0.288</td>
+<td style="text-align: center;">0.576</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">0.064</td>
+<td style="text-align: center;">0.192</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"></td>
+<td style="text-align: center;">sum</td>
+<td style="text-align: center;"><strong>1.2</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div></div>
+</section>
+<section id="what-1.2-means-sec-3.4" class="slide level2">
+<h2>What 1.2 means <span class="tag">Sec 3.4</span></h2>
+<div class="muted small">
+<p>Given: <span class="math inline">\(p(0)=0.216\)</span>, <span class="math inline">\(p(1)=0.432\)</span>, <span class="math inline">\(p(2)=0.288\)</span>, <span class="math inline">\(p(3)=0.064\)</span>; <span class="math inline">\(\E[X]=1.2\)</span></p>
+</div>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p><em>A weighted average.</em> The plain average of 0, 1, 2, 3 is 1.5. But 3 is rare (0.064) and 0 is common (0.216), and the weights pull the mean down to 1.2.</p>
+<div class="fragment">
+<p><em>A long-run average.</em> In 1,000 such Saturdays, about 216 have no order, 432 one, 288 two and 64 three: <span class="math inline">\(0\cdot216+1\cdot432+2\cdot288+3\cdot64=1{,}200\)</span> pairs, 1.2 per Saturday.</p>
+</div>
+<div class="fragment">
+<p>“Expected” is not “most likely” (that is 1). Marat will never sell 1.2 pairs.</p>
+</div>
+</div><div class="column" style="width:45%;">
+<div id="95a9e3e7" class="cell" data-fig-height="3.6" data-fig-width="5" data-execution_count="15">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L03-discrete-random-variables_files/figure-revealjs/cell-16-output-1.png" width="718" height="507"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="expected-value-of-gx-eq-3.2" class="slide level2">
+<h2>Expected value of <span class="math inline">\(g(X)\)</span> <span class="tag">Eq 3.2</span></h2>
+<div class="muted small">
+<p>Given: <span class="math inline">\(p(0)=0.216\)</span>, <span class="math inline">\(p(1)=0.432\)</span>, <span class="math inline">\(p(2)=0.288\)</span>, <span class="math inline">\(p(3)=0.064\)</span></p>
+</div>
+<div class="box-thm">
+<p>For any function <span class="math inline">\(g\)</span>: <span class="math inline">\(\displaystyle \E[g(X)]=\sum_i g(x_i)\,p(x_i)\)</span></p>
+</div>
+<p>Compute the new quantity from each value of <span class="math inline">\(X\)</span>, weight it by the probability of that value, add. The reason: <span class="math inline">\(g(X)\)</span> takes the value <span class="math inline">\(g(x_i)\)</span> exactly when <span class="math inline">\(X=x_i\)</span>.</p>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:40%;">
+<p>With <span class="math inline">\(g(x)=x^2\)</span>:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;"><span class="math inline">\(x\)</span></th>
+<th style="text-align: center;">0</th>
+<th style="text-align: center;">1</th>
+<th style="text-align: center;">2</th>
+<th style="text-align: center;">3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(x^2\)</span></td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">9</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(p(x)\)</span></td>
+<td style="text-align: center;">0.216</td>
+<td style="text-align: center;">0.432</td>
+<td style="text-align: center;">0.288</td>
+<td style="text-align: center;">0.064</td>
+</tr>
+</tbody>
+</table>
+</div><div class="column" style="width:60%;">
+<p><span class="math display">\[
+\begin{aligned}
+\E[X^2]&amp;=0\cdot0.216+1\cdot0.432\\
+&amp;\quad+4\cdot0.288+9\cdot0.064\\
+&amp;=0.432+1.152+0.576=2.16
+\end{aligned}
+\]</span></p>
+</div></div>
+</div>
+</section>
+<section id="how-to-read-squares-square-roots-and-sigma-sec-3.5" class="slide level2">
+<h2>How to read squares, square roots and <span class="math inline">\(\sigma\)</span> <span class="tag">Sec 3.5</span></h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Write</th>
+<th style="text-align: left;">Say</th>
+<th style="text-align: left;">For Marat, <span class="math inline">\(\mu=1.2\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(X^2\)</span></td>
+<td style="text-align: left;">“X squared”</td>
+<td style="text-align: left;">if <span class="math inline">\(X=2\)</span>, then <span class="math inline">\(X^2=4\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\((X-\mu)^2\)</span></td>
+<td style="text-align: left;">“X minus mu, all squared”: brackets first, then square</td>
+<td style="text-align: left;">if <span class="math inline">\(X=0\)</span>: <span class="math inline">\((0-1.2)^2=(-1.2)^2=1.44\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(\sqrt{0.72}\)</span></td>
+<td style="text-align: left;">“the square root of 0.72”</td>
+<td style="text-align: left;"><span class="math inline">\(\approx0.85\)</span>, because <span class="math inline">\(0.85^2\approx0.72\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(\sigma\)</span>, <span class="math inline">\(\sigma^2\)</span></td>
+<td style="text-align: left;">“sigma”, “sigma squared”</td>
+<td style="text-align: left;">the standard deviation and the variance</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p>Units. <span class="math inline">\(X\)</span> is in pairs of glasses, and so is <span class="math inline">\(X-\mu\)</span>. Then <span class="math inline">\((X-\mu)^2\)</span> is in “pairs squared”, which means nothing to anyone. The square root brings us back to pairs.</p>
+</div>
+</section>
+<section id="variance-and-standard-deviation-def-3.5" class="slide level2">
+<h2>Variance and standard deviation <span class="tag">Def 3.5</span></h2>
+<div class="columns">
+<div class="column" style="width:57%;">
+<div class="box-def">
+<p>With <span class="math inline">\(\mu=\E[X]\)</span>, the <strong>variance</strong> of <span class="math inline">\(X\)</span> is <span class="math display">\[
+\begin{aligned}
+\Var(X)&amp;=\E\big[(X-\mu)^2\big]\\
+&amp;=\sum_i (x_i-\mu)^2\,p(x_i).
+\end{aligned}
+\]</span> <strong>Standard deviation</strong>: <span class="math inline">\(\sigma=\operatorname{SD}(X)=\sqrt{\Var(X)}\)</span>.</p>
+</div>
+<div class="fragment">
+<p>Why squares: plain deviations cancel on average. Squares make every deviation count, big ones much more.</p>
+</div>
+</div><div class="column" style="width:43%;">
+<div id="9b9b15ec" class="cell" data-fig-height="3.4" data-fig-width="5" data-execution_count="16">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L03-discrete-random-variables_files/figure-revealjs/cell-17-output-1.png" width="717" height="476"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="marats-variance-by-the-definition-ex-3.5" class="slide level2">
+<h2>Marat’s variance by the definition <span class="tag">Ex 3.5</span></h2>
+<div class="muted small">
+<p>Given: <span class="math inline">\(p(0)=0.216\)</span>, <span class="math inline">\(p(1)=0.432\)</span>, <span class="math inline">\(p(2)=0.288\)</span>, <span class="math inline">\(p(3)=0.064\)</span>; <span class="math inline">\(\mu=1.2\)</span></p>
+</div>
+<p>One row per value: subtract 1.2, square, multiply by <span class="math inline">\(p(x)\)</span>.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: center;"><span class="math inline">\(x\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(x-1.2\)</span></th>
+<th style="text-align: center;"><span class="math inline">\((x-1.2)^2\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(p(x)\)</span></th>
+<th style="text-align: center;"><span class="math inline">\((x-1.2)^2\,p(x)\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">0</td>
+<td style="text-align: center;"><span class="math inline">\(-1.2\)</span></td>
+<td style="text-align: center;">1.44</td>
+<td style="text-align: center;">0.216</td>
+<td style="text-align: center;">0.31104</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1</td>
+<td style="text-align: center;"><span class="math inline">\(-0.2\)</span></td>
+<td style="text-align: center;">0.04</td>
+<td style="text-align: center;">0.432</td>
+<td style="text-align: center;">0.01728</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">0.8</td>
+<td style="text-align: center;">0.64</td>
+<td style="text-align: center;">0.288</td>
+<td style="text-align: center;">0.18432</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">1.8</td>
+<td style="text-align: center;">3.24</td>
+<td style="text-align: center;">0.064</td>
+<td style="text-align: center;">0.20736</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p>Add the last column: <span class="math display">\[\Var(X)=0.31104+0.01728+0.18432+0.20736=0.72\]</span></p>
+</div>
+</section>
+<section id="shortcut-formula-for-the-variance-thm-3.2-ex-3.5" class="slide level2">
+<h2>Shortcut formula for the variance <span class="tag">Thm 3.2, Ex 3.5</span></h2>
+<div class="muted small">
+<p>Given: <span class="math inline">\(\E[X^2]=2.16\)</span> (from Eq 3.2); <span class="math inline">\(\mu=\E[X]=1.2\)</span></p>
+</div>
+<div class="columns">
+<div class="column" style="width:52%;">
+<div class="box-thm">
+<p><span class="math display">\[\Var(X)=\E[X^2]-\mu^2\]</span></p>
+</div>
+<p><span class="muted small">Idea: expand the square. Proof: see the book, Section 3.5.</span></p>
+<div class="fragment">
+<p><span class="math display">\[
+\begin{aligned}
+\Var(X)&amp;=2.16-1.2^2\\
+&amp;=2.16-1.44=0.72
+\end{aligned}
+\]</span></p>
+</div>
+<div class="fragment">
+<p><span class="math inline">\(\sigma=\sqrt{0.72}\approx\)</span> <span class="answer">0.85 pairs</span>. Same 0.72 as the table.</p>
+</div>
+</div><div class="column" style="width:48%;">
+<div id="1ef10c70" class="cell" data-fig-height="3.4" data-fig-width="5" data-execution_count="17">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L03-discrete-random-variables_files/figure-revealjs/cell-18-output-1.png" width="724" height="476"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="pitfall-ex2-is-not-ex2-thm-3.2" class="slide level2">
+<h2>Pitfall: <span class="math inline">\(\E[X^2]\)</span> is not <span class="math inline">\((\E[X])^2\)</span> <span class="tag">Thm 3.2</span></h2>
+<div class="muted small">
+<p>Given: <span class="math inline">\(\E[X^2]=2.16\)</span>; <span class="math inline">\(\E[X]=1.2\)</span></p>
+</div>
+<div class="columns">
+<div class="column" style="width:46%;">
+<div id="1b936d4e" class="cell" data-fig-height="3.2" data-fig-width="5" data-execution_count="18">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L03-discrete-random-variables_files/figure-revealjs/cell-19-output-1.png" width="716" height="447"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:54%;">
+<div class="box-ex">
+<p><strong>Wrong.</strong> <span class="math inline">\(\E[X^2]=(\E[X])^2=1.44\)</span></p>
+</div>
+<div class="box-def">
+<p><strong>Right.</strong> <span class="math inline">\(\E[X^2]=2.16\)</span>, <span class="math inline">\((\E[X])^2=1.44\)</span>. The gap <em>is</em> the variance: <span class="math inline">\(0.72\)</span>.</p>
+</div>
+<div class="fragment">
+<p>The gap is never negative. If your variance comes out negative, you subtracted the wrong way round.</p>
+</div>
+</div></div>
+</section>
+<section id="your-turn-suzdal-mean-and-variance-exercise-1" class="slide level2 yourturn">
+<h2>Your turn: Suzdal, mean and variance <span class="tag">Exercise 1</span></h2>
+<div class="columns">
+<div class="column" style="width:44%;">
+<p>Late cancellations <span class="math inline">\(X\)</span> per weekend at the Suzdal guesthouse:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;"><span class="math inline">\(x\)</span></th>
+<th style="text-align: center;">0</th>
+<th style="text-align: center;">1</th>
+<th style="text-align: center;">2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(\Prob(X=x)\)</span></td>
+<td style="text-align: center;">0.5</td>
+<td style="text-align: center;">0.3</td>
+<td style="text-align: center;">0.2</td>
+</tr>
+</tbody>
+</table>
+<p>Find <span class="math inline">\(\E[X]\)</span> and <span class="math inline">\(\Var(X)\)</span>. Use the shortcut.</p>
+</div><div class="column" style="width:56%;">
+<div class="fragment">
+<p><span class="math inline">\(\E[X]=0\cdot0.5+1\cdot0.3+2\cdot0.2=\)</span> <span class="answer">0.7</span></p>
+</div>
+<div class="fragment">
+<p><span class="math inline">\(\E[X^2]=0\cdot0.5+1\cdot0.3+4\cdot0.2=1.1\)</span></p>
+</div>
+<div class="fragment">
+<p><span class="math inline">\(\Var(X)=1.1-0.7^2=1.1-0.49=\)</span> <span class="answer">0.61</span></p>
+</div>
+</div></div>
+</section>
+<section id="marat-thinks-in-rubles-sec-3.6" class="slide level2">
+<h2>Marat thinks in rubles <span class="tag">Sec 3.6</span></h2>
+<div class="muted small">
+<p>Given: 2,000 rubles per pair; 3 free tests at 500 rubles; <span class="math inline">\(p(0)=0.216\)</span>, <span class="math inline">\(p(1)=0.432\)</span>, <span class="math inline">\(p(2)=0.288\)</span>, <span class="math inline">\(p(3)=0.064\)</span></p>
+</div>
+<p>The three tests cost <span class="math inline">\(3\cdot500=1{,}500\)</span> rubles whatever happens. Marat’s profit for the morning, in rubles: <span class="math display">\[Y=2000X-1500\]</span></p>
+<div class="fragment">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;"><span class="math inline">\(x\)</span></th>
+<th style="text-align: center;">0</th>
+<th style="text-align: center;">1</th>
+<th style="text-align: center;">2</th>
+<th style="text-align: center;">3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">profit <span class="math inline">\(y=2000x-1500\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(-1{,}500\)</span></td>
+<td style="text-align: center;">500</td>
+<td style="text-align: center;">2,500</td>
+<td style="text-align: center;">4,500</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">probability</td>
+<td style="text-align: center;">0.216</td>
+<td style="text-align: center;">0.432</td>
+<td style="text-align: center;">0.288</td>
+<td style="text-align: center;">0.064</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="fragment">
+<p>Same probabilities, new values. The next theorem gets the mean and variance of <span class="math inline">\(Y\)</span> straight from <span class="math inline">\(\E[X]\)</span> and <span class="math inline">\(\Var(X)\)</span>.</p>
+</div>
+</section>
+<section id="expectation-and-variance-of-axb-thm-3.3" class="slide level2">
+<h2>Expectation and variance of <span class="math inline">\(aX+b\)</span> <span class="tag">Thm 3.3</span></h2>
+<div class="columns">
+<div class="column" style="width:54%;">
+<div class="box-thm">
+<p>Let <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> be numbers. Then <span class="math display">\[
+\begin{aligned}
+\E[aX+b]&amp;=a\,\E[X]+b,\\
+\Var(aX+b)&amp;=a^2\Var(X),\\
+\operatorname{SD}(aX+b)&amp;=|a|\operatorname{SD}(X).
+\end{aligned}
+\]</span></p>
+</div>
+<p><span class="muted small">Idea: the deviation of <span class="math inline">\(aX+b\)</span> from its mean is <span class="math inline">\(a(X-\mu)\)</span>. The <span class="math inline">\(b\)</span> is gone, and squaring turns <span class="math inline">\(a\)</span> into <span class="math inline">\(a^2\)</span>. Proof: see the book, Section 3.6.</span></p>
+<p><span class="muted small">Lecture 2: <span class="math inline">\(|B|\)</span> around a <em>set</em> was its number of elements. Around a <em>number</em> the bars mean absolute value.</span></p>
+</div><div class="column" style="width:46%;">
+<p><span class="tag">How to read <span class="math inline">\(|a|\)</span></span></p>
+<p><span class="math inline">\(|a|\)</span>, “the absolute value of a”: <span class="math inline">\(a\)</span> without its sign.</p>
+<div id="9b9e03e6" class="cell" data-fig-height="1.5" data-fig-width="5" data-execution_count="19">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L03-discrete-random-variables_files/figure-revealjs/cell-20-output-1.png" width="717" height="192"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><span class="math inline">\(\operatorname{SD}(-X)=|-1|\cdot\operatorname{SD}(X)=\operatorname{SD}(X)\)</span></p>
+</div></div>
+</section>
+<section id="marats-profit-in-rubles-ex-3.6" class="slide level2">
+<h2>Marat’s profit in rubles <span class="tag">Ex 3.6</span></h2>
+<div class="muted small">
+<p>Given: <span class="math inline">\(Y=2000X-1500\)</span> rubles; <span class="math inline">\(\E[X]=1.2\)</span>; <span class="math inline">\(\Var(X)=0.72\)</span>; <span class="math inline">\(\operatorname{SD}(X)=\sqrt{0.72}\approx0.85\)</span></p>
+</div>
+<p>Here <span class="math inline">\(a=2000\)</span> and <span class="math inline">\(b=-1500\)</span>. By Thm 3.3:</p>
+<div class="fragment">
+<p><span class="math display">\[\E[Y]=2000\cdot1.2-1500=2400-1500=900\]</span></p>
+</div>
+<div class="fragment">
+<p><span class="math display">\[\Var(Y)=2000^2\cdot0.72=4{,}000{,}000\cdot0.72=2{,}880{,}000\]</span></p>
+</div>
+<div class="fragment">
+<p><span class="math display">\[\operatorname{SD}(Y)=2000\cdot\sqrt{0.72}\approx1{,}697\]</span></p>
+</div>
+<div class="fragment">
+<p><span class="answer">Expected profit 900 rubles, standard deviation about 1,697 rubles.</span></p>
+</div>
+</section>
+<section id="what-the-profit-numbers-say-ex-3.6" class="slide level2">
+<h2>What the profit numbers say <span class="tag">Ex 3.6</span></h2>
+<div class="muted small">
+<p>Given: <span class="math inline">\(\E[Y]=900\)</span>; <span class="math inline">\(\Var(Y)=2{,}880{,}000\)</span>; <span class="math inline">\(\operatorname{SD}(Y)\approx1{,}697\)</span>; bars: each profit and its probability</p>
+</div>
+<div class="columns">
+<div class="column" style="width:45%;">
+<p>The variance, 2,880,000, is in “rubles squared”, a number nobody can picture. Report the standard deviation.</p>
+<div class="fragment">
+<p>The swing (1,697) is almost twice the mean (900).</p>
+</div>
+<div class="fragment">
+<p>About one Saturday in five (probability 0.216, no orders) is a <span class="answer">loss of 1,500 rubles</span>.</p>
+</div>
+</div><div class="column" style="width:55%;">
+<div id="428173b5" class="cell" data-fig-height="3.4" data-fig-width="5.4" data-execution_count="20">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L03-discrete-random-variables_files/figure-revealjs/cell-21-output-1.png" width="780" height="477"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="pitfall-b-drops-out-a-is-squared-thm-3.3" class="slide level2">
+<h2>Pitfall: <span class="math inline">\(b\)</span> drops out, <span class="math inline">\(a\)</span> is squared <span class="tag">Thm 3.3</span></h2>
+<div class="muted small">
+<p>Given: <span class="math inline">\(Y=2000X-1500\)</span>; <span class="math inline">\(\Var(X)=0.72\)</span></p>
+</div>
+<div class="columns">
+<div class="column" style="width:46%;">
+<div id="16faa2b1" class="cell" data-fig-height="3.4" data-fig-width="5" data-execution_count="21">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L03-discrete-random-variables_files/figure-revealjs/cell-22-output-1.png" width="718" height="476"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:54%;">
+<div class="box-ex">
+<p><strong>Wrong.</strong> <span class="math inline">\(\Var(Y)=2000\cdot0.72-1500\)</span></p>
+</div>
+<div class="box-def">
+<p><strong>Right.</strong> <span class="math inline">\(\Var(Y)=2000^2\cdot0.72=2{,}880{,}000\)</span></p>
+</div>
+<p>The 1,500 rubles shift every profit by the same amount: the mean moves, the spread does not.</p>
+<div class="fragment">
+<p><span class="math inline">\(a\)</span> is squared, so its sign goes too: <span class="math inline">\(\Var(-X)=\Var(X)\)</span>, never <span class="math inline">\(-\Var(X)\)</span>.</p>
+</div>
+</div></div>
+<aside class="notes">
+<p>Lecture 5 uses this theorem for the normal distribution, so it has to be right now.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="bernoulli-distribution-def-3.6" class="slide level2">
+<h2>Bernoulli distribution <span class="tag">Def 3.6</span></h2>
+<div class="columns">
+<div class="column" style="width:56%;">
+<div class="box-def">
+<p><span class="math inline">\(X\)</span> has the <strong>Bernoulli distribution</strong> with parameter <span class="math inline">\(p\)</span>, <span class="math inline">\(0\le p\le1\)</span>, if it takes only two values: <span class="math inline">\(\Prob(X=1)=p\)</span>, <span class="math inline">\(\Prob(X=0)=1-p\)</span>. The value 1 is a <strong>success</strong>, 0 a <strong>failure</strong>.</p>
+</div>
+<p><span class="small">A <strong>parameter</strong> picks one member of a family, such as Bernoulli(0.4) or Bernoulli(0.9). “Success” is just what we count, even a default.</span></p>
+<div class="fragment">
+<p><span class="math inline">\(\E[X]=0\cdot(1-p)+1\cdot p=p\)</span>, <span class="math inline">\(\;\E[X^2]=p\)</span>, so <span class="math inline">\(\Var(X)=p-p^2=p(1-p)\)</span>.</p>
+</div>
+</div><div class="column" style="width:44%;">
+<div id="c93ddfee" class="cell" data-fig-height="3" data-fig-width="5" data-execution_count="22">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L03-discrete-random-variables_files/figure-revealjs/cell-23-output-1.png" width="718" height="416"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Marat’s customer: mean <span class="answer">0.4</span>, variance <span class="math inline">\(0.4\cdot0.6=\)</span> <span class="answer">0.24</span>.</p>
+</div>
+</div></div>
+</section>
+<section id="binomial-distribution-def-3.7-eq-3.3" class="slide level2">
+<h2>Binomial distribution <span class="tag">Def 3.7, Eq 3.3</span></h2>
+<div class="box-def">
+<p>Repeat a trial <span class="math inline">\(n\)</span> times under the four conditions below, and let <span class="math inline">\(X\)</span> be the number of successes. Then <span class="math inline">\(X\)</span> has the <strong>binomial distribution</strong>, <span class="math inline">\(X\sim\operatorname{Bin}(n,p)\)</span>, and <span class="math display">\[\Prob(X=k)=\binom{n}{k}p^k(1-p)^{n-k},\qquad k=0,1,\dots,n.\]</span></p>
+</div>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Condition</th>
+<th style="text-align: left;">Marat</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">1. <span class="math inline">\(n\)</span> is fixed in advance</td>
+<td style="text-align: left;">3 customers have booked, <span class="math inline">\(n=3\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2. each trial: success or failure</td>
+<td style="text-align: left;">orders (O) or does not (N)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">3. the same <span class="math inline">\(p\)</span> in every trial</td>
+<td style="text-align: left;">0.4 for each customer</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">4. the trials are independent</td>
+<td style="text-align: left;">they don’t know each other</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="how-to-read-xsimoperatornamebinnp-and-pk1-pn-k-sec-3.7" class="slide level2">
+<h2>How to read <span class="math inline">\(X\sim\operatorname{Bin}(n,p)\)</span> and <span class="math inline">\(p^k(1-p)^{n-k}\)</span> <span class="tag">Sec 3.7</span></h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Write</th>
+<th style="text-align: left;">Say, and what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(\sim\)</span> (tilde)</td>
+<td style="text-align: left;">“has the distribution”</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(X\sim\operatorname{Bin}(3,\,0.4)\)</span></td>
+<td style="text-align: left;">“X has the binomial distribution with <span class="math inline">\(n=3\)</span>, <span class="math inline">\(p=0.4\)</span>”</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(k\)</span></td>
+<td style="text-align: left;">how many successes we ask about</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(p^k\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(p\)</span> times itself <span class="math inline">\(k\)</span> times; <span class="math inline">\(p^0=1\)</span></td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p>Marat, <span class="math inline">\(k=1\)</span>: <span class="math inline">\(\;p^1(1-p)^{3-1}=0.4\cdot0.6^2=0.4\cdot0.36=0.144\)</span>, one path such as ONN.</p>
+<p><span class="math inline">\(\binom31=3\)</span> such paths (ONN, NON, NNO): <span class="math inline">\(\;\Prob(X=1)=3\cdot0.144=\)</span> <span class="answer">0.432</span></p>
+<p><span class="muted small">A Bernoulli(<span class="math inline">\(p\)</span>) variable is <span class="math inline">\(\operatorname{Bin}(1,p)\)</span>.</span></p>
+</div>
+</section>
+<section id="why-the-binomial-formula-works-eq-3.3" class="slide level2">
+<h2>Why the binomial formula works <span class="tag">Eq 3.3</span></h2>
+<div class="columns">
+<div class="column" style="width:52%;">
+<p>A sequence of <span class="math inline">\(n\)</span> trials with <span class="math inline">\(k\)</span> successes and <span class="math inline">\(n-k\)</span> failures has probability <span class="math inline">\(p^k(1-p)^{n-k}\)</span>, by independence (Def 2.3).</p>
+<div class="fragment">
+<p>The number of such sequences is the number of ways to choose the <span class="math inline">\(k\)</span> positions of the successes: <span class="math inline">\(\binom nk\)</span> (Def 1.8).</p>
+</div>
+<div class="fragment">
+<p>Different sequences are mutually exclusive, so we add <span class="math inline">\(\binom nk\)</span> equal probabilities.</p>
+</div>
+</div><div class="column" style="width:48%;">
+<div id="78121f9e" class="cell" data-fig-height="3.2" data-fig-width="5" data-execution_count="23">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L03-discrete-random-variables_files/figure-revealjs/cell-24-output-1.png" width="717" height="447"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><span class="small"><span class="math inline">\(\binom32\cdot0.4^2\cdot0.6=0.288\)</span>, as in Ex 3.2.</span></p>
+</div></div>
+</section>
+<section id="mean-and-variance-of-the-binomial-thm-3.4" class="slide level2">
+<h2>Mean and variance of the binomial <span class="tag">Thm 3.4</span></h2>
+<div class="columns">
+<div class="column" style="width:58%;">
+<div class="box-thm">
+<p>If <span class="math inline">\(X\sim\operatorname{Bin}(n,p)\)</span>, then <span class="math display">\[\E[X]=np,\qquad \Var(X)=np(1-p).\]</span></p>
+</div>
+<p><span class="muted small">Idea: <span class="math inline">\(X_j=1\)</span> if trial <span class="math inline">\(j\)</span> is a success, 0 if not. Each <span class="math inline">\(X_j\)</span> is Bernoulli(<span class="math inline">\(p\)</span>), <span class="math inline">\(X=X_1+\dots+X_n\)</span>. Lecture 6 proves that means add (variances too, for independent trials).</span></p>
+<div class="fragment">
+<p>Marat, <span class="math inline">\(n=3\)</span>, <span class="math inline">\(p=0.4\)</span>: <span class="math inline">\(\E[X]=3\cdot0.4=\)</span> <span class="answer">1.2</span>, <span class="math inline">\(\Var(X)=3\cdot0.4\cdot0.6=\)</span> <span class="answer">0.72</span></p>
+<p>The same as Ex 3.4 and Ex 3.5, without the table.</p>
+</div>
+</div><div class="column" style="width:42%;">
+<div id="fe1ccfce" class="cell" data-fig-height="2.8" data-fig-width="5" data-execution_count="24">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L03-discrete-random-variables_files/figure-revealjs/cell-25-output-1.png" width="717" height="387"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="your-turn-binomial-or-not-exercise-3" class="slide level2 yourturn">
+<h2>Your turn: binomial or not? <span class="tag">Exercise 3</span></h2>
+<p>One word each, then one line of reason.</p>
+<ol type="a">
+<li><p>The number of heads in 6 tosses of a fair coin.</p></li>
+<li><p>The number of faulty bulbs among 2 bulbs taken without putting back from a box of 12 that has 3 faulty ones.</p></li>
+<li><p>The number of customers Marat tests until the first one orders.</p></li>
+</ol>
+<div class="fragment">
+<ol type="a">
+<li><p><span class="answer">Yes</span>, <span class="math inline">\(\operatorname{Bin}(6,\,0.5)\)</span>.</p></li>
+<li><p><span class="answer">No</span>: after the first draw <span class="math inline">\(p\)</span> changes to <span class="math inline">\(2/11\)</span> or <span class="math inline">\(3/11\)</span> (Lecture 2), so the trials are not independent.</p></li>
+<li><p><span class="answer">No</span>: the number of trials is not fixed (geometric distribution, Lecture 4).</p></li>
+</ol>
+</div>
+</section>
+<section id="your-turn-test-drives-in-kaliningrad-exercise-4" class="slide level2 yourturn">
+<h2>Your turn: test drives in Kaliningrad <span class="tag">Exercise 4</span></h2>
+<p>Each of 5 visitors to a car showroom in Kaliningrad books a test drive with probability 0.2, independently of the others. <span class="math inline">\(X\)</span> is the number who book.</p>
+<p>Find <span class="math inline">\(\Prob(X=2)\)</span>, <span class="math inline">\(\Prob(X\ge1)\)</span>, <span class="math inline">\(\E[X]\)</span> and <span class="math inline">\(\Var(X)\)</span>.</p>
+<div class="fragment">
+<p><span class="math inline">\(X\sim\operatorname{Bin}(5,\,0.2)\)</span>. <span class="math inline">\(\Prob(X=2)=\binom52\cdot0.2^2\cdot0.8^3=10\cdot0.04\cdot0.512=\)</span> <span class="answer">0.2048</span></p>
+</div>
+<div class="fragment">
+<p><span class="math inline">\(\Prob(X\ge1)=1-\Prob(X=0)=1-0.8^5=1-0.32768\approx\)</span> <span class="answer">0.672</span></p>
+</div>
+<div class="fragment">
+<p><span class="math inline">\(\E[X]=5\cdot0.2=\)</span> <span class="answer">1</span>, <span class="math inline">\(\quad\Var(X)=5\cdot0.2\cdot0.8=\)</span> <span class="answer">0.8</span></p>
+<aside class="notes">
+<p>The full practice is in Seminar 3, including the first binomial with a larger n.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+
+</div>
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="img/logo-hse-wide.png" class="slide-logo"></p>
+<div class="footer footer-default">
+<p>Probability Theory and Mathematical Statistics · HSE 2026/27</p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="L03-discrete-random-variables_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="L03-discrete-random-variables_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="L03-discrete-random-variables_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="L03-discrete-random-variables_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="L03-discrete-random-variables_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="L03-discrete-random-variables_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="L03-discrete-random-variables_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="L03-discrete-random-variables_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="L03-discrete-random-variables_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="L03-discrete-random-variables_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="L03-discrete-random-variables_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":false},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1280,
+
+        height: 720,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 6.0e-2,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

@@ -1,0 +1,1844 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="L01-probability-basics_files/libs/clipboard/clipboard.min.js"></script>
+<script src="L01-probability-basics_files/libs/quarto-html/tabby.min.js"></script>
+<script src="L01-probability-basics_files/libs/quarto-html/popper.min.js"></script>
+<script src="L01-probability-basics_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="L01-probability-basics_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="L01-probability-basics_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="L01-probability-basics_files/libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.18">
+
+  <meta name="dcterms.date" content="2026-11-07">
+  <title>Events, probability and counting</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="L01-probability-basics_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="L01-probability-basics_files/libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="L01-probability-basics_files/libs/revealjs/dist/theme/quarto-163e8e93e1b23b4468d8c093fdfe744f.css">
+  <link href="L01-probability-basics_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="L01-probability-basics_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="L01-probability-basics_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="L01-probability-basics_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="L01-probability-basics_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="L01-probability-basics_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Events, probability and counting</h1>
+  <p class="subtitle">Lecture 1 · Probability Theory and Mathematical Statistics</p>
+
+<div class="quarto-title-authors">
+</div>
+
+  <p class="date">2026-11-07</p>
+</section>
+<section id="will-ilya-sell-at-least-25-croissants" class="slide level2">
+<h2>Will Ilya sell at least 25 croissants?</h2>
+<!-- Math macros for HTML/revealjs (MathJax). PDF gets the same ones from _shared/preamble.tex. Keep both in sync. -->
+<div class="hidden">
+<p><span class="math display">\[
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\Corr}{\operatorname{Corr}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\R}{\mathbb{R}}
+\]</span></p>
+</div>
+<!--
+PLAN  NN | title | pattern | chapter item | visual
+01 | Will Ilya sell 25 croissants? | hook | intro | number line 0-30, "at least 25" shaded
+02 | Random experiment, sample space | item | Def 1.1 | outcomes inside Omega
+03 | Four sample spaces | worked | Ex 1.1 | table
+04 | Two customers in order | picture | Ex 1.1(2) | tree diagram
+05 | A list or an interval | explain | after Ex 1.1 | dots vs interval
+06 | Coarse sample space | pitfall | Sec 1.1 | wrong vs right columns
+07 | Event | item | Def 1.2 | Omega with A
+08 | Set operations | item | Table 1.1 | table
+09 | The four operations | picture | Fig 1.1 | venn panels
+10 | Promo code and app | worked | Ex 1.2 | venn
+11 | Mutually exclusive, partition | item | Def 1.3 | disjoint sets, partition
+12 | De Morgan | item | Thm 1.1 | two venn panels
+13 | Your turn: A^c u B^c | yourturn | notes cue | venn after pause
+14 | Where the axioms come from | explain | Sec 1.3 | box with 3 axioms
+15 | Consequences | item | Thm 1.2 | nested sets picture
+16 | Why the consequences hold | explain | proof of Thm 1.2 | short steps
+17 | Inclusion-exclusion | item | Thm 1.2(4), Eq 1.1 | venn double counted
+18 | Three events | item | Eq 1.1 | formula, 3-circle venn
+19 | Promo and app with numbers | worked | Ex 1.3 | venn with numbers
+20 | Ex 1.3 solution | worked | Ex 1.3 | steps
+21 | Pitfall: forget the overlap | pitfall | after Thm 1.2 | wrong vs right
+22 | At least one: complement | explain | complement rule | none/at least one bar
+23 | Classical probability | item | Def 1.5 | box + grid
+24 | Two dice | worked | Ex 1.4, Fig 1.2 | grid
+25 | Sums are not equally likely | pitfall | Sec 1.4 | bar chart of ways
+26 | Coin twice, and "buys or not" | pitfall | Sec 1.4 | table
+27 | Your turn: sum at least 10 | yourturn | Exercise 1 | grid after pause
+28 | Break | break | cue |
+29 | Product rule | item | Thm 1.3 | tree
+30 | PIN codes | worked | Ex 1.5 | table, n^k vs no repetition
+31 | Permutation | item | Def 1.6 | van route with 5 numbered stops
+32 | Arrangement | item | Def 1.7 | shelf with 12/11/10 choices
+33 | Combination | item | Def 1.8 | 12 tea boxes, 3 picked
+34 | Other names and symbols | explain | text after Def 1.8 | table of names and symbols
+35 | Orderings and selections | compare | Thm 1.4 | table perm / arr / comb
+36 | Binomial coefficient facts | explain | after Thm 1.4 | Pascal-like row bar
+37 | Does order matter? | explain | after Thm 1.4 | table gold vs team
+38 | Lottery | worked | Ex 1.6 | number grid 45
+39 | Expired packs: set-up | worked | Ex 1.7 | 20 packs picture
+40 | Expired packs (a), (b) | worked | Ex 1.7 | steps
+41 | Expired packs (c) | worked | Ex 1.7 | bar of three answers
+42 | Your turn: repeated letters | yourturn | Exercise 4 | none
+43 | Geometric probability | item | Def 1.9 | segment, region
+44 | Courier | worked | Ex 1.8 | timeline
+45 | Two people, one cafe: set-up | worked | Ex 1.9 | square + band
+46 | Two people: solution | worked | Ex 1.9 | steps
+47 | Probability zero, not impossible | explain | closing remark | point on interval
+48 | Your turn: circle in square | yourturn | Exercise 5 | figure after pause
+49 | Your turn: the manager's claim | yourturn | Exercise 2 | none
+
+CUT: proofs of Thm 1.1, 1.3 (one line of idea each); proof of Thm 1.2 shortened to the key step; the remark on
+restricting events in infinite spaces; the check that classical probability satisfies the axioms (notes);
+Exercise 3 (Ilya before Priya); the closing pointer to Seminar 1 goes in notes.
+-->
+<div class="columns">
+<div class="column" style="width:52%;">
+<p>Ilya opens a coffee stand near Paveletskaya station and bakes <strong>30 croissants</strong> every morning.</p>
+<div class="fragment">
+<p>Some days he sells 22. Some days all 30 by ten o’clock.</p>
+</div>
+<div class="fragment">
+<p>“How many will he sell?” has no certain answer. <span class="answer">How likely is at least 25?</span> That he can plan around: dough, a second person for the rush.</p>
+</div>
+</div><div class="column" style="width:48%;">
+<div id="89825c30" class="cell" data-fig-height="3.4" data-fig-width="5" data-execution_count="2">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L01-probability-basics_files/figure-revealjs/cell-3-output-1.png" width="717" height="477"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+<aside class="notes">
+<p>Ask the room for a number for tomorrow and write three different answers on the board. None is “the” answer. Timing: 0:00-0:35 sections 1.1-1.2, 0:35-1:05 axioms, 1:05-1:20 classical probability. Break at 1:20. Second slot: counting 50 min, geometric 20 min, exercises 10 min.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="random-experiment-and-sample-space-def-1.1" class="slide level2">
+<h2>Random experiment and sample space <span class="tag">Def 1.1</span></h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<div class="box-def">
+<p>A <strong>random experiment</strong> is a procedure whose result we cannot predict with certainty, but whose possible results we can list in advance.</p>
+<p>Each possible result is an <strong>outcome</strong>. The set of all outcomes is the <strong>sample space</strong> <span class="math inline">\(\Omega\)</span>.</p>
+</div>
+<div class="fragment">
+<p>The list is something you <strong>choose</strong>. It depends on what you decide to record.</p>
+</div>
+</div><div class="column" style="width:45%;">
+<div id="11a7ec06" class="cell" data-fig-height="3.6" data-fig-width="5" data-execution_count="3">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L01-probability-basics_files/figure-revealjs/cell-4-output-1.png" width="702" height="507"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="four-experiments-four-sample-spaces-ex-1.1" class="slide level2">
+<h2>Four experiments, four sample spaces <span class="tag">Ex 1.1</span></h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Experiment</th>
+<th>Sample space <span class="math inline">\(\Omega\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>One customer buys (<span class="math inline">\(B\)</span>) or leaves (<span class="math inline">\(L\)</span>)</td>
+<td><span class="math inline">\(\{B,\ L\}\)</span></td>
+</tr>
+<tr class="even">
+<td>Two customers, in order</td>
+<td><span class="math inline">\(\{BB,\ BL,\ LB,\ LL\}\)</span></td>
+</tr>
+<tr class="odd">
+<td>Croissants sold in a day</td>
+<td><span class="math inline">\(\{0,1,2,\dots,30\}\)</span></td>
+</tr>
+<tr class="even">
+<td>Minutes a customer waits in the queue</td>
+<td><span class="math inline">\([0,\infty)\)</span></td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p><span class="math inline">\(BL\)</span> is not the same outcome as <span class="math inline">\(LB\)</span>: we record <strong>both</strong> customers, in order.</p>
+</div>
+<div class="fragment">
+<p>The last space is not a list at all. It is a whole interval of numbers.</p>
+</div>
+</section>
+<section id="two-customers-in-order-ex-1.1" class="slide level2">
+<h2>Two customers in order <span class="tag">Ex 1.1</span></h2>
+<div class="columns">
+<div class="column" style="width:45%;">
+<p>Each customer is <span class="math inline">\(B\)</span> or <span class="math inline">\(L\)</span>. Record the first, then the second.</p>
+<div class="fragment">
+<p>Two stages, two choices each: <strong>four</strong> outcomes.</p>
+</div>
+<div class="fragment">
+<p><span class="answer"><span class="math inline">\(\Omega=\{BB,\ BL,\ LB,\ LL\}\)</span></span></p>
+</div>
+</div><div class="column" style="width:55%;">
+<div id="3a762b11" class="cell" data-fig-height="3.6" data-fig-width="6" data-execution_count="4">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L01-probability-basics_files/figure-revealjs/cell-5-output-1.png" width="867" height="507"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="a-list-or-an-interval" class="slide level2">
+<h2>A list or an interval</h2>
+<div class="columns">
+<div class="column" style="width:48%;">
+<p>Croissants sold: <span class="math inline">\(\{0,1,2,\dots,30\}\)</span>. Even without a limit, <span class="math inline">\(\{0,1,2,\dots\}\)</span> is an infinite <strong>list</strong>.</p>
+<div class="fragment">
+<p>Waiting time: <span class="math inline">\([0,\infty)\)</span>. You cannot number the possible waiting times one by one. This is a different kind of infinity.</p>
+</div>
+<div class="fragment">
+<p><span class="muted">We keep this difference until Lecture 4.</span></p>
+</div>
+</div><div class="column" style="width:52%;">
+<div id="acd9e6ba" class="cell" data-fig-height="3.6" data-fig-width="5.5" data-execution_count="5">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L01-probability-basics_files/figure-revealjs/cell-6-output-1.png" width="810" height="507"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="a-habit-to-avoid-too-coarse-an-omega-sec-1.1" class="slide level2">
+<h2>A habit to avoid: too coarse an <span class="math inline">\(\Omega\)</span> <span class="tag">Sec 1.1</span></h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="box-ex">
+<p><strong>Wrong.</strong> Record only how many of two customers bought: <span class="math inline">\(\{0,1,2\}\)</span>.</p>
+</div>
+<p>We lose the difference between <span class="math inline">\(BL\)</span> and <span class="math inline">\(LB\)</span>.</p>
+<div class="fragment">
+<p>The three remaining outcomes are <span class="answer">no longer equally likely</span>.</p>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="box-def">
+<p><strong>Right.</strong> Keep the finest description: <span class="math inline">\(\{BB, BL, LB, LL\}\)</span>.</p>
+</div>
+<p>“One bought” is the event <span class="math inline">\(\{BL, LB\}\)</span>: two outcomes out of four.</p>
+<div class="fragment">
+<p><span class="muted">We meet this trap again with dice.</span></p>
+</div>
+</div></div>
+</section>
+<section id="event-def-1.2" class="slide level2">
+<h2>Event <span class="tag">Def 1.2</span></h2>
+<div class="columns">
+<div class="column" style="width:52%;">
+<div class="box-def">
+<p>An <strong>event</strong> is a set of outcomes, a subset <span class="math inline">\(A\subseteq\Omega\)</span>.</p>
+<p><span class="math inline">\(A\)</span> <strong>occurs</strong> if the outcome of the experiment belongs to <span class="math inline">\(A\)</span>.</p>
+</div>
+<div class="fragment">
+<ul>
+<li><span class="math inline">\(\Omega\)</span>: the <strong>sure event</strong>, something always happens</li>
+<li><span class="math inline">\(\varnothing\)</span>: the <strong>impossible event</strong></li>
+</ul>
+</div>
+</div><div class="column" style="width:48%;">
+<div id="00f78724" class="cell" data-fig-height="3.6" data-fig-width="5" data-execution_count="6">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L01-probability-basics_files/figure-revealjs/cell-7-output-1.png" width="717" height="507"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="set-operations-on-events-table-1.1" class="slide level2">
+<h2>Set operations on events <span class="tag">Table 1.1</span></h2>
+<p>Events are sets, so we combine them with set operations. You should be able to go both ways without thinking.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Notation</th>
+<th>Reads as</th>
+<th>Occurs when</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(A\cup B\)</span></td>
+<td><span class="math inline">\(A\)</span> or <span class="math inline">\(B\)</span></td>
+<td>at least one of them occurs</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(A\cap B\)</span></td>
+<td><span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span></td>
+<td>both occur</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(A^c\)</span></td>
+<td>not <span class="math inline">\(A\)</span></td>
+<td><span class="math inline">\(A\)</span> does not occur</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(A\cap B^c\)</span></td>
+<td><span class="math inline">\(A\)</span> but not <span class="math inline">\(B\)</span></td>
+<td><span class="math inline">\(A\)</span> occurs and <span class="math inline">\(B\)</span> does not</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="the-four-operations-as-regions-fig-1.1" class="slide level2">
+<h2>The four operations as regions <span class="tag">Fig 1.1</span></h2>
+<div id="28113e04" class="cell" data-fig-height="2.9" data-fig-width="10" data-execution_count="7">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L01-probability-basics_files/figure-revealjs/cell-8-output-1.png" width="1467" height="302"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The rectangle is <span class="math inline">\(\Omega\)</span>. The shaded region is the event named above each panel.</p>
+<aside class="notes">
+<p>Draw the two circles on the board and shade each row of the table.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="promo-code-and-mobile-app-ex-1.2" class="slide level2">
+<h2>Promo code and mobile app <span class="tag">Ex 1.2</span></h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<div class="box-ex">
+<p>One customer is picked at random from yesterday’s orders.</p>
+<p><span class="math inline">\(A\)</span>: used a promo code. <span class="math inline">\(B\)</span>: ordered through the app.</p>
+</div>
+<div class="fragment">
+<p><span class="math inline">\(A\cap B^c\)</span>: promo code, placed on the website.</p>
+</div>
+<div class="fragment">
+<p><span class="math inline">\((A\cup B)^c\)</span>: no promo code, not in the app.</p>
+</div>
+<div class="fragment">
+<p><span class="math inline">\(A^c\cap B^c\)</span> reads the same way. <span class="answer">The two events are equal.</span></p>
+</div>
+</div><div class="column" style="width:45%;">
+<div id="fc71c5cf" class="cell" data-fig-height="3.6" data-fig-width="5" data-execution_count="8">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L01-probability-basics_files/figure-revealjs/cell-9-output-1.png" width="665" height="510"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="mutually-exclusive-events-partition-def-1.3" class="slide level2">
+<h2>Mutually exclusive events, partition <span class="tag">Def 1.3</span></h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<div class="box-def">
+<p><span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are <strong>mutually exclusive</strong> (disjoint) if <span class="math inline">\(A\cap B=\varnothing\)</span>: they cannot occur together.</p>
+<p><span class="math inline">\(H_1,\dots,H_n\)</span> form a <strong>partition</strong> of <span class="math inline">\(\Omega\)</span> if they are pairwise mutually exclusive and <span class="math inline">\(H_1\cup\dots\cup H_n=\Omega\)</span>. Exactly one of them occurs.</p>
+</div>
+<div class="fragment">
+<p>The simplest partition: <span class="math inline">\(A\)</span> and <span class="math inline">\(A^c\)</span>. <span class="muted">It returns in Lecture 2.</span></p>
+</div>
+</div><div class="column" style="width:45%;">
+<div id="d0ae6be2" class="cell" data-fig-height="3.3" data-fig-width="5" data-execution_count="9">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L01-probability-basics_files/figure-revealjs/cell-10-output-1.png" width="667" height="462"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="de-morgans-laws-thm-1.1" class="slide level2">
+<h2>De Morgan’s laws <span class="tag">Thm 1.1</span></h2>
+<div class="box-thm">
+<p><span class="math display">\[(A\cup B)^c = A^c\cap B^c,\qquad (A\cap B)^c = A^c\cup B^c\]</span></p>
+</div>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>“Not (promo or app)” is “no promo and no app.”</p>
+<p>An outcome is outside <span class="math inline">\(A\cup B\)</span> exactly when it is outside <span class="math inline">\(A\)</span> and outside <span class="math inline">\(B\)</span>. The second law swaps “and” with “or”.</p>
+<p><span class="muted">Proof: see the book, Section 1.2.</span></p>
+</div><div class="column" style="width:50%;">
+<div id="2a8ccf9a" class="cell" data-fig-height="2.8" data-fig-width="6" data-execution_count="10">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L01-probability-basics_files/figure-revealjs/cell-11-output-1.png" width="867" height="347"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+<aside class="notes">
+<p>Same shaded region in both panels.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section>
+<section id="your-turn" class="slide level2 yourturn">
+<h2>Your turn</h2>
+<p>Which region is <span class="math inline">\(A^c\cup B^c\)</span>?</p>
+<p>Shade it in your head, then say it in words.</p>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><span class="answer">Everything except the overlap.</span></p>
+<p>By De Morgan, <span class="math inline">\(A^c\cup B^c=(A\cap B)^c\)</span>: “not both”.</p>
+</div><div class="column" style="width:50%;">
+<div id="2cdd021a" class="cell" data-fig-height="2.4" data-fig-width="4" data-execution_count="11">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L01-probability-basics_files/figure-revealjs/cell-12-output-1.png" width="454" height="327"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+<aside class="notes">
+<p>Let them say it before you shade it.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section>
+<section id="where-the-axioms-come-from-def-1.4" class="slide level2">
+<h2>Where the axioms come from <span class="tag">Def 1.4</span></h2>
+<p>Think of the share of days on which an event happens, over a very long run. It is never negative, it equals 1 for the sure event, and for events that cannot happen together the shares add up.</p>
+<div class="fragment">
+<div class="box-def">
+<p>A <strong>probability</strong> assigns to every event <span class="math inline">\(A\)</span> a number <span class="math inline">\(\Prob(A)\)</span> so that</p>
+<ol type="1">
+<li><span class="math inline">\(\Prob(A)\ge 0\)</span>;</li>
+<li><span class="math inline">\(\Prob(\Omega)=1\)</span>;</li>
+<li>if <span class="math inline">\(A_1, A_2,\dots\)</span> are pairwise mutually exclusive, then <span class="math inline">\(\Prob(A_1\cup A_2\cup\dots)=\Prob(A_1)+\Prob(A_2)+\dots\)</span></li>
+</ol>
+</div>
+<p>Kolmogorov turned these three observations into the definition. Everything else follows from these three lines.</p>
+</div>
+</section>
+<section id="consequences-of-the-axioms-thm-1.2" class="slide level2">
+<h2>Consequences of the axioms <span class="tag">Thm 1.2</span></h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<div class="box-thm">
+<p>For any events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>:</p>
+<ol type="1">
+<li><span class="math inline">\(\Prob(\varnothing)=0\)</span></li>
+<li><span class="math inline">\(\Prob(A^c)=1-\Prob(A)\)</span></li>
+<li><span class="math inline">\(A\subseteq B\ \Rightarrow\ \Prob(A)\le\Prob(B)\)</span>. In particular <span class="math inline">\(\Prob(A)\le 1\)</span>.</li>
+<li><span class="math inline">\(\Prob(A\cup B)=\Prob(A)+\Prob(B)-\Prob(A\cap B)\)</span></li>
+</ol>
+</div>
+</div><div class="column" style="width:45%;">
+<div id="f2bd81ed" class="cell" data-fig-height="3.6" data-fig-width="5" data-execution_count="12">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L01-probability-basics_files/figure-revealjs/cell-13-output-1.png" width="717" height="507"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="why-the-consequences-hold-thm-1.2" class="slide level2">
+<h2>Why the consequences hold <span class="tag">Thm 1.2</span></h2>
+<ol start="2" type="1">
+<li><span class="math inline">\(A\)</span> and <span class="math inline">\(A^c\)</span> are mutually exclusive and <span class="math inline">\(A\cup A^c=\Omega\)</span>, so axioms 3 and 2 give <span class="math display">\[\Prob(A)+\Prob(A^c)=\Prob(\Omega)=1.\]</span></li>
+</ol>
+<div class="fragment">
+<ol start="3" type="1">
+<li>If <span class="math inline">\(A\subseteq B\)</span>, then <span class="math inline">\(B\)</span> is the union of the disjoint events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\cap A^c\)</span>: <span class="math display">\[\Prob(B)=\Prob(A)+\Prob(B\cap A^c)\ge\Prob(A).\]</span></li>
+</ol>
+</div>
+<div class="fragment">
+<ol start="4" type="1">
+<li>Split <span class="math inline">\(A\cup B\)</span> into <span class="math inline">\(A\)</span> and <span class="math inline">\(B\cap A^c\)</span>, and <span class="math inline">\(B\)</span> into <span class="math inline">\(B\cap A\)</span> and <span class="math inline">\(B\cap A^c\)</span>. Substitute.</li>
+</ol>
+<p><span class="muted">(1) takes <span class="math inline">\(A_1=\Omega\)</span> and all other <span class="math inline">\(A_i=\varnothing\)</span> in axiom 3. Full proof: book, Section 1.3.</span></p>
+</div>
+</section>
+<section id="inclusion-exclusion-for-two-events-thm-1.24" class="slide level2">
+<h2>Inclusion-exclusion for two events <span class="tag">Thm 1.2(4)</span></h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="box-thm">
+<p><span class="math display">\[\begin{aligned}\Prob(A\cup B)={}&amp;\Prob(A)+\Prob(B)\\&amp;-\Prob(A\cap B)\end{aligned}\]</span></p>
+</div>
+<p>Property (4) is the formula you will use most often.</p>
+<div class="fragment">
+<p>Add <span class="math inline">\(\Prob(A)\)</span> and <span class="math inline">\(\Prob(B)\)</span>, and the outcomes in both events are counted <strong>twice</strong>. Subtract the overlap once.</p>
+</div>
+</div><div class="column" style="width:50%;">
+<div id="b0d65436" class="cell" data-fig-height="3.4" data-fig-width="5.5" data-execution_count="13">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L01-probability-basics_files/figure-revealjs/cell-14-output-1.png" width="668" height="477"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="three-events-eq-1.1" class="slide level2">
+<h2>Three events <span class="tag">Eq 1.1</span></h2>
+<p>For three events the correction goes one step further:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\Prob(A\cup B\cup C)={}&amp;\Prob(A)+\Prob(B)+\Prob(C)\\
+&amp;-\Prob(A\cap B)-\Prob(A\cap C)-\Prob(B\cap C)\\
+&amp;+\Prob(A\cap B\cap C).
+\end{aligned}
+\]</span></p>
+<div class="fragment">
+<p>Singles <strong>plus</strong>, pairs <strong>minus</strong>, the triple <strong>plus</strong>.</p>
+<p>The centre is added three times, subtracted three times, and added once: counted exactly once.</p>
+</div>
+</section>
+<section id="promo-code-and-app-with-numbers-ex-1.3" class="slide level2 smaller">
+<h2>Promo code and app, with numbers <span class="tag">Ex 1.3</span></h2>
+<div class="columns">
+<div class="column" style="width:52%;">
+<div class="box-ex">
+<p>A hypothetical online store: 40% of orders use a promo code (<span class="math inline">\(A\)</span>), 55% come through the app (<span class="math inline">\(B\)</span>), 20% do both.</p>
+<p>Find the probability that a random order</p>
+<ol type="a">
+<li>uses a promo code or the app;</li>
+<li>uses neither;</li>
+<li>comes through the app without a promo code.</li>
+</ol>
+</div>
+</div><div class="column" style="width:48%;">
+<div id="276bb810" class="cell" data-fig-height="3.2" data-fig-width="5" data-execution_count="14">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L01-probability-basics_files/figure-revealjs/cell-15-output-1.png" width="594" height="447"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="promo-code-and-app-solution-ex-1.3" class="slide level2">
+<h2>Promo code and app, solution <span class="tag">Ex 1.3</span></h2>
+<p><strong>(a)</strong> By Thm 1.2(4): <span class="math inline">\(\Prob(A\cup B)=0.40+0.55-0.20=\)</span> <span class="answer">0.75</span></p>
+<div class="fragment">
+<p><strong>(b)</strong> The complement of (a): <span class="math inline">\(\Prob\big((A\cup B)^c\big)=1-0.75=\)</span> <span class="answer">0.25</span></p>
+</div>
+<div class="fragment">
+<p><strong>(c)</strong> <span class="math inline">\(\Prob(B\cap A^c)=\Prob(B)-\Prob(A\cap B)=0.55-0.20=\)</span> <span class="answer">0.35</span></p>
+</div>
+<div class="fragment">
+<p><strong>Check.</strong> Four disjoint pieces: promo only, app only, both, neither.</p>
+<div id="9a727f4c" class="cell" data-fig-height="1.1" data-fig-width="9" data-execution_count="15">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L01-probability-basics_files/figure-revealjs/cell-16-output-1.png" width="1306" height="132"></p>
+</figure>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Draw the four-piece picture and fill in 0.20, 0.35, 0.20, 0.25 with the room.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section>
+<section id="pitfall-forgetting-the-overlap-thm-1.24" class="slide level2">
+<h2>Pitfall: forgetting the overlap <span class="tag">Thm 1.2(4)</span></h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="box-ex">
+<p><strong>Wrong.</strong> <span class="math display">\[\Prob(A\cup B)=0.40+0.55=0.95\]</span> The 20% who used both are counted twice.</p>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="box-def">
+<p><strong>Right.</strong> <span class="math display">\[\begin{aligned}\Prob(A\cup B)&amp;=0.40+0.55-0.20\\&amp;=0.75\end{aligned}\]</span></p>
+</div>
+</div></div>
+<div class="fragment">
+<p>Fill in 0.40 and 0.55 as the pieces of a picture, and the numbers add to more than 1. That is the warning sign.</p>
+</div>
+</section>
+<section id="at-least-one-means-1-minus-none-thm-1.22" class="slide level2">
+<h2>“At least one” means “1 minus none” <span class="tag">Thm 1.2(2)</span></h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p>The complement rule is the tool for any “at least one” question.</p>
+<div class="fragment">
+<p>“Happens at least once” is usually hard to count. “Never happens” is often a single product.</p>
+</div>
+<div class="fragment">
+<p>Compute that, then subtract from 1.</p>
+<p><span class="muted">We use it in the counting examples next and in every later lecture.</span></p>
+</div>
+</div><div class="column" style="width:45%;">
+<div id="a7cc1510" class="cell" data-fig-height="3" data-fig-width="5" data-execution_count="16">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L01-probability-basics_files/figure-revealjs/cell-17-output-1.png" width="717" height="417"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="classical-probability-def-1.5" class="slide level2">
+<h2>Classical probability <span class="tag">Def 1.5</span></h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<div class="box-def">
+<p>Suppose <span class="math inline">\(\Omega\)</span> has finitely many outcomes, all <strong>equally likely</strong> by symmetry. Then <span class="math display">\[\Prob(A)=\frac{|A|}{|\Omega|}=\frac{\text{outcomes in }A}{\text{outcomes in }\Omega}\]</span></p>
+</div>
+<div class="fragment">
+<p>It never goes negative, <span class="math inline">\(\Prob(\Omega)=1\)</span>, and for mutually exclusive events the counts add up. So it is a legitimate probability.</p>
+</div>
+<div class="fragment">
+<p>The whole difficulty hides in “equally likely”.</p>
+</div>
+</div><div class="column" style="width:45%;">
+<div id="1ac6ef44" class="cell" data-fig-height="3.6" data-fig-width="5" data-execution_count="17">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L01-probability-basics_files/figure-revealjs/cell-18-output-1.png" width="717" height="507"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="two-dice-ex-1.4-fig-1.2" class="slide level2">
+<h2>Two dice <span class="tag">Ex 1.4, Fig 1.2</span></h2>
+<div class="columns">
+<div class="column" style="width:52%;">
+<p>A red die and a blue die: 36 outcomes <span class="math inline">\((i,j)\)</span>, all equally likely.</p>
+<p>What is the probability that the sum is 7?</p>
+<div class="fragment">
+<p>Sum 7: <span class="math inline">\((1,6),(2,5),(3,4),(4,3),(5,2),(6,1)\)</span>.</p>
+</div>
+<div class="fragment">
+<p>Six outcomes out of 36: <span class="math display">\[\Prob(\text{sum}=7)=\frac{6}{36}= \color{#b4542a}{\mathbf{1/6}}\]</span></p>
+</div>
+</div><div class="column" style="width:48%;">
+<div id="2ed57ab0" class="cell" data-fig-height="4.2" data-fig-width="5" data-execution_count="18">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L01-probability-basics_files/figure-revealjs/cell-19-output-1.png" width="717" height="597"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="the-eleven-sums-are-not-equally-likely-sec-1.4" class="slide level2">
+<h2>The eleven sums are not equally likely <span class="tag">Sec 1.4</span></h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>The possible sums are <span class="math inline">\(2,3,\dots,12\)</span>: eleven values. Many students say each has probability <span class="math inline">\(1/11\)</span>.</p>
+<div class="fragment">
+<p><span class="answer">It does not.</span> The sum 7 happens in six ways, the sum 2 in one: <span class="math inline">\((1,1)\)</span>.</p>
+</div>
+<div class="fragment">
+<p>Eleven sums is the coarse sample space. The <strong>36 pairs</strong> are equally likely.</p>
+<p>Before using Def 1.5, ask: what is the finest description in which every outcome is equally likely?</p>
+</div>
+</div><div class="column" style="width:50%;">
+<div id="632c4a73" class="cell" data-fig-height="4" data-fig-width="5.5" data-execution_count="19">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L01-probability-basics_files/figure-revealjs/cell-20-output-1.png" width="792" height="567"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="the-same-trap-in-a-suit-sec-1.4" class="slide level2">
+<h2>The same trap, in a suit <span class="tag">Sec 1.4</span></h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="box-ex">
+<p><strong>Coin twice, exactly one head.</strong> Not <span class="math inline">\(1/3\)</span> from the counts <span class="math inline">\(\{0,1,2\}\)</span>.</p>
+<p>Outcomes <span class="math inline">\(HH, HT, TH, TT\)</span>. Exactly one head is <span class="math inline">\(\{HT, TH\}\)</span>: <span class="answer"><span class="math inline">\(2/4=1/2\)</span></span>.</p>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="box-ex">
+<p><strong>“A customer buys or does not, so the probability is 1/2.”</strong> The two outcomes are not equally likely.</p>
+</div>
+</div></div>
+<div class="fragment">
+<p>Classical probability is right for dice, cards, lotteries and a random name from a list. It is wrong for most business questions. There the probability has to come from data or from a model, and that is what the rest of the course is about.</p>
+</div>
+</section>
+<section id="your-turn-1" class="slide level2 yourturn">
+<h2>Your turn</h2>
+<p>Two dice are rolled. What is the probability that the sum is <strong>at least 10</strong>?</p>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:48%;">
+<p>Sums 10, 11, 12 have 3, 2 and 1 outcomes.</p>
+<p><span class="math display">\[\frac{3+2+1}{36}= \color{#b4542a}{\mathbf{1/6}}\]</span></p>
+</div><div class="column" style="width:52%;">
+<div id="ee1ca4a3" class="cell" data-fig-height="3" data-fig-width="3.8" data-execution_count="20">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L01-probability-basics_files/figure-revealjs/cell-21-output-1.png" width="537" height="417"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+<aside class="notes">
+<p>Before the break: “Two sums, 7 and 12. Which is more likely?” Take a vote by hand, then show the dice grid.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section>
+<section id="break" class="slide level2">
+<h2>Break</h2>
+<p>Back in 10 minutes.</p>
+<aside class="notes">
+<p>Halfway point (80 min). The second half starts with counting.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="product-rule-thm-1.3" class="slide level2 smaller">
+<h2>Product rule <span class="tag">Thm 1.3</span></h2>
+<div class="columns">
+<div class="column" style="width:52%;">
+<div class="box-thm">
+<p>A procedure has <span class="math inline">\(k\)</span> stages. Stage 1 can be done in <span class="math inline">\(n_1\)</span> ways, stage 2 in <span class="math inline">\(n_2\)</span> ways (whatever happened in stage 1), and so on. The whole procedure can be done in <span class="math display">\[n_1 n_2\cdots n_k\ \text{ways.}\]</span></p>
+</div>
+<div class="fragment">
+<p>After stage 1 there are <span class="math inline">\(n_1\)</span> situations, each continues in <span class="math inline">\(n_2\)</span> ways: <span class="math inline">\(n_1n_2\)</span> pairs. Then triples, and so on.</p>
+<p><span class="muted">Proof: see the book, Section 1.5.</span></p>
+</div>
+</div><div class="column" style="width:48%;">
+<div id="6fa02b03" class="cell" data-fig-height="3.2" data-fig-width="5" data-execution_count="21">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L01-probability-basics_files/figure-revealjs/cell-22-output-1.png" width="717" height="447"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="pin-codes-ex-1.5" class="slide level2">
+<h2>PIN codes <span class="tag">Ex 1.5</span></h2>
+<p>A bank card has a four-digit PIN.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Rule</th>
+<th>Choices per position</th>
+<th>Count</th>
+<th>Kind of count</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>any digits</td>
+<td><span class="math inline">\(10\cdot10\cdot10\cdot10\)</span></td>
+<td><span class="math inline">\(10^4=10\,000\)</span></td>
+<td>ordered, with repetition</td>
+</tr>
+<tr class="even">
+<td>all digits different</td>
+<td><span class="math inline">\(10\cdot9\cdot8\cdot7\)</span></td>
+<td><span class="math inline">\(5040\)</span></td>
+<td>ordered, no repetition</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p>A thief who guesses one PIN at random hits it with probability <span class="answer"><span class="math inline">\(1/10\,000\)</span></span>.</p>
+</div>
+<div class="fragment">
+<p>With repeats, each digit is chosen afresh and the product rule alone gives <span class="math inline">\(n^k\)</span>, here <span class="math inline">\(10^4\)</span>. Without repeats the choices shrink by one at each step. That case, and two related ones, have classical names.</p>
+</div>
+</section>
+<section id="permutation-def-1.6" class="slide level2 smaller">
+<h2>Permutation <span class="tag">Def 1.6</span></h2>
+<div class="columns">
+<div class="column" style="width:52%;">
+<div class="box-def">
+<p>A <strong>permutation</strong> of <span class="math inline">\(n\)</span> distinct objects is an ordering of all of them in a row. There are <span class="math inline">\(n!\)</span> permutations, read “<span class="math inline">\(n\)</span> factorial”: <span class="math display">\[n!=n(n-1)\cdots2\cdot1,\qquad 0!=1.\]</span></p>
+</div>
+<div class="fragment">
+<p>Kemal drives a delivery van and has 5 shops to visit this morning. Each route is a permutation of the 5 shops: <span class="math display">\[5!=5\cdot4\cdot3\cdot2\cdot1=\color{#b4542a}{\mathbf{120}}\ \text{routes.}\]</span></p>
+</div>
+</div><div class="column" style="width:48%;">
+<div id="1b85ddc8" class="cell" data-fig-height="3.8" data-fig-width="5" data-execution_count="22">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L01-probability-basics_files/figure-revealjs/cell-23-output-1.png" width="717" height="536"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="arrangement-def-1.7" class="slide level2 smaller">
+<h2>Arrangement <span class="tag">Def 1.7</span></h2>
+<div class="columns">
+<div class="column" style="width:42%;">
+<div id="1ee4ee68" class="cell" data-fig-height="3.4" data-fig-width="5" data-execution_count="23">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L01-probability-basics_files/figure-revealjs/cell-24-output-1.png" width="717" height="477"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:58%;">
+<div class="box-def">
+<p>An <strong>arrangement</strong> of <span class="math inline">\(k\)</span> objects from <span class="math inline">\(n\)</span> distinct objects (<span class="math inline">\(k\le n\)</span>) is an ordered selection without repetition. The number of arrangements is <span class="math display">\[\frac{n!}{(n-k)!}=n(n-1)\cdots(n-k+1).\]</span></p>
+</div>
+<div class="fragment">
+<p>A supermarket puts 3 of its 12 tea brands into the eye-level slots: <span class="answer">1320</span> arrangements. The PINs with four different digits are arrangements of 4 from 10: <span class="math inline">\(10!/6!=5040\)</span>.</p>
+</div>
+<div class="fragment">
+<p><span class="muted">With <span class="math inline">\(k=n\)</span> we get a permutation, and the formula gives <span class="math inline">\(n!/0!=n!\)</span>. That is one reason to set <span class="math inline">\(0!=1\)</span>.</span></p>
+</div>
+</div></div>
+</section>
+<section id="combination-def-1.8" class="slide level2">
+<h2>Combination <span class="tag">Def 1.8</span></h2>
+<div class="box-def">
+<p>A <strong>combination</strong> of <span class="math inline">\(k\)</span> objects from <span class="math inline">\(n\)</span> distinct objects (<span class="math inline">\(0\le k\le n\)</span>) is an unordered selection without repetition, that is, a subset of size <span class="math inline">\(k\)</span>. Their number is written <span class="math inline">\(\binom{n}{k}\)</span>. We read it “<span class="math inline">\(n\)</span> choose <span class="math inline">\(k\)</span>” and call it the binomial coefficient.</p>
+</div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="fragment">
+<p>The same supermarket picks 3 of its 12 tea brands for a weekend discount. Now the three brands form a set, and nothing is first or last: <span class="math inline">\(\binom{12}{3}=220\)</span> ways.</p>
+</div>
+<div class="fragment">
+<p>The lottery and the inspector’s sample, coming up, are combinations too.</p>
+</div>
+</div><div class="column" style="width:50%;">
+<div id="fba11cdd" class="cell" data-fig-height="2.8" data-fig-width="5" data-execution_count="24">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L01-probability-basics_files/figure-revealjs/cell-25-output-1.png" width="717" height="386"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="other-names-and-symbols" class="slide level2">
+<h2>Other names and symbols</h2>
+<p>Other textbooks use other words and symbols for the same things, and you should recognise them.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>In this course</th>
+<th>Also called</th>
+<th>Symbols in other books</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>arrangement of <span class="math inline">\(k\)</span> from <span class="math inline">\(n\)</span></td>
+<td><span class="math inline">\(k\)</span>-permutation, partial permutation, variation</td>
+<td><span class="math inline">\(A_n^k\)</span>, <span class="math inline">\(P(n,k)\)</span>, <span class="math inline">\({}_nP_k\)</span></td>
+</tr>
+<tr class="even">
+<td>combination, <span class="math inline">\(\binom{n}{k}\)</span></td>
+<td>subset of size <span class="math inline">\(k\)</span></td>
+<td><span class="math inline">\(C_n^k\)</span>, <span class="math inline">\({}_nC_k\)</span></td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<div class="box-ex">
+<p>Be careful with the word “arrangement” in English books. Many of them use it loosely for any ordering, a full permutation included. In this course it always means an ordered selection of <span class="math inline">\(k\)</span> from <span class="math inline">\(n\)</span>.</p>
+</div>
+<aside class="notes">
+<p>Mention <span class="math inline">\(A_n^k\)</span> and <span class="math inline">\(C_n^k\)</span> out loud for students who did school maths in Russian.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section>
+<section id="orderings-and-selections-thm-1.4" class="slide level2">
+<h2>Orderings and selections <span class="tag">Thm 1.4</span></h2>
+<div class="box-thm">
+<p>From <span class="math inline">\(n\)</span> distinct objects:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 32%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 26%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: center;">permutation</th>
+<th style="text-align: center;">arrangement</th>
+<th style="text-align: center;">combination</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">order matters?</td>
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">no</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">how many used?</td>
+<td style="text-align: center;">all <span class="math inline">\(n\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(k\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(k\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">number</td>
+<td style="text-align: center;"><span class="math inline">\(n!\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\dfrac{n!}{(n-k)!}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\dbinom{n}{k}=\dfrac{n!}{k!\,(n-k)!}\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="fragment">
+<p>Each combination appears <span class="math inline">\(k!\)</span> times among the arrangements, once for each order: <span class="math display">\[\frac{n!}{(n-k)!}=k!\binom{n}{k},\qquad\text{tea: } 1320=3!\cdot220.\]</span></p>
+<aside class="notes">
+<p>Board: three columns headed permutation, arrangement, combination. Under each write “order matters?” (yes, yes, no), “how many used?” (n, k, k) and the formula. Leave it up for the rest of the counting section.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section>
+<section id="two-facts-about-binomnk-thm-1.4" class="slide level2">
+<h2>Two facts about <span class="math inline">\(\binom{n}{k}\)</span> <span class="tag">Thm 1.4</span></h2>
+<div class="columns">
+<div class="column" style="width:45%;">
+<p><span class="math display">\[\binom{n}{k}=\binom{n}{n-k}\]</span> Choosing who goes in is the same as choosing who stays out.</p>
+<div class="fragment">
+<p><span class="math display">\[\binom{n}{0}=\binom{n}{n}=1\]</span> One way to take nobody, one way to take everybody.</p>
+</div>
+</div><div class="column" style="width:55%;">
+<div id="5de4802b" class="cell" data-fig-height="3.6" data-fig-width="5.5" data-execution_count="25">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L01-probability-basics_files/figure-revealjs/cell-26-output-1.png" width="793" height="507"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="does-order-matter-thm-1.4" class="slide level2">
+<h2>Does order matter? <span class="tag">Thm 1.4</span></h2>
+<p>Swap two chosen items. If the result is a different outcome, count arrangements. If it is the same outcome, count combinations.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Choose 3 of 10 candidates for…</th>
+<th>Order</th>
+<th>Count</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>gold, silver, bronze</td>
+<td>matters: arrangements</td>
+<td><span class="math inline">\(10\cdot9\cdot8=720\)</span></td>
+</tr>
+<tr class="even">
+<td>a project team</td>
+<td>does not matter: combinations</td>
+<td><span class="math inline">\(\binom{10}{3}=120\)</span></td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p>Check: <span class="math inline">\(720/3!=120\)</span>. Every team of 3 can be arranged in <span class="math inline">\(3!=6\)</span> medal orders.</p>
+<div id="254d7342" class="cell" data-fig-height="1.75" data-fig-width="9" data-execution_count="26">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L01-probability-basics_files/figure-revealjs/cell-27-output-1.png" width="1313" height="229"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="a-6-from-45-lottery-ex-1.6" class="slide level2">
+<h2>A 6-from-45 lottery <span class="tag">Ex 1.6</span></h2>
+<p>You pick 6 different numbers from 1 to 45. Order is irrelevant, so a ticket is a combination of 6 from 45.</p>
+<div class="fragment">
+<p><span class="math display">\[\binom{45}{6}=\frac{45\cdot44\cdot43\cdot42\cdot41\cdot40}{720}=8\,145\,060\]</span></p>
+</div>
+<div class="fragment">
+<p>A single ticket wins the jackpot with probability <span class="math display">\[\frac{1}{8\,145\,060}\approx 1.2\cdot10^{-7}.\]</span></p>
+</div>
+<div class="fragment">
+<p>Buy a ticket every week and you would wait on average about <span class="answer">157 000 years</span>.</p>
+</div>
+</section>
+<section id="expired-packs-the-set-up-ex-1.7" class="slide level2 smaller">
+<h2>Expired packs: the set-up <span class="tag">Ex 1.7</span></h2>
+<div class="columns">
+<div class="column" style="width:52%;">
+<div class="box-ex">
+<p>A warehouse shelf holds 20 packs of yoghurt, 3 of them past their date. An inspector takes 4 packs at random. Find the probability that</p>
+<ol type="a">
+<li>exactly one is expired;</li>
+<li>none is expired;</li>
+<li>at least one is expired.</li>
+</ol>
+</div>
+<div class="fragment">
+<p>Order does not matter: a sample is a combination of 4 from 20, so <span class="math display">\[|\Omega|=\binom{20}{4}=4845.\]</span></p>
+</div>
+</div><div class="column" style="width:48%;">
+<div id="66fd88e2" class="cell" data-fig-height="3.2" data-fig-width="5" data-execution_count="27">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L01-probability-basics_files/figure-revealjs/cell-28-output-1.png" width="717" height="447"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="expired-packs-a-and-b-ex-1.7" class="slide level2">
+<h2>Expired packs: (a) and (b) <span class="tag">Ex 1.7</span></h2>
+<p><strong>(a) Exactly one expired.</strong> Choose 1 of the 3 expired and 3 of the 17 good, then multiply (product rule): <span class="math display">\[\binom{3}{1}\binom{17}{3}=3\cdot680=2040,\qquad \Prob=\frac{2040}{4845}\approx \color{#b4542a}{\mathbf{0.421}}\]</span></p>
+<div class="fragment">
+<p><strong>(b) None expired.</strong> All 4 come from the 17 good packs: <span class="math display">\[\frac{\binom{17}{4}}{\binom{20}{4}}=\frac{2380}{4845}\approx \color{#b4542a}{\mathbf{0.491}}\]</span></p>
+</div>
+<div class="fragment">
+<p>The numerator in (a) is a <strong>product</strong>: pick from the bad group, and pick from the good group. Why not <span class="math inline">\(3+17\)</span>?</p>
+<aside class="notes">
+<p>Board layout: numerator as “pick from the bad group x pick from the good group”, with a vertical line between the factors. Students almost always forget that the numerator is a product.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section>
+<section id="expired-packs-c-and-what-it-means-ex-1.7" class="slide level2">
+<h2>Expired packs: (c) and what it means <span class="tag">Ex 1.7</span></h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>(c) At least one expired.</strong> Use the complement: <span class="math display">\[1-0.491= \color{#b4542a}{\mathbf{0.509}}\]</span></p>
+<div class="fragment">
+<p>The inspector checks four packs out of twenty and finds a problem in barely more than half of the cases, although 15% of the packs are bad.</p>
+</div>
+<div class="fragment">
+<p>Sampling a small part of a batch is a <strong>weak control</strong>. We return to sample sizes in module 3.</p>
+</div>
+</div><div class="column" style="width:50%;">
+<div id="73ce7ec1" class="cell" data-fig-height="3.2" data-fig-width="5" data-execution_count="28">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L01-probability-basics_files/figure-revealjs/cell-29-output-1.png" width="718" height="447"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="your-turn-2" class="slide level2 yourturn">
+<h2>Your turn</h2>
+<p>A password has 4 characters, each a lowercase letter (26 choices).</p>
+<p>How many passwords have <strong>at least one repeated letter</strong>? Use the complement.</p>
+<div class="fragment">
+<p>All four different: <span class="math inline">\(26\cdot25\cdot24\cdot23=358\,800\)</span>. All passwords: <span class="math inline">\(26^4=456\,976\)</span>.</p>
+<p><span class="math display">\[456\,976-358\,800= \color{#b4542a}{\mathbf{98\,176}}\]</span></p>
+</div>
+</section>
+<section id="geometric-probability-def-1.9" class="slide level2 smaller">
+<h2>Geometric probability <span class="tag">Def 1.9</span></h2>
+<div class="columns">
+<div class="column" style="width:52%;">
+<p>Sometimes outcomes cannot be listed: a moment in time, a point on a map. “At random” then means every place is equally good.</p>
+<div class="fragment">
+<div class="box-def">
+<p><span class="math inline">\(\Omega\)</span> is a segment, a plane region or a region in space with finite size. An outcome is chosen <strong>uniformly at random</strong> if <span class="math display">\[\Prob(A)=\frac{\text{size of }A}{\text{size of }\Omega}\]</span> where size is length, area or volume.</p>
+</div>
+</div>
+</div><div class="column" style="width:48%;">
+<div id="62b627be" class="cell" data-fig-height="3.2" data-fig-width="5" data-execution_count="29">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L01-probability-basics_files/figure-revealjs/cell-30-output-1.png" width="717" height="447"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="a-courier-in-a-two-hour-window-ex-1.8" class="slide level2">
+<h2>A courier in a two-hour window <span class="tag">Ex 1.8</span></h2>
+<p>The courier arrives at a uniform moment between 10:00 and 12:00. You are out from 10:30 to 11:15. What is the probability that she comes while you are out?</p>
+<div id="a7854b9a" class="cell" data-fig-height="1.2" data-fig-width="8" data-execution_count="30">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L01-probability-basics_files/figure-revealjs/cell-31-output-1.png" width="1167" height="147"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p><span class="math inline">\(\dfrac{45}{120}=\)</span> <span class="answer">3/8</span></p>
+</div>
+</section>
+<section id="two-people-one-café-the-set-up-ex-1.9" class="slide level2 smaller">
+<h2>Two people, one café: the set-up <span class="tag">Ex 1.9</span></h2>
+<div class="columns">
+<div class="column" style="width:48%;">
+<div class="box-ex">
+<p>Zarina and Oksana meet at a café between 12:00 and 13:00. Each arrives at a random moment of that hour, independently, and waits 15 minutes before leaving. What is the probability that they meet?</p>
+</div>
+<div class="fragment">
+<p>Let <span class="math inline">\(x\)</span>, <span class="math inline">\(y\)</span> be the arrival times in minutes. The pair <span class="math inline">\((x,y)\)</span> is a uniform point in the square <span class="math inline">\([0,60]^2\)</span>, area 3600.</p>
+</div>
+<div class="fragment">
+<p>They meet when <span class="math inline">\(|x-y|\le 15\)</span>: the band around the diagonal.</p>
+</div>
+</div><div class="column" style="width:52%;">
+<div id="5b876bfa" class="cell" data-fig-height="3.5" data-fig-width="4" data-execution_count="31">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L01-probability-basics_files/figure-revealjs/cell-32-output-1.png" width="534" height="534"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="two-people-one-café-the-area-ex-1.9" class="slide level2">
+<h2>Two people, one café: the area <span class="tag">Ex 1.9</span></h2>
+<p>Easier to find the area <strong>outside</strong> the band: two right triangles with legs <span class="math inline">\(60-15=45\)</span>, each of area <span class="math inline">\(45^2/2\)</span>.</p>
+<div class="fragment">
+<p>The band has area <span class="math inline">\(3600-45^2=1575\)</span>, so <span class="math display">\[\Prob(\text{meet})=\frac{3600-45^2}{3600}=1-\Big(\frac{45}{60}\Big)^2= \color{#b4542a}{\mathbf{7/16 \approx  0.44}}\]</span></p>
+</div>
+<div class="fragment">
+<p>People find this low. Fifteen minutes feels generous, and yet they miss each other more than half of the time.</p>
+<p>Draw the problem as a square: two numbers become one point. That is the entire trick.</p>
+</div>
+</section>
+<section id="probability-zero-is-not-impossible" class="slide level2">
+<h2>Probability zero is not impossible</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p>In a geometric setting a single point has no length, so its probability is <strong>zero</strong>.</p>
+<div class="fragment">
+<p>The courier arrives at exactly 10:47:12.000 with probability 0. Still, she arrives at some moment.</p>
+</div>
+<div class="fragment">
+<p>Once <span class="math inline">\(\Omega\)</span> is a continuum, <span class="answer">probability zero does not mean impossible</span>.</p>
+<p><span class="muted">This matters in Lecture 4.</span></p>
+</div>
+</div><div class="column" style="width:45%;">
+<div id="4caf50e7" class="cell" data-fig-height="2.6" data-fig-width="5" data-execution_count="32">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L01-probability-basics_files/figure-revealjs/cell-33-output-1.png" width="694" height="357"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="your-turn-3" class="slide level2 yourturn">
+<h2>Your turn</h2>
+<p>A point is chosen uniformly in a square of side 2. What is the probability that it lies within distance 1 of the centre?</p>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>Favourable region: a circle of radius 1, area <span class="math inline">\(\pi\)</span>. The square has area 4.</p>
+<p><span class="math display">\[\frac{\pi}{4}\approx \color{#b4542a}{\mathbf{0.785}}\]</span></p>
+</div><div class="column" style="width:50%;">
+<div id="c10835c8" class="cell" data-fig-height="3.2" data-fig-width="3.4" data-execution_count="33">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L01-probability-basics_files/figure-revealjs/cell-34-output-1.png" width="447" height="447"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</div>
+</section>
+<section id="your-turn-4" class="slide level2 yourturn">
+<h2>Your turn</h2>
+<p>A manager says: “The chance of a delay at the supplier is 0.5, the chance of a customs problem is 0.6, and they never happen together.”</p>
+<p>What is wrong with that statement?</p>
+<div class="fragment">
+<p>Mutually exclusive events would give <span class="math display">\[\Prob(A\cup B)=0.5+0.6=1.1&gt;1.\]</span></p>
+<p><span class="answer">A probability cannot exceed 1.</span> The three claims cannot all be true.</p>
+<aside class="notes">
+<p>The full practice is in Seminar 1.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+
+</div>
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="img/logo-hse-wide.png" class="slide-logo"></p>
+<div class="footer footer-default">
+<p>Probability Theory and Mathematical Statistics · HSE 2026/27</p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="L01-probability-basics_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="L01-probability-basics_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="L01-probability-basics_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="L01-probability-basics_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="L01-probability-basics_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="L01-probability-basics_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="L01-probability-basics_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="L01-probability-basics_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="L01-probability-basics_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="L01-probability-basics_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="L01-probability-basics_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":false},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1280,
+
+        height: 720,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 6.0e-2,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

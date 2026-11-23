@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>3&nbsp; Discrete random variables – Probability Theory and Mathematical Statistics</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../seminars/S01-counting.html" rel="next">
+<link href="../lectures/L02-conditional-probability.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-fde786507b123b2ba480ba3caec7cd03.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../_shared/book.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L00-about-me.html">Lectures</a></li><li class="breadcrumb-item"><a href="../lectures/L03-discrete-random-variables.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Discrete random variables</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Probability Theory and Mathematical Statistics</a> 
+        <div class="sidebar-tools-main">
+    <a href="../Probability-Theory-and-Mathematical-Statistics.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">About this book</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Lectures</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L00-about-me.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">About the course and about me</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L01-probability-basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Events, probability and counting</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L02-conditional-probability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Conditional probability and Bayes’ theorem</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L03-discrete-random-variables.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Discrete random variables</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Seminars</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../seminars/S01-counting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Seminar 1: events, counting, classical and geometric probability</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../seminars/S02-conditional-probability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Seminar 2: conditional probability, independence and Bayes</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../schedule.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Schedule</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sec-L03-rv" id="toc-sec-L03-rv" class="nav-link active" data-scroll-target="#sec-L03-rv"><span class="header-section-number">3.1</span> Random variables</a></li>
+  <li><a href="#sec-L03-pmf" id="toc-sec-L03-pmf" class="nav-link" data-scroll-target="#sec-L03-pmf"><span class="header-section-number">3.2</span> The probability mass function</a></li>
+  <li><a href="#sec-L03-cdf" id="toc-sec-L03-cdf" class="nav-link" data-scroll-target="#sec-L03-cdf"><span class="header-section-number">3.3</span> The cumulative distribution function</a></li>
+  <li><a href="#sec-L03-expectation" id="toc-sec-L03-expectation" class="nav-link" data-scroll-target="#sec-L03-expectation"><span class="header-section-number">3.4</span> Expected value</a></li>
+  <li><a href="#sec-L03-variance" id="toc-sec-L03-variance" class="nav-link" data-scroll-target="#sec-L03-variance"><span class="header-section-number">3.5</span> Variance and standard deviation</a></li>
+  <li><a href="#sec-L03-linear" id="toc-sec-L03-linear" class="nav-link" data-scroll-target="#sec-L03-linear"><span class="header-section-number">3.6</span> Changing units: <span class="math inline">\(aX+b\)</span></a></li>
+  <li><a href="#sec-L03-binomial" id="toc-sec-L03-binomial" class="nav-link" data-scroll-target="#sec-L03-binomial"><span class="header-section-number">3.7</span> Bernoulli and binomial distributions</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L00-about-me.html">Lectures</a></li><li class="breadcrumb-item"><a href="../lectures/L03-discrete-random-variables.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Discrete random variables</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-L03" class="quarto-section-identifier"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Discrete random variables</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="chapter-downloads">
+<p><a href="../pdf/L03-discrete-random-variables.pdf">PDF</a> · <a href="../slides/L03-discrete-random-variables.html">Slides</a> (<a href="../slides/L03-discrete-random-variables.pdf">PDF</a>)</p>
+</div>
+<!-- Math macros for HTML/revealjs (MathJax). PDF gets the same ones from _shared/preamble.tex. Keep both in sync. -->
+<div class="hidden">
+<p><span class="math display">\[
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\Corr}{\operatorname{Corr}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\R}{\mathbb{R}}
+\]</span></p>
+</div>
+<!-- Sources: sources/Модули_1_2_новые.md, lines 117–368 (random variable, CDF, E, Var) and
+     471–529 (Bernoulli, binomial). Rewritten in our notation, F(x) = P(X <= x). The source's
+     orders-per-day table (task 2.2) is kept for Seminar 3. -->
+<p>Marat runs a small optician’s shop on Bauman Street in Kazan. On Saturday mornings he offers a free eye test, and this Saturday three customers have booked one. From experience, a customer orders glasses after the test with probability 0.4. The three don’t know each other, so each decides independently. A pair of glasses earns Marat 2,000 rubles, and each free test costs him 500 rubles in time and materials. (The coffee machine in the waiting room has been broken since October, which costs him nothing but some goodwill.)</p>
+<p>Marat wants two numbers before Saturday. How many pairs should he expect to sell? And how far from that number does a typical Saturday land? Both questions are about one number we don’t know in advance: how many of the three customers order. A number like that is called a random variable.</p>
+<section id="sec-L03-rv" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="sec-L03-rv"><span class="header-section-number">3.1</span> Random variables</h2>
+<p>Marat doesn’t care <em>which</em> customers order. He cares <em>how many</em>. The outcome of the morning is a list such as “first yes, second no, third yes”, and the thing he wants is a number computed from that list.</p>
+<div id="def-rv" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 3.1 (Random variable)</strong></span> A <strong>random variable</strong> is a rule that gives a number to every outcome of an experiment. In the language of Lecture 1, it is a function from the sample space <span class="math inline">\(\Omega\)</span> to the real numbers: each outcome gets exactly one number. We name random variables with capital letters: <span class="math inline">\(X\)</span>, <span class="math inline">\(Y\)</span>, <span class="math inline">\(Z\)</span>.</p>
+</div>
+<div id="exm-marat-outcomes" class="theorem example">
+<p><span class="theorem-title"><strong>Example 3.1 (Marat’s eight outcomes)</strong></span> <em>Given:</em> 3 customers; each one orders glasses (O) or does not (N). <span class="math inline">\(X\)</span> is the number of customers who order.</p>
+<p>Write an outcome as three letters, one per customer in the order they arrive: ONO means the first and third customers order and the second doesn’t. Each customer has 2 possibilities, so by the product rule (<a href="L01-probability-basics.html#thm-product" class="quarto-xref">Theorem&nbsp;<span>1.3</span></a>) there are <span class="math inline">\(2\cdot2\cdot2=8\)</span> outcomes: <span class="math display">\[
+\Omega=\{\text{OOO},\ \text{OON},\ \text{ONO},\ \text{ONN},\ \text{NOO},\ \text{NON},\ \text{NNO},\ \text{NNN}\}.
+\]</span> <span class="math inline">\(X\)</span> counts the letters O. So <span class="math inline">\(X(\text{OOO})=3\)</span>; <span class="math inline">\(X(\text{OON})=X(\text{ONO})=X(\text{NOO})=2\)</span>; <span class="math inline">\(X(\text{ONN})=X(\text{NON})=X(\text{NNO})=1\)</span>; <span class="math inline">\(X(\text{NNN})=0\)</span>. The possible values of <span class="math inline">\(X\)</span> are <span class="math inline">\(0,1,2,3\)</span>. <a href="#fig-marat-tree" class="quarto-xref">Figure&nbsp;<span>3.1</span></a> shows the same thing as a tree, drawn as in Lecture 2 (<a href="L02-conditional-probability.html#fig-tree" class="quarto-xref">Figure&nbsp;<span>2.2</span></a>). Three different mornings end with <span class="math inline">\(X=2\)</span>: <span class="math inline">\(X\)</span> throws away the detail Marat doesn’t need.</p>
+</div>
+<div id="cell-fig-marat-tree" class="cell" data-execution_count="2">
+<div class="cell-output cell-output-display">
+<div id="fig-marat-tree" class="quarto-float quarto-figure quarto-figure-center anchored" alt="A tree growing left to right in three levels, one per customer. Each node splits into O with 0.4 and N with 0.6. The eight leaves, top to bottom: OOO X=3 0.064; OON X=2 0.096; ONO X=2 0.096; ONN X=1 0.144; NOO X=2 0.096; NON X=1 0.144; NNO X=1 0.144; NNN X=0 0.216.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-marat-tree-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="L03-discrete-random-variables_files/figure-html/fig-marat-tree-output-1.png" alt="A tree growing left to right in three levels, one per customer. Each node splits into O with 0.4 and N with 0.6. The eight leaves, top to bottom: OOO X=3 0.064; OON X=2 0.096; ONO X=2 0.096; ONN X=1 0.144; NOO X=2 0.096; NON X=1 0.144; NNO X=1 0.144; NNN X=0 0.216." width="940" height="369" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-marat-tree-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.1: Marat’s Saturday as a tree. O = orders glasses (probability 0.4), N = does not (0.6). Each leaf shows the outcome, the value of <span class="math inline">\(X\)</span> and the probability of that path.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="How to read $X$, $x$ and $\lbrace X=2\rbrace$">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>How to read <span class="math inline">\(X\)</span>, <span class="math inline">\(x\)</span> and <span class="math inline">\(\lbrace X=2\rbrace\)</span>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><span class="math inline">\(X\)</span> (capital, “big X”) is the random variable: the number of orders we will see on Saturday, not known yet.</li>
+<li><span class="math inline">\(x\)</span> (small, “small x”) is a possible value of it: an ordinary number such as 0, 1, 2 or 3.</li>
+<li><span class="math inline">\(\{X=2\}\)</span> is an event. Read it “the event that <span class="math inline">\(X\)</span> equals 2”. It is the set of outcomes where <span class="math inline">\(X\)</span> takes the value 2. For Marat, <span class="math inline">\(\{X=2\}=\{\text{OON},\text{ONO},\text{NOO}\}\)</span>, the three red leaves in <a href="#fig-marat-tree" class="quarto-xref">Figure&nbsp;<span>3.1</span></a>.</li>
+<li><span class="math inline">\(\{X\le 1\}\)</span> reads “the event that <span class="math inline">\(X\)</span> is at most 1”. For Marat, <span class="math inline">\(\{X\le1\}=\{X=0\}\cup\{X=1\}=\{\text{NNN},\text{ONN},\text{NON},\text{NNO}\}\)</span>.</li>
+<li><span class="math inline">\(\Prob(X=2)\)</span> is short for <span class="math inline">\(\Prob(\{X=2\})\)</span>. We drop the curly brackets inside <span class="math inline">\(\Prob\)</span>.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="sec-L03-pmf" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="sec-L03-pmf"><span class="header-section-number">3.2</span> The probability mass function</h2>
+<div id="def-pmf" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 3.2 (Discrete random variable, PMF)</strong></span> A random variable <span class="math inline">\(X\)</span> is <strong>discrete</strong> if its possible values can be listed: <span class="math inline">\(x_1, x_2, x_3,\dots\)</span>. The <strong>probability mass function</strong> (PMF) of <span class="math inline">\(X\)</span> is <span class="math display">\[
+p(x)=\Prob(X=x),
+\]</span> for each value <span class="math inline">\(x\)</span> of <span class="math inline">\(X\)</span>.</p>
+</div>
+<p>Marat’s <span class="math inline">\(X\)</span> has four values, so it is discrete. In Lecture 4 we meet random variables that are not, such as a waiting time.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="How to read $p(x)$">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>How to read <span class="math inline">\(p(x)\)</span>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="math inline">\(p(x)\)</span> is read “p of x”. It is a <strong>function</strong>: a machine that takes a number <span class="math inline">\(x\)</span> and gives back a probability. It is <em>not</em> <span class="math inline">\(p\)</span> times <span class="math inline">\(x\)</span>. For Marat, <span class="math inline">\(p(2)\)</span> (“p of two”) means <span class="math inline">\(\Prob(X=2)\)</span>, the probability that exactly two customers order. We’ll find in a moment that <span class="math inline">\(p(2)=0.288\)</span>. For a number that <span class="math inline">\(X\)</span> never takes, the answer is zero: <span class="math inline">\(p(1.5)=\Prob(X=1.5)=0\)</span>, since nobody orders one and a half pairs.</p>
+</div>
+</div>
+<div id="exm-marat-pmf" class="theorem example">
+<p><span class="theorem-title"><strong>Example 3.2 (Marat’s PMF)</strong></span> <em>Given:</em> 3 customers; each orders glasses with probability 0.4 and does not with probability 0.6; they decide independently. <span class="math inline">\(X\)</span> is the number who order. Find the PMF of <span class="math inline">\(X\)</span>.</p>
+<p><strong>Solution.</strong> Take one path of the tree, say ONN. The customers are independent (<a href="L02-conditional-probability.html#def-mutual" class="quarto-xref">Definition&nbsp;<span>2.3</span></a>), so the probability of the path is the product along it: <span class="math inline">\(\Prob(\text{ONN})=0.4\cdot0.6\cdot0.6=0.144\)</span>. Do the same for every path (the leaves of <a href="#fig-marat-tree" class="quarto-xref">Figure&nbsp;<span>3.1</span></a>), then collect the paths by the value of <span class="math inline">\(X\)</span>. Different paths are mutually exclusive, so their probabilities add.</p>
+<ul>
+<li><span class="math inline">\(X=0\)</span>: only NNN. <span class="math inline">\(p(0)=0.6\cdot0.6\cdot0.6=0.216\)</span>.</li>
+<li><span class="math inline">\(X=1\)</span>: ONN, NON, NNO, each <span class="math inline">\(0.4\cdot0.6\cdot0.6=0.144\)</span>. <span class="math inline">\(p(1)=3\cdot0.144=0.432\)</span>.</li>
+<li><span class="math inline">\(X=2\)</span>: OON, ONO, NOO, each <span class="math inline">\(0.4\cdot0.4\cdot0.6=0.096\)</span>. <span class="math inline">\(p(2)=3\cdot0.096=0.288\)</span>.</li>
+<li><span class="math inline">\(X=3\)</span>: only OOO. <span class="math inline">\(p(3)=0.4\cdot0.4\cdot0.4=0.064\)</span>.</li>
+</ul>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;"><span class="math inline">\(x\)</span></th>
+<th style="text-align: center;">0</th>
+<th style="text-align: center;">1</th>
+<th style="text-align: center;">2</th>
+<th style="text-align: center;">3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(p(x)=\Prob(X=x)\)</span></td>
+<td style="text-align: center;">0.216</td>
+<td style="text-align: center;">0.432</td>
+<td style="text-align: center;">0.288</td>
+<td style="text-align: center;">0.064</td>
+</tr>
+</tbody>
+</table>
+<p>The four probabilities add up to <span class="math inline">\(0.216+0.432+0.288+0.064=1\)</span>. <a href="#fig-marat-pmf" class="quarto-xref">Figure&nbsp;<span>3.2</span></a> shows them as a bar chart.</p>
+</div>
+<div id="cell-fig-marat-pmf" class="cell" data-execution_count="3">
+<div class="cell-output cell-output-display">
+<div id="fig-marat-pmf" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Bar chart with four bars at x = 0, 1, 2, 3 with heights 0.216, 0.432, 0.288 and 0.064. The tallest bar is at x = 1.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-marat-pmf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="L03-discrete-random-variables_files/figure-html/fig-marat-pmf-output-1.png" alt="Bar chart with four bars at x = 0, 1, 2, 3 with heights 0.216, 0.432, 0.288 and 0.064. The tallest bar is at x = 1." width="879" height="265" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-marat-pmf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.2: PMF of Marat’s <span class="math inline">\(X\)</span>, the number of customers out of 3 who order glasses. The height of each bar is <span class="math inline">\(p(x)=\Prob(X=x)\)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The most likely value is 1, not 0. Each customer is more likely to say no than yes, but there is only one way to get three noes and three ways to get exactly one yes.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="How to read the summation sign $\sum$">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>How to read the summation sign <span class="math inline">\(\sum\)</span>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="math inline">\(\sum\)</span> is the Greek capital letter sigma, an S for “sum”. It means “add up”. You saw it in the law of total probability (<a href="L02-conditional-probability.html#eq-total" class="quarto-xref">Equation&nbsp;<span>2.2</span></a>); now we read it properly. <span class="math display">\[
+\sum_{i=1}^{4} p(x_i)
+\]</span> reads “the sum of p of x i, for i from 1 to 4”. The letter <span class="math inline">\(i\)</span> is the <strong>index</strong>, a counter. The number under the sign says where <span class="math inline">\(i\)</span> starts, the number on top says where it stops. Put <span class="math inline">\(i=1\)</span>, then <span class="math inline">\(i=2\)</span>, <span class="math inline">\(i=3\)</span>, <span class="math inline">\(i=4\)</span> into the expression and add the results.</p>
+<p><span class="math inline">\(x_1, x_2, x_3, x_4\)</span> (“x one, x two, …”) are the values of <span class="math inline">\(X\)</span> in a list: <span class="math inline">\(x_1\)</span> is the first value, <span class="math inline">\(x_2\)</span> the second, and so on. The small number counts positions in the list; it is not the value itself. For Marat, <span class="math inline">\(x_1=0\)</span>, <span class="math inline">\(x_2=1\)</span>, <span class="math inline">\(x_3=2\)</span>, <span class="math inline">\(x_4=3\)</span>, so <span class="math display">\[
+\begin{aligned}
+\sum_{i=1}^{4} p(x_i)&amp;=p(x_1)+p(x_2)+p(x_3)+p(x_4)\\
+&amp;=p(0)+p(1)+p(2)+p(3)\\
+&amp;=0.216+0.432+0.288+0.064=1.
+\end{aligned}
+\]</span> When the sum runs over <em>all</em> values of <span class="math inline">\(X\)</span>, we often write just <span class="math inline">\(\sum_i\)</span> and leave out the start and the stop.</p>
+</div>
+</div>
+<div id="thm-pmf" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 3.1 (Properties of a PMF)</strong></span> Let <span class="math inline">\(X\)</span> be a discrete random variable with values <span class="math inline">\(x_1, x_2,\dots\)</span> and PMF <span class="math inline">\(p\)</span>. Then</p>
+<ol type="1">
+<li><span class="math inline">\(p(x_i)\ge 0\)</span> for every <span class="math inline">\(i\)</span>;</li>
+<li><span class="math inline">\(\sum_i p(x_i)=1\)</span>.</li>
+</ol>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span></p>
+<ol type="1">
+<li><p>Each <span class="math inline">\(p(x_i)\)</span> is a probability, and probabilities are non-negative (axiom 1 of <a href="L01-probability-basics.html#def-probability" class="quarto-xref">Definition&nbsp;<span>1.4</span></a>).</p></li>
+<li><p>Every outcome gives <span class="math inline">\(X\)</span> exactly one value, so it lies in exactly one of the events <span class="math inline">\(\{X=x_1\}, \{X=x_2\},\dots\)</span>. These events are pairwise mutually exclusive and together make up <span class="math inline">\(\Omega\)</span>: they form a partition (<a href="L01-probability-basics.html#def-disjoint" class="quarto-xref">Definition&nbsp;<span>1.3</span></a>). By axioms 3 and 2, <span class="math display">\[
+\sum_i p(x_i)=\Prob(X=x_1)+\Prob(X=x_2)+\dots=\Prob(\Omega)=1.
+\]</span></p></li>
+</ol>
+</div>
+<p>In practice <a href="#thm-pmf" class="quarto-xref">Theorem&nbsp;<span>3.1</span></a> is a check: if your table does not add up to 1, a path is missing or counted twice.</p>
+</section>
+<section id="sec-L03-cdf" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="sec-L03-cdf"><span class="header-section-number">3.3</span> The cumulative distribution function</h2>
+<div id="def-cdf" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 3.3 (Cumulative distribution function)</strong></span> The <strong>cumulative distribution function</strong> (CDF) of a random variable <span class="math inline">\(X\)</span> is <span class="math display">\[
+F(x)=\Prob(X\le x)
+\]</span> for every real number <span class="math inline">\(x\)</span>.</p>
+</div>
+<p>A note on letters. In Lecture 2 the letter <span class="math inline">\(F\)</span> was an event (a faulty bulb, a fraudulent payment). From now on <span class="math inline">\(F\)</span> is the CDF.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="How to read $F(x)$, $\le$ and $<$">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>How to read <span class="math inline">\(F(x)\)</span>, <span class="math inline">\(\le\)</span> and <span class="math inline">\(&lt;\)</span>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="math inline">\(F(x)\)</span> reads “F of x”. Like <span class="math inline">\(p(x)\)</span>, it is a function: put in a number, get a probability. <span class="math inline">\(F(1)=\Prob(X\le 1)\)</span> reads “the probability that <span class="math inline">\(X\)</span> is at most 1”.</p>
+<p><span class="math inline">\(\le\)</span> reads “less than or equal to”, or “at most”. <span class="math inline">\(&lt;\)</span> reads “less than”, or “strictly less than”. For Marat:</p>
+<ul>
+<li><span class="math inline">\(X\le 1\)</span> means <span class="math inline">\(X=0\)</span> or <span class="math inline">\(X=1\)</span>, so <span class="math inline">\(\Prob(X\le1)=0.216+0.432=0.648\)</span>;</li>
+<li><span class="math inline">\(X&lt;1\)</span> means <span class="math inline">\(X=0\)</span> only, so <span class="math inline">\(\Prob(X&lt;1)=0.216\)</span>.</li>
+</ul>
+<p>For a discrete random variable the two signs give different answers whenever the boundary (here 1) is a value <span class="math inline">\(X\)</span> can take. “Cumulative” means “piling up”: <span class="math inline">\(F(x)\)</span> adds the probabilities of all values from the left up to <span class="math inline">\(x\)</span>.</p>
+</div>
+</div>
+<div id="exm-marat-cdf" class="theorem example">
+<p><span class="theorem-title"><strong>Example 3.3 (Marat’s CDF)</strong></span> <em>Given:</em> Marat’s PMF, <span class="math inline">\(p(0)=0.216\)</span>, <span class="math inline">\(p(1)=0.432\)</span>, <span class="math inline">\(p(2)=0.288\)</span>, <span class="math inline">\(p(3)=0.064\)</span>. Find <span class="math inline">\(F(x)\)</span> for every <span class="math inline">\(x\)</span>, and in particular <span class="math inline">\(F(1.5)\)</span>.</p>
+<p><strong>Solution.</strong> Add the probabilities from the left: <span class="math inline">\(F(0)=0.216\)</span>; <span class="math inline">\(F(1)=0.216+0.432=0.648\)</span>; <span class="math inline">\(F(2)=0.648+0.288=0.936\)</span>; <span class="math inline">\(F(3)=0.936+0.064=1\)</span>.</p>
+<p>Between the values nothing new is added. <span class="math inline">\(F(1.5)=\Prob(X\le1.5)\)</span>, and the values of <span class="math inline">\(X\)</span> that are at most 1.5 are 0 and 1, so <span class="math inline">\(F(1.5)=0.216+0.432=0.648\)</span>, the same as <span class="math inline">\(F(1)\)</span>. Also <span class="math inline">\(F(-1)=0\)</span>, because <span class="math inline">\(X\)</span> is never negative, and <span class="math inline">\(F(5)=1\)</span>, because <span class="math inline">\(X\)</span> is always at most 5. In one formula: <span class="math display">\[
+F(x)=\begin{cases}
+0, &amp; x&lt;0,\\
+0.216, &amp; 0\le x&lt;1,\\
+0.648, &amp; 1\le x&lt;2,\\
+0.936, &amp; 2\le x&lt;3,\\
+1, &amp; x\ge 3.
+\end{cases}
+\]</span></p>
+</div>
+<div id="cell-fig-marat-cdf" class="cell" data-execution_count="4">
+<div class="cell-output cell-output-display">
+<div id="fig-marat-cdf" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Step function from x = -1 to 4. It is 0 left of 0, then 0.216 from 0 to 1, 0.648 from 1 to 2, 0.936 from 2 to 3 and 1 from 3 on. Filled dots at the left end of each step, open dots at the right end of the step below. A dashed vertical line at x = 1.5 meets the step at 0.648.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-marat-cdf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="L03-discrete-random-variables_files/figure-html/fig-marat-cdf-output-1.png" alt="Step function from x = -1 to 4. It is 0 left of 0, then 0.216 from 0 to 1, 0.648 from 1 to 2, 0.936 from 2 to 3 and 1 from 3 on. Filled dots at the left end of each step, open dots at the right end of the step below. A dashed vertical line at x = 1.5 meets the step at 0.648." width="879" height="340" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-marat-cdf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.3: CDF of Marat’s <span class="math inline">\(X\)</span>. It is flat between the values of <span class="math inline">\(X\)</span> and jumps at 0, 1, 2 and 3 by <span class="math inline">\(p(x)\)</span>. At each jump the filled dot is the value of <span class="math inline">\(F\)</span>; the open dot is where the lower step ends. The dashed line reads off <span class="math inline">\(F(1.5)=0.648\)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Every discrete CDF is a staircase like this. It answers interval questions with one subtraction. If <span class="math inline">\(a&lt;b\)</span>, the event <span class="math inline">\(\{X\le b\}\)</span> splits into two mutually exclusive pieces, <span class="math inline">\(\{X\le a\}\)</span> and <span class="math inline">\(\{a&lt;X\le b\}\)</span>. So <span class="math inline">\(F(b)=F(a)+\Prob(a&lt;X\le b)\)</span>, which gives <span id="eq-cdf-interval"><span class="math display">\[
+\Prob(a&lt;X\le b)=F(b)-F(a).
+\tag{3.1}\]</span></span> For Marat (<span class="math inline">\(F(1)=0.648\)</span>, <span class="math inline">\(F(3)=1\)</span>), the probability that 2 or 3 customers order is <span class="math inline">\(\Prob(1&lt;X\le3)=F(3)-F(1)=1-0.648=0.352\)</span>. Check with the PMF: <span class="math inline">\(p(2)+p(3)=0.288+0.064=0.352\)</span>.</p>
+<p>Watch the signs in <a href="#eq-cdf-interval" class="quarto-xref">Equation&nbsp;<span>3.1</span></a>: <span class="math inline">\(&lt;\)</span> on the left, <span class="math inline">\(\le\)</span> on the right. Students often use it for <span class="math inline">\(\Prob(1\le X\le 3)\)</span> and get 0.352 again, but that event also contains <span class="math inline">\(X=1\)</span>. The correct answer is <span class="math inline">\(\Prob(1\le X\le3)=F(3)-F(0)=1-0.216=0.784\)</span>. With a discrete <span class="math inline">\(X\)</span>, always ask: is the boundary value included or not?</p>
+</section>
+<section id="sec-L03-expectation" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="sec-L03-expectation"><span class="header-section-number">3.4</span> Expected value</h2>
+<p>Back to Marat’s first question: how many pairs should he expect to sell?</p>
+<div id="def-expectation" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 3.4 (Expected value)</strong></span> The <strong>expected value</strong> (also <strong>expectation</strong> or <strong>mean</strong>) of a discrete random variable <span class="math inline">\(X\)</span> with values <span class="math inline">\(x_1,x_2,\dots\)</span> and PMF <span class="math inline">\(p\)</span> is <span class="math display">\[
+\E[X]=\sum_i x_i\,p(x_i).
+\]</span> We also write <span class="math inline">\(\mu\)</span> for <span class="math inline">\(\E[X]\)</span>.</p>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="How to read $\E[X]$ and $\mu$">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>How to read <span class="math inline">\(\E[X]\)</span> and <span class="math inline">\(\mu\)</span>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="math inline">\(\E[X]\)</span> reads “E of X” or “the expected value of X”. The <span class="math inline">\(\E\)</span> is not a number multiplied by <span class="math inline">\(X\)</span>: it is an operation done to <span class="math inline">\(X\)</span>, and the square brackets hold the random variable. <span class="math inline">\(\mu\)</span> is the Greek letter mu (said “myoo”). In this course <span class="math inline">\(\mu\)</span> is the mean of a random variable, <span class="math inline">\(\mu=\E[X]\)</span>.</p>
+<p>In words, the formula says: multiply each value by its probability, then add. For Marat, written out with the four values: <span class="math display">\[
+\begin{aligned}
+\E[X]&amp;=0\cdot p(0)+1\cdot p(1)+2\cdot p(2)+3\cdot p(3)\\
+&amp;=0\cdot0.216+1\cdot0.432+2\cdot0.288+3\cdot0.064 .
+\end{aligned}
+\]</span></p>
+</div>
+</div>
+<div id="exm-marat-mean" class="theorem example">
+<p><span class="theorem-title"><strong>Example 3.4 (How many pairs Marat should expect)</strong></span> <em>Given:</em> Marat’s PMF, <span class="math inline">\(p(0)=0.216\)</span>, <span class="math inline">\(p(1)=0.432\)</span>, <span class="math inline">\(p(2)=0.288\)</span>, <span class="math inline">\(p(3)=0.064\)</span>.</p>
+<p><strong>Solution.</strong> <span class="math display">\[
+\E[X]=0\cdot0.216+1\cdot0.432+2\cdot0.288+3\cdot0.064=0+0.432+0.576+0.192=1.2 .
+\]</span> Marat should expect 1.2 pairs per Saturday morning.</p>
+</div>
+<p><em>A weighted average.</em> The plain average of the values 0, 1, 2, 3 is 1.5. But 3 is rare (0.064) and 0 is common (0.216). The expected value weights each value by its probability, and the weights pull it down to 1.2.</p>
+<p><em>A long-run average.</em> Imagine 1,000 Saturdays like this one. About 216 of them end with no order, 432 with one, 288 with two and 64 with three. That is about <span class="math inline">\(0\cdot216+1\cdot432+2\cdot288+3\cdot64=1{,}200\)</span> pairs, or 1.2 per Saturday.</p>
+<p>“Expected” does not mean “most likely” (that is 1), and it does not mean “what will happen”. Marat will never sell 1.2 pairs. The expected value does not have to be a value <span class="math inline">\(X\)</span> can take.</p>
+</section>
+<section id="sec-L03-variance" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="sec-L03-variance"><span class="header-section-number">3.5</span> Variance and standard deviation</h2>
+<p>Marat’s second question is how much the number of orders swings. First, one tool. We will want the expected value of things like <span class="math inline">\(X^2\)</span>. The rule is the same as for <span class="math inline">\(\E[X]\)</span>: compute the new quantity from each value of <span class="math inline">\(X\)</span>, weight it by the probability of that value, and add. For any function <span class="math inline">\(g\)</span>, <span id="eq-lotus"><span class="math display">\[
+\E[g(X)]=\sum_i g(x_i)\,p(x_i).
+\tag{3.2}\]</span></span> The reason: <span class="math inline">\(g(X)\)</span> is a new random variable, and it takes the value <span class="math inline">\(g(x_i)\)</span> exactly when <span class="math inline">\(X=x_i\)</span>.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="How to read squares, square roots and $\sigma$">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>How to read squares, square roots and <span class="math inline">\(\sigma\)</span>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><span class="math inline">\(X^2\)</span> reads “X squared”: the random variable whose value is the square of the value of <span class="math inline">\(X\)</span>. If <span class="math inline">\(X=2\)</span>, then <span class="math inline">\(X^2=4\)</span>. By <a href="#eq-lotus" class="quarto-xref">Equation&nbsp;<span>3.2</span></a>, for Marat <span class="math inline">\(\E[X^2]=0^2\cdot0.216+1^2\cdot0.432+2^2\cdot0.288+3^2\cdot0.064\)</span>.</li>
+<li><span class="math inline">\((X-\mu)^2\)</span> reads “X minus mu, all squared”. Brackets first, then square. It is the squared distance of <span class="math inline">\(X\)</span> from its mean. For Marat with <span class="math inline">\(\mu=1.2\)</span>: if <span class="math inline">\(X=0\)</span>, then <span class="math inline">\((0-1.2)^2=(-1.2)^2=1.44\)</span>.</li>
+<li><span class="math inline">\(\sqrt{0.72}\)</span> reads “the square root of 0.72”: the positive number whose square is 0.72. <span class="math inline">\(\sqrt{0.72}\approx0.85\)</span> because <span class="math inline">\(0.85^2\approx0.72\)</span>.</li>
+<li><span class="math inline">\(\sigma\)</span> is the small Greek letter sigma. It is the standard deviation, and <span class="math inline">\(\sigma^2\)</span> (“sigma squared”) is the variance.</li>
+<li>Units. <span class="math inline">\(X\)</span> is in pairs of glasses, and so is <span class="math inline">\(X-\mu\)</span>. Then <span class="math inline">\((X-\mu)^2\)</span> is in “pairs squared”, which means nothing to anyone. The square root brings us back to pairs.</li>
+</ul>
+</div>
+</div>
+<div id="def-variance" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 3.5 (Variance and standard deviation)</strong></span> Let <span class="math inline">\(X\)</span> have mean <span class="math inline">\(\mu=\E[X]\)</span>. The <strong>variance</strong> of <span class="math inline">\(X\)</span> is <span class="math display">\[
+\Var(X)=\E\big[(X-\mu)^2\big]=\sum_i (x_i-\mu)^2\,p(x_i).
+\]</span> The <strong>standard deviation</strong> of <span class="math inline">\(X\)</span> is <span class="math inline">\(\sigma=\operatorname{SD}(X)=\sqrt{\Var(X)}\)</span>. So <span class="math inline">\(\Var(X)=\sigma^2\)</span>.</p>
+</div>
+<p>Why squares? The plain deviations <span class="math inline">\(X-\mu\)</span> are positive above the mean and negative below it, and on average they cancel exactly: <span class="math inline">\(\sum_i(x_i-\mu)p(x_i)=\mu-\mu=0\)</span>. Squaring makes every deviation count, and big ones count much more.</p>
+<div id="thm-var-shortcut" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 3.2 (Shortcut formula for the variance)</strong></span> <span class="math display">\[
+\Var(X)=\E[X^2]-\mu^2 .
+\]</span></p>
+</div>
+<details class="proof-fold"><summary>Proof</summary><div class="proof-body">
+<p>Expand the square: <span class="math inline">\((x_i-\mu)^2=x_i^2-2\mu x_i+\mu^2\)</span>. Then <span class="math display">\[
+\begin{aligned}
+\Var(X)&amp;=\sum_i x_i^2p(x_i)-2\mu\sum_i x_ip(x_i)+\mu^2\sum_i p(x_i)\\
+&amp;=\E[X^2]-2\mu\cdot\mu+\mu^2\cdot1=\E[X^2]-\mu^2,
+\end{aligned}
+\]</span> using <a href="#eq-lotus" class="quarto-xref">Equation&nbsp;<span>3.2</span></a>, <a href="#def-expectation" class="quarto-xref">Definition&nbsp;<span>3.4</span></a> and <a href="#thm-pmf" class="quarto-xref">Theorem&nbsp;<span>3.1</span></a>.</p>
+</div></details>
+<div id="exm-marat-var" class="theorem example">
+<p><span class="theorem-title"><strong>Example 3.5 (How much Marat’s Saturdays swing)</strong></span> <em>Given:</em> Marat’s PMF, <span class="math inline">\(p(0)=0.216\)</span>, <span class="math inline">\(p(1)=0.432\)</span>, <span class="math inline">\(p(2)=0.288\)</span>, <span class="math inline">\(p(3)=0.064\)</span>, and mean <span class="math inline">\(\mu=1.2\)</span>. Find <span class="math inline">\(\Var(X)\)</span> and <span class="math inline">\(\sigma\)</span>.</p>
+<p><strong>Solution by the definition.</strong> One row per value:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: center;"><span class="math inline">\(x\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(x-1.2\)</span></th>
+<th style="text-align: center;"><span class="math inline">\((x-1.2)^2\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(p(x)\)</span></th>
+<th style="text-align: center;"><span class="math inline">\((x-1.2)^2\,p(x)\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">0</td>
+<td style="text-align: center;"><span class="math inline">\(-1.2\)</span></td>
+<td style="text-align: center;">1.44</td>
+<td style="text-align: center;">0.216</td>
+<td style="text-align: center;">0.31104</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1</td>
+<td style="text-align: center;"><span class="math inline">\(-0.2\)</span></td>
+<td style="text-align: center;">0.04</td>
+<td style="text-align: center;">0.432</td>
+<td style="text-align: center;">0.01728</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">0.8</td>
+<td style="text-align: center;">0.64</td>
+<td style="text-align: center;">0.288</td>
+<td style="text-align: center;">0.18432</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">1.8</td>
+<td style="text-align: center;">3.24</td>
+<td style="text-align: center;">0.064</td>
+<td style="text-align: center;">0.20736</td>
+</tr>
+</tbody>
+</table>
+<p>The last column adds up to <span class="math inline">\(\Var(X)=0.72\)</span>.</p>
+<p><strong>Solution by the shortcut.</strong> First <span class="math inline">\(\E[X^2]=0\cdot0.216+1\cdot0.432+4\cdot0.288+9\cdot0.064=0.432+1.152+0.576=2.16\)</span>, then <span class="math inline">\(\Var(X)=2.16-1.2^2=2.16-1.44=0.72\)</span>. Same answer, less work.</p>
+<p>The standard deviation is <span class="math inline">\(\sigma=\sqrt{0.72}\approx0.85\)</span> pairs: a typical Saturday lands around 0.85 pairs away from the mean of 1.2.</p>
+</div>
+<p>The most common mistake here: <span class="math inline">\(\E[X^2]\)</span> is not <span class="math inline">\((\E[X])^2\)</span>. For Marat, <span class="math inline">\(\E[X^2]=2.16\)</span> and <span class="math inline">\((\E[X])^2=1.44\)</span>. The gap between them <em>is</em> the variance, and it is never negative. If your variance comes out negative, you subtracted the wrong way round.</p>
+</section>
+<section id="sec-L03-linear" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="sec-L03-linear"><span class="header-section-number">3.6</span> Changing units: <span class="math inline">\(aX+b\)</span></h2>
+<p>Marat thinks in rubles, not pairs. Each pair earns 2,000 rubles, and the three free tests cost <span class="math inline">\(3\cdot500=1{,}500\)</span> rubles whatever happens. His profit for the morning, in rubles, is <span class="math display">\[
+Y=2000X-1500 .
+\]</span></p>
+<div id="thm-linear" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 3.3 (Expectation and variance of <span class="math inline">\(aX+b\)</span>)</strong></span> Let <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> be numbers. Then <span class="math display">\[
+\E[aX+b]=a\,\E[X]+b,\qquad \Var(aX+b)=a^2\Var(X),\qquad \operatorname{SD}(aX+b)=|a|\operatorname{SD}(X).
+\]</span></p>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="How to read $|a|$">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>How to read <span class="math inline">\(|a|\)</span>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="math inline">\(|a|\)</span> reads “the absolute value of a”. It is <span class="math inline">\(a\)</span> without its sign: <span class="math inline">\(|-3|=3\)</span> and <span class="math inline">\(|3|=3\)</span>. In Lecture 2 the same bars around a <em>set</em>, <span class="math inline">\(|B|\)</span>, meant the number of its elements; around a <em>number</em> they mean the absolute value. So <span class="math inline">\(\operatorname{SD}(-X)=|-1|\cdot\operatorname{SD}(X)=\operatorname{SD}(X)\)</span>: a standard deviation is never negative.</p>
+</div>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>For the expectation, use <a href="#eq-lotus" class="quarto-xref">Equation&nbsp;<span>3.2</span></a> with <span class="math inline">\(g(x)=ax+b\)</span>: <span class="math display">\[
+\E[aX+b]=\sum_i(ax_i+b)p(x_i)=a\sum_i x_ip(x_i)+b\sum_i p(x_i)=a\,\E[X]+b\cdot1 .
+\]</span></p>
+</div>
+<details class="proof-fold"><summary>Proof</summary><div class="proof-body">
+<p>For the variance, write <span class="math inline">\(\mu=\E[X]\)</span>. The mean of <span class="math inline">\(aX+b\)</span> is <span class="math inline">\(a\mu+b\)</span>, so the deviation of <span class="math inline">\(aX+b\)</span> from its mean is <span class="math inline">\((aX+b)-(a\mu+b)=a(X-\mu)\)</span>. The <span class="math inline">\(b\)</span> has gone. Square it: <span class="math inline">\(a^2(X-\mu)^2\)</span>. Take the expected value, using the first part with the number <span class="math inline">\(a^2\)</span> in front: <span class="math inline">\(\Var(aX+b)=a^2\E[(X-\mu)^2]=a^2\Var(X)\)</span>. Take square roots for the SD: <span class="math inline">\(\sqrt{a^2}=|a|\)</span>.</p>
+</div></details>
+<div id="exm-marat-profit" class="theorem example">
+<p><span class="theorem-title"><strong>Example 3.6 (Marat’s profit in rubles)</strong></span> <em>Given:</em> 2,000 rubles per pair, 3 free tests at 500 rubles each, so the profit is <span class="math inline">\(Y=2000X-1500\)</span> rubles. From <a href="#exm-marat-mean" class="quarto-xref">Example&nbsp;<span>3.4</span></a> and <a href="#exm-marat-var" class="quarto-xref">Example&nbsp;<span>3.5</span></a>: <span class="math inline">\(\E[X]=1.2\)</span>, <span class="math inline">\(\Var(X)=0.72\)</span>, <span class="math inline">\(\operatorname{SD}(X)\approx0.85\)</span>. Find <span class="math inline">\(\E[Y]\)</span>, <span class="math inline">\(\Var(Y)\)</span> and <span class="math inline">\(\operatorname{SD}(Y)\)</span>.</p>
+<p><strong>Solution.</strong> Here <span class="math inline">\(a=2000\)</span> and <span class="math inline">\(b=-1500\)</span>. By <a href="#thm-linear" class="quarto-xref">Theorem&nbsp;<span>3.3</span></a>, <span class="math display">\[
+\begin{aligned}
+\E[Y]&amp;=2000\cdot1.2-1500=2400-1500=900,\\
+\Var(Y)&amp;=2000^2\cdot0.72=4{,}000{,}000\cdot0.72=2{,}880{,}000,\\
+\operatorname{SD}(Y)&amp;=2000\cdot\sqrt{0.72}\approx 1{,}697 .
+\end{aligned}
+\]</span> So the expected profit is 900 rubles and the standard deviation about 1,697 rubles. The variance is 2,880,000 “rubles squared”, a number nobody can picture: report the standard deviation. The swing is almost twice the mean, and about one Saturday in five (probability 0.216, no orders) is a loss of 1,500 rubles.</p>
+</div>
+<p>Two things go wrong here. First, <span class="math inline">\(b\)</span> disappears from the variance. Paying 1,500 rubles for the tests shifts every profit down by the same amount, which moves the mean but not the spread. A popular wrong answer is <span class="math inline">\(\Var(Y)=2000\cdot0.72-1500\)</span>. Second, <span class="math inline">\(a\)</span> is squared, so its sign disappears too: <span class="math inline">\(\Var(-X)=(-1)^2\Var(X)=\Var(X)\)</span>, never <span class="math inline">\(-\Var(X)\)</span>. Lecture 5 uses <a href="#thm-linear" class="quarto-xref">Theorem&nbsp;<span>3.3</span></a> for the normal distribution, so get it right now.</p>
+</section>
+<section id="sec-L03-binomial" class="level2" data-number="3.7">
+<h2 data-number="3.7" class="anchored" data-anchor-id="sec-L03-binomial"><span class="header-section-number">3.7</span> Bernoulli and binomial distributions</h2>
+<p>Look at one of Marat’s customers alone: either they order or they don’t.</p>
+<div id="def-bernoulli" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 3.6 (Bernoulli distribution)</strong></span> A random variable <span class="math inline">\(X\)</span> has the <strong>Bernoulli distribution</strong> with parameter <span class="math inline">\(p\)</span>, where <span class="math inline">\(0\le p\le1\)</span>, if it takes only two values: <span class="math display">\[
+\Prob(X=1)=p,\qquad \Prob(X=0)=1-p .
+\]</span> The value 1 is called a <strong>success</strong> and 0 a <strong>failure</strong>.</p>
+</div>
+<p>A <strong>parameter</strong> is a number that picks one member of a family of distributions: Bernoulli(0.4) and Bernoulli(0.9) are two members of one family. “Success” is just a label for what we count, even when it is something bad, such as a default.</p>
+<p>The mean and variance take two lines. With values 0 and 1, <span class="math display">\[
+\E[X]=0\cdot(1-p)+1\cdot p=p,\qquad \E[X^2]=0^2\cdot(1-p)+1^2\cdot p=p,
+\]</span> so by <a href="#thm-var-shortcut" class="quarto-xref">Theorem&nbsp;<span>3.2</span></a>, <span class="math inline">\(\Var(X)=p-p^2=p(1-p)\)</span>. One of Marat’s customers is Bernoulli(0.4): mean 0.4, variance <span class="math inline">\(0.4\cdot0.6=0.24\)</span>.</p>
+<div id="def-binomial" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 3.7 (Binomial distribution)</strong></span> Repeat a trial <span class="math inline">\(n\)</span> times, where</p>
+<ol type="1">
+<li>the number of trials <span class="math inline">\(n\)</span> is fixed in advance;</li>
+<li>each trial ends in success or failure;</li>
+<li>every trial has the same probability of success <span class="math inline">\(p\)</span>;</li>
+<li>the trials are independent.</li>
+</ol>
+<p>Let <span class="math inline">\(X\)</span> be the number of successes. Then <span class="math inline">\(X\)</span> has the <strong>binomial distribution</strong> with parameters <span class="math inline">\(n\)</span> and <span class="math inline">\(p\)</span>, written <span class="math inline">\(X\sim\operatorname{Bin}(n,p)\)</span>, and <span id="eq-binom-pmf"><span class="math display">\[
+\Prob(X=k)=\binom{n}{k}p^k(1-p)^{n-k},\qquad k=0,1,\dots,n .
+\tag{3.3}\]</span></span></p>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="How to read $X\sim\operatorname{Bin}(n,p)$ and $p^k(1-p)^{n-k}$">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>How to read <span class="math inline">\(X\sim\operatorname{Bin}(n,p)\)</span> and <span class="math inline">\(p^k(1-p)^{n-k}\)</span>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The sign <span class="math inline">\(\sim\)</span> (“tilde”) reads “has the distribution”. <span class="math inline">\(X\sim\operatorname{Bin}(3,\,0.4)\)</span> reads “X has the binomial distribution with <span class="math inline">\(n=3\)</span> and <span class="math inline">\(p=0.4\)</span>”. That is Marat’s <span class="math inline">\(X\)</span>: 3 customers, success = an order, <span class="math inline">\(p=0.4\)</span>. A Bernoulli(<span class="math inline">\(p\)</span>) variable is <span class="math inline">\(\operatorname{Bin}(1,p)\)</span>.</p>
+<p>In <a href="#eq-binom-pmf" class="quarto-xref">Equation&nbsp;<span>3.3</span></a>, <span class="math inline">\(k\)</span> is a placeholder for “how many successes we ask about”. <span class="math inline">\(p^k\)</span> means <span class="math inline">\(p\)</span> multiplied by itself <span class="math inline">\(k\)</span> times, and any number to the power 0 is 1. For Marat and <span class="math inline">\(k=1\)</span>: <span class="math display">\[
+p^1(1-p)^{3-1}=0.4^1\cdot0.6^2=0.4\cdot0.36=0.144,
+\]</span> the probability of one particular path with one order, such as ONN. Then <span class="math inline">\(\binom{3}{1}=3\)</span> counts those paths (ONN, NON, NNO), and <span class="math inline">\(\Prob(X=1)=3\cdot0.144=0.432\)</span>.</p>
+</div>
+</div>
+<p>Why does <a href="#eq-binom-pmf" class="quarto-xref">Equation&nbsp;<span>3.3</span></a> hold in general? A sequence of <span class="math inline">\(n\)</span> trials with exactly <span class="math inline">\(k\)</span> successes and <span class="math inline">\(n-k\)</span> failures has probability <span class="math inline">\(p^k(1-p)^{n-k}\)</span>, by independence (<a href="L02-conditional-probability.html#def-mutual" class="quarto-xref">Definition&nbsp;<span>2.3</span></a>). The number of such sequences is the number of ways to choose the <span class="math inline">\(k\)</span> positions of the successes, <span class="math inline">\(\binom nk\)</span> (<a href="L01-probability-basics.html#def-combination" class="quarto-xref">Definition&nbsp;<span>1.8</span></a>, <a href="L01-probability-basics.html#eq-binom" class="quarto-xref">Equation&nbsp;<span>1.2</span></a>). Different sequences are mutually exclusive, so we add <span class="math inline">\(\binom nk\)</span> equal probabilities. Check with Marat and <span class="math inline">\(k=2\)</span>: <span class="math inline">\(\binom32\cdot0.4^2\cdot0.6=3\cdot0.16\cdot0.6=0.288\)</span>, as in <a href="#exm-marat-pmf" class="quarto-xref">Example&nbsp;<span>3.2</span></a>.</p>
+<div id="thm-binomial-moments" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 3.4 (Mean and variance of the binomial distribution)</strong></span> If <span class="math inline">\(X\sim\operatorname{Bin}(n,p)\)</span>, then <span class="math display">\[
+\E[X]=np,\qquad \Var(X)=np(1-p).
+\]</span></p>
+</div>
+<details class="proof-fold"><summary>Proof</summary><div class="proof-body">
+<p>Idea. Let <span class="math inline">\(X_j=1\)</span> if trial <span class="math inline">\(j\)</span> is a success and <span class="math inline">\(X_j=0\)</span> if not. Each <span class="math inline">\(X_j\)</span> is Bernoulli(<span class="math inline">\(p\)</span>), and <span class="math inline">\(X=X_1+X_2+\dots+X_n\)</span> counts the successes. In Lecture 6 we prove that the expected value of a sum is the sum of the expected values, so <span class="math inline">\(\E[X]=p+p+\dots+p=np\)</span>. For independent random variables the same holds for variances, so <span class="math inline">\(\Var(X)=n\cdot p(1-p)\)</span>.</p>
+</div></details>
+<p>For Marat, <span class="math inline">\(X\sim\operatorname{Bin}(3,\,0.4)\)</span>: <span class="math inline">\(\E[X]=3\cdot0.4=1.2\)</span> and <span class="math inline">\(\Var(X)=3\cdot0.4\cdot0.6=0.72\)</span>, as in <a href="#exm-marat-mean" class="quarto-xref">Example&nbsp;<span>3.4</span></a> and <a href="#exm-marat-var" class="quarto-xref">Example&nbsp;<span>3.5</span></a>.</p>
+</section>
+<section id="exercises" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="exercises">Exercises</h2>
+<ol type="1">
+<li>A guesthouse in Suzdal gets <span class="math inline">\(X\)</span> late cancellations per weekend, with <span class="math inline">\(\Prob(X=0)=0.5\)</span>, <span class="math inline">\(\Prob(X=1)=0.3\)</span> and <span class="math inline">\(\Prob(X=2)=c\)</span>, and no other values. Find <span class="math inline">\(c\)</span>, <span class="math inline">\(F(1.5)\)</span>, <span class="math inline">\(\Prob(X&lt;1)\)</span>, <span class="math inline">\(\E[X]\)</span> and <span class="math inline">\(\Var(X)\)</span>.</li>
+<li>The daily number of customers <span class="math inline">\(W\)</span> of a food truck has <span class="math inline">\(\E[W]=50\)</span> and <span class="math inline">\(\Var(W)=16\)</span>. Each customer pays 300 rubles, and the spot costs 4,000 rubles a day, so the daily profit is <span class="math inline">\(300W-4000\)</span> rubles. Find its expected value and standard deviation. What is <span class="math inline">\(\Var(-W)\)</span>?</li>
+<li>Binomial or not? One word each, then one line of reason. (a) The number of heads in 6 tosses of a fair coin. (b) The number of faulty bulbs among 2 bulbs taken without putting back from a box of 12 that has 3 faulty ones. (c) The number of customers Marat tests until the first one orders.</li>
+<li>Each of 5 visitors to a car showroom in Kaliningrad books a test drive with probability 0.2, independently of the others. Let <span class="math inline">\(X\)</span> be the number who book. Find <span class="math inline">\(\Prob(X=2)\)</span>, <span class="math inline">\(\Prob(X\ge1)\)</span>, <span class="math inline">\(\E[X]\)</span> and <span class="math inline">\(\Var(X)\)</span>.</li>
+</ol>
+<p>Answers: (1) <span class="math inline">\(c=1-0.5-0.3=0.2\)</span>; <span class="math inline">\(F(1.5)=0.5+0.3=0.8\)</span>; <span class="math inline">\(\Prob(X&lt;1)=\Prob(X=0)=0.5\)</span>; <span class="math inline">\(\E[X]=0.3+2\cdot0.2=0.7\)</span>; <span class="math inline">\(\E[X^2]=0.3+4\cdot0.2=1.1\)</span>, so <span class="math inline">\(\Var(X)=1.1-0.49=0.61\)</span>. (2) <span class="math inline">\(300\cdot50-4000=11{,}000\)</span> rubles; <span class="math inline">\(\operatorname{SD}=300\cdot\sqrt{16}=1{,}200\)</span> rubles; <span class="math inline">\(\Var(-W)=16\)</span>. (3) (a) Yes, <span class="math inline">\(\operatorname{Bin}(6,\,0.5)\)</span>. (b) No: after the first draw <span class="math inline">\(p\)</span> changes to <span class="math inline">\(2/11\)</span> or <span class="math inline">\(3/11\)</span> (Lecture 2), so the trials are not independent. (c) No: the number of trials is not fixed (geometric distribution, Lecture 4). (4) <span class="math inline">\(\binom52\cdot0.2^2\cdot0.8^3=10\cdot0.04\cdot0.512=0.2048\)</span>; <span class="math inline">\(1-0.8^5=1-0.32768\approx0.672\)</span>; <span class="math inline">\(\E[X]=5\cdot0.2=1\)</span>; <span class="math inline">\(\Var(X)=5\cdot0.2\cdot0.8=0.8\)</span>. The full practice is in Seminar 3.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../lectures/L02-conditional-probability.html" class="pagination-link" aria-label="Conditional probability and Bayes' theorem">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Conditional probability and Bayes’ theorem</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../seminars/S01-counting.html" class="pagination-link" aria-label="Seminar 1: events, counting, classical and geometric probability">
+        <span class="nav-page-text">Seminar 1: events, counting, classical and geometric probability</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
