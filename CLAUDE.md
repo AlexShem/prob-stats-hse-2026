@@ -82,6 +82,7 @@ make snapshot L=<stem>   # one deck → slides/_output/<stem>.pdf + PNG contact 
 make labels L=<stem>     # numbers of definitions/theorems/examples/figures in a rendered chapter
 make assessment       # private papers → assessment/_output/papers
 make assessment-keys  # with marking keys → assessment/_output/solutions
+make publish          # clean main only: make book print check, then GitHub Pages (gh-pages) + tag pub/<date>; Aleksandr runs it
 make check            # leaks (lecturer cues, unreleased solutions), unresolved refs, sizes; after make book + print
 make lint             # style tripwire (see "Writing style")
 make schedule         # regenerate admin/schedule.md + book/_schedule-tables.md from the newest admin/raw/*.xls
@@ -118,7 +119,7 @@ Material is prepared one teaching unit at a time, a few days before it is taught
 - **Seminar-only work** (a seminar prepared separately from its lecture, or reworked later): `unit/SNN-<slug>`.
 - **Fixes to material already merged** (a typo in L02 found during L03 week): `fix/<what>`, e.g. `fix/L02-bayes-example`. Keep these off unit branches, so a fix can go out without waiting for the next unit.
 - **Infrastructure** (filter, templates, Makefile, CLAUDE.md, scripts): `infra/<what>`.
-- **Assessment**: `exam/midterm`, `exam/final`, `exam/quiz-<module>-<n>` (e.g. `exam/quiz-2-1`). The repo is private, but still never merge exam content into `book/` or `slides/`.
+- **Assessment**: the repo on GitHub is public. Exam, midterm and quiz files in `assessment/midterm/`, `assessment/exam/` and `assessment/quizzes/` are gitignored and never committed (Aleksandr backs them up outside git). Never put exam content anywhere else in the repo.
 - **One-line operational changes** go straight to `main` as single commits, and only when Aleksandr asks: releasing solutions (`solutions-released`), a schedule refresh (`make schedule`). Commit message, for example: `Release S01 solutions`.
 
 Rules for agents:
@@ -128,7 +129,7 @@ Rules for agents:
 2. Commit in small steps with the unit as the prefix: `L01: first draft of chapter`, `L01: slides`, `S01: problems 1–6`, `S01: solutions`, `infra: split script handles appendices`. Don't commit `_output/`. Do commit `_freeze/`.
 3. Merge only after `/review-unit` has no open findings for mathematics, leaks or consistency, **and** Aleksandr has looked at the unit. Merge with `git merge --no-ff unit/...` so the unit stays one visible block in the history, then delete the branch.
 4. Don't push, merge into `main` or delete branches unless Aleksandr asks. He reviews the branch first.
-5. After publishing, tag what students saw: `git tag pub/2026-11-07`. That makes "which version did they have before the midterm?" easy to answer.
+5. After publishing, tag what students saw: `git tag pub/2026-11-07` (`make publish` does this). That makes "which version did they have before the midterm?" easy to answer.
 
 ## Routing (how the main session handles a request)
 
@@ -146,7 +147,7 @@ Aleksandr starts a session and says what he wants in plain words, e.g. "fix slid
 | "Is unit N ready?", before a merge | Run `/review-unit LNN SNN`: math-checker, unit-reviewer and build-checker in parallel, then one ranked list. |
 | Trivial fix (a typo, a wrong word, at most ~3 lines, no numbers, labels or structure involved) | The main session edits it directly in the chapter and in the matching slide/seminar line, then runs build-checker. |
 | Release solutions, refresh the schedule | The main session, straight on `main` (CLAUDE.md, "Git workflow"). |
-| Exam or quiz drafting | The main session on `exam/…`, then math-checker. Never in `book/` or `slides/`. |
+| Exam or quiz drafting | The main session in the gitignored `assessment/` folders (no branch, no commit), then math-checker. Never in `book/` or `slides/`. |
 | Tooling (filter, Makefile, scripts, agents, these rules) | The main session on `infra/…`. Update `WORKFLOW.md` if the way Aleksandr works changes. |
 
 **Rules:**
@@ -224,7 +225,7 @@ The coordination steps are in `.claude/skills/<stage>/SKILL.md`, and the working
 
 ### Confidentiality
 
-- Midterm, exam and quiz content lives only in `assessment/` (its own project with a `solutions` profile for marking keys). It must never appear in `book/` or `slides/`, or in anything published. Keep the repository private.
+- Midterm, exam and quiz content lives only in `assessment/` (its own project with a `solutions` profile for marking keys). It must never appear in `book/` or `slides/`, or in anything published. The GitHub repo is public, so these folders are gitignored: never commit them, never `git add -f` them, never move exam content to a tracked path.
 - Exams use `::: {.content-visible when-profile="solutions"}` for keys. The `sol`/`lecturer` filter is only active in the book.
 
 ## Writing style (anti-AI rules)
@@ -272,5 +273,5 @@ The materials must read as written by this lecturer, not generated. These rules 
 - Module 3 timetable (Jan–Mar 2027) is missing. Add it with `make schedule` when it arrives.
 - Grading formula is recorded (`admin/course-info.md`, public on `book/index.qmd` and L00). Still open: ECTS/hours, final-grade rounding, what the blocking final exam means for students (pass threshold?), quiz dates and topics, the programme's "Exam example.pdf" (not in the repo).
 - Midterm date: S10 or a separate session in the week of 21–27 Dec, not confirmed.
-- Where the book is published (HSE LMS, GitHub Pages, Quarto Pub): not decided. Publish the folder `book/_output/book/`.
+- The book is published on GitHub Pages with `make publish` (`book/_publish.yml`, branch `gh-pages`). Only Aleksandr runs it, since it pushes.
 - The welcome text in `book/index.qmd` is for Aleksandr to write.

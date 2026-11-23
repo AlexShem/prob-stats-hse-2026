@@ -67,22 +67,23 @@ To see the hooks, type `/hooks`.
 | `make book` | The student site in `book/_output/book/`: HTML, the full PDF, a PDF of each chapter, and slides in HTML and PDF. **This folder is what you publish.** |
 | `make print` | Your print copies, one PDF per lecture and seminar with board cues and all solutions, in `book/_output/lecturer/`. |
 | `make snapshot L=L02-<slug>` | One deck as a PDF plus contact-sheet images in `slides/_output/snap/`. |
+| `make publish` | Publishes the student site to GitHub Pages (https://alexshem.github.io/prob-stats-hse-2026/). Runs only on a clean `main`: rebuilds everything (`make book print check`), stops if a check fails, pushes `book/_output/book/` to the `gh-pages` branch and tags the version as `pub/<today>`. You run it yourself, since it pushes. |
 | `make check` | Checks that no board cue or unreleased solution reached the student files, that all references resolve, and that the page and slide counts are in range. |
 | `make lint` | A quick check for AI-sounding wording. |
 | `make schedule` | Refreshes the schedule after you drop a new RUZ `.xls` into `admin/raw/`. |
 
-After publishing, tag the version students saw: `git tag pub/2026-11-21` (then `git push --tags`).
+`make publish` tags the version students saw (`pub/<date>`) and pushes the tag. If you publish some other way, tag it by hand.
 
 ## Branches (the agents handle them, this is just so you know)
 
 - `main` always builds and is what you publish.
 - `unit/LNN-…` holds one week's lecture, slides and seminar, and is merged when you're happy.
-- `fix/…` is for corrections to merged material, `infra/…` for tooling, and `exam/midterm` / `exam/final` / `exam/quiz-2-1` etc. for exams and quizzes (which are never published).
+- `fix/…` is for corrections to merged material, `infra/…` for tooling. Exams and quizzes have no branch: the repo is public, so they are never committed (see Exams).
 - Agents never push, never merge without your OK, and never commit straight to `main` (enforced by the hooks). The exceptions are releasing solutions and refreshing the schedule, when you ask.
 
 ## Exams
 
-There's no command for exams. Ask in plain words, for example "draft the midterm on L1–L7, 90 minutes, two variants". The agent works on `exam/midterm` in `assessment/`. Then `make assessment` builds the papers and `make assessment-keys` the marking keys. Quizzes work the same way ("draft quiz 2-1 on L1–L2, 15 minutes, 5 multiple-choice questions"), in `assessment/quizzes/`, and you upload them to the LMS. None of this goes into the book.
+There's no command for exams. Ask in plain words, for example "draft the midterm on L1–L7, 90 minutes, two variants". The agent writes it in `assessment/midterm/`. These folders (`midterm/`, `exam/`, `quizzes/`) are gitignored because the repo is public, so they exist only on this computer: back them up yourself (a private cloud folder, for example). Then `make assessment` builds the papers and `make assessment-keys` the marking keys. Quizzes work the same way ("draft quiz 2-1 on L1–L2, 15 minutes, 5 multiple-choice questions"), in `assessment/quizzes/`, and you upload them to the LMS. None of this goes into the book.
 
 ## If something looks wrong
 

@@ -1,0 +1,4 @@
+- source: project
+  gh-pages:
+    - id: gh-pages
+      url: 'https://alexshem.github.io/prob-stats-hse-2026/'

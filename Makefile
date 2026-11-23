@@ -2,7 +2,7 @@
 Q = uv run quarto render
 BOOK_OUT = book/_output/book
 
-.PHONY: all book print slides snapshot labels check assessment assessment-keys schedule lint clean
+.PHONY: all book print slides snapshot labels check publish assessment assessment-keys schedule lint clean
 
 all: book print
 
@@ -29,6 +29,18 @@ snapshot:
 # Numbers of definitions/theorems/examples/figures in a rendered chapter: make labels L=L01-probability-basics
 labels:
 	uv run python scripts/chapter_labels.py $(L)
+
+# Publish the student site to GitHub Pages (branch gh-pages), from a clean `main` only.
+# Full build + leak check first, then publish the already-built folder, then tag pub/<date>.
+# The first run creates an empty gh-pages branch on GitHub without touching the working tree.
+publish:
+	@test "$$(git branch --show-current)" = main || { echo "publish: switch to main first"; exit 1; }
+	@test -z "$$(git status --porcelain)" || { echo "publish: commit or stash your changes first"; exit 1; }
+	$(MAKE) book print check
+	@git ls-remote --exit-code --heads origin gh-pages >/dev/null || \
+	  git push origin "$$(git commit-tree $$(git hash-object -t tree /dev/null) -m 'Initialise gh-pages')":refs/heads/gh-pages
+	uv run quarto publish gh-pages book --no-render --no-prompt --no-browser
+	git tag -f pub/$$(date +%F) && git push -f origin refs/tags/pub/$$(date +%F)
 
 # Midterm/exam (private, never published) → assessment/_output/{papers,solutions}
 assessment:       ; $(Q) assessment
