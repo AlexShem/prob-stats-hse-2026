@@ -39,7 +39,7 @@ publish:
 	$(MAKE) book print check
 	@git ls-remote --exit-code --heads origin gh-pages >/dev/null || \
 	  git push origin "$$(git commit-tree $$(git hash-object -t tree /dev/null) -m 'Initialise gh-pages')":refs/heads/gh-pages
-	uv run quarto publish gh-pages book --no-render --no-prompt --no-browser
+	uv run quarto publish gh-pages book --id gh-pages --no-render --no-prompt --no-browser
 	git tag -f pub/$$(date +%F) && git push -f origin refs/tags/pub/$$(date +%F)
 
 # Midterm/exam (private, never published) → assessment/_output/{papers,solutions}
