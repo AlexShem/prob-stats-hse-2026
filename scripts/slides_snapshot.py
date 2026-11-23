@@ -40,9 +40,11 @@ src = html.read_text(encoding="utf-8")
 src = re.sub(r'<script src="[^"]*reveal-chalkboard/plugin\.js"></script>', "", src)
 src = src.replace("RevealChalkboard, ", "")
 # Headless Chrome cannot always reach the MathJax CDN (TLS errors, or it simply hangs), and then
-# reveal never finishes the layout. Use a local copy, fetched once with npm into ~/.cache.
+# reveal never finishes the layout. Use a local copy of the latest MathJax 4 (the version Quarto
+# loads, slides/_quarto.yml), fetched once with npm into ~/.cache. Delete that folder to update it.
+MATHJAX_URL = "https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"
 mj_dir = Path.home() / ".cache/prob-stats-mathjax"
-mj = mj_dir / "core/tex-chtml.local.js"   # next to sre/, which MathJax loads relative to itself
+mj = mj_dir / "core/tex-chtml.js"
 if not mj.exists() and shutil.which("npm"):
     mj_dir.mkdir(parents=True, exist_ok=True)
     for pkg in ("mathjax@4", "@mathjax/mathjax-newcm-font@4"):
@@ -51,13 +53,15 @@ if not mj.exists() and shutil.which("npm"):
                    " && tar xzf mathjax-4*.tgz -C core --strip-components=1"
                    " && tar xzf mathjax-mathjax-newcm-font-*.tgz -C fonts/@mathjax/mathjax-newcm-font --strip-components=1",
                    shell=True, cwd=mj_dir, check=True)
-    code = (mj_dir / "core/tex-chtml.js").read_text(encoding="utf-8")
-    code = code.replace('"https://cdn.jsdelivr.net/npm/@mathjax"', '"' + (mj_dir / "fonts/@mathjax").as_uri() + '"')
-    # no speech/braille: its worker fetches files over file:// and hangs the typesetting
-    code = code.replace("enableSpeech:!0", "enableSpeech:!1").replace("enableBraille:!0", "enableBraille:!1")
-    mj.write_text(code, encoding="utf-8")
+if MATHJAX_URL not in src:
+    sys.exit(f"{html.name} does not load {MATHJAX_URL}. Update MATHJAX_URL to match what Quarto writes.")
 if mj.exists():
-    src = src.replace("https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js", mj.as_uri())
+    src = src.replace(MATHJAX_URL, mj.as_uri())
+    # Fonts from the local copy. No accessibility layer: it fetches its JSON files with fetch(),
+    # which fails over file://, and then MathJax.startup.promise never resolves.
+    config = ("window.MathJax = {output: {fontPath: '" + (mj_dir / "fonts/@mathjax").as_uri() + "/%%FONT%%-font'},"
+              " options: {menuOptions: {settings: {enrich: false, speech: false, braille: false}}}};")
+    src = src.replace("<head>", f"<head><script>{config}</script>", 1)
 # Source Sans 3 normally comes from Google Fonts. Without network the text falls back to a wider
 # font, slides overflow and drop out of the PDF. Use a local copy through @font-face.
 ss_dir = Path.home() / ".cache/prob-stats-fonts"
