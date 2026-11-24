@@ -123,7 +123,7 @@ $$
 Its mean is $\E[X]=n\,\dfrac{M}{N}$.
 :::
 
-For the bulbs, $N=12$, $M=3$, $n=2$, and $\E[X]=2\cdot3/12=0.5$ faulty bulbs. If the sample is under about 5% of the box, taking items out hardly changes the rest, and $\operatorname{Bin}(n,\,M/N)$ is a fine approximation.
+For the bulbs, $N=12$, $M=3$, $n=2$, and $\E[X]=2\cdot3/12=0.5$ faulty bulbs. The idea behind $nM/N$: each of the $n$ items taken is special with probability $M/N$, and expected values add up (we prove that in Lecture 6). In this course we use the rule: if the sample is under about 5% of the box, taking items out hardly changes the rest, and $\operatorname{Bin}(n,\,M/N)$ is a fine approximation.
 
 ## The Poisson distribution: counting events in time {#sec-L04-poisson}
 
@@ -202,7 +202,7 @@ Let $X\sim\operatorname{Bin}(n,p)$. If $n$ is large and $p$ is small, then
 $$
 \Prob(X=k)\approx e^{-\lambda}\,\frac{\lambda^k}{k!}\quad\text{with }\lambda=np,\qquad k=0,1,2,\dots
 $$
-A rule of thumb: the approximation is good when $n\ge100$ and $np\le10$.
+Our rule of thumb (textbooks use slightly different ones): the approximation is good when $n\ge100$ and $np\le10$.
 :::
 
 ::: proof-fold
@@ -315,7 +315,7 @@ For a curve we use one rule, which links areas to slopes: integration undoes dif
 $$
 \int_a^b f(x)\,dx=G(b)-G(a)=\big[G(x)\big]_a^b .
 $$ {#eq-integral-rule}
-Why? Push the right end $x$ of the area a little to the right, by a width $w$: the area grows by a thin strip of height about $f(x)$, so by about $f(x)\cdot w$. The area grows at the rate $f(x)$: it is a function whose derivative is $f$.
+Why? Push the right end $x$ of the area a little to the right, by a width $w$: the area grows by a thin strip of height about $f(x)$, so by about $f(x)\cdot w$. The area grows at the rate $f(x)$: it is a function whose derivative is $f$. Any other $G$ with $G'=f$ differs from it only by a constant, and the constant cancels in $G(b)-G(a)$.
 
 ::: {.callout-note title="How to read $\int_a^b f(x)\,dx$ and $\big[G(x)\big]_a^b$"}
 $\int$ is a stretched letter S, for "sum": the area is a sum of very thin vertical strips. $\int_a^b f(x)\,dx$ reads "the integral from a to b of f of x, d x". The number at the bottom ($a$) is where the area starts, the number on top ($b$) is where it stops. $dx$ says that $x$ is the variable along the horizontal axis; think of it as the width of one thin strip, whose height is $f(x)$.
