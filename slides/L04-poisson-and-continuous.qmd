@@ -1,0 +1,1765 @@
+---
+title: "Counting events and measuring time"
+subtitle: "Lecture 4 · Probability Theory and Mathematical Statistics"
+date: "2026-11-25"
+---
+
+{{< include ../_shared/_macros.qmd >}}
+{{< include ../_shared/_setup.qmd >}}
+
+<!--
+PLAN  NN (slide number = PDF page - 1) | title | pattern | chapter item | visual
+01 | Marat's walk-in Saturday | hook | intro | strips O / NO / NNO / NNNO with counts
+02 | Marat's first order: one path for each value | worked | Ex 4.1 (X = 1, 2, 3) | strips with products
+03 | Marat's first order: more than 3 customers | worked | Ex 4.1 (X > 3) | bars 1, 2, 3, "more than 3" (sum 1)
+04 | Counting trials, not successes | compare | after Ex 4.1 (Y ~ Bin(3, 0.4)) | table + NNN? strip
+05 | Geometric distribution | item | Def 4.1, Eq 4.1, Fig 4.1 | Geom(0.4) bars
+06 | How to read Geom(p) and k = 1, 2, 3, ... | notation | callout 1 | write / say / Marat table
+07 | More than k trials, and the name | item + explain | P(X > k) = (1-p)^k, name, failures convention | tail bars in orange
+08 | Mean and variance of the geometric | item | Thm 4.1 (first-step idea) | first-trial branch diagram
+09 | What 2.5 customers means | explain | after Thm 4.1 | bars with mode and mean
+10 | Your turn: phone sales in Novosibirsk | your turn | Exercise 1 | none
+11 | Drawing without putting back | worked | Sec 4.2 bulbs | 66-pair grid (from the L02 deck)
+12 | Hypergeometric distribution | item | Def 4.2, mean, 5% rule | none (box)
+13 | Dina's parcel pickup point | hook | Sec 4.3 intro | simulated hour, counts per 10 minutes
+14 | How to read lambda, Pois(lambda) and e^-3 | notation | callout 2 (part 1) | table
+15 | How to read k! and the Poisson formula | notation | callout 2 (part 2) | factorial table, one instance
+16 | Poisson distribution | item | Def 4.3, Eq 4.2 | conditions vs Dina table
+17 | Customers at Dina's point: 0 to 3 | worked | Ex 4.2 (part 1) | computation table
+18 | Customers at Dina's point: at least 4 | worked | Ex 4.2 (part 2), Fig 4.2 | Pois(3) bars, X >= 4 orange
+19 | Pitfall: lambda belongs to the interval | pitfall | after Fig 4.2 | Pois(3) vs Pois(6) panels
+20 | Your turn: bikes on the Sochi seafront | your turn | Exercise 2 | none
+21 | Poisson approximation to the binomial | item | Thm 4.2 (idea) | Bin(1000, 0.003) vs Pois(3) bars
+22 | Mean and variance of the Poisson | item | Thm 4.3 | Pois(3) bars, mean and SD band
+23 | Returned parcels: is it Poisson? | worked | Ex 4.3 (set-up, rule check) | rule table
+24 | Returned parcels: binomial against Poisson | picture | Ex 4.3 (table) | table + paired bars
+25 | Which discrete distribution? | picture | Tbl 4.1 | table
+26 | Break | break | cue after Sec 4.4 |
+27 | Lena's shuttle: one value has probability 0 | hook | Sec 4.5 intro | point vs interval on a time line
+28 | Derivative: a slope | item + notation | derivative, callout 3 (F'(x)), Fig 4.3 | tangent at x = 3
+29 | The derivative rules we need | picture | derivative table | table
+30 | Integral: an area | item | integral as area, rectangle | Fig 4.4 left
+31 | How to read the integral sign | notation | callout 4 (part 1) | parts table + strips
+32 | The rule: integration undoes differentiation | item + explain | Eq 4.3 and the "why" | area up to x with a new strip
+33 | How to read [G(x)]_a^b | notation + compare | callout 4 (part 2), rectangle both ways | two boxes
+34 | Finding G: the derivative table backwards | picture | G table | table
+35 | One worked integral | worked | int_0^1 2(1-x) dx | Fig 4.4 right
+36 | Lena's shuttle as a density | picture | Sec 4.6 intro, Fig 4.5 | Fig 4.5
+37 | Continuous random variable, density | item | Def 4.4, interval c to d | shaded area a to b
+38 | How to read f(x): a height | notation | callout 5 | density with a thin strip at 0
+39 | Pitfall: <= or < no longer matters | pitfall | after callout 5 | discrete bar vs continuous line
+40 | Bakhyt's first customer: is it a density? | worked | Ex 4.4 (part 1) | triangle, total area 1
+41 | Bakhyt's first customer: the first half hour | worked | Ex 4.4 (part 2), Fig 4.6 left | shaded 0 to 0.5
+42 | CDF of a continuous random variable | item + notation | Def 4.5, dummy variable t | area up to x
+43 | Bakhyt's CDF | worked | after Def 4.5, Fig 4.6 right | CDF with F(0.5)
+44 | Expected value and variance: sums become integrals | item + compare | Def 4.6, discrete/continuous table | table
+45 | Bakhyt: the first customer on average | worked | kiosk E[X] | density with mean and 30 min
+46 | Bakhyt: variance and standard deviation | worked | kiosk E[X^2], Var, SD | none (full-width steps)
+47 | Your turn: repair visits in Vladimir | your turn | Exercise 4 | none
+48 | Uniform distribution | item | Def 4.7 | f and F panels
+49 | How to read X ~ U(a, b) | notation | callout 6 | table + 12 x 1/12 rectangle
+50 | The uniform CDF is a share of the interval | explain | derivation of F, geometric probability | area up to x
+51 | Waiting for the shuttle | worked | Ex 4.5 | rectangle 8 to 12
+52 | Mean and variance of the uniform | item | Thm 4.4 (idea), shuttle numbers | mean and SD band
+53 | Your turn: delivery in 30 to 50 minutes | your turn | Exercise 5 | none
+
+Visuals: 45 of 53 slides have a figure, a table or a diagram.
+
+CUT: Thm 4.1 proof kept as the first-step idea; the variance part points to the book. Thm 4.2 and Thm 4.3
+proofs kept as one-line ideas with a pointer to Sec 4.4. Thm 4.4 proof (visible in the chapter): only the
+mean line is shown, the variance algebra (b^3 - a^3 factorisation) points to Sec 4.7. Exercise 3 (Krasnodar
+bookshop, approximation) is left to S04: Ex 4.3 already works the same steps. The coffee-machine aside from
+the opening, the Poisson pronunciation (speaker notes) and "textbooks use other rules of thumb" (notes)
+are dropped from the slides. The closing promise of Lecture 5 (exponential, memorylessness) is in the
+notes of the last slide.
+-->
+
+```{python}
+#| include: false
+import math
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.patches import Rectangle
+plt.rcParams.update({"font.size": 14, "axes.titlesize": 14})
+BLUE, LIGHT, ORANGE, GREY, INK, MUTED, SOFT, PALE = (
+    "#1f5c99", "#9bb8d6", "#b4542a", "#c9d6e3", "#1d2733", "#5b6b7c", "#eaf1f8", "#e8b9a3")
+
+def geom_p(k, p=0.4):
+    return (1 - p) ** (k - 1) * p
+
+def pois_p(k, lam):
+    return math.exp(-lam) * lam ** k / math.factorial(k)
+
+def bars(ax, xs, ps, hot=(), xlabel="", ylabel="", ymax=None, width=0.55, fs=12,
+         labels=None, nlab=None, fmt="{:.3f}"):
+    """PMF bars: `hot` values in orange, the rest blue (or light when something is hot)."""
+    hot = set(hot)
+    cols = [ORANGE if x in hot else (LIGHT if hot else BLUE) for x in xs]
+    ax.bar(xs, ps, width=width, color=cols, zorder=2)
+    ymax = ymax or max(ps) * 1.25
+    nlab = len(xs) if nlab is None else nlab
+    for i, (x, p) in enumerate(zip(xs, ps)):
+        if i < nlab:
+            txt = labels[i] if labels else fmt.format(p)
+            ax.text(x, p + ymax * 0.02, txt, ha="center", va="bottom", fontsize=fs,
+                    color=ORANGE if x in hot else INK, fontweight="bold" if x in hot else "normal")
+    ax.set_xticks(xs)
+    ax.set_ylim(0, ymax)
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel(ylabel)
+    ax.grid(axis="x", visible=False)
+
+def strip(ax, seq, x0, y, cell=1.0, h=0.8, fs=16):
+    """One morning as letters: O blue, N grey, ? white."""
+    for k, c in enumerate(seq):
+        fc = {"O": BLUE, "N": GREY}.get(c, "white")
+        ax.add_patch(Rectangle((x0 + k * cell, y), cell * 0.9, h, fc=fc, ec=INK, lw=1,
+                               ls="-" if c in "ON" else ":"))
+        ax.text(x0 + k * cell + cell * 0.45, y + h / 2, c, ha="center", va="center", fontsize=fs,
+                color="white" if c == "O" else INK, fontweight="bold")
+```
+
+## Marat's walk-in Saturday
+
+:::: {.columns}
+::: {.column width="52%"}
+Marat's optician's shop in Kazan again. This Saturday nobody has booked a free eye test.
+
+. . .
+
+Walk-ins come one at a time. Each orders glasses with probability 0.4, independently. No coffee for Marat until the first pair is sold.
+
+. . .
+
+He counts the customers he tests **up to and including** the first one who orders.
+
+Is the first order most likely from customer 1, 2 or 3? How many should he expect to test?
+:::
+::: {.column width="48%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.6
+fig, ax = plt.subplots(figsize=(5, 3.6))
+for i, seq in enumerate(["O", "NO", "NNO", "NNNO"]):
+    y = 3 - i
+    strip(ax, seq, 0, y * 1.1, h=0.8)
+    ax.text(4.3, y * 1.1 + 0.4, f"count = {len(seq)}", va="center", fontsize=15,
+            color=ORANGE, fontweight="bold")
+ax.text(1.5, -0.55, "... and so on: no last value", ha="center", fontsize=13, color=MUTED)
+ax.text(0, 4.45, "O = orders, N = does not", fontsize=13, color=MUTED)
+ax.set_xlim(-0.1, 6.2)
+ax.set_ylim(-0.9, 4.9)
+ax.axis("off")
+plt.tight_layout()
+```
+:::
+::::
+
+::: {.notes}
+Timing. Slot 1: 0:00-0:30 Marat, geometric; 0:30-0:40 hypergeometric; 0:40-1:05 Poisson; 1:05-1:20 approximation, "which distribution?" table. Short of time: cut the hypergeometric to one sentence and the formula (S04 practises it). Break. Slot 2: 0:00-0:25 derivatives and integrals; 0:25-0:55 density, CDF, kiosk; 0:55-1:15 uniform; 5 min slack.
+
+Board: side strip "Marat: walk-ins, P(order) = 0.4 each, independent". After the break: "Bakhyt: f(x) = 2(1-x), 0 <= x <= 1 (hours)", kept to the end.
+
+Ask first: "Customer 1, 2 or 3: where is the first order most likely?" Most say 2 or 3.
+:::
+
+## Marat's first order: one path for each value [Ex 4.1]{.tag}
+
+::: {.muted .small}
+Given: walk-ins one after another; each orders (O) with 0.4, does not (N) with 0.6; independent
+:::
+
+:::: {.columns}
+::: {.column width="50%"}
+$X$ = customers tested up to and including the first order. Number of trials fixed? No: Marat keeps testing until someone orders. So $X$ is [not binomial]{.answer}.
+
+. . .
+
+Each value of $X$ comes from exactly one path: some N's, then one O. The customers are independent (Def 2.3), so multiply along the path.
+:::
+::: {.column width="50%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.4
+fig, ax = plt.subplots(figsize=(5, 3.4))
+rows = [("O", "0.4", "= 0.4"), ("NO", "0.6 · 0.4", "= 0.24"), ("NNO", "0.6 · 0.6 · 0.4", "= 0.144")]
+for i, (seq, prod, val) in enumerate(rows):
+    y = 2 - i
+    ax.text(-0.15, y * 1.25 + 0.35, f"X = {len(seq)}", ha="right", va="center", fontsize=15)
+    strip(ax, seq, 0, y * 1.25, cell=0.8, h=0.7, fs=14)
+    ax.text(2.6, y * 1.25 + 0.35, prod, ha="left", va="center", fontsize=14)
+    ax.text(2.6, y * 1.25 - 0.12, val, ha="left", va="center", fontsize=15, color=ORANGE, fontweight="bold")
+ax.set_xlim(-1.4, 5.2)
+ax.set_ylim(-0.4, 3.3)
+ax.axis("off")
+plt.tight_layout()
+```
+:::
+::::
+
+## Marat's first order: more than 3 customers [Ex 4.1]{.tag}
+
+::: {.muted .small}
+Given: each walk-in orders with 0.4, does not with 0.6, independently; $\Prob(X=1)=0.4$, $\Prob(X=2)=0.24$, $\Prob(X=3)=0.144$
+:::
+
+:::: {.columns}
+::: {.column width="50%"}
+$X>3$ means the first three customers all say no: NNN, whatever comes after.
+
+$$\Prob(X>3)=0.6^3=0.216$$
+
+. . .
+
+The four pieces cover everything: $0.4+0.24+0.144+0.216=1$.
+
+. . .
+
+The first order is most likely to come from [customer 1]{.answer}. Each later step multiplies by 0.6.
+:::
+::: {.column width="50%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.6
+fig, ax = plt.subplots(figsize=(5, 3.6))
+ax.bar([1, 2, 3], [0.4, 0.24, 0.144], width=0.55, color=BLUE, zorder=2)
+ax.bar([4.3], [0.216], width=0.8, color=ORANGE, zorder=2)
+for x, p in zip([1, 2, 3, 4.3], [0.4, 0.24, 0.144, 0.216]):
+    ax.text(x, p + 0.01, f"{p:.3f}", ha="center", va="bottom", fontsize=13,
+            color=ORANGE if x > 4 else INK, fontweight="bold" if x > 4 else "normal")
+ax.set_xticks([1, 2, 3, 4.3], ["1", "2", "3", "more\nthan 3"])
+ax.set_ylim(0, 0.5)
+ax.set_xlabel("customer with the first order")
+ax.set_ylabel("probability")
+ax.grid(axis="x", visible=False)
+plt.tight_layout()
+```
+:::
+::::
+
+## Counting trials, not successes [Ex 4.1]{.tag}
+
+::: {.muted .small}
+Given: Lecture 3: $Y$ = orders among 3 booked customers, $Y\sim\operatorname{Bin}(3,\,0.4)$, $\Prob(Y=0)=0.216$, $\Prob(Y=1)=0.432$, $\Prob(Y=2)=0.288$, $\Prob(Y=3)=0.064$. Today: $X$ = customers up to the first order
+:::
+
+| | Lecture 3: $Y$ | Today: $X$ |
+|:---|:---|:---|
+| number of trials | fixed: 3 customers | random: 1, 2, 3, … |
+| number of successes | random: 0, 1, 2 or 3 | fixed: 1, the first order |
+| distribution | binomial | geometric (next slide) |
+
+. . .
+
+:::: {.columns}
+::: {.column width="55%"}
+One link between them: $X>3$ and $Y=0$ are the same story, three noes in a row.
+$$\Prob(X>3)=\Prob(Y=0)=0.6^3=0.216$$
+:::
+::: {.column width="45%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 1.7
+fig, ax = plt.subplots(figsize=(5, 1.7))
+strip(ax, "NNN", 0, 0.2, h=0.8)
+strip(ax, "?", 3, 0.2, h=0.8)
+ax.text(4.3, 0.95, "Y = 0", fontsize=15, color=BLUE, fontweight="bold", va="center")
+ax.text(4.3, 0.35, "X > 3", fontsize=15, color=ORANGE, fontweight="bold", va="center")
+ax.set_xlim(-0.1, 5.6)
+ax.set_ylim(0, 1.2)
+ax.axis("off")
+plt.tight_layout()
+```
+:::
+::::
+
+## Geometric distribution [Def 4.1, Eq 4.1, Fig 4.1]{.tag}
+
+::: {.box-def}
+Independent trials, each a success with the same probability $p$ ($0<p\le1$). $X$ = the number of the trial with the first success has the **geometric distribution**, $X\sim\operatorname{Geom}(p)$:
+$$\Prob(X=k)=(1-p)^{k-1}\,p,\qquad k=1,2,3,\dots$$
+:::
+
+:::: {.columns}
+::: {.column width="36%"}
+Marat: $p=0.4$, so $X\sim\operatorname{Geom}(0.4)$.
+
+[Each bar is 0.6 times the one before. The bars go on for ever, too small to see.]{.muted .small}
+:::
+::: {.column width="64%"}
+```{python}
+#| fig-width: 6.6
+#| fig-height: 1.8
+fig, ax = plt.subplots(figsize=(6.6, 1.8))
+ks = list(range(1, 11))
+bars(ax, ks, [geom_p(k) for k in ks], xlabel="k = number of customers tested", ylabel="P(X = k)",
+     ymax=0.55, width=0.55, nlab=4, fs=12)
+plt.tight_layout()
+```
+:::
+::::
+
+## How to read $X\sim\operatorname{Geom}(p)$ and $k=1,2,3,\dots$ [Sec 4.1]{.tag}
+
+| Write | Say | For Marat |
+|:---|:---|:---|
+| $X\sim\operatorname{Geom}(p)$ | "X has the geometric distribution with parameter p" | $X\sim\operatorname{Geom}(0.4)$ |
+| $k=1,2,3,\dots$ | "k equals one, two, three, and so on" | the list has no last value: there is no largest possible $X$ |
+| $(1-p)^{k-1}\,p$ | "$k-1$ failures, then a success" | $k=3$: $(1-0.4)^{3-1}\cdot0.4=0.6^2\cdot0.4=0.144$ |
+
+. . .
+
+Could the first order come only from customer 20? In principle, yes:
+$$\Prob(X=20)=0.6^{19}\cdot0.4\approx0.00002$$
+[Tiny, but not zero.]{.answer}
+
+## More than $k$ trials, and the name [Sec 4.1]{.tag}
+
+:::: {.columns}
+::: {.column width="52%"}
+::: {.box-thm}
+$X>k$ means the first $k$ trials all fail:
+$$\Prob(X>k)=(1-p)^k$$
+:::
+
+Marat, $X\sim\operatorname{Geom}(0.4)$: $\Prob(X>3)=0.6^3=0.216$, the orange bars.
+
+. . .
+
+$p,\ (1-p)p,\ (1-p)^2p,\dots$ is a geometric progression, hence the name. Not geometric probability (Def 1.9).
+:::
+::: {.column width="48%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.2
+fig, ax = plt.subplots(figsize=(5, 3.2))
+ks = list(range(1, 11))
+bars(ax, ks, [geom_p(k) for k in ks], hot=range(4, 11), xlabel="k", ylabel="P(X = k)",
+     ymax=0.47, width=0.55, nlab=0)
+ax.text(7, 0.2, "X > 3:\ntogether 0.216", ha="center", fontsize=14, color=ORANGE, fontweight="bold")
+plt.tight_layout()
+```
+
+[Some books count the *failures* before the first success, from 0. We count trials, from 1.]{.muted .small}
+:::
+::::
+
+## Mean and variance of the geometric [Thm 4.1]{.tag}
+
+::: {.box-thm}
+If $X\sim\operatorname{Geom}(p)$, then $\quad\E[X]=\dfrac1p,\qquad \Var(X)=\dfrac{1-p}{p^2}.$
+:::
+
+:::: {.columns}
+::: {.column width="50%"}
+Idea: write $m=\E[X]$; look at the first trial only.
+
+. . .
+
+$$
+\begin{aligned}
+m&=p\cdot1+(1-p)(1+m)\\
+&=1+(1-p)\,m
+\end{aligned}
+$$
+Subtract $(1-p)m$: $p\,m=1$, $m=1/p$.
+:::
+::: {.column width="50%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 2.2
+fig, ax = plt.subplots(figsize=(5, 2.2))
+ax.text(0, 1.5, "first\ntrial", ha="center", va="center", fontsize=14,
+        bbox=dict(boxstyle="round,pad=0.4", fc=SOFT, ec=BLUE))
+for y, lab, pr, txt, col in [(2.6, "success", "p", "X = 1, done", BLUE),
+                             (0.4, "failure", "1 - p", "1 trial used,\nstart again:\n1 + m on average", ORANGE)]:
+    ax.annotate("", xy=(1.55, y), xytext=(0.45, 1.5), arrowprops=dict(arrowstyle="-|>", color=col, lw=2))
+    ax.text(0.75, (y + 1.5) / 2 + (0.3 if y > 1.5 else -0.35), pr, fontsize=14, color=col, ha="center")
+    ax.text(1.65, y, f"{lab}: {txt}", ha="left", va="center", fontsize=13, color=INK)
+ax.set_xlim(-0.6, 4.6)
+ax.set_ylim(-0.5, 3.2)
+ax.axis("off")
+plt.tight_layout()
+```
+
+[Variance: similar; see Section 4.1.]{.muted .small}
+:::
+::::
+
+## What 2.5 customers means [Thm 4.1]{.tag}
+
+::: {.muted .small}
+Given: $X\sim\operatorname{Geom}(0.4)$, the customers Marat tests up to and including the first order
+:::
+
+:::: {.columns}
+::: {.column width="52%"}
+$$
+\begin{aligned}
+\E[X]&=\frac1{0.4}=2.5\\
+\Var(X)&=\frac{0.6}{0.4^2}=3.75\\
+\operatorname{SD}(X)&=\sqrt{3.75}\approx1.94
+\end{aligned}
+$$
+
+. . .
+
+Among 1,000 customers about 400 order: one order per $1000/400=2.5$ customers.
+
+. . .
+
+Most likely 1, mean 2.5, SD almost as large. [Some mornings the coffee comes late.]{.answer}
+:::
+::: {.column width="48%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.6
+fig, ax = plt.subplots(figsize=(5, 3.6))
+ks = list(range(1, 11))
+bars(ax, ks, [geom_p(k) for k in ks], hot=[1], xlabel="k = customers tested", ylabel="P(X = k)",
+     ymax=0.55, nlab=0)
+ax.vlines(2.5, 0, 0.33, color=BLUE, lw=2.5, zorder=3)
+ax.text(2.6, 0.35, "E[X] = 2.5", fontsize=14, color=BLUE, fontweight="bold")
+ax.text(0.6, 0.45, "most likely: 1", fontsize=13, color=ORANGE, ha="left")
+plt.tight_layout()
+```
+:::
+::::
+
+## Your turn: phone sales in Novosibirsk [Exercise 1]{.tag} {.yourturn}
+
+Tomas sells insurance by phone. Each call books a meeting with probability 0.2, independently of the other calls. $X$ = the calls he makes up to and including the first booked meeting.
+
+Find $\Prob(X=3)$, $\Prob(X>5)$ and $\E[X]$.
+
+. . .
+
+$X\sim\operatorname{Geom}(0.2)$, so each call fails with $1-0.2=0.8$.
+
+$\Prob(X=3)=0.8^2\cdot0.2=$ [0.128]{.answer}
+
+. . .
+
+$\Prob(X>5)=0.8^5\approx$ [0.328]{.answer} (five failures in a row)
+
+. . .
+
+$\E[X]=1/0.2=$ [5 calls]{.answer}
+
+## Drawing without putting back [Sec 4.2]{.tag}
+
+::: {.muted .small}
+Given: L02's box: 12 LED bulbs, 3 of them faulty; Oksana takes 2 without putting the first back
+:::
+
+:::: {.columns}
+::: {.column width="55%"}
+$X$ = faulty bulbs among the 2. Trials fixed? Yes, 2. Same probability each draw? No: the second is $2/11$ or $3/11$. So [not binomial]{.answer}.
+
+. . .
+
+Count (Ex 1.7): $\binom{12}{2}=66$ equal pairs; one faulty = one of the 3 and one of the 9 good:
+$$\Prob(X=1)=\frac{\binom31\binom91}{\binom{12}2}=\frac{27}{66}\approx0.409$$
+:::
+::: {.column width="45%"}
+```{python}
+#| fig-width: 4.6
+#| fig-height: 2.7
+fig, ax = plt.subplots(figsize=(4.6, 2.7))
+for i in range(12):
+    for j in range(i + 1, 12):
+        nbad = (i < 3) + (j < 3)
+        ax.add_patch(Rectangle((j - 0.45, 11 - i - 0.45), 0.9, 0.9, color={2: ORANGE, 1: PALE, 0: LIGHT}[nbad]))
+ax.text(0.6, 2.5, "both faulty: 3", color=ORANGE, fontsize=13)
+ax.text(0.6, 1.2, "one faulty: 27", color=ORANGE, alpha=0.75, fontsize=13)
+ax.text(0.6, -0.1, "none faulty: 36", color=BLUE, fontsize=13)
+ax.set_xlim(0.3, 11.7); ax.set_ylim(-0.6, 11.6); ax.set_aspect("equal"); ax.axis("off")
+plt.tight_layout()
+```
+[Same way: $\Prob(X=0)=\binom92/66=36/66$, $\Prob(X=2)=\binom32/66=3/66$.]{.small}
+:::
+::::
+
+## Hypergeometric distribution [Def 4.2]{.tag}
+
+::: {.box-def}
+A box has $N$ items, $M$ of them special. Take $n$ without putting back, all sets of $n$ equally likely. $X$ = special items taken has the **hypergeometric distribution**:
+$$\Prob(X=k)=\frac{\binom{M}{k}\binom{N-M}{n-k}}{\binom{N}{n}},\qquad \E[X]=n\,\frac{M}{N}.$$
+:::
+
+Bulbs: $N=12$ in the box, $M=3$ faulty, $n=2$ taken. So $\E[X]=2\cdot\frac{3}{12}=$ [0.5]{.answer} faulty bulbs.
+
+Each bulb taken is faulty with probability $M/N$, and expected values add (Lecture 6).
+
+[Our rule: sample under about 5% of the box? Then $\operatorname{Bin}(n,\,M/N)$ is a fine approximation.]{.muted .small}
+
+## Dina's parcel pickup point
+
+:::: {.columns}
+::: {.column width="48%"}
+Dina runs a parcel pickup point in Perm; it shares a ground-floor room with a key-cutting stall. On weekday afternoons it gets on average **3 customers per 10 minutes**, one at a time, and they don't coordinate.
+
+. . .
+
+How many will come in the next 10 minutes? There is no list of $n$ people who might come, so the binomial doesn't fit, and there is no upper limit.
+
+What we know is the average rate.
+:::
+::: {.column width="52%"}
+```{python}
+#| fig-width: 5.4
+#| fig-height: 3.4
+rng = np.random.default_rng(2026)
+times = np.cumsum(rng.exponential(10 / 3, 40))
+times = times[times < 60]
+fig, ax = plt.subplots(figsize=(5.4, 3.4))
+ax.hlines(0, 0, 60, color=MUTED, lw=1.5)
+ax.plot(times, np.zeros_like(times), "o", color=BLUE, ms=9, zorder=3)
+for b in range(0, 61, 10):
+    ax.vlines(b, -0.35, 0.35, color=MUTED, lw=1, ls="--")
+for b in range(0, 60, 10):
+    n = int(((times >= b) & (times < b + 10)).sum())
+    ax.text(b + 5, 0.55, str(n), ha="center", fontsize=17, color=ORANGE, fontweight="bold")
+ax.text(30, 1.05, "customers in each 10 minutes", ha="center", fontsize=13, color=ORANGE)
+ax.set_xticks(range(0, 61, 10))
+ax.set_yticks([])
+ax.set_xlim(-1, 61)
+ax.set_ylim(-0.6, 1.3)
+ax.set_xlabel("minutes after 14:00 (one simulated hour)")
+ax.spines[["left"]].set_visible(False)
+ax.grid(False)
+plt.tight_layout()
+```
+:::
+::::
+
+::: {.notes}
+The distribution is named after Simeon Denis Poisson, say "pwa-SON".
+:::
+
+## How to read $\lambda$, $\operatorname{Pois}(\lambda)$ and $e^{-3}$ [Sec 4.3]{.tag}
+
+| Write | Say | For Dina |
+|:---|:---|:---|
+| $\lambda$ | "lambda" (LAM-da), a Greek letter | the average number of events in the interval: $\lambda=3$ customers per 10 minutes |
+| $X\sim\operatorname{Pois}(3)$ | "X has the Poisson distribution with parameter 3" | $X$ = customers in the next 10 minutes |
+| $e$ | "e", a fixed number like $\pi$ | $e\approx2.718$ |
+| $e^{-3}$ | "e to the minus three" | $e^{-3}=1/e^3=1/20.09\approx0.0498$ |
+
+. . .
+
+On a calculator: the $e^x$ key (often Shift + ln), then enter $-3$. Try it now: you should see 0.0498.
+
+## How to read $k!$ and the Poisson formula [Sec 4.3]{.tag}
+
+:::: {.columns}
+::: {.column width="45%"}
+$k!$ reads "k factorial" (Lecture 1): multiply the whole numbers from $k$ down to 1.
+
+| $k$ | $k!$ |
+|:-:|:-|
+| 0 | $1$ (by agreement) |
+| 1 | $1$ |
+| 2 | $2\cdot1=2$ |
+| 3 | $3\cdot2\cdot1=6$ |
+| 4 | $4\cdot3\cdot2\cdot1=24$ |
+:::
+::: {.column width="55%"}
+. . .
+
+Both together, one instance:
+$$e^{-3}\cdot\frac{3^2}{2!}=0.0498\cdot\frac{9}{2}\approx0.224$$
+
+. . .
+
+Read it from the right: $3^2$ is "three squared" $=9$, divided by $2!=2$, times $e^{-3}\approx0.0498$.
+
+This is exactly the shape of the formula on the next slide, with $\lambda=3$ and $k=2$.
+:::
+::::
+
+## Poisson distribution [Def 4.3, Eq 4.2]{.tag}
+
+::: {.box-def}
+$X$ has the **Poisson distribution** with parameter $\lambda>0$, written $X\sim\operatorname{Pois}(\lambda)$, if
+$$\Prob(X=k)=e^{-\lambda}\,\frac{\lambda^k}{k!},\qquad k=0,1,2,\dots$$
+:::
+
+:::: {.columns}
+::: {.column width="45%"}
+The usual model for the number of events in a fixed interval of time. Then $\lambda$ is the average number of events in that interval.
+
+[Values start at 0: nobody may come.]{.muted .small}
+:::
+::: {.column width="55%"}
+| The events happen … | Dina's customers |
+|:---|:---|
+| one at a time | yes, one at a time |
+| independently of each other | yes, they don't coordinate |
+| at a constant average rate | yes, 3 per 10 minutes |
+:::
+::::
+
+## Customers at Dina's point: 0 to 3 [Ex 4.2]{.tag}
+
+::: {.muted .small}
+Given: on average 3 customers per 10 minutes; one at a time, independent, steady rate
+:::
+
+:::: {.columns}
+::: {.column width="45%"}
+$X$ = customers in the next 10 minutes. Number of trials fixed? No, and no upper limit. Steady average rate? Yes, 3 per 10 minutes.
+
+So $X\sim\operatorname{Pois}(3)$.
+
+. . .
+
+Put $\lambda=3$ into Eq 4.2, with $e^{-3}\approx0.0498$.
+:::
+::: {.column width="55%"}
+. . .
+
+| $k$ | $e^{-3}\cdot3^k/k!$ | $\Prob(X=k)$ |
+|:-:|:-|:-:|
+| 0 | $e^{-3}\cdot 1/1$ | $\approx0.050$ |
+| 1 | $e^{-3}\cdot 3/1$ | $\approx0.149$ |
+| 2 | $e^{-3}\cdot 9/2$ | $\approx0.224$ |
+| 3 | $e^{-3}\cdot 27/6$ | $\approx0.224$ |
+
+[2 and 3 customers are equally likely.]{.muted .small}
+:::
+::::
+
+## Customers at Dina's point: at least 4 [Ex 4.2, Fig 4.2]{.tag}
+
+::: {.muted .small}
+Given: $X\sim\operatorname{Pois}(3)$; $\Prob(X=0)\approx0.050$, $\Prob(X=1)\approx0.149$, $\Prob(X=2)\approx0.224$, $\Prob(X=3)\approx0.224$
+:::
+
+:::: {.columns}
+::: {.column width="55%"}
+"At least 4" has no last value: 4, 5, 6, … So use the complement rule (Thm 1.2).
+
+. . .
+
+$$
+\begin{aligned}
+\Prob(X\le3)&\approx0.050+0.149\\
+&\quad+0.224+0.224=0.647\\
+\Prob(X\ge4)&=1-\Prob(X\le3)\approx0.353
+\end{aligned}
+$$
+
+. . .
+
+About [one 10-minute stretch in three]{.answer} brings 4 or more customers.
+:::
+::: {.column width="45%"}
+```{python}
+#| fig-width: 4.6
+#| fig-height: 3.4
+fig, ax = plt.subplots(figsize=(4.6, 3.4))
+ks = list(range(0, 11))
+bars(ax, ks, [pois_p(k, 3) for k in ks], hot=range(4, 11), xlabel="k = customers in 10 minutes",
+     ylabel="P(X = k)", ymax=0.3, width=0.55, nlab=0)
+for k in range(4):
+    ax.patches[k].set_color(BLUE)
+ax.text(7.2, 0.17, "X ≥ 4:\nabout 0.353", ha="center", fontsize=14, color=ORANGE, fontweight="bold")
+plt.tight_layout()
+```
+:::
+::::
+
+## Pitfall: $\lambda$ belongs to the interval [Sec 4.3]{.tag}
+
+::: {.muted .small}
+Given: Dina's point gets on average 3 customers per 10 minutes
+:::
+
+:::: {.columns}
+::: {.column width="45%"}
+::: {.box-ex}
+**Wrong.** Customers in the next 20 minutes: $\operatorname{Pois}(3)$.
+:::
+
+. . .
+
+::: {.box-def}
+**Right.** 3 per 10 minutes is 6 per 20 minutes, so the count for 20 minutes is $\operatorname{Pois}(6)$.
+:::
+
+. . .
+
+Nobody in 20 minutes: $\Prob(X=0)=e^{-6}\approx$ [0.0025]{.answer}.
+:::
+::: {.column width="55%"}
+```{python}
+#| fig-width: 5.6
+#| fig-height: 3.8
+fig, axs = plt.subplots(2, 1, figsize=(5.6, 3.8), sharex=True)
+ks = list(range(0, 15))
+for ax, lam, lab in [(axs[0], 3, "10 minutes: Pois(3)"), (axs[1], 6, "20 minutes: Pois(6)")]:
+    bars(ax, ks, [pois_p(k, lam) for k in ks], ymax=0.27, width=0.6, nlab=0)
+    ax.set_title(lab, fontsize=13, loc="right")
+    ax.set_ylabel("P(X = k)", fontsize=12)
+axs[1].set_xlabel("k = customers")
+plt.tight_layout()
+```
+:::
+::::
+
+## Your turn: bikes on the Sochi seafront [Exercise 2]{.tag} {.yourturn}
+
+A bike-rental point gets on average 4 rentals per hour, one at a time and independently. $X$ = rentals in the next **30 minutes**.
+
+Name the distribution of $X$ with its parameter. Find $\Prob(X=0)$ and $\Prob(X\ge2)$.
+
+. . .
+
+4 per hour is 2 per 30 minutes, so $X\sim$ [$\operatorname{Pois}(2)$]{.answer}.
+
+. . .
+
+$\Prob(X=0)=e^{-2}\approx$ [0.135]{.answer}
+
+. . .
+
+$\Prob(X\ge2)=1-\Prob(X=0)-\Prob(X=1)=1-e^{-2}(1+2)=1-3e^{-2}\approx$ [0.594]{.answer}
+
+## Poisson approximation to the binomial [Thm 4.2]{.tag}
+
+:::: {.columns}
+::: {.column width="58%"}
+::: {.box-thm}
+Let $X\sim\operatorname{Bin}(n,p)$. If $n$ is large and $p$ is small, then
+$$\Prob(X=k)\approx e^{-\lambda}\,\frac{\lambda^k}{k!}\quad\text{with }\lambda=np,$$
+for $k=0,1,2,\dots$ Our rule of thumb: good when $n\ge100$ and $np\le10$.
+:::
+:::
+::: {.column width="42%"}
+```{python}
+#| fig-width: 4.4
+#| fig-height: 3.0
+from scipy import stats
+fig, ax = plt.subplots(figsize=(4.4, 3.0))
+ks = np.arange(0, 10)
+ax.bar(ks - 0.18, stats.binom(1000, 0.003).pmf(ks), width=0.36, color=BLUE, label="Bin(1000, 0.003)", zorder=2)
+ax.bar(ks + 0.18, stats.poisson(3).pmf(ks), width=0.36, color=ORANGE, label="Pois(3)", zorder=2)
+ax.set_xticks(ks)
+ax.set_ylim(0, 0.3)
+ax.set_xlabel("k")
+ax.set_ylabel("P(X = k)")
+ax.legend(fontsize=11, frameon=False)
+ax.grid(axis="x", visible=False)
+plt.tight_layout()
+```
+:::
+::::
+
+Idea: $p=\lambda/n$, and $(1-\lambda/n)^n$ gets close to $e^{-\lambda}$: $0.997^{1000}\approx0.0496$, $e^{-3}\approx0.0498$. [Proof: the book, Sec 4.4.]{.muted .small}
+
+::: {.notes}
+Textbooks use slightly different rules of thumb; this is ours.
+:::
+
+## Mean and variance of the Poisson [Thm 4.3]{.tag}
+
+::: {.box-thm}
+If $X\sim\operatorname{Pois}(\lambda)$, then $\E[X]=\lambda$ and $\Var(X)=\lambda$.
+:::
+
+:::: {.columns}
+::: {.column width="50%"}
+Idea: $\operatorname{Pois}(\lambda)$ is what $\operatorname{Bin}(n,\lambda/n)$ turns into for large $n$. That binomial has mean $n\cdot\frac{\lambda}{n}=\lambda$ and variance $\lambda\big(1-\frac{\lambda}{n}\big)$, which gets closer and closer to $\lambda$ (Thm 3.4).
+
+. . .
+
+Dina, $X\sim\operatorname{Pois}(3)$: she expects [3 customers]{.answer} per 10 minutes, where we started, with $\operatorname{SD}(X)=\sqrt3\approx1.73$.
+:::
+::: {.column width="50%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.4
+fig, ax = plt.subplots(figsize=(5, 3.4))
+ks = list(range(0, 11))
+ax.axvspan(3 - 3 ** 0.5, 3 + 3 ** 0.5, color=SOFT, zorder=0)
+bars(ax, ks, [pois_p(k, 3) for k in ks], xlabel="k = customers in 10 minutes", ylabel="P(X = k)",
+     ymax=0.3, nlab=0)
+ax.axvline(3, color=ORANGE, lw=2.5, zorder=3)
+ax.text(3.15, 0.27, "E[X] = 3", fontsize=13, color=ORANGE, fontweight="bold")
+ax.annotate("", xy=(3 + 3 ** 0.5, 0.245), xytext=(3, 0.245),
+            arrowprops=dict(arrowstyle="<->", color=BLUE, lw=1.5))
+ax.text(5.0, 0.215, "SD 1.73", fontsize=12, color=BLUE)
+plt.tight_layout()
+```
+:::
+::::
+
+## Returned parcels: is it Poisson? [Ex 4.3]{.tag}
+
+::: {.muted .small}
+Given: Dina's point hands out 500 parcels a day; each is returned to the seller with probability 0.004, independently
+:::
+
+:::: {.columns}
+::: {.column width="52%"}
+$X$ = returned parcels in a day. Number of trials fixed? Yes, $n=500$. So $X\sim\operatorname{Bin}(500,\,0.004)$.
+
+. . .
+
+The binomial needs powers like $0.996^{500}$. The Poisson needs only $e^{-2}\approx0.1353$:
+$$\Prob(X=2)\approx e^{-2}\,\frac{2^2}{2!}=2e^{-2}\approx0.2707$$
+:::
+::: {.column width="48%"}
+| Rule | Returns | OK? |
+|:---|:---|:-:|
+| $n\ge100$ | $n=500$ | yes |
+| $np\le10$ | $500\cdot0.004=2$ | yes |
+
+So $X\approx\operatorname{Pois}(2)$, with $\lambda=np=2$.
+:::
+::::
+
+## Returned parcels: binomial against Poisson [Ex 4.3]{.tag}
+
+::: {.muted .small}
+Given: $X\sim\operatorname{Bin}(500,\,0.004)$, approximated by $\operatorname{Pois}(2)$; the binomial row is exact
+:::
+
+| $k$ | 0 | 1 | 2 | 3 | 4 |
+|:---|:-:|:-:|:-:|:-:|:-:|
+| $\operatorname{Bin}(500,\,0.004)$ | 0.1348 | 0.2707 | 0.2712 | 0.1808 | 0.0902 |
+| $\operatorname{Pois}(2)$ | 0.1353 | 0.2707 | 0.2707 | 0.1804 | 0.0902 |
+
+:::: {.columns}
+::: {.column width="45%"}
+. . .
+
+The two rows differ by [less than 0.001]{.answer} everywhere.
+
+The probability of a day with no returns is about 0.135.
+:::
+::: {.column width="55%"}
+```{python}
+#| fig-width: 5.4
+#| fig-height: 2.5
+fig, ax = plt.subplots(figsize=(5.4, 2.5))
+ks = np.arange(0, 5)
+binr = [0.1348, 0.2707, 0.2712, 0.1808, 0.0902]
+poir = [0.1353, 0.2707, 0.2707, 0.1804, 0.0902]
+ax.bar(ks - 0.18, binr, width=0.36, color=BLUE, label="Bin(500, 0.004)", zorder=2)
+ax.bar(ks + 0.18, poir, width=0.36, color=ORANGE, label="Pois(2)", zorder=2)
+ax.set_xticks(ks)
+ax.set_ylim(0, 0.36)
+ax.set_xlabel("k = returned parcels")
+ax.set_ylabel("P(X = k)")
+ax.legend(fontsize=11, frameon=False, ncol=2, loc="upper right")
+ax.grid(axis="x", visible=False)
+plt.tight_layout()
+```
+:::
+::::
+
+::: {.notes}
+Short of time: write only the k = 0 and k = 2 columns.
+:::
+
+## Which discrete distribution? [Tbl 4.1]{.tag}
+
+Find what $X$ counts, then ask what is fixed in advance.
+
+| Distribution | What $X$ counts | Fixed | Values |
+|:-------------|:----------------------------------|:---------|:-----------|
+| Bernoulli($p$) | success in one trial | $p$ | $0,1$ |
+| $\operatorname{Bin}(n,p)$ | successes in $n$ trials | $n$, $p$ | $0,\dots,n$ |
+| $\operatorname{Geom}(p)$ | trials up to and including the first success | $p$ only | $1,2,3,\dots$ |
+| Hypergeometric | special items, no putting back | $N$, $M$, $n$ | $0,\dots,n$ |
+| $\operatorname{Pois}(\lambda)$ | events in an interval | rate $\lambda$ | $0,1,2,\dots$ |
+
+. . .
+
+[Marat's walk-ins: geometric. Oksana's bulbs: hypergeometric. Dina's customers: Poisson. Dina's returns: binomial, close to Poisson.]{.muted}
+
+::: {.notes}
+Point at the table before the break: "When you read a story, find X first, then ask what is fixed."
+:::
+
+## Break
+
+Back in 10 minutes.
+
+::: {.notes}
+Break after Section 4.4 (80 min). After it: 10 min derivative, 15 min integral; rectangle with the bracket first, then the triangle; leave [2x - x^2] from 0 to 1 = 1 on the board.
+:::
+
+## Lena's shuttle: one value has probability 0 [Sec 4.5]{.tag}
+
+:::: {.columns}
+::: {.column width="50%"}
+Lena's office shuttle leaves every 12 minutes (Seminar 1, Problem 12). Her waiting time can be any number from 0 to 12.
+
+. . .
+
+Each single value has probability 0, so a PMF would be 0 everywhere. Instead we give probabilities to **intervals**, as areas under a curve.
+
+. . .
+
+For that we need two tools from school, and only the parts we use: the derivative (a slope) and the integral (an area).
+:::
+::: {.column width="50%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.2
+fig, ax = plt.subplots(figsize=(5, 3.2))
+ax.hlines(0, 0, 12, color=INK, lw=2)
+ax.fill_between([5, 12], [0.55, 0.55], color=LIGHT, alpha=0.7)
+ax.text(8.5, 0.27, "wait more than 5:\n7/12 (Seminar 1)", ha="center", va="center", fontsize=13, color=BLUE)
+ax.plot([5], [0], "o", color=ORANGE, ms=10, zorder=3)
+ax.annotate("wait exactly 5:\nprobability 0", xy=(5, 0), xytext=(2.2, -0.55), ha="center", fontsize=13,
+            color=ORANGE, arrowprops=dict(arrowstyle="-|>", color=ORANGE))
+ax.set_xticks([0, 5, 12])
+ax.set_yticks([])
+ax.set_xlim(-0.5, 12.5)
+ax.set_ylim(-0.95, 0.8)
+ax.set_xlabel("waiting time, minutes")
+ax.spines[["left"]].set_visible(False)
+ax.spines["bottom"].set_position(("data", -0.95))
+ax.grid(False)
+plt.tight_layout()
+```
+:::
+::::
+
+## Derivative: a slope [Sec 4.5, Fig 4.3]{.tag}
+
+:::: {.columns}
+::: {.column width="48%"}
+The **derivative** of a function $F$ at a point $x$, written $F'(x)$, is the slope of the graph of $F$ at $x$.
+
+[How to read $F'(x)$]{.tag}
+
+"F prime of x": how many units $F$ rises per one unit to the right, at the point $x$.
+
+. . .
+
+For $F(x)=x^2$ the derivative is $F'(x)=2x$. At $x=3$ the slope is $F'(3)=2\cdot3=$ [6]{.answer}.
+:::
+::: {.column width="52%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.6
+x = np.linspace(0, 4.2, 200)
+fig, ax = plt.subplots(figsize=(5, 3.6))
+ax.plot(x, x ** 2, color=BLUE, lw=2.5, label="F(x) = x²")
+xt = np.linspace(1.8, 4.2, 50)
+ax.plot(xt, 6 * xt - 9, color=ORANGE, lw=2, label="tangent at x = 3, slope 6")
+ax.plot(3, 9, "o", color=ORANGE, ms=8)
+ax.plot([3, 4], [9, 9], color=MUTED, lw=1.2, ls="--")
+ax.plot([4, 4], [9, 15], color=MUTED, lw=1.2, ls="--")
+ax.text(3.5, 7.6, "1", ha="center", fontsize=14)
+ax.text(4.08, 12, "6", va="center", fontsize=14)
+ax.set_xlim(0, 4.4)
+ax.set_ylim(0, 17.5)
+ax.set_xlabel("x")
+ax.set_ylabel("F(x)")
+ax.legend(loc="upper left", fontsize=12, frameon=False)
+plt.tight_layout()
+```
+:::
+::::
+
+## The derivative rules we need [Sec 4.5]{.tag}
+
+| Function ($c$ a number, $n$ a whole number) | Derivative | Example |
+|:---|:---|:---|
+| a number $c$ | $0$ | $(5)'=0$: a flat line has slope 0 |
+| $x^n$ | $n\,x^{n-1}$ | $(x)'=1$, $(x^2)'=2x$, $(x^3)'=3x^2$ |
+| $c$ times a function | $c$ times its derivative | $(4x^3)'=4\cdot3x^2=12x^2$ |
+| sum or difference | sum or difference of the derivatives | $(2x-x^2)'=2-2x$ |
+
+. . .
+
+The last line comes back three times today: $(2x)'=2$ and $(x^2)'=2x$, so $(2x-x^2)'=2-2x$.
+
+## Integral: an area [Sec 4.5, Fig 4.4]{.tag}
+
+:::: {.columns}
+::: {.column width="52%"}
+::: {.box-def}
+Let $f$ be never negative, and $a<b$. The **integral** of $f$ from $a$ to $b$, written $\int_a^b f(x)\,dx$, is the area between the graph of $f$ and the $x$-axis, from $x=a$ to $x=b$.
+:::
+
+. . .
+
+A flat line at height 3, from 2 to 5, gives a rectangle: width $5-2=3$, height 3.
+$$\int_2^5 3\,dx=3\cdot3=9$$
+:::
+::: {.column width="48%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.4
+fig, ax = plt.subplots(figsize=(5, 3.4))
+x = np.linspace(0, 6, 100)
+ax.plot(x, 3 + 0 * x, color=BLUE, lw=2.5)
+ax.fill_between([2, 5], [3, 3], color=LIGHT, alpha=0.8)
+ax.text(3.5, 1.4, "area 9", ha="center", fontsize=16, color=INK, fontweight="bold")
+ax.annotate("", xy=(5, 0.4), xytext=(2, 0.4), arrowprops=dict(arrowstyle="<->", color=MUTED))
+ax.text(3.5, 0.55, "width 3", ha="center", fontsize=12, color=MUTED)
+ax.set_xlim(0, 6)
+ax.set_ylim(0, 4)
+ax.set_xticks([0, 2, 5, 6])
+ax.set_xlabel("x")
+ax.set_ylabel("f(x) = 3")
+plt.tight_layout()
+```
+:::
+::::
+
+## How to read $\int_a^b f(x)\,dx$ [Sec 4.5]{.tag}
+
+:::: {.columns}
+::: {.column width="42%"}
+::: {.big}
+$$\int_a^b f(x)\,dx$$
+:::
+
+Say: "the integral from a to b of f of x, d x".
+
+```{python}
+#| fig-width: 4.6
+#| fig-height: 1.8
+fig, ax = plt.subplots(figsize=(4.6, 1.8))
+x = np.linspace(0, 6, 200)
+ax.plot(x, 1 + 0.6 * np.sin(x / 1.3), color=BLUE, lw=2)
+for left in np.arange(1.5, 4.5, 0.25):
+    ax.add_patch(Rectangle((left, 0), 0.22, 1 + 0.6 * np.sin((left + 0.11) / 1.3), fc=LIGHT, ec="white"))
+ax.set_xticks([1.5, 4.5], ["a", "b"])
+ax.set_yticks([])
+ax.set_xlim(0, 6)
+ax.set_ylim(0, 1.9)
+ax.grid(False)
+plt.tight_layout()
+```
+:::
+::: {.column width="58%"}
+| Part | What it means |
+|:---|:---|
+| $\int$ | a stretched S, for "sum": the area is a sum of very thin strips |
+| $a$ at the bottom | where the area starts |
+| $b$ on top | where the area stops |
+| $f(x)$ | the height of the strip at $x$ |
+| $dx$ | $x$ runs along the horizontal axis; think of $dx$ as the width of one thin strip |
+:::
+::::
+
+## The rule: integration undoes differentiation [Eq 4.3]{.tag}
+
+::: {.box-thm}
+Find a function $G$ with $G'(x)=f(x)$. Then
+$$\int_a^b f(x)\,dx=G(b)-G(a)=\big[G(x)\big]_a^b$$
+:::
+
+:::: {.columns}
+::: {.column width="52%"}
+. . .
+
+Why? Push the right end $x$ a little, by a width $w$. The area grows by a thin strip, about $f(x)\cdot w$. So the area grows at the rate $f(x)$: its derivative is $f$.
+
+[Another $G$ with $G'=f$ differs by a constant; it cancels.]{.muted .small}
+:::
+::: {.column width="48%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 2.4
+fig, ax = plt.subplots(figsize=(5, 2.4))
+x = np.linspace(0, 6, 200)
+f = lambda t: 1 + 0.6 * np.sin(t / 1.3)
+ax.plot(x, f(x), color=BLUE, lw=2.5)
+xa = np.linspace(1, 3.6, 100)
+ax.fill_between(xa, f(xa), color=LIGHT, alpha=0.8)
+ax.add_patch(Rectangle((3.6, 0), 0.7, f(3.95), fc=ORANGE, alpha=0.85))
+ax.text(2.3, 0.6, "area up to x", ha="center", fontsize=13)
+ax.text(4.4, 0.15, "new strip:\nf(x) · w", fontsize=12, color=ORANGE)
+ax.set_xticks([1, 3.6, 4.3], ["a", "x", "x+w"])
+ax.set_yticks([])
+ax.set_xlim(0, 6)
+ax.set_ylim(0, 1.9)
+ax.set_ylabel("f")
+ax.grid(False)
+plt.tight_layout()
+```
+:::
+::::
+
+## How to read $\big[G(x)\big]_a^b$ [Sec 4.5]{.tag}
+
+$\big[G(x)\big]_a^b$ reads "G of x, from a to b". It is short for $G(b)-G(a)$: put in the top number, put in the bottom number, subtract.
+
+:::: {.columns}
+::: {.column width="50%"}
+. . .
+
+::: {.box-ex}
+**By geometry.** Under the flat line at height 3, from 2 to 5: width 3, height 3.
+$$\int_2^5 3\,dx=3\cdot3=9$$
+:::
+:::
+::: {.column width="50%"}
+. . .
+
+::: {.box-def}
+**By the rule.** $G(x)=3x$ has $G'(x)=3$, so
+$$
+\begin{aligned}
+\int_2^5 3\,dx&=\big[3x\big]_2^5=3\cdot5-3\cdot2\\
+&=15-6=9
+\end{aligned}
+$$
+:::
+:::
+::::
+
+. . .
+
+[Same answer.]{.answer} The rule also works when the shape is not a rectangle.
+
+## Finding $G$: the derivative table backwards [Sec 4.5]{.tag}
+
+| Function $f(x)$ | A function $G(x)$ with $G'(x)=f(x)$ |
+|:---|:---|
+| a number $c$ | $c\,x$ |
+| $x^n$ | $\dfrac{x^{n+1}}{n+1}$: so $x$ gives $\dfrac{x^2}{2}$, and $x^2$ gives $\dfrac{x^3}{3}$ |
+| $c$ times a function | $c$ times its $G$ |
+| sum or difference | sum or difference of the $G$'s |
+
+. . .
+
+Always check by taking the derivative of your $G$. For example, $\big(\frac{x^2}{2}\big)'=\frac{2x}{2}=x$. Correct.
+
+## One worked integral [Sec 4.5, Fig 4.4]{.tag}
+
+:::: {.columns}
+::: {.column width="58%"}
+Find $\int_0^1 2(1-x)\,dx$.
+
+. . .
+
+Multiply out: $2(1-x)=2-2x$. By the table, $G(x)=2x-x^2$. Check: $G'(x)=2-2x$.
+
+. . .
+
+$$
+\begin{aligned}
+\int_0^1 (2-2x)\,dx&=\big[2x-x^2\big]_0^1\\
+&=(2-1)-(0-0)=1
+\end{aligned}
+$$
+
+. . .
+
+Geometry: a triangle, base 1, height 2, area $\frac12\cdot1\cdot2=$ [1]{.answer}.
+:::
+::: {.column width="42%"}
+```{python}
+#| fig-width: 4.4
+#| fig-height: 3.4
+fig, ax = plt.subplots(figsize=(4.4, 3.4))
+x = np.linspace(0, 1, 100)
+ax.plot(x, 2 - 2 * x, color=BLUE, lw=2.5)
+ax.fill_between(x, 2 - 2 * x, color=LIGHT, alpha=0.8)
+ax.text(0.3, 0.5, "area 1", ha="center", fontsize=16, fontweight="bold")
+ax.set_xlim(0, 1.2)
+ax.set_ylim(0, 2.3)
+ax.set_xlabel("x")
+ax.set_ylabel("f(x) = 2(1 - x)")
+plt.tight_layout()
+```
+:::
+::::
+
+::: {.notes}
+Leave [2x - x^2] from 0 to 1 = 1 on the board. This function comes back in a moment as a density.
+:::
+
+## Lena's shuttle as a density [Sec 4.6, Fig 4.5]{.tag}
+
+::: {.muted .small}
+Given: a shuttle every 12 minutes; $X$ = Lena's waiting time in minutes; every moment of arrival equally likely
+:::
+
+Spread the probability evenly: a flat line at height $1/12$ from 0 to 12, and 0 outside. Total area: $12\cdot\frac1{12}=1$.
+
+```{python}
+#| fig-width: 10
+#| fig-height: 2.0
+fig, ax = plt.subplots(figsize=(10, 2.0))
+ax.plot([-2, 0], [0, 0], color=BLUE, lw=2.5)
+ax.plot([0, 12], [1 / 12, 1 / 12], color=BLUE, lw=2.5)
+ax.plot([12, 14], [0, 0], color=BLUE, lw=2.5)
+ax.fill_between([5, 12], [1 / 12, 1 / 12], color=LIGHT, alpha=0.8)
+ax.text(8.5, 0.035, "P(X > 5) = 7 · 1/12 = 7/12", ha="center", fontsize=15, fontweight="bold")
+ax.set_xticks([0, 5, 12])
+ax.set_yticks([0, 1 / 12], ["0", "1/12"])
+ax.set_xlim(-2, 14)
+ax.set_ylim(0, 0.11)
+ax.set_xlabel("x = waiting time, minutes")
+ax.set_ylabel("f(x)")
+plt.tight_layout()
+```
+
+Waiting more than 5 minutes: width 7 times height $1/12$. [Seminar 1, Problem 12, as an area.]{.answer}
+
+## Continuous random variable, density [Def 4.4]{.tag}
+
+:::: {.columns}
+::: {.column width="60%"}
+::: {.box-def}
+$X$ is **continuous** if there is a function $f(x)$, its **density**, with
+
+1. $f(x)\ge0$ for every $x$;
+2. total area under $f$ equal to 1;
+3. $\Prob(a\le X\le b)=\int_a^b f(x)\,dx$.
+:::
+:::
+::: {.column width="40%"}
+```{python}
+#| fig-width: 4.2
+#| fig-height: 2.5
+fig, ax = plt.subplots(figsize=(4.2, 2.5))
+x = np.linspace(0, 1, 200)
+ax.plot([-0.2, 0], [0, 0], color=BLUE, lw=2.5)
+ax.plot(x, 2 - 2 * x, color=BLUE, lw=2.5)
+ax.plot([1, 1.2], [0, 0], color=BLUE, lw=2.5)
+xs = np.linspace(0.2, 0.5, 50)
+ax.fill_between(xs, 2 - 2 * xs, color=ORANGE, alpha=0.6)
+ax.text(0.6, 1.25, "P(a ≤ X ≤ b)\n= this area", fontsize=13, color=ORANGE)
+ax.set_xticks([0.2, 0.5], ["a", "b"])
+ax.set_yticks([])
+ax.set_xlim(-0.2, 1.2)
+ax.set_ylim(0, 2.2)
+ax.set_ylabel("f(x)")
+ax.grid(False)
+plt.tight_layout()
+```
+:::
+::::
+
+. . .
+
+Today every density is 0 outside one interval, from $c$ to $d$. So we start integrating at the left end $c$, and property 2 reads $\int_c^d f(x)\,dx=1$. [Shuttle: $c=0$, $d=12$.]{.muted}
+
+## How to read $f(x)$: a height, not a probability [Sec 4.6]{.tag}
+
+:::: {.columns}
+::: {.column width="52%"}
+$f(x)$ reads "f of x": the **height** of the curve at $x$. Probabilities are areas, height times width, so a density can be larger than 1.
+
+. . .
+
+$f(x)=2(1-x)$ on $[0,1]$ (all numbers from 0 to 1): $f(0)=2$. Near 0:
+$$\Prob(0\le X\le0.01)\approx2\cdot0.01=0.02$$
+[A good probability.]{.answer} [Exactly: $\big[2x-x^2\big]_0^{0.01}=0.0199$.]{.muted .small}
+:::
+::: {.column width="48%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.3
+fig, ax = plt.subplots(figsize=(5, 3.3))
+x = np.linspace(0, 1, 200)
+ax.plot(x, 2 - 2 * x, color=BLUE, lw=2.5)
+ax.add_patch(Rectangle((0, 0), 0.03, 2, fc=ORANGE, alpha=0.85))
+ax.annotate("height 2, width 0.01:\narea about 0.02", xy=(0.03, 1.6), xytext=(0.25, 1.75),
+            fontsize=12, color=ORANGE, arrowprops=dict(arrowstyle="-|>", color=ORANGE))
+ax.axhline(1, color=MUTED, lw=1, ls="--")
+ax.text(0.98, 1.05, "height 1", ha="right", fontsize=12, color=MUTED)
+ax.set_xlim(-0.05, 1.05)
+ax.set_ylim(0, 2.25)
+ax.set_xlabel("x")
+ax.set_ylabel("f(x) = 2(1 - x)")
+plt.tight_layout()
+```
+[The strip is drawn wider so you can see it.]{.muted .small}
+:::
+::::
+
+## Pitfall: $\le$ or $<$ no longer matters [Sec 4.6]{.tag}
+
+:::: {.columns}
+::: {.column width="48%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.8
+fig, (a1, a2) = plt.subplots(2, 1, figsize=(5, 3.8))
+a1.bar([0, 1, 2, 3], [0.216, 0.432, 0.288, 0.064], width=0.5, color=[LIGHT, ORANGE, LIGHT, LIGHT])
+a1.text(1.35, 0.38, "P(X = 1) = 0.432", fontsize=12, color=ORANGE)
+a1.set_title("Lecture 3, discrete: a value has a bar", fontsize=12, loc="left")
+a1.set_xticks([0, 1, 2, 3]); a1.set_ylim(0, 0.52); a1.grid(axis="x", visible=False)
+x = np.linspace(0, 1, 200)
+a2.plot(x, 2 - 2 * x, color=BLUE, lw=2)
+a2.vlines(0.5, 0, 1, color=ORANGE, lw=2)
+a2.text(0.55, 1.15, "a line has no width: area 0", fontsize=12, color=ORANGE)
+a2.set_title("today, continuous: a value has no area", fontsize=12, loc="left")
+a2.set_ylim(0, 2.1); a2.set_xlim(0, 1)
+plt.tight_layout()
+```
+:::
+::: {.column width="52%"}
+For a continuous $X$ a single value has no width, so no area: $\Prob(X=x)=0$ for every $x$.
+
+. . .
+
+So $\le$ and $<$ give the same answer:
+$$
+\begin{aligned}
+\Prob(a\le X\le b)&=\Prob(a<X\le b)\\
+=\Prob(a\le X<b)&=\Prob(a<X<b)
+\end{aligned}
+$$
+
+. . .
+
+Not a contradiction with Lecture 3: there $X$ was discrete and the boundary mattered. And as in Lecture 1, probability 0 is not impossible. Lena waits *some* exact time.
+:::
+::::
+
+## Bakhyt's first customer: is it a density? [Ex 4.4]{.tag}
+
+::: {.muted .small}
+Given: Bakhyt's coffee kiosk at the Omsk river station opens at 7:00; the first customer always comes within the hour, more often early than late; model: $f(x)=2(1-x)$ for $0\le x\le1$, 0 otherwise
+:::
+
+:::: {.columns}
+::: {.column width="55%"}
+$X$ = hours from opening to the first customer. A count or a measurement? A measurement, any number from 0 to 1: continuous.
+
+. . .
+
+Check Def 4.4: $f(x)\ge0$ on $[0,1]$, and the total area is
+$$\int_0^1 2(1-x)\,dx=\big[2x-x^2\big]_0^1=1.$$
+So $f$ [is a density]{.answer}.
+:::
+::: {.column width="45%"}
+```{python}
+#| fig-width: 4.6
+#| fig-height: 3.2
+fig, ax = plt.subplots(figsize=(4.6, 3.2))
+x = np.linspace(0, 1, 200)
+ax.plot([-0.2, 0], [0, 0], color=BLUE, lw=2.5)
+ax.plot(x, 2 - 2 * x, color=BLUE, lw=2.5)
+ax.plot([1, 1.2], [0, 0], color=BLUE, lw=2.5)
+ax.fill_between(x, 2 - 2 * x, color=LIGHT, alpha=0.8)
+ax.text(0.3, 0.5, "total area 1", ha="center", fontsize=14, fontweight="bold")
+ax.set_xticks([0, 0.5, 1], ["7:00", "7:30", "8:00"])
+ax.set_xlim(-0.2, 1.2)
+ax.set_ylim(0, 2.2)
+ax.set_xlabel("time of the first customer")
+ax.set_ylabel("f(x)")
+plt.tight_layout()
+```
+:::
+::::
+
+## Bakhyt's first customer: the first half hour [Ex 4.4, Fig 4.6]{.tag}
+
+::: {.muted .small}
+Given: $X$ = hours from 7:00 to the first customer; $f(x)=2-2x$ for $0\le x\le1$, 0 otherwise; $G(x)=2x-x^2$ has $G'(x)=2-2x$
+:::
+
+:::: {.columns}
+::: {.column width="55%"}
+The first half hour is $0\le X\le0.5$.
+
+. . .
+
+$$
+\begin{aligned}
+\Prob(X\le0.5)&=\int_0^{0.5}(2-2x)\,dx\\
+&=\big[2x-x^2\big]_0^{0.5}\\
+&=(1-0.25)-0=0.75
+\end{aligned}
+$$
+
+. . .
+
+[Three mornings in four]{.answer}, the first customer comes before 7:30.
+:::
+::: {.column width="45%"}
+```{python}
+#| fig-width: 4.6
+#| fig-height: 3.3
+fig, ax = plt.subplots(figsize=(4.6, 3.3))
+x = np.linspace(0, 1, 200)
+ax.plot([-0.2, 0], [0, 0], color=BLUE, lw=2.5)
+ax.plot(x, 2 - 2 * x, color=BLUE, lw=2.5)
+ax.plot([1, 1.2], [0, 0], color=BLUE, lw=2.5)
+xs = np.linspace(0, 0.5, 100)
+ax.fill_between(xs, 2 - 2 * xs, color=ORANGE, alpha=0.6)
+ax.text(0.22, 0.6, "0.75", ha="center", fontsize=16, fontweight="bold")
+ax.set_xticks([0, 0.5, 1])
+ax.set_xlim(-0.2, 1.2)
+ax.set_ylim(0, 2.2)
+ax.set_xlabel("x = hours after opening")
+ax.set_ylabel("f(x)")
+plt.tight_layout()
+```
+:::
+::::
+
+## CDF of a continuous random variable [Def 4.5]{.tag}
+
+::: {.box-def}
+$X$ continuous, density $f$ zero outside $c$ to $d$. Its CDF, as in Def 3.3:
+$$F(x)=\Prob(X\le x)=\int_c^x f(t)\,dt\quad\text{for } c\le x\le d,$$
+0 for $x<c$, 1 for $x>d$. The density is the slope of the CDF: $f(x)=F'(x)$, except where $f$ jumps.
+:::
+
+:::: {.columns}
+::: {.column width="58%"}
+[How to read $\int_c^x f(t)\,dt$]{.tag}
+
+$x$ is taken: it is where the area stops. So the axis variable is called $t$. Say "the integral from c to x of f of t, d t".
+:::
+::: {.column width="42%"}
+```{python}
+#| fig-width: 4.4
+#| fig-height: 1.7
+fig, ax = plt.subplots(figsize=(4.4, 1.7))
+t = np.linspace(0, 1, 200)
+ax.plot(t, 2 - 2 * t, color=BLUE, lw=2.5)
+ts = np.linspace(0, 0.35, 60)
+ax.fill_between(ts, 2 - 2 * ts, color=LIGHT, alpha=0.9)
+ax.text(0.15, 0.55, "F(x)", ha="center", fontsize=15, fontweight="bold")
+ax.set_xticks([0, 0.35, 1], ["c", "x", "d"])
+ax.set_yticks([])
+ax.set_xlabel("t")
+ax.set_xlim(-0.05, 1.05)
+ax.set_ylim(0, 2.2)
+ax.grid(False)
+plt.tight_layout()
+```
+:::
+::::
+
+## Bakhyt's CDF [Def 4.5, Fig 4.6]{.tag}
+
+::: {.muted .small}
+Given: $f(x)=2-2x$ for $0\le x\le1$, 0 otherwise; $\Prob(X\le0.5)=0.75$
+:::
+
+:::: {.columns}
+::: {.column width="52%"}
+For $0\le x\le1$:
+$$F(x)=\big[2t-t^2\big]_0^x=2x-x^2,$$
+0 to the left, 1 to the right.
+
+. . .
+
+$F(0.5)=1-0.25=0.75$, [as before]{.answer}, now read as a height. Check: $F'(x)=2-2x=f(x)$.
+
+. . .
+
+No steps: a continuous CDF climbs smoothly from 0 to 1.
+:::
+::: {.column width="48%"}
+```{python}
+#| fig-width: 5
+#| fig-height: 3.4
+fig, ax = plt.subplots(figsize=(5, 3.4))
+x = np.linspace(0, 1, 200)
+ax.plot([-0.2, 0], [0, 0], color=BLUE, lw=2.5)
+ax.plot(x, 2 * x - x ** 2, color=BLUE, lw=2.5)
+ax.plot([1, 1.2], [1, 1], color=BLUE, lw=2.5)
+ax.vlines(0.5, 0, 0.75, color=ORANGE, ls="--", lw=1.5)
+ax.hlines(0.75, -0.2, 0.5, color=ORANGE, ls="--", lw=1.5)
+ax.text(-0.17, 0.79, "0.75", color=ORANGE, fontsize=14, fontweight="bold")
+ax.set_xlim(-0.2, 1.2)
+ax.set_ylim(0, 1.1)
+ax.set_xlabel("x = hours after opening")
+ax.set_ylabel("F(x) = P(X ≤ x)")
+plt.tight_layout()
+```
+:::
+::::
+
+## Expected value and variance: sums become integrals [Def 4.6]{.tag}
+
+::: {.box-def}
+$X$ continuous, density $f$ zero outside $c$ to $d$; $p(x_i)$ becomes $f(x)\,dx$:
+$$\E[X]=\mu=\int_c^d x\,f(x)\,dx,\qquad \Var(X)=\int_c^d (x-\mu)^2f(x)\,dx.$$
+:::
+
+| | Discrete (Lecture 3) | Continuous |
+|:---|:---|:---|
+| probabilities | $p(x)=\Prob(X=x)$ | $\Prob(a\le X\le b)=\int_a^b f(x)\,dx$ |
+| expected value | $\sum_i x_i\,p(x_i)$ | $\int_c^d x\,f(x)\,dx$ |
+| $\E[g(X)]$, e.g. $\E[X^2]$ | $\sum_i g(x_i)\,p(x_i)$ | $\int_c^d g(x)\,f(x)\,dx$ |
+| variance ($\operatorname{SD}=\sqrt{\Var}$) | $\sum_i (x_i-\mu)^2p(x_i)$ | $\int_c^d (x-\mu)^2f(x)\,dx$ |
+
+::: {.notes}
+Say: the results of Lecture 3 still hold with the same proofs, sum replaced by integral: the shortcut Var = E[X^2] - mu^2 (Thm 3.2) and the rules for aX + b (Thm 3.3). The variance slide for Bakhyt uses the shortcut.
+:::
+
+## Bakhyt: the first customer on average [Def 4.6]{.tag}
+
+::: {.muted .small}
+Given: $X$ = hours from 7:00 to the first customer; $f(x)=2-2x$ for $0\le x\le1$, 0 otherwise
+:::
+
+:::: {.columns}
+::: {.column width="55%"}
+Guess first: after 30 minutes, more, or less?
+
+. . .
+
+Multiply out: $x\,f(x)=2x-2x^2$. Then
+$$
+\begin{aligned}
+\E[X]&=\int_0^1(2x-2x^2)\,dx=\Big[x^2-\frac{2x^3}{3}\Big]_0^1\\
+&=1-\frac23=\frac13\ \text{hour}
+\end{aligned}
+$$
+
+. . .
+
+On average after [20 minutes]{.answer}, before 7:30.
+:::
+::: {.column width="45%"}
+```{python}
+#| fig-width: 4.6
+#| fig-height: 3.3
+fig, ax = plt.subplots(figsize=(4.6, 3.3))
+x = np.linspace(0, 1, 200)
+ax.plot(x, 2 - 2 * x, color=BLUE, lw=2.5)
+ax.fill_between(x, 2 - 2 * x, color=LIGHT, alpha=0.6)
+ax.axvline(1 / 3, color=ORANGE, lw=2.5)
+ax.axvline(0.5, color=MUTED, lw=1.5, ls="--")
+ax.text(0.56, 2.0, "E[X] = 1/3 h\n= 20 min", fontsize=13, color=ORANGE, fontweight="bold", va="top")
+ax.text(0.52, 0.12, "30 min", fontsize=12, color=MUTED)
+ax.set_xlim(0, 1.05)
+ax.set_ylim(0, 2.2)
+ax.set_xlabel("x = hours after opening")
+ax.set_ylabel("f(x)")
+plt.tight_layout()
+```
+:::
+::::
+
+::: {.notes}
+Ask: "Bakhyt's first customer, on average: after 30 minutes, more, or less?" The density falls, so less.
+:::
+
+## Bakhyt: variance and standard deviation [Def 4.6, Thm 3.2]{.tag}
+
+::: {.muted .small}
+Given: $f(x)=2-2x$ for $0\le x\le1$ (hours), 0 otherwise; $\E[X]=\frac13$
+:::
+
+Multiply out: $x^2f(x)=2x^2-2x^3$, so
+$$\E[X^2]=\int_0^1(2x^2-2x^3)\,dx=\Big[\frac{2x^3}{3}-\frac{x^4}{2}\Big]_0^1=\frac23-\frac12=\frac16$$
+
+. . .
+
+By the shortcut (Thm 3.2, it still holds for densities):
+$$\Var(X)=\E[X^2]-\mu^2=\frac16-\Big(\frac13\Big)^2=\frac16-\frac19=\frac1{18}\approx0.0556\ \text{hours}^2$$
+
+. . .
+
+$\operatorname{SD}(X)=\sqrt{1/18}\approx0.236$ hours, about 14 minutes. Hours squared mean nothing to Bakhyt. [20 minutes, give or take 14]{.answer}, does.
+
+## Your turn: repair visits in Vladimir [Exercise 4]{.tag} {.yourturn}
+
+Polina, who schedules repair technicians, models the length $X$ of a visit, in hours, by the density $f(x)=Cx$ for $0\le x\le2$, and $f(x)=0$ otherwise. Find the number $C$, then $\Prob(X\le1)$ and $\E[X]$.
+
+. . .
+
+Total area 1: $\int_0^2 Cx\,dx=C\big[\frac{x^2}{2}\big]_0^2=2C=1$, so $C=$ [0.5]{.answer}
+
+. . .
+
+$\Prob(X\le1)=\int_0^1 0.5x\,dx=\big[\frac{x^2}{4}\big]_0^1=$ [0.25]{.answer}
+
+. . .
+
+$\E[X]=\int_0^2 x\cdot0.5x\,dx=\big[\frac{x^3}{6}\big]_0^2=\frac86\approx$ [1.33 hours]{.answer}
+
+## Uniform distribution [Def 4.7]{.tag}
+
+:::: {.columns}
+::: {.column width="60%"}
+::: {.box-def}
+$X\sim\operatorname{U}(a,b)$, the **uniform distribution** on the interval from $a$ to $b$ ($a<b$), has density and CDF
+$$f(x)=\frac{1}{b-a},\qquad F(x)=\frac{x-a}{b-a}$$
+for $a\le x\le b$. Outside: $f=0$; $F=0$ left of $a$, $F=1$ right of $b$.
+:::
+:::
+::: {.column width="40%"}
+```{python}
+#| fig-width: 4.4
+#| fig-height: 3.4
+fig, (a1, a2) = plt.subplots(2, 1, figsize=(4.4, 3.4), sharex=True)
+a1.plot([-1, 0], [0, 0], color=BLUE, lw=2.5); a1.plot([0, 4], [1, 1], color=BLUE, lw=2.5); a1.plot([4, 5], [0, 0], color=BLUE, lw=2.5)
+a1.fill_between([0, 4], [1, 1], color=LIGHT, alpha=0.7)
+a1.set_yticks([0, 1], ["0", "1/(b-a)"]); a1.set_ylim(0, 1.35); a1.set_ylabel("f(x)", fontsize=12)
+a2.plot([-1, 0], [0, 0], color=BLUE, lw=2.5); a2.plot([0, 4], [0, 1], color=BLUE, lw=2.5); a2.plot([4, 5], [1, 1], color=BLUE, lw=2.5)
+a2.set_yticks([0, 1]); a2.set_ylim(0, 1.2); a2.set_ylabel("F(x)", fontsize=12)
+a2.set_xticks([0, 4], ["a", "b"]); a2.set_xlim(-1, 5)
+plt.tight_layout()
+```
+:::
+::::
+
+## How to read $X\sim\operatorname{U}(a,b)$ [Sec 4.7]{.tag}
+
+| Write | Say | For Lena's shuttle |
+|:---|:---|:---|
+| $X\sim\operatorname{U}(a,b)$ | "X is uniform on the interval from a to b" | $X\sim\operatorname{U}(0,12)$, minutes |
+| $\dfrac{1}{b-a}$ | "one over b minus a": the height | $\dfrac{1}{12-0}=\dfrac1{12}$ |
+| $\dfrac{x-a}{b-a}$ | the share of the interval left of $x$ | $F(x)=\dfrac{x-0}{12-0}=\dfrac{x}{12}$ |
+
+:::: {.columns}
+::: {.column width="55%"}
+Why that height? Width times height must be 1: $(b-a)\cdot\frac{1}{b-a}=1$.
+:::
+::: {.column width="45%"}
+```{python}
+#| fig-width: 4.6
+#| fig-height: 1.4
+fig, ax = plt.subplots(figsize=(4.6, 1.4))
+ax.add_patch(Rectangle((0, 0), 12, 1 / 12, fc=LIGHT, ec=BLUE, lw=2))
+ax.text(6, 0.042, "shuttle: area 12 · 1/12 = 1", ha="center", va="center", fontsize=12, fontweight="bold")
+ax.set_xticks([0, 12]); ax.set_yticks([0, 1 / 12], ["0", "1/12"])
+ax.set_xlim(-1, 13); ax.set_ylim(0, 0.1)
+ax.grid(False)
+plt.tight_layout()
+```
+:::
+::::
+
+## The uniform CDF is a share of the interval [Def 4.7]{.tag}
+
+:::: {.columns}
+::: {.column width="55%"}
+Where does $F$ come from? Def 4.5, starting at the left end $a$:
+$$F(x)=\int_a^x\frac{1}{b-a}\,dt=\Big[\frac{t}{b-a}\Big]_a^x=\frac{x-a}{b-a}$$
+
+. . .
+
+The rectangle from $a$ to $x$: width $x-a$ times height $\frac1{b-a}$. It is the share of the interval left of $x$: Lecture 1's geometric probability on a segment (Def 1.9), written as a random variable.
+:::
+::: {.column width="45%"}
+```{python}
+#| fig-width: 4.6
+#| fig-height: 2.8
+fig, ax = plt.subplots(figsize=(4.6, 2.8))
+ax.plot([-1, 0], [0, 0], color=BLUE, lw=2.5); ax.plot([0, 4], [1, 1], color=BLUE, lw=2.5); ax.plot([4, 5], [0, 0], color=BLUE, lw=2.5)
+ax.fill_between([0, 2.6], [1, 1], color=LIGHT, alpha=0.9)
+ax.text(1.3, 0.5, "F(x)", ha="center", fontsize=15, fontweight="bold")
+ax.annotate("", xy=(2.6, 1.12), xytext=(0, 1.12), arrowprops=dict(arrowstyle="<->", color=MUTED))
+ax.text(1.3, 1.17, "width x - a", ha="center", fontsize=12, color=MUTED)
+ax.set_xticks([0, 2.6, 4], ["a", "x", "b"])
+ax.set_yticks([0, 1], ["0", "1/(b-a)"])
+ax.set_xlim(-1, 5); ax.set_ylim(0, 1.4)
+ax.grid(False)
+plt.tight_layout()
+```
+:::
+::::
+
+## Waiting for the shuttle [Ex 4.5]{.tag}
+
+::: {.muted .small}
+Given: the shuttle leaves every 12 minutes; Lena comes at a random moment, every moment equally likely
+:::
+
+:::: {.columns}
+::: {.column width="55%"}
+$X$ = Lena's wait in minutes, any number from 0 to 12, all equally likely. So $X\sim\operatorname{U}(0,12)$: $f(x)=\frac1{12}$, $F(x)=\frac{x}{12}$.
+
+. . .
+
+More than 8 minutes, by the complement rule:
+$$\Prob(X>8)=1-F(8)=1-\frac{8}{12}=\frac13$$
+
+. . .
+
+The rectangle from 8 to 12: width 4 times height $\frac1{12}$, [1/3]{.answer}.
+:::
+::: {.column width="45%"}
+```{python}
+#| fig-width: 4.6
+#| fig-height: 3.3
+fig, ax = plt.subplots(figsize=(4.6, 3.3))
+ax.plot([-2, 0], [0, 0], color=BLUE, lw=2.5)
+ax.plot([0, 12], [1 / 12, 1 / 12], color=BLUE, lw=2.5)
+ax.plot([12, 14], [0, 0], color=BLUE, lw=2.5)
+ax.fill_between([8, 12], [1 / 12, 1 / 12], color=ORANGE, alpha=0.6)
+ax.text(10, 0.035, "4 · 1/12\n= 1/3", ha="center", fontsize=14, fontweight="bold")
+ax.set_xticks([0, 8, 12])
+ax.set_yticks([0, 1 / 12], ["0", "1/12"])
+ax.set_xlim(-2, 14)
+ax.set_ylim(0, 0.11)
+ax.set_xlabel("x = waiting time, minutes")
+ax.set_ylabel("f(x)")
+plt.tight_layout()
+```
+:::
+::::
+
+## Mean and variance of the uniform [Thm 4.4]{.tag}
+
+::: {.box-thm}
+If $X\sim\operatorname{U}(a,b)$, then $\quad\E[X]=\dfrac{a+b}{2},\qquad \Var(X)=\dfrac{(b-a)^2}{12}.$
+:::
+
+:::: {.columns}
+::: {.column width="55%"}
+Idea: $\frac1{b-a}$ comes out of the integral:
+$$\E[X]=\frac{1}{b-a}\Big[\frac{x^2}{2}\Big]_a^b=\frac{b^2-a^2}{2(b-a)}=\frac{a+b}{2}$$
+
+. . .
+
+Shuttle, $\operatorname{U}(0,12)$: $\E[X]=$ [6 min]{.answer}; $\Var(X)=\frac{12^2}{12}=12$ min²; $\operatorname{SD}\approx3.46$ min.
+:::
+::: {.column width="45%"}
+```{python}
+#| fig-width: 4.6
+#| fig-height: 1.9
+fig, ax = plt.subplots(figsize=(4.6, 1.9))
+ax.axvspan(6 - 12 ** 0.5, 6 + 12 ** 0.5, color=SOFT, zorder=0)
+ax.plot([-2, 0], [0, 0], color=BLUE, lw=2.5)
+ax.plot([0, 12], [1 / 12, 1 / 12], color=BLUE, lw=2.5)
+ax.plot([12, 14], [0, 0], color=BLUE, lw=2.5)
+ax.axvline(6, color=ORANGE, lw=2.5)
+ax.text(6.3, 0.098, "mean 6", fontsize=13, color=ORANGE, fontweight="bold")
+ax.annotate("", xy=(6 + 12 ** 0.5, 0.045), xytext=(6, 0.045), arrowprops=dict(arrowstyle="<->", color=BLUE))
+ax.text(6.3, 0.052, "SD 3.46", fontsize=12, color=BLUE)
+ax.set_xticks([0, 6, 12])
+ax.set_yticks([0, 1 / 12], ["0", "1/12"])
+ax.set_xlim(-2, 14)
+ax.set_ylim(0, 0.11)
+ax.set_xlabel("x = waiting time, minutes")
+plt.tight_layout()
+```
+[Uses $b^2-a^2=(b-a)(b+a)$. Variance: same with $x^2$, then the shortcut. Proof: Sec 4.7.]{.muted .small}
+:::
+::::
+
+## Your turn: delivery in 30 to 50 minutes [Exercise 5]{.tag} {.yourturn}
+
+Arman's food-delivery app promises delivery "in 30 to 50 minutes". Assume the delivery time $X$ in minutes is $\operatorname{U}(30,50)$. Find $\Prob(X>45)$, $\E[X]$ and $\operatorname{SD}(X)$.
+
+. . .
+
+The rectangle from 45 to 50: $\Prob(X>45)=\dfrac{50-45}{50-30}=\dfrac{5}{20}=$ [0.25]{.answer}
+
+. . .
+
+$\E[X]=\dfrac{30+50}{2}=$ [40 minutes]{.answer}
+
+. . .
+
+$\operatorname{SD}(X)=\sqrt{\dfrac{(50-30)^2}{12}}=\dfrac{20}{\sqrt{12}}\approx$ [5.77 minutes]{.answer}
+
+::: {.notes}
+Lecture 5 adds the exponential distribution for waiting times, with its "memoryless" property, and then the normal. Seminar 4: geometric, hypergeometric, Poisson. Seminar 5: densities and the uniform, plus the exponential after Lecture 5.
+:::
