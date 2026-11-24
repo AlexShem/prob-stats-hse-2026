@@ -458,7 +458,7 @@ $X$ = faulty bulbs among the 2. Trials fixed? Yes, 2. Same probability each draw
 
 . . .
 
-Count (Ex 1.7): $\binom{12}{2}=66$ equal pairs; one faulty = one of the 3 and one of the 9 good:
+Count (Lecture 1): $\binom{12}{2}=66$ equal pairs; one faulty = one of the 3 and one of the 9 good:
 $$\Prob(X=1)=\frac{\binom31\binom91}{\binom{12}2}=\frac{27}{66}\approx0.409$$
 :::
 ::: {.column width="45%"}
