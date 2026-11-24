@@ -24,6 +24,7 @@ book:
       chapters:
         - seminars/S01-counting.qmd
         - seminars/S02-conditional-probability.qmd
+        - seminars/S03-discrete-random-variables.qmd
   appendices:
     - schedule.qmd
 
