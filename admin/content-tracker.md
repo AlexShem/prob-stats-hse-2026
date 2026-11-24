@@ -73,7 +73,7 @@ New contexts and names: suppliers of a sushi bar, bank app and salary card, supe
 ## L02: Conditional probability and Bayes' theorem
 
 Files: `book/lectures/L02-conditional-probability.qmd` (12 print pages), `slides/L02-conditional-probability.qmd` (50 slides + title), `book/seminars/S02-conditional-probability.qmd` (9 problems, the last one starred).
-Status: chapter drafted on `unit/L02-conditional-probability`, under review.
+Status: merged into `main`.
 
 **Chapter.** Opens with the L01 store: $\Prob(\text{promo}\mid\text{app})=0.20/0.55\approx0.36$, not $0.40$.
 
@@ -112,7 +112,7 @@ New contexts and names: HR survey, raffle, furniture delivery (damaged and late)
 ## L03: Discrete random variables
 
 Files: `book/lectures/L03-discrete-random-variables.qmd` (12 print pages, 17 in the student PDF; the brief asked for 7–10, the eight How-to-read callouts take about 2 pages), `slides/L03-discrete-random-variables.qmd` (41 slides + title, 42 PDF pages), `book/seminars/S03-discrete-random-variables.qmd` (9 problems, the last one starred).
-Status: chapter drafted on `unit/L03-discrete-random-variables`, under review.
+Status: merged into `main` (chapter and slides; S03 on `unit/S03-discrete-random-variables`).
 
 **Chapter.** First chapter written for "This class". Opens with Marat's optician's shop on Bauman Street, Kazan: 3 customers come for a free eye test on Saturday, each orders glasses with probability 0.4, independently; 2,000 rubles per pair, 500 rubles per free test. Question: how many pairs to expect, and how much that swings. One running example (Marat) carries the whole chapter; there is no second worked example (the planned Bin(10, 0.9) pharmacy example was cut for length, so S03 must do the first larger-$n$ binomial calculation itself); every example box opens with a "*Given:*" line restating the data (the PMF as $p(0)=0.216$, $p(1)=0.432$, $p(2)=0.288$, $p(3)=0.064$). Rubles are written as the word "rubles" (the PDF font has no ₽ sign).
 
@@ -151,7 +151,7 @@ Relies on L03 throughout and cites L04's Def 4.2 and Def 4.3 by name only in Pro
 ## L04: Counting events and measuring time
 
 Files: `book/lectures/L04-poisson-and-continuous.qmd` (15 print pages, the last one about a quarter full; budget was ~12), `slides/L04-poisson-and-continuous.qmd` (53 slides + title, 54 PDF pages), seminars S04 and S05 not made yet.
-Status: chapter drafted on `unit/L04-poisson-and-continuous`, under review.
+Status: merged into `main` (chapter and slides, 24 Nov 2026).
 
 **Chapter.** Opens with Marat's shop (L03) on a Saturday without bookings: walk-ins, each orders with probability 0.4, independently; he has no coffee until the first sale. Question, phrased so it is the variable: "count the customers Marat tests up to and including the first one who orders" (pays off L03 Exercise 3c). New device: every example (and the hypergeometric bulbs passage) has, right after *Given:*, a plain line *The variable:* $X$ = …; number of trials fixed? (or "a count or a measurement?"); so $X\sim\dots$. PMFs of named distributions are written $\Prob(X=k)=\dots$, not $p(k)$. Exponential and memorylessness moved to L05 (one closing sentence promises them).
 

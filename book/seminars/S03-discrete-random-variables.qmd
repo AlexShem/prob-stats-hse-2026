@@ -390,7 +390,7 @@ Alina can expect about 25 purchases, and a typical Tuesday lands within about 4 
 $$
 \Prob(X=0)=\binom{100}{0}0.25^0\cdot0.75^{100}=1\cdot1\cdot0.75^{100}\approx0.00000000000032 .
 $$
-That is 12 zeros after the decimal point, about 3 chances in 10 trillion. Under the model it does not happen. So if no reminder at all led to a purchase, I would not call it bad luck: I would ask whether the e-mails were sent, or whether they all went to spam.
+That is 12 zeros after the decimal point, about 3 chances in 10 trillion. Under the model it essentially never happens. So if no reminder at all led to a purchase, I would not call it bad luck: I would ask whether the e-mails were sent, or whether they all went to spam.
 
 ```{python}
 from scipy import stats
@@ -424,7 +424,7 @@ The four conditions of @def-binomial: fixed $n$; success or failure; the same $p
 
 (c) Not binomial: the probability of success is not the same for every customer.
 
-(d) Not binomial: there is no fixed number of trials. Nobody can say in advance how many people might visit. Counts of events in an interval of time are the Poisson distribution of Lecture 4 (@def-poisson).
+(d) Not binomial: there is no fixed number of trials. Nobody can say in advance how many people might visit. Counts of events in an interval of time are usually modelled by the Poisson distribution of Lecture 4 (@def-poisson).
 
 (e) Not binomial: the consultants are not independent, since one decision covers all twelve. $X$ can only be 0 or 12, each with probability 0.5. If $X$ were $\operatorname{Bin}(12,\,0.5)$, the chance that all twelve get a bonus would be $0.5^{12}\approx0.0002$, not 0.5.
 
