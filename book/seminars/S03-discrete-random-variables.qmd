@@ -11,7 +11,7 @@ execute:
 Material from Lecture 3 (@sec-L03). The firms and people on this sheet are made up, and so are their numbers. In Problems 1 to 6 the sheet tells you what $X$ is and what its distribution is. In Problem 7 you write $X$, $n$ and $p$ down yourself, and Problem 8 asks whether a story is binomial at all. The starred Problem 9\* is harder: it is for a strong group or to take home. As before, work by hand first and let the Python check you.
 
 ::: lecturer
-80 minutes. Planned: 1 (8 min), 2 (15), 3 (10), 4 (8), 5 (5), 6 (15), 7 (10), 8 (10). That is 81 minutes with no slack. If behind: do Problem 4 orally (the room names the two mistakes, you write the correct line), and in Problem 8 take only stories (a), (b) and (d). Do not cut 7 or 8: Problems 6, 7 and 8 (distribution given, then name it yourself, then binomial or not) are the point of the day. 9\* for a strong group or to take home.
+80 minutes. Planned: 1 (8 min), 2 (15), 3 (10), 4 (8), 5 (5), 6 (15), 7 (10), 8 (10). That is 81 minutes with no slack. If behind: do Problem 4 orally (the room names the two mistakes, you write the correct line), and in Problem 8 take only stories (a), (b) and (d). Never drop 7 or 8 entirely: Problems 6, 7 and 8 (distribution given, then name it yourself, then binomial or not) are the point of the day. 9\* for a strong group or to take home.
 Board: copy Madina's PMF table from Problem 2 to the side board and keep it for Problem 3. Before Problem 6, write the four binomial conditions in a corner and leave them up until the end.
 :::
 
@@ -316,9 +316,9 @@ Ravil's pharmacy again. *Given:* each customer accepts the free loyalty card wit
 ::: sol
 $X$ = the number of the 10 customers who accept the card; $X\sim\operatorname{Bin}(10,\,0.9)$, so $n=10$ and $p=0.9$ in @eq-binom-pmf.
 
-(a) 80% of 10 customers is 8, so we need $\Prob(X=8)$. Take one particular order first, say the first two customers refuse and the other eight accept. By independence its probability is $0.1^2\cdot0.9^8$. The two refusals can sit in any 2 of the 10 places, and the number of ways to choose those places is
+(a) 80% of 10 customers is 8, so we need $\Prob(X=8)$. Take one particular order first, say the first two customers refuse and the other eight accept. By independence its probability is $0.1^2\cdot0.9^8$. The two refusals can sit in any 2 of the 10 places. Choosing the 8 customers who accept is the same as choosing the 2 who refuse, and by @eq-binom the number of ways is
 $$
-\binom{10}{8}=\binom{10}{2}=\frac{10\cdot9}{2\cdot1}=45 .
+\binom{10}{8}=\frac{10!}{8!\,2!}=\frac{10\cdot9}{2\cdot1}=45 .
 $$
 So by @eq-binom-pmf,
 $$
