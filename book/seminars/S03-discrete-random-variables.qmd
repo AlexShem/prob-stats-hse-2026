@@ -1,0 +1,508 @@
+---
+execute:
+  echo: true
+---
+
+# Seminar 3: discrete random variables, expected value, variance and the binomial {.unnumbered #sec-S03}
+
+{{< include ../../_shared/_macros.qmd >}}
+{{< include ../../_shared/_setup.qmd >}}
+
+Material from Lecture 3 (@sec-L03). The firms and people on this sheet are made up, and so are their numbers. In Problems 1 to 6 the sheet tells you what $X$ is and what its distribution is. In Problem 7 you write $X$, $n$ and $p$ down yourself, and Problem 8 asks whether a story is binomial at all. The starred Problem 9\* is harder: it is for a strong group or to take home. As before, work by hand first and let the Python check you.
+
+::: lecturer
+80 minutes. Planned: 1 (8 min), 2 (15), 3 (10), 4 (8), 5 (5), 6 (15), 7 (10), 8 (10). That is 81 minutes with no slack. If behind: do Problem 4 orally (the room names the two mistakes, you write the correct line), and in Problem 8 take only stories (a), (b) and (d). Never drop 7 or 8 entirely: Problems 6, 7 and 8 (distribution given, then name it yourself, then binomial or not) are the point of the day. 9\* for a strong group or to take home.
+Board: copy Madina's PMF table from Problem 2 to the side board and keep it for Problem 3. Before Problem 6, write the four binomial conditions in a corner and leave them up until the end.
+:::
+
+<!-- adapted from sources/Модули_1_2_новые.md, line 3175 (test block, task 2.4) -->
+
+## Problem 1 {.unnumbered}
+
+*Short drill.*
+
+Pavel sells bicycle spare parts on an online marketplace and ships every order from his garage in Tula. Let $X$ be the delivery time of one parcel, in days. From last season's records, $X$ takes the values 2, 5 and 7 with probabilities 0.5, 0.3 and 0.2. (Seven days is Sakhalin and the Far East. Pavel has stopped apologising for it.)
+
+| $x$ | 2 | 5 | 7 |
+|:--|:-:|:-:|:-:|
+| $p(x)=\Prob(X=x)$ | 0.5 | 0.3 | 0.2 |
+
+(a) The values of $X$ in a list are $x_1, x_2, x_3$. Write down $x_1$, $x_2$, $x_3$ and $p(x_1)$, $p(x_2)$, $p(x_3)$. Then write $\sum_{i=1}^{3}p(x_i)$ out term by term and find it.
+(b) Find $F(4)$ and $F(7)$. Say in words what $F(4)$ means for Pavel's customers.
+(c) Find $\E[X]$. Write the sum out before you add.
+(d) Find $\Var(X)$ with the shortcut formula, and $\operatorname{SD}(X)$. Give the units.
+
+::: sol
+$X$ = how many days one parcel takes to arrive.
+
+(a) $x_1=2$, $x_2=5$, $x_3=7$, and $p(x_1)=p(2)=0.5$, $p(x_2)=p(5)=0.3$, $p(x_3)=p(7)=0.2$. Then
+$$
+\sum_{i=1}^{3}p(x_i)=p(x_1)+p(x_2)+p(x_3)=0.5+0.3+0.2=1,
+$$
+as @thm-pmf says it must.
+
+(b) By @def-cdf, $F(4)=\Prob(X\le4)$. The only value of $X$ that is at most 4 is 2, so $F(4)=p(2)=0.5$: half of Pavel's parcels arrive within 4 days. All three values are at most 7, so $F(7)=0.5+0.3+0.2=1$.
+
+(c) By @def-expectation,
+$$
+\E[X]=2\cdot p(2)+5\cdot p(5)+7\cdot p(7)=2\cdot0.5+5\cdot0.3+7\cdot0.2=1+1.5+1.4=3.9\text{ days}.
+$$
+No parcel takes 3.9 days. It is the long-run average: 100 parcels take about 390 days in total.
+
+(d) First $\E[X^2]$, by @eq-lotus with $g(x)=x^2$:
+$$
+\E[X^2]=2^2\cdot0.5+5^2\cdot0.3+7^2\cdot0.2=4\cdot0.5+25\cdot0.3+49\cdot0.2=2+7.5+9.8=19.3 .
+$$
+By @thm-var-shortcut,
+$$
+\Var(X)=\E[X^2]-\mu^2=19.3-3.9^2=19.3-15.21=4.09\text{ days}^2,
+$$
+and $\operatorname{SD}(X)=\sqrt{4.09}\approx2.02$ days. Careful: $\mu^2$ is the square of the mean, $3.9^2$, and has nothing to do with $\E[X^2]$.
+
+```{python}
+from scipy import stats
+
+days = [2, 5, 7]
+p_days = [0.5, 0.3, 0.2]
+delivery = stats.rv_discrete(values=(days, p_days))  # X from its table
+print(f"F(4) = {delivery.cdf(4):.2f}, F(7) = {delivery.cdf(7):.2f}")
+print(f"E[X] = {delivery.mean():.2f} days")
+print(f"Var(X) = {delivery.var():.2f} days^2, SD(X) = {delivery.std():.2f} days")
+```
+:::
+
+<!-- adapted from sources/Модули_1_2_новые.md, lines 391, 413 and 421 (tasks 2.2, 2.4, 2.5) -->
+
+## Problem 2 {.unnumbered}
+
+*Main problem.*
+
+Madina makes soap by hand in Makhachkala and sells it through her own online shop. Lavender soap sells out every December; the rest of the year is calmer. Let $X$ be the number of orders she gets on one day. From last year's records,
+
+| $x$ | 0 | 1 | 2 | 3 | 4 | 5 |
+|:--|:-:|:-:|:-:|:-:|:-:|:-:|
+| $p(x)=\Prob(X=x)$ | 0.23 | 0.20 | 0.18 | 0.17 | 0.13 | 0.09 |
+
+and she never gets more than 5 orders a day.
+
+(a) Check that this table is a valid PMF. What two things do you check?
+(b) Make a table of the CDF, $F(x)$ for $x=0,1,\dots,5$. Then find $F(2.5)$ and say what it means.
+(c) Find the probability that Madina gets more than 1 but at most 4 orders. Write the event with $X$, list the values it contains, and use the CDF. Then find the probability of 1 to 4 orders, both included.
+(d) Find $\E[X]$.
+(e) Find $\E[X^2]$, $\Var(X)$ and $\operatorname{SD}(X)$.
+
+::: sol
+$X$ = the number of orders Madina gets on one day, with values $0,1,2,3,4,5$.
+
+(a) By @thm-pmf: every $p(x)$ is non-negative (yes, the smallest is 0.09), and they add up to 1:
+$$
+0.23+0.20+0.18+0.17+0.13+0.09=1.00 .
+$$
+
+(b) Add the probabilities from the left (@def-cdf):
+
+| $x$ | 0 | 1 | 2 | 3 | 4 | 5 |
+|:--|:-:|:-:|:-:|:-:|:-:|:-:|
+| $F(x)=\Prob(X\le x)$ | 0.23 | 0.43 | 0.61 | 0.78 | 0.91 | 1.00 |
+
+For example, $F(2)=0.23+0.20+0.18=0.61$. Now $F(2.5)=\Prob(X\le2.5)$, and the values of $X$ that are at most 2.5 are 0, 1 and 2 (there is no value between 2 and 2.5). So $F(2.5)=F(2)=0.61$: on 61% of days Madina gets at most 2 orders.
+
+(c) "More than 1 but at most 4" is $\{1<X\le4\}$, and it contains the values 2, 3 and 4, but not 1. By @eq-cdf-interval,
+$$
+\Prob(1<X\le4)=F(4)-F(1)=0.91-0.43=0.48 .
+$$
+Check with the PMF: $p(2)+p(3)+p(4)=0.18+0.17+0.13=0.48$.
+
+"1 to 4, both included" is $\{1\le X\le4\}$, which contains 1, 2, 3 and 4. Now we have to subtract $F(0)$, not $F(1)$:
+$$
+\Prob(1\le X\le4)=F(4)-F(0)=0.91-0.23=0.68,
+$$
+which is $0.48+p(1)=0.48+0.20$. With a discrete $X$, always ask which boundary values are in the event.
+
+(d) By @def-expectation, one term per value:
+$$
+\begin{aligned}
+\E[X]&=0\cdot0.23+1\cdot0.20+2\cdot0.18+3\cdot0.17+4\cdot0.13+5\cdot0.09\\
+&=0+0.20+0.36+0.51+0.52+0.45=2.04 .
+\end{aligned}
+$$
+Over 100 days, Madina can expect about 204 orders.
+
+(e) By @eq-lotus with $g(x)=x^2$:
+$$
+\begin{aligned}
+\E[X^2]&=0\cdot0.23+1\cdot0.20+4\cdot0.18+9\cdot0.17+16\cdot0.13+25\cdot0.09\\
+&=0+0.20+0.72+1.53+2.08+2.25=6.78 .
+\end{aligned}
+$$
+By @thm-var-shortcut, $\Var(X)=6.78-2.04^2=6.78-4.1616=2.6184\approx2.62$, and $\operatorname{SD}(X)=\sqrt{2.6184}\approx1.62$ orders. Keep the unrounded 2.6184 if you use it again (Problem 3 does).
+
+```{python}
+import matplotlib.pyplot as plt
+from scipy import stats
+
+orders = [0, 1, 2, 3, 4, 5]
+p_orders = [0.23, 0.20, 0.18, 0.17, 0.13, 0.09]
+soap = stats.rv_discrete(values=(orders, p_orders))
+print(f"sum of p(x) = {sum(p_orders):.2f}, F(2.5) = {soap.cdf(2.5):.2f}")
+print(f"P(1 < X <= 4) = {soap.cdf(4) - soap.cdf(1):.2f}, "
+      f"P(1 <= X <= 4) = {soap.cdf(4) - soap.cdf(0):.2f}")
+print(f"E[X] = {soap.mean():.2f}, Var(X) = {soap.var():.4f}, SD(X) = {soap.std():.2f}")
+plt.bar(orders, p_orders, width=0.5)
+plt.xlabel("x = orders on one day")
+plt.ylabel("p(x)")
+plt.show()
+```
+:::
+
+## Problem 3 {.unnumbered}
+
+*Changing units.*
+
+Madina's shop again. *Given:* $X$ = the number of orders on one day, with
+
+| $x$ | 0 | 1 | 2 | 3 | 4 | 5 |
+|:--|:-:|:-:|:-:|:-:|:-:|:-:|
+| $p(x)$ | 0.23 | 0.20 | 0.18 | 0.17 | 0.13 | 0.09 |
+
+$\E[X]=2.04$, $\Var(X)=2.6184$ and $\operatorname{SD}(X)\approx1.618$ (Problem 2). Each order leaves Madina 450 rubles after materials and postage. The platform that hosts her shop charges 600 rubles a day, orders or no orders. Her daily profit in rubles is
+$$
+Y=450X-600 .
+$$
+
+(a) What is $Y$ on a day with no orders? With 5 orders?
+(b) Find $\E[Y]$, $\Var(Y)$ and $\operatorname{SD}(Y)$.
+(c) Where did the 600 rubles go in $\Var(Y)$? Explain in one or two sentences.
+(d) On what share of days does Madina lose money?
+
+::: sol
+$Y$ = Madina's profit on one day, in rubles. It is of the form $aX+b$ with $a=450$ and $b=-600$.
+
+(a) No orders: $Y=450\cdot0-600=-600$ rubles, a loss. Five orders: $Y=450\cdot5-600=2250-600=1650$ rubles.
+
+(b) By @thm-linear,
+$$
+\begin{aligned}
+\E[Y]&=450\cdot\E[X]-600=450\cdot2.04-600=918-600=318\text{ rubles},\\
+\Var(Y)&=450^2\cdot\Var(X)=202{,}500\cdot2.6184\approx530{,}226\text{ rubles}^2,\\
+\operatorname{SD}(Y)&=450\cdot\operatorname{SD}(X)\approx450\cdot1.618\approx728\text{ rubles}.
+\end{aligned}
+$$
+An average day earns 318 rubles, and a typical day lands about 728 rubles away from that. The swing is more than twice the mean.
+
+(c) The 600 rubles are paid every day, whatever happens, so they move every profit down by the same amount. That moves the mean down by 600 but does not change how spread out the profits are. In @thm-linear, $b$ appears in $\E[aX+b]$ and not in $\Var(aX+b)$.
+
+(d) $Y<0$ means $450X<600$, that is $X<600/450\approx1.33$. The values of $X$ below 1.33 are 0 and 1, so
+$$
+\Prob(Y<0)=\Prob(X\le1)=F(1)=0.23+0.20=0.43 .
+$$
+On 43% of days the platform fee is more than the orders bring in. With one order she is still 150 rubles short.
+
+The check below computes $\E[Y]$ and $\Var(Y)$ straight from the definitions, one value of $Y$ at a time, without @thm-linear.
+
+```{python}
+import numpy as np
+
+orders = np.array([0, 1, 2, 3, 4, 5])
+p_orders = np.array([0.23, 0.20, 0.18, 0.17, 0.13, 0.09])
+profit = 450 * orders - 600                       # the value of Y for each x
+mean_profit = np.sum(profit * p_orders)
+var_profit = np.sum((profit - mean_profit) ** 2 * p_orders)
+print(f"E[Y] = {mean_profit:.0f} rubles")
+print(f"Var(Y) = {var_profit:,.0f} rubles^2, SD(Y) = {np.sqrt(var_profit):.0f} rubles")
+print(f"P(Y < 0) = {p_orders[profit < 0].sum():.2f}")
+```
+:::
+
+## Problem 4 {.unnumbered}
+
+*Find the mistake.*
+
+The problem was:
+
+> *The number of customers $W$ of a food truck on one day has $\E[W]=50$ and $\Var(W)=16$. Each customer pays 300 rubles, and the spot costs 4,000 rubles a day, so the daily profit is $300W-4000$ rubles. Find the expected value and the standard deviation of the daily profit.*
+
+Dmitri wrote this solution.
+
+> *$\E[300W-4000]=300\cdot50-4000=11{,}000$ rubles.*
+>
+> *$\Var(300W-4000)=300^2\cdot\Var(W)-4000^2=90{,}000\cdot16-16{,}000{,}000=1{,}440{,}000-16{,}000{,}000=-14{,}560{,}000$.*
+>
+> *You can't take the square root of a negative number, so I drop the minus: $\operatorname{SD}=\sqrt{14{,}560{,}000}\approx3{,}816$ rubles.*
+
+(a) Which line is right? Find the mistakes in the other two.
+(b) Why can a variance never be negative? Answer from the definition, in one sentence.
+(c) Give the correct variance and standard deviation.
+
+::: sol
+(a) The first line is right: by @thm-linear, $\E[aW+b]=a\E[W]+b$ with $a=300$, $b=-4000$.
+
+The second line treats the variance like the expected value and keeps $b$ (squared, too). But $b$ does not enter the variance at all: $\Var(aW+b)=a^2\Var(W)$ (@thm-linear). The 4,000 rubles for the spot are paid every day, so they shift every profit by the same amount and do not change the spread.
+
+The third line hides the mistake instead of finding it. A negative variance is a signal that something above is wrong, never something to fix by deleting a sign.
+
+(b) By @def-variance, $\Var(W)=\sum_i(w_i-\mu)^2p(w_i)$: every square is at least 0 and every probability is at least 0, so the sum is at least 0.
+
+(c)
+$$
+\Var(300W-4000)=300^2\cdot16=90{,}000\cdot16=1{,}440{,}000\text{ rubles}^2,
+$$
+$$
+\operatorname{SD}(300W-4000)=300\cdot\sqrt{16}=300\cdot4=1{,}200\text{ rubles}.
+$$
+So the truck earns 11,000 rubles on an average day, give or take about 1,200. Dmitri's 3,816 was more than three times too big.
+
+```{python}
+import numpy as np
+
+var_customers = 16
+a, b = 300, -4000
+var_dmitri = a**2 * var_customers - b**2
+var_profit = a**2 * var_customers                 # b drops out
+print(f"Dmitri's variance: {var_dmitri:,}")
+print(f"Correct: Var = {var_profit:,} rubles^2, SD = {np.sqrt(var_profit):,.0f} rubles")
+```
+:::
+
+## Problem 5 {.unnumbered}
+
+*Short drill.*
+
+Ravil manages a pharmacy in Cheboksary. Since October the cashiers offer every customer a free loyalty card at the till. One customer accepts it with probability 0.9. Let $X=1$ if the customer accepts and $X=0$ if not. So $X$ has the Bernoulli distribution with $p=0.9$.
+
+(a) Write the PMF of $X$ as a table.
+(b) Find $\E[X]$, $\E[X^2]$, $\Var(X)$ and $\operatorname{SD}(X)$ from the definitions. Check $\Var(X)$ with the formula $p(1-p)$.
+(c) What does $\E[X]=0.9$ mean for 1,000 customers?
+
+::: sol
+$X$ = 1 if the customer accepts the card, 0 if not. $X$ is Bernoulli(0.9) (@def-bernoulli).
+
+(a)
+
+| $x$ | 0 | 1 |
+|:--|:-:|:-:|
+| $p(x)$ | 0.1 | 0.9 |
+
+(b) By @def-expectation and @eq-lotus,
+$$
+\E[X]=0\cdot0.1+1\cdot0.9=0.9,\qquad \E[X^2]=0^2\cdot0.1+1^2\cdot0.9=0.9 .
+$$
+$\E[X^2]=\E[X]$ here because $0^2=0$ and $1^2=1$. By @thm-var-shortcut, $\Var(X)=0.9-0.9^2=0.9-0.81=0.09$, and the formula gives the same: $p(1-p)=0.9\cdot0.1=0.09$. Then $\operatorname{SD}(X)=\sqrt{0.09}=0.3$.
+
+(c) Of 1,000 customers, about 900 take the card. The expected value of a 0/1 variable is the probability of the 1.
+
+```{python}
+from scipy import stats
+
+card = stats.bernoulli(0.9)                       # X ~ Bernoulli(0.9)
+print(f"p(0) = {card.pmf(0):.1f}, p(1) = {card.pmf(1):.1f}")
+print(f"E[X] = {card.mean():.2f}, Var(X) = {card.var():.2f}, SD(X) = {card.std():.2f}")
+```
+:::
+
+<!-- adapted from sources/Модули_1_2_новые.md, line 85 (task 1.7) -->
+
+## Problem 6 {.unnumbered}
+
+*Main problem.*
+
+Ravil's pharmacy again. *Given:* each customer accepts the free loyalty card with probability 0.9, independently of the others. On Monday morning 10 customers come to the till. Let $X$ be the number of them who accept the card. Then $X\sim\operatorname{Bin}(10,\,0.9)$.
+
+(a) Ravil's head office wants 80% of customers to accept. Find the probability that exactly 80% of the 10 accept.
+(b) Find the probability that at least 9 of the 10 accept.
+(c) Find the probability that at most 8 accept. Use (b).
+(d) Find $\E[X]$, $\Var(X)$ and $\operatorname{SD}(X)$.
+
+::: sol
+$X$ = the number of the 10 customers who accept the card; $X\sim\operatorname{Bin}(10,\,0.9)$, so $n=10$ and $p=0.9$ in @eq-binom-pmf.
+
+(a) 80% of 10 customers is 8, so we need $\Prob(X=8)$. Take one particular order first, say the first two customers refuse and the other eight accept. By independence its probability is $0.1^2\cdot0.9^8$. The two refusals can sit in any 2 of the 10 places. Choosing the 8 customers who accept is the same as choosing the 2 who refuse, and by @eq-binom the number of ways is
+$$
+\binom{10}{8}=\frac{10!}{8!\,2!}=\frac{10\cdot9}{2\cdot1}=45 .
+$$
+So by @eq-binom-pmf,
+$$
+\Prob(X=8)=\binom{10}{8}0.9^8\cdot0.1^2=45\cdot0.4305\cdot0.01\approx0.194 .
+$$
+($0.9^8\approx0.4305$ on a calculator.) Exactly 8 out of 10 happens on about one Monday in five.
+
+(b) "At least 9" means $X=9$ or $X=10$:
+$$
+\begin{aligned}
+\Prob(X=9)&=\binom{10}{9}0.9^9\cdot0.1^1=10\cdot0.3874\cdot0.1\approx0.387,\\
+\Prob(X=10)&=\binom{10}{10}0.9^{10}\cdot0.1^0=1\cdot0.3487\cdot1\approx0.349,
+\end{aligned}
+$$
+so $\Prob(X\ge9)\approx0.387+0.349=0.736$.
+
+(c) $\{X\le8\}$ is the complement of $\{X\ge9\}$: every value from 0 to 10 is in exactly one of them. So
+$$
+\Prob(X\le8)=1-\Prob(X\ge9)\approx1-0.736=0.264 .
+$$
+Adding $\Prob(X=0)+\Prob(X=1)+\dots+\Prob(X=8)$ directly would take nine terms.
+
+(d) By @thm-binomial-moments,
+$$
+\E[X]=np=10\cdot0.9=9,\qquad \Var(X)=np(1-p)=10\cdot0.9\cdot0.1=0.9,\qquad \operatorname{SD}(X)=\sqrt{0.9}\approx0.95 .
+$$
+So Ravil should expect 9 cards per 10 customers, and with an SD under one card, 8 is already a slightly weak morning.
+
+```{python}
+from scipy import stats
+
+card = stats.binom(10, 0.9)                       # X ~ Bin(10, 0.9)
+print(f"P(X = 8)  = {card.pmf(8):.3f}")
+print(f"P(X >= 9) = {card.pmf(9) + card.pmf(10):.3f}")
+print(f"P(X <= 8) = {card.cdf(8):.3f}")
+print(f"E[X] = {card.mean():.0f}, Var(X) = {card.var():.1f}, SD(X) = {card.std():.2f}")
+```
+:::
+
+<!-- rewritten from sources/Модули_1_2_новые.md, line 880 (task 3.3) -->
+
+## Problem 7 {.unnumbered}
+
+*Name $X$ yourself.*
+
+Alina does e-mail marketing for an online electronics shop in Tomsk. On Tuesday, 100 customers left items in their basket without paying, and the shop sends each of them one reminder e-mail. The e-mails go out at 9 pm, when, Alina says, people feel guilty about their baskets. Each reminder leads to a purchase with probability 0.25, independently of the others.
+
+(a) Write "$X$ = …" in words. Check the four conditions of the binomial distribution one by one, then write $n=\dots$, $p=\dots$ and $X\sim\dots$.
+(b) Find $\E[X]$, $\Var(X)$ and $\operatorname{SD}(X)$. What do they say to Alina?
+(c) Find the probability that none of the 100 reminders leads to a purchase. If that happened one Tuesday, what would you tell Alina?
+
+::: sol
+(a) $X$ = the number of the 100 reminder e-mails that lead to a purchase. The conditions of @def-binomial:
+
+1. the number of trials is fixed in advance: 100 e-mails;
+2. each trial ends in success (a purchase) or failure (no purchase);
+3. every e-mail has the same probability of success, 0.25;
+4. the e-mails work independently (the problem says so).
+
+So $n=100$, $p=0.25$ and $X\sim\operatorname{Bin}(100,\,0.25)$.
+
+(b) By @thm-binomial-moments,
+$$
+\E[X]=100\cdot0.25=25,\qquad \Var(X)=100\cdot0.25\cdot0.75=18.75,\qquad \operatorname{SD}(X)=\sqrt{18.75}\approx4.33 .
+$$
+Alina can expect about 25 purchases, and a typical Tuesday lands within about 4 of that.
+
+(c) By @eq-binom-pmf with $k=0$:
+$$
+\Prob(X=0)=\binom{100}{0}0.25^0\cdot0.75^{100}=1\cdot1\cdot0.75^{100}\approx0.00000000000032 .
+$$
+That is 12 zeros after the decimal point, about 3 chances in 10 trillion. Under the model it essentially never happens. So if no reminder at all led to a purchase, I would not call it bad luck: I would ask whether the e-mails were sent, or whether they all went to spam.
+
+```{python}
+from scipy import stats
+
+purchases = stats.binom(100, 0.25)                # X ~ Bin(100, 0.25)
+print(f"E[X] = {purchases.mean():.0f}, Var(X) = {purchases.var():.2f}, "
+      f"SD(X) = {purchases.std():.2f}")
+print(f"P(X = 0) = {purchases.pmf(0):.14f}")
+# Python may also show it as 3.2e-13, which means 3.2 divided by 10 thirteen times
+```
+:::
+
+## Problem 8 {.unnumbered}
+
+*Binomial or not?*
+
+For each story, either write $X\sim\operatorname{Bin}(n,p)$ with the numbers, or say which condition of the binomial distribution fails, in one line.
+
+(a) A wholesale bakery supplier in Ivanovo sends out 20 invoices this month. Each invoice is paid late with probability 0.1, independently of the others. $X$ = the number of invoices paid late.
+(b) At an office party, each player is dealt 5 cards from one shuffled pack of 52 cards, 13 of which are hearts. $X$ = the number of hearts a player gets.
+(c) A flower shop has 8 regular corporate customers. The chance that a customer orders next week is 0.2 for a small dental clinic, 0.9 for a hotel, and something in between for the other six. $X$ = the number of the 8 who order next week.
+(d) $X$ = the number of visitors to Madina's soap shop website between 8 and 9 pm tonight.
+(e) A team of 12 sales consultants in a furniture store in Voronezh can get a quarterly bonus. The team lead decides once, for the whole team: either all 12 get it or nobody does, with probability 0.5 each way. $X$ = the number of consultants who get a bonus.
+
+::: sol
+The four conditions of @def-binomial: fixed $n$; success or failure; the same $p$; independent trials.
+
+(a) Binomial: $X\sim\operatorname{Bin}(20,\,0.1)$. Fixed $n=20$, late or on time, the same $p=0.1$, independent.
+
+(b) Not binomial: the trials are not independent, because the cards are dealt without putting them back. The first card is a heart with probability $13/52=0.25$. If it was a heart, the second is a heart with probability $12/51\approx0.235$; if not, $13/51\approx0.255$. This is the hypergeometric distribution of Lecture 4 (@def-hypergeometric).
+
+(c) Not binomial: the probability of success is not the same for every customer.
+
+(d) Not binomial: there is no fixed number of trials. Nobody can say in advance how many people might visit. Counts of events in an interval of time are usually modelled by the Poisson distribution of Lecture 4 (@def-poisson).
+
+(e) Not binomial: the consultants are not independent, since one decision covers all twelve. $X$ can only be 0 or 12, each with probability 0.5. If $X$ were $\operatorname{Bin}(12,\,0.5)$, the chance that all twelve get a bonus would be $0.5^{12}\approx0.0002$, not 0.5.
+
+The simulation deals 5 cards from a pack 100,000 times for (b). The shares come close to $\operatorname{Bin}(5,\,0.25)$, but not close enough: for 0 hearts, for example, about 0.22 against 0.237.
+
+```{python}
+import numpy as np
+from scipy import stats
+
+rng = np.random.default_rng(2026)
+pack = np.array([1] * 13 + [0] * 39)              # 1 = heart, 0 = other card
+n_deals = 100_000
+hearts = np.array([rng.permutation(pack)[:5].sum() for _ in range(n_deals)])
+for k in range(6):
+    print(f"P(X = {k}): dealt {np.mean(hearts == k):.3f}, "
+          f"Bin(5, 0.25) {stats.binom(5, 0.25).pmf(k):.3f}")
+```
+:::
+
+## Problem 9\* {.unnumbered}
+
+*If time allows.*
+
+Nargiz is a sales manager at a firm in Irkutsk that installs security cameras in shops. This month she has 4 negotiations, and each ends with a signed contract with probability 0.3, independently of the others. Let $X$ be the number of contracts she signs, so $X\sim\operatorname{Bin}(4,\,0.3)$. Her bonus is 5,000 rubles per signed contract, plus an extra 10,000 rubles if she signs all 4.
+
+(a) Make the PMF table of $X$.
+(b) Write down the bonus for each value of $X$. Why can we not use $\E[aX+b]=a\E[X]+b$ here?
+(c) Find the expected bonus.
+(d) A colleague says: "She expects $\E[X]=1.2$ contracts, so her expected bonus is $5000\cdot1.2=6000$ rubles." What did the colleague leave out? How much does the extra 10,000 rubles cost the firm per month, on average?
+
+::: sol
+$X$ = the number of contracts Nargiz signs, $X\sim\operatorname{Bin}(4,\,0.3)$.
+
+(a) By @eq-binom-pmf with $n=4$, $p=0.3$:
+$$
+\begin{aligned}
+\Prob(X=0)&=\tbinom40\,0.3^0\,0.7^4=1\cdot1\cdot0.2401=0.2401,\\
+\Prob(X=1)&=\tbinom41\,0.3^1\,0.7^3=4\cdot0.3\cdot0.343=0.4116,\\
+\Prob(X=2)&=\tbinom42\,0.3^2\,0.7^2=6\cdot0.09\cdot0.49=0.2646,\\
+\Prob(X=3)&=\tbinom43\,0.3^3\,0.7^1=4\cdot0.027\cdot0.7=0.0756,\\
+\Prob(X=4)&=\tbinom44\,0.3^4\,0.7^0=1\cdot0.0081\cdot1=0.0081 .
+\end{aligned}
+$$
+They add up to 1.
+
+(b) Write $g(x)$ for the bonus when $X=x$:
+
+| $x$ | 0 | 1 | 2 | 3 | 4 |
+|:--|:-:|:-:|:-:|:-:|:-:|
+| $p(x)$ | 0.2401 | 0.4116 | 0.2646 | 0.0756 | 0.0081 |
+| $g(x)$, rubles | 0 | 5,000 | 10,000 | 15,000 | 30,000 |
+
+From 0 to 3 contracts the bonus goes up by 5,000 per contract, but from 3 to 4 it jumps by 15,000. No single pair of numbers $a$, $b$ gives $g(x)=ax+b$ for all five values, so @thm-linear does not apply.
+
+(c) Use @eq-lotus, $\E[g(X)]=\sum_i g(x_i)p(x_i)$, one term per value:
+$$
+\begin{aligned}
+\E[g(X)]&=0\cdot0.2401+5000\cdot0.4116+10{,}000\cdot0.2646\\
+&\quad+15{,}000\cdot0.0756+30{,}000\cdot0.0081\\
+&=0+2058+2646+1134+243=6081\text{ rubles}.
+\end{aligned}
+$$
+
+(d) The colleague computed $5000\cdot\E[X]=5000\cdot(0.3\cdot4)=6000$ and forgot the extra 10,000 rubles. Split the last term of the sum in (c): $30{,}000=5000\cdot4+10{,}000$. The "5,000 per contract" parts add up to $5000\cdot\E[X]=6000$, and the extra adds $10{,}000\cdot\Prob(X=4)=10{,}000\cdot0.0081=81$. So
+$$
+\E[g(X)]=6000+81=6081\text{ rubles},
+$$
+and the extra costs the firm 81 rubles a month on average. It sounds generous, but all 4 contracts happen less than once in a hundred months.
+
+```{python}
+import numpy as np
+from scipy import stats
+
+contracts = np.arange(5)                          # x = 0, 1, 2, 3, 4
+p_contracts = stats.binom(4, 0.3).pmf(contracts)
+bonus = 5000 * contracts + 10000 * (contracts == 4)   # extra if x = 4
+for x, p, b in zip(contracts, p_contracts, bonus):
+    print(f"x = {x}: p(x) = {p:.4f}, bonus = {b:,} rubles")
+print(f"E[bonus] = {np.sum(bonus * p_contracts):,.0f} rubles")
+```
+:::
