@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>4&nbsp; Counting events and measuring time – Probability Theory and Mathematical Statistics</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../seminars/S01-counting.html" rel="next">
+<link href="../lectures/L03-discrete-random-variables.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-fde786507b123b2ba480ba3caec7cd03.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../_shared/book.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L00-about-me.html">Lectures</a></li><li class="breadcrumb-item"><a href="../lectures/L04-poisson-and-continuous.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Counting events and measuring time</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Probability Theory and Mathematical Statistics</a> 
+        <div class="sidebar-tools-main">
+    <a href="../Probability-Theory-and-Mathematical-Statistics.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">About this book</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Lectures</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L00-about-me.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">About the course and about me</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L01-probability-basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Events, probability and counting</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L02-conditional-probability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Conditional probability and Bayes’ theorem</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L03-discrete-random-variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Discrete random variables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/L04-poisson-and-continuous.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Counting events and measuring time</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Seminars</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../seminars/S01-counting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Seminar 1: events, counting, classical and geometric probability</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../seminars/S02-conditional-probability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Seminar 2: conditional probability, independence and Bayes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../seminars/S03-discrete-random-variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Seminar 3: discrete random variables, expected value, variance and the binomial</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../seminars/S04-geometric-poisson.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Seminar 4: the geometric and Poisson distributions</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../schedule.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Schedule</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sec-L04-geometric" id="toc-sec-L04-geometric" class="nav-link active" data-scroll-target="#sec-L04-geometric"><span class="header-section-number">4.1</span> The geometric distribution: waiting for the first success</a></li>
+  <li><a href="#sec-L04-hypergeometric" id="toc-sec-L04-hypergeometric" class="nav-link" data-scroll-target="#sec-L04-hypergeometric"><span class="header-section-number">4.2</span> Drawing without putting back: the hypergeometric distribution</a></li>
+  <li><a href="#sec-L04-poisson" id="toc-sec-L04-poisson" class="nav-link" data-scroll-target="#sec-L04-poisson"><span class="header-section-number">4.3</span> The Poisson distribution: counting events in time</a></li>
+  <li><a href="#sec-L04-approx" id="toc-sec-L04-approx" class="nav-link" data-scroll-target="#sec-L04-approx"><span class="header-section-number">4.4</span> When the binomial looks like the Poisson</a></li>
+  <li><a href="#sec-L04-calculus" id="toc-sec-L04-calculus" class="nav-link" data-scroll-target="#sec-L04-calculus"><span class="header-section-number">4.5</span> Slopes and areas: a refresher on derivatives and integrals</a>
+  <ul class="collapse">
+  <li><a href="#derivatives-slopes" id="toc-derivatives-slopes" class="nav-link" data-scroll-target="#derivatives-slopes">Derivatives: slopes</a></li>
+  <li><a href="#integrals-areas" id="toc-integrals-areas" class="nav-link" data-scroll-target="#integrals-areas">Integrals: areas</a></li>
+  </ul></li>
+  <li><a href="#sec-L04-continuous" id="toc-sec-L04-continuous" class="nav-link" data-scroll-target="#sec-L04-continuous"><span class="header-section-number">4.6</span> Continuous random variables</a></li>
+  <li><a href="#sec-L04-uniform" id="toc-sec-L04-uniform" class="nav-link" data-scroll-target="#sec-L04-uniform"><span class="header-section-number">4.7</span> The uniform distribution</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/L00-about-me.html">Lectures</a></li><li class="breadcrumb-item"><a href="../lectures/L04-poisson-and-continuous.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Counting events and measuring time</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-L04" class="quarto-section-identifier"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Counting events and measuring time</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="chapter-downloads">
+<p><a href="../pdf/L04-poisson-and-continuous.pdf">PDF</a> · <a href="../slides/L04-poisson-and-continuous.html">Slides</a> (<a href="../slides/L04-poisson-and-continuous.pdf">PDF</a>)</p>
+</div>
+<!-- Math macros for HTML/revealjs (MathJax). PDF gets the same ones from _shared/preamble.tex. Keep both in sync. -->
+<div class="hidden">
+<p><span class="math display">\[
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\Corr}{\operatorname{Corr}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\R}{\mathbb{R}}
+\]</span></p>
+</div>
+<!-- Sources: sources/Модули_1_2_новые.md, lines 533–571 (geometric), 573–609 (hypergeometric),
+     611–646 (Poisson, approximation stated at 646 without an example), 182–282 and 2952–2971
+     (continuous random variables, density above 1 at 198/381/389, bracket notation at 274),
+     654–692 (uniform). Rewritten in our notation: X not ξ, E not M, Var not D,
+     F(x) = P(X <= x) not P(ξ < x), binom(n, k) not C_n^k. Contexts are new.
+     Exponential and memorylessness moved to Lecture 5 (Aleksandr, Nov 2026). -->
+<p>Back to Marat’s optician’s shop on Bauman Street in Kazan. This Saturday nobody has booked the free eye test. Walk-in customers come in one at a time, Marat tests each of them, and each orders glasses with probability 0.4, independently of the others. Marat doesn’t make his first coffee until the first pair is sold. (The waiting-room machine has been repaired, so the habit now costs him something.)</p>
+<p>So the number he cares about this morning is: count the customers Marat tests up to and including the first one who orders. Lecture 3 (Exercise 3c) said this count is not binomial. Is the first order most likely to come from customer 1, 2 or 3? How many customers should Marat expect to test before his coffee?</p>
+<section id="sec-L04-geometric" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="sec-L04-geometric"><span class="header-section-number">4.1</span> The geometric distribution: waiting for the first success</h2>
+<div id="exm-first-order" class="theorem example">
+<p><span class="theorem-title"><strong>Example 4.1 (Marat’s first order)</strong></span> <em>Given:</em> walk-in customers come one after another; each orders glasses with probability 0.4 and does not with probability 0.6; they decide independently.</p>
+<p><em>The variable:</em> <span class="math inline">\(X\)</span> = the number of customers Marat tests up to and including the first one who orders. Number of trials fixed? No: Marat keeps testing until someone orders. So <span class="math inline">\(X\)</span> is not binomial. It is geometric (<a href="#def-geom-dist" class="quarto-xref">Definition&nbsp;<span>4.1</span></a>, right after this example).</p>
+<p>Find <span class="math inline">\(\Prob(X=1)\)</span>, <span class="math inline">\(\Prob(X=2)\)</span>, <span class="math inline">\(\Prob(X=3)\)</span> and <span class="math inline">\(\Prob(X&gt;3)\)</span>.</p>
+<p><strong>Solution.</strong> Write O for “orders” and N for “does not”, as in Lecture 3. Each value of <span class="math inline">\(X\)</span> comes from one path: some N’s, then an O. The customers are independent (<a href="L02-conditional-probability.html#def-mutual" class="quarto-xref">Definition&nbsp;<span>2.3</span></a>), so we multiply along the path.</p>
+<ul>
+<li><span class="math inline">\(X=1\)</span>: path O, <span class="math inline">\(\Prob(X=1)=0.4\)</span>.</li>
+<li><span class="math inline">\(X=2\)</span>: path NO, <span class="math inline">\(\Prob(X=2)=0.6\cdot0.4=0.24\)</span>.</li>
+<li><span class="math inline">\(X=3\)</span>: path NNO, <span class="math inline">\(\Prob(X=3)=0.6\cdot0.6\cdot0.4=0.144\)</span>.</li>
+</ul>
+<p><span class="math inline">\(X&gt;3\)</span> means that the first three customers all say no: NNN, whatever comes after. So <span class="math inline">\(\Prob(X&gt;3)=0.6^3=0.216\)</span>.</p>
+<p>The first order is most likely to come from customer 1; each later step multiplies by 0.6.</p>
+</div>
+<p>Compare with Lecture 3, where we counted the orders among 3 booked customers; call that count <span class="math inline">\(Y\sim\operatorname{Bin}(3,\,0.4)\)</span>. For <span class="math inline">\(Y\)</span> the number of trials is fixed and the number of successes is random. For <span class="math inline">\(X\)</span> it is the other way round: one success, a random number of trials. And <span class="math inline">\(\Prob(X&gt;3)=\Prob(Y=0)=0.216\)</span>: both are “three noes in a row”.</p>
+<div id="def-geom-dist" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 4.1 (Geometric distribution)</strong></span> Repeat independent trials, each a success with the same probability <span class="math inline">\(p\)</span>, where <span class="math inline">\(0&lt;p\le1\)</span>. Let <span class="math inline">\(X\)</span> be the number of the trial on which the first success happens. Then <span class="math inline">\(X\)</span> has the <strong>geometric distribution</strong> with parameter <span class="math inline">\(p\)</span>, written <span class="math inline">\(X\sim\operatorname{Geom}(p)\)</span>, and <span id="eq-geom-pmf"><span class="math display">\[
+\Prob(X=k)=(1-p)^{k-1}p,\qquad k=1,2,3,\dots
+\tag{4.1}\]</span></span></p>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="How to read $X\sim\operatorname{Geom}(p)$ and $k=1,2,3,\dots$">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>How to read <span class="math inline">\(X\sim\operatorname{Geom}(p)\)</span> and <span class="math inline">\(k=1,2,3,\dots\)</span>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="math inline">\(X\sim\operatorname{Geom}(p)\)</span> reads “X has the geometric distribution with parameter p”. Marat’s <span class="math inline">\(X\)</span> is <span class="math inline">\(\operatorname{Geom}(0.4)\)</span>.</p>
+<p><span class="math inline">\(k=1,2,3,\dots\)</span> reads “k equals one, two, three, and so on”. The list has no last value: there is no largest possible <span class="math inline">\(X\)</span>. Marat could, in principle, test 20 customers before the first order. That has probability <span class="math inline">\(0.6^{19}\cdot0.4\approx0.00002\)</span>, tiny but not zero.</p>
+<p>In <a href="#eq-geom-pmf" class="quarto-xref">Equation&nbsp;<span>4.1</span></a>, <span class="math inline">\((1-p)^{k-1}p\)</span> means “<span class="math inline">\(k-1\)</span> failures, then a success”. For Marat and <span class="math inline">\(k=3\)</span>: <span class="math inline">\((1-0.4)^{3-1}\cdot0.4=0.6^2\cdot0.4=0.144\)</span>, as in <a href="#exm-first-order" class="quarto-xref">Example&nbsp;<span>4.1</span></a>.</p>
+</div>
+</div>
+<p>As for <span class="math inline">\(X&gt;3\)</span>, <span class="math inline">\(X&gt;k\)</span> means the first <span class="math inline">\(k\)</span> trials all fail, so <span class="math inline">\(\Prob(X&gt;k)=(1-p)^k\)</span>. The probabilities <span class="math inline">\(p,\ (1-p)p,\ (1-p)^2p,\dots\)</span> form a geometric progression, hence the name; it has nothing to do with geometric probability (<a href="L01-probability-basics.html#def-geometric" class="quarto-xref">Definition&nbsp;<span>1.9</span></a>). Some books and some software count the <em>failures</em> before the first success, starting at 0. We count the trials, including the success, starting at 1.</p>
+<div id="cell-fig-geom-pmf" class="cell" data-execution_count="2">
+<div class="cell-output cell-output-display">
+<div id="fig-geom-pmf" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H" alt="Bar chart for k = 1 to 10. Heights 0.4, 0.24, 0.144, 0.086, 0.052 and then smaller and smaller bars, each 0.6 times the previous one.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-geom-pmf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="L04-poisson-and-continuous_files/figure-html/fig-geom-pmf-output-1.png" data-fig-pos="H" alt="Bar chart for k = 1 to 10. Heights 0.4, 0.24, 0.144, 0.086, 0.052 and then smaller and smaller bars, each 0.6 times the previous one." width="894" height="235" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-geom-pmf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.1: PMF of <span class="math inline">\(X\sim\operatorname{Geom}(0.4)\)</span>, the number of customers Marat tests up to and including the first order. Each bar is 0.6 times the one before it. The bars go on to the right for ever, too small to see.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div id="thm-geom-moments" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 4.1 (Mean and variance of the geometric distribution)</strong></span> If <span class="math inline">\(X\sim\operatorname{Geom}(p)\)</span>, then <span class="math display">\[
+\E[X]=\frac1p,\qquad \Var(X)=\frac{1-p}{p^2}.
+\]</span></p>
+</div>
+<details class="proof-fold"><summary>Proof</summary><div class="proof-body">
+<p>Write <span class="math inline">\(m=\E[X]\)</span> and look at the first trial. With probability <span class="math inline">\(p\)</span> it is a success, and then <span class="math inline">\(X=1\)</span>. With probability <span class="math inline">\(1-p\)</span> it is a failure. Then one trial is used up, and because the trials are independent, the waiting starts again from scratch: on average <span class="math inline">\(m\)</span> more trials. So <span class="math display">\[
+m=p\cdot1+(1-p)(1+m)=1+(1-p)\,m .
+\]</span> Subtract <span class="math inline">\((1-p)m\)</span> from both sides: <span class="math inline">\(p\,m=1\)</span>, so <span class="math inline">\(m=1/p\)</span>. A similar first-step argument for <span class="math inline">\(\E[X^2]\)</span>, followed by <a href="L03-discrete-random-variables.html#thm-var-shortcut" class="quarto-xref">Theorem&nbsp;<span>3.2</span></a>, gives the variance. We skip that algebra.</p>
+</div></details>
+<p>For Marat, <span class="math inline">\(p=0.4\)</span>: <span class="math inline">\(\E[X]=1/0.4=2.5\)</span> customers, <span class="math inline">\(\Var(X)=0.6/0.4^2=3.75\)</span> and <span class="math inline">\(\operatorname{SD}(X)=\sqrt{3.75}\approx1.94\)</span> customers. As with Lecture 3’s 1,000 Saturdays: among 1,000 customers about 400 order, one order per <span class="math inline">\(1000/400=2.5\)</span> customers. The most likely value is 1, the mean 2.5, and the SD almost as large as the mean: some mornings the coffee comes late.</p>
+</section>
+<section id="sec-L04-hypergeometric" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="sec-L04-hypergeometric"><span class="header-section-number">4.2</span> Drawing without putting back: the hypergeometric distribution</h2>
+<p>Lecture 3, Exercise 3b, came back to Lecture 2’s box of LED bulbs.</p>
+<p><em>Given:</em> 12 bulbs, 3 of them faulty; Oksana takes 2 without putting the first one back.</p>
+<p><em>The variable:</em> <span class="math inline">\(X\)</span> = the number of faulty bulbs among the 2. Number of trials fixed? Yes, 2. Same probability on every draw? No: after the first draw it is <span class="math inline">\(2/11\)</span> or <span class="math inline">\(3/11\)</span>. So <span class="math inline">\(X\)</span> is not binomial.</p>
+<p>We count instead, as in <a href="L01-probability-basics.html#exm-quality" class="quarto-xref">Example&nbsp;<span>1.7</span></a>. There are <span class="math inline">\(\binom{12}{2}=66\)</span> equally likely pairs, and one faulty bulb means one of the 3 faulty and one of the 9 good: <span class="math display">\[
+\Prob(X=1)=\frac{\binom31\binom91}{\binom{12}2}=\frac{27}{66}\approx0.409 .
+\]</span> In the same way <span class="math inline">\(\Prob(X=0)=\binom92/66=36/66\)</span> and <span class="math inline">\(\Prob(X=2)=\binom32/66=3/66\)</span>.</p>
+<div id="def-hypergeometric" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 4.2 (Hypergeometric distribution)</strong></span> A box has <span class="math inline">\(N\)</span> items, <span class="math inline">\(M\)</span> of them special (faulty, say). Take <span class="math inline">\(n\)</span> items without putting them back, all sets of <span class="math inline">\(n\)</span> items equally likely. The number <span class="math inline">\(X\)</span> of special items in the sample has the <strong>hypergeometric distribution</strong>: <span class="math display">\[
+\Prob(X=k)=\frac{\binom{M}{k}\binom{N-M}{n-k}}{\binom{N}{n}} .
+\]</span> Its mean is <span class="math inline">\(\E[X]=n\,\dfrac{M}{N}\)</span>.</p>
+</div>
+<p>For the bulbs, <span class="math inline">\(N=12\)</span>, <span class="math inline">\(M=3\)</span>, <span class="math inline">\(n=2\)</span>, and <span class="math inline">\(\E[X]=2\cdot3/12=0.5\)</span> faulty bulbs. The idea behind <span class="math inline">\(nM/N\)</span>: each of the <span class="math inline">\(n\)</span> items taken is special with probability <span class="math inline">\(M/N\)</span>, and expected values add up (we prove that in Lecture 6). In this course we use the rule: if the sample is under about 5% of the box, taking items out hardly changes the rest, and <span class="math inline">\(\operatorname{Bin}(n,\,M/N)\)</span> is a fine approximation.</p>
+</section>
+<section id="sec-L04-poisson" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="sec-L04-poisson"><span class="header-section-number">4.3</span> The Poisson distribution: counting events in time</h2>
+<p>Dina runs a parcel pickup point in Perm, in a ground-floor room it shares with a key-cutting stall. On weekday afternoons it gets on average 3 customers per 10 minutes, one at a time, and they don’t coordinate. How many will come in the next 10 minutes? There is no list of <span class="math inline">\(n\)</span> people who might come, so the binomial doesn’t fit, and there is no upper limit. What we know is the average rate. The distribution for this is named after Siméon Denis Poisson (say “pwa-SON”).</p>
+<div class="callout callout-style-default callout-note callout-titled" title="How to read $\lambda$, $\operatorname{Pois}(\lambda)$, $e^{-3}$ and $k!$">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>How to read <span class="math inline">\(\lambda\)</span>, <span class="math inline">\(\operatorname{Pois}(\lambda)\)</span>, <span class="math inline">\(e^{-3}\)</span> and <span class="math inline">\(k!\)</span>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="math inline">\(\lambda\)</span> is the small Greek letter lambda (“LAM-da”): here, the average number of events in the interval we look at. For Dina, <span class="math inline">\(\lambda=3\)</span> customers per 10 minutes. <span class="math inline">\(X\sim\operatorname{Pois}(3)\)</span> reads “X has the Poisson distribution with parameter 3”.</p>
+<p><span class="math inline">\(e\approx2.718\)</span> is a fixed number, like <span class="math inline">\(\pi\approx3.14\)</span>. <span class="math inline">\(e^{-3}\)</span> reads “e to the minus three” and means <span class="math inline">\(1/e^3=1/20.09\approx0.0498\)</span>. On a calculator use the <span class="math inline">\(e^x\)</span> key (often Shift + ln) and enter <span class="math inline">\(-3\)</span>.</p>
+<p><span class="math inline">\(k!\)</span> reads “k factorial” (Lecture 1): multiply the whole numbers from <span class="math inline">\(k\)</span> down to 1, so <span class="math inline">\(4!=4\cdot3\cdot2\cdot1=24\)</span>, <span class="math inline">\(1!=1\)</span>, and by agreement <span class="math inline">\(0!=1\)</span>. With both: <span class="math inline">\(e^{-3}\cdot3^2/2!=0.0498\cdot9/2\approx0.224\)</span>.</p>
+</div>
+</div>
+<div id="def-poisson" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 4.3 (Poisson distribution)</strong></span> A random variable <span class="math inline">\(X\)</span> has the <strong>Poisson distribution</strong> with parameter <span class="math inline">\(\lambda&gt;0\)</span>, written <span class="math inline">\(X\sim\operatorname{Pois}(\lambda)\)</span>, if <span id="eq-pois-pmf"><span class="math display">\[
+\Prob(X=k)=e^{-\lambda}\,\frac{\lambda^k}{k!},\qquad k=0,1,2,\dots
+\tag{4.2}\]</span></span> It is the usual model for the number of events in a fixed interval of time when the events happen one at a time, independently of each other, at a constant average rate. Then <span class="math inline">\(\lambda\)</span> is that average number of events in the interval.</p>
+</div>
+<div id="exm-pickup" class="theorem example">
+<p><span class="theorem-title"><strong>Example 4.2 (Customers at Dina’s pickup point)</strong></span> <em>Given:</em> on average 3 customers per 10 minutes; they come one at a time, independently, at a steady rate.</p>
+<p><em>The variable:</em> <span class="math inline">\(X\)</span> = the number of customers in the next 10 minutes. Number of trials fixed? No, and no upper limit. Steady average rate? Yes, 3 per 10 minutes. So <span class="math inline">\(X\sim\operatorname{Pois}(3)\)</span>.</p>
+<p>Find <span class="math inline">\(\Prob(X=k)\)</span> for <span class="math inline">\(k=0,1,2,3\)</span>, and the probability of at least 4 customers.</p>
+<p><strong>Solution.</strong> Put <span class="math inline">\(\lambda=3\)</span> into <a href="#eq-pois-pmf" class="quarto-xref">Equation&nbsp;<span>4.2</span></a>, with <span class="math inline">\(e^{-3}\approx0.0498\)</span>:</p>
+<ul>
+<li><span class="math inline">\(\Prob(X=0)=e^{-3}\cdot3^0/0!=e^{-3}\approx0.050\)</span>;</li>
+<li><span class="math inline">\(\Prob(X=1)=e^{-3}\cdot3^1/1!=3e^{-3}\approx0.149\)</span>;</li>
+<li><span class="math inline">\(\Prob(X=2)=e^{-3}\cdot3^2/2!=4.5e^{-3}\approx0.224\)</span>;</li>
+<li><span class="math inline">\(\Prob(X=3)=e^{-3}\cdot3^3/3!=4.5e^{-3}\approx0.224\)</span>.</li>
+</ul>
+<p>“At least 4” has no last value, so use the complement rule (<a href="L01-probability-basics.html#thm-consequences" class="quarto-xref">Theorem&nbsp;<span>1.2</span></a>): <span class="math display">\[
+\Prob(X\ge4)=1-\Prob(X\le3)\approx1-(0.050+0.149+0.224+0.224)=1-0.647=0.353 .
+\]</span> About one 10-minute stretch in three brings 4 or more customers.</p>
+</div>
+<div id="cell-fig-poisson-pmf" class="cell" data-execution_count="3">
+<div class="cell-output cell-output-display">
+<div id="fig-poisson-pmf" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H" alt="Bar chart for k = 0 to 10. Heights 0.050, 0.149, 0.224, 0.224, 0.168, 0.101, then smaller bars. The two tallest bars are at 2 and 3.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-poisson-pmf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="L04-poisson-and-continuous_files/figure-html/fig-poisson-pmf-output-1.png" data-fig-pos="H" alt="Bar chart for k = 0 to 10. Heights 0.050, 0.149, 0.224, 0.224, 0.168, 0.101, then smaller bars. The two tallest bars are at 2 and 3." width="879" height="235" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-poisson-pmf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.2: PMF of <span class="math inline">\(X\sim\operatorname{Pois}(3)\)</span>, Dina’s customers in 10 minutes. The values 2 and 3 are equally likely. The bars go on to the right for ever, too small to see.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The parameter belongs to the interval: 3 customers per 10 minutes is 6 per 20 minutes. So the count for the next 20 minutes is <span class="math inline">\(\operatorname{Pois}(6)\)</span>, and nobody comes in 20 minutes with probability <span class="math inline">\(e^{-6}\approx0.0025\)</span>. A common mistake is to keep <span class="math inline">\(\lambda=3\)</span> for every interval length.</p>
+</section>
+<section id="sec-L04-approx" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="sec-L04-approx"><span class="header-section-number">4.4</span> When the binomial looks like the Poisson</h2>
+<p>The Poisson is also a shortcut for the binomial when there are many trials and success is rare.</p>
+<div id="thm-poisson-approx" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 4.2 (Poisson approximation to the binomial)</strong></span> Let <span class="math inline">\(X\sim\operatorname{Bin}(n,p)\)</span>. If <span class="math inline">\(n\)</span> is large and <span class="math inline">\(p\)</span> is small, then <span class="math display">\[
+\Prob(X=k)\approx e^{-\lambda}\,\frac{\lambda^k}{k!}\quad\text{with }\lambda=np,\qquad k=0,1,2,\dots
+\]</span> Our rule of thumb (textbooks use slightly different ones): the approximation is good when <span class="math inline">\(n\ge100\)</span> and <span class="math inline">\(np\le10\)</span>.</p>
+</div>
+<details class="proof-fold"><summary>Proof</summary><div class="proof-body">
+<p>Idea. Put <span class="math inline">\(\lambda=np\)</span>, so <span class="math inline">\(p=\lambda/n\)</span>, and write <span class="math inline">\(\binom nk=\frac{n(n-1)\cdots(n-k+1)}{k!}\)</span> (<a href="L01-probability-basics.html#thm-counting" class="quarto-xref">Theorem&nbsp;<span>1.4</span></a>). Then <span class="math display">\[
+\Prob(X=k)=\frac{n(n-1)\cdots(n-k+1)}{n^k}\cdot\frac{\lambda^k}{k!}\cdot\Big(1-\frac\lambda n\Big)^{n}\Big/\Big(1-\frac\lambda n\Big)^{k}.
+\]</span> Keep <span class="math inline">\(k\)</span> and <span class="math inline">\(\lambda\)</span> fixed and let <span class="math inline">\(n\)</span> grow. The first fraction is a product of <span class="math inline">\(k\)</span> fractions <span class="math inline">\(\frac nn,\frac{n-1}n,\dots\)</span>, each close to 1, and so is the last factor. And <span class="math inline">\((1-\lambda/n)^n\)</span> gets closer and closer to <span class="math inline">\(e^{-\lambda}\)</span>: for <span class="math inline">\(\lambda=3\)</span> and <span class="math inline">\(n=1000\)</span> it is <span class="math inline">\(0.997^{1000}\approx0.0496\)</span>, against <span class="math inline">\(e^{-3}\approx0.0498\)</span>. What is left is <span class="math inline">\(e^{-\lambda}\lambda^k/k!\)</span>.</p>
+</div></details>
+<div id="thm-poisson-moments" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 4.3 (Mean and variance of the Poisson distribution)</strong></span> If <span class="math inline">\(X\sim\operatorname{Pois}(\lambda)\)</span>, then <span class="math inline">\(\E[X]=\lambda\)</span> and <span class="math inline">\(\Var(X)=\lambda\)</span>.</p>
+</div>
+<details class="proof-fold"><summary>Proof</summary><div class="proof-body">
+<p>Idea. By <a href="#thm-poisson-approx" class="quarto-xref">Theorem&nbsp;<span>4.2</span></a>, <span class="math inline">\(\operatorname{Pois}(\lambda)\)</span> is what <span class="math inline">\(\operatorname{Bin}(n,\lambda/n)\)</span> turns into for large <span class="math inline">\(n\)</span>. By <a href="L03-discrete-random-variables.html#thm-binomial-moments" class="quarto-xref">Theorem&nbsp;<span>3.4</span></a> that binomial has mean <span class="math inline">\(n\cdot\frac\lambda n=\lambda\)</span> and variance <span class="math inline">\(\lambda\big(1-\frac\lambda n\big)\)</span>, which gets closer and closer to <span class="math inline">\(\lambda\)</span>. A full proof adds up infinite sums; we skip it.</p>
+</div></details>
+<p>So Dina expects 3 customers per 10 minutes, where we started, with standard deviation <span class="math inline">\(\sqrt3\approx1.73\)</span>.</p>
+<div id="exm-returns" class="theorem example">
+<p><span class="theorem-title"><strong>Example 4.3 (Returned parcels)</strong></span> <em>Given:</em> Dina’s point hands out 500 parcels a day; each parcel is returned to the seller with probability 0.004, independently of the others.</p>
+<p><em>The variable:</em> <span class="math inline">\(X\)</span> = the number of returned parcels in a day. Number of trials fixed? Yes, <span class="math inline">\(n=500\)</span>. So <span class="math inline">\(X\sim\operatorname{Bin}(500,\,0.004)\)</span>. Since <span class="math inline">\(n=500\ge100\)</span> and <span class="math inline">\(np=500\cdot0.004=2\le10\)</span>, <span class="math inline">\(X\approx\operatorname{Pois}(2)\)</span>. Compare the two for <span class="math inline">\(k=0,\dots,4\)</span>.</p>
+<p><strong>Solution.</strong> The binomial needs powers like <span class="math inline">\(0.996^{500}\)</span>. The Poisson needs only <span class="math inline">\(e^{-2}\approx0.1353\)</span> and <a href="#eq-pois-pmf" class="quarto-xref">Equation&nbsp;<span>4.2</span></a>, for example <span class="math inline">\(\Prob(X=2)\approx e^{-2}\cdot2^2/2!=2e^{-2}\approx0.2707\)</span>. The binomial row is computed exactly:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 21%">
+<col style="width: 15%">
+<col style="width: 15%">
+<col style="width: 15%">
+<col style="width: 15%">
+<col style="width: 15%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"><span class="math inline">\(k\)</span></th>
+<th style="text-align: center;">0</th>
+<th style="text-align: center;">1</th>
+<th style="text-align: center;">2</th>
+<th style="text-align: center;">3</th>
+<th style="text-align: center;">4</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(\operatorname{Bin}(500,\,0.004)\)</span></td>
+<td style="text-align: center;">0.1348</td>
+<td style="text-align: center;">0.2707</td>
+<td style="text-align: center;">0.2712</td>
+<td style="text-align: center;">0.1808</td>
+<td style="text-align: center;">0.0902</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(\operatorname{Pois}(2)\)</span></td>
+<td style="text-align: center;">0.1353</td>
+<td style="text-align: center;">0.2707</td>
+<td style="text-align: center;">0.2707</td>
+<td style="text-align: center;">0.1804</td>
+<td style="text-align: center;">0.0902</td>
+</tr>
+</tbody>
+</table>
+<p>The two rows differ by less than 0.001 everywhere. The probability of a day with no returns is about 0.135.</p>
+</div>
+<p>Which distribution? Find what <span class="math inline">\(X\)</span> counts, then ask what is fixed in advance (<a href="#tbl-which" class="quarto-xref">Table&nbsp;<span>4.1</span></a>).</p>
+<div id="tbl-which" class="quarto-float quarto-figure quarto-figure-center anchored" data-tbl-pos="H">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-which-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;4.1: Which discrete distribution?
+</figcaption>
+<div aria-describedby="tbl-which-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 19%">
+<col style="width: 49%">
+<col style="width: 14%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Distribution</th>
+<th style="text-align: left;">What <span class="math inline">\(X\)</span> counts</th>
+<th style="text-align: left;">Fixed</th>
+<th style="text-align: left;">Values</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Bernoulli(<span class="math inline">\(p\)</span>)</td>
+<td style="text-align: left;">success in one trial</td>
+<td style="text-align: left;"><span class="math inline">\(p\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(0,1\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(\operatorname{Bin}(n,p)\)</span></td>
+<td style="text-align: left;">successes in <span class="math inline">\(n\)</span> trials</td>
+<td style="text-align: left;"><span class="math inline">\(n\)</span>, <span class="math inline">\(p\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(0,\dots,n\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(\operatorname{Geom}(p)\)</span></td>
+<td style="text-align: left;">trials up to and including the first success</td>
+<td style="text-align: left;"><span class="math inline">\(p\)</span> only</td>
+<td style="text-align: left;"><span class="math inline">\(1,2,3,\dots\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Hypergeometric</td>
+<td style="text-align: left;">special items, no putting back</td>
+<td style="text-align: left;"><span class="math inline">\(N\)</span>, <span class="math inline">\(M\)</span>, <span class="math inline">\(n\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(0,\dots,n\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(\operatorname{Pois}(\lambda)\)</span></td>
+<td style="text-align: left;">events in an interval</td>
+<td style="text-align: left;">rate <span class="math inline">\(\lambda\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(0,1,2,\dots\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</section>
+<section id="sec-L04-calculus" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="sec-L04-calculus"><span class="header-section-number">4.5</span> Slopes and areas: a refresher on derivatives and integrals</h2>
+<p>Lena’s waiting time for her office shuttle (Seminar 1, Problem 12) can be any number from 0 to 12 minutes, and each single value has probability 0, so a PMF would be 0 everywhere. Instead we give probabilities to <em>intervals</em>, as areas under a curve. For that we need two tools from school, the derivative (a slope) and the integral (an area), and only the parts we use.</p>
+<section id="derivatives-slopes" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="derivatives-slopes">Derivatives: slopes</h3>
+<p>The <strong>derivative</strong> of a function <span class="math inline">\(F\)</span> at a point <span class="math inline">\(x\)</span>, written <span class="math inline">\(F'(x)\)</span>, is the slope of the graph of <span class="math inline">\(F\)</span> at <span class="math inline">\(x\)</span>: how fast <span class="math inline">\(F\)</span> grows there.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="How to read $F'(x)$">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>How to read <span class="math inline">\(F'(x)\)</span>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="math inline">\(F'(x)\)</span> reads “F prime of x” or “the derivative of F at x”. It is the slope of the graph at the point <span class="math inline">\(x\)</span>: how many units <span class="math inline">\(F\)</span> rises per one unit to the right. One instance: for <span class="math inline">\(F(x)=x^2\)</span> the derivative is <span class="math inline">\(F'(x)=2x\)</span>, so at <span class="math inline">\(x=3\)</span> the slope is <span class="math inline">\(F'(3)=2\cdot3=6\)</span>.</p>
+</div>
+</div>
+<div id="cell-fig-tangent" class="cell" data-execution_count="4">
+<div class="cell-output cell-output-display">
+<div id="fig-tangent" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H" alt="A parabola y = x squared for x from 0 to 4.2. At the point (3, 9) a straight red line touches it, rising 6 for every 1 to the right. A small right triangle under the red line shows run 1 and rise 6.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-tangent-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="L04-poisson-and-continuous_files/figure-html/fig-tangent-output-1.png" data-fig-pos="H" alt="A parabola y = x squared for x from 0 to 4.2. At the point (3, 9) a straight red line touches it, rising 6 for every 1 to the right. A small right triangle under the red line shows run 1 and rise 6." width="879" height="235" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tangent-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.3: The graph of <span class="math inline">\(F(x)=x^2\)</span> and its tangent line at <span class="math inline">\(x=3\)</span>. The slope of the tangent is <span class="math inline">\(F'(3)=6\)</span>: one step to the right, six steps up.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>We need only these rules (<span class="math inline">\(c\)</span> is a number, <span class="math inline">\(n\)</span> a whole number):</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Function</th>
+<th style="text-align: left;">Derivative</th>
+<th style="text-align: left;">Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">a number <span class="math inline">\(c\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(0\)</span></td>
+<td style="text-align: left;"><span class="math inline">\((5)'=0\)</span>: a flat line has slope 0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(x^n\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(n\,x^{n-1}\)</span></td>
+<td style="text-align: left;"><span class="math inline">\((x)'=1\)</span>, <span class="math inline">\((x^2)'=2x\)</span>, <span class="math inline">\((x^3)'=3x^2\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(c\)</span> times a function</td>
+<td style="text-align: left;"><span class="math inline">\(c\)</span> times its derivative</td>
+<td style="text-align: left;"><span class="math inline">\((4x^3)'=12x^2\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sum or difference</td>
+<td style="text-align: left;">sum or difference of the derivatives</td>
+<td style="text-align: left;"><span class="math inline">\((2x-x^2)'=2-2x\)</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="integrals-areas" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="integrals-areas">Integrals: areas</h3>
+<p>Now the other direction. Take a function <span class="math inline">\(f\)</span> that is never negative, and two numbers <span class="math inline">\(a&lt;b\)</span>. The <strong>integral</strong> of <span class="math inline">\(f\)</span> from <span class="math inline">\(a\)</span> to <span class="math inline">\(b\)</span>, written <span class="math inline">\(\int_a^b f(x)\,dx\)</span>, is the area between the graph of <span class="math inline">\(f\)</span> and the <span class="math inline">\(x\)</span>-axis, from <span class="math inline">\(x=a\)</span> to <span class="math inline">\(x=b\)</span>.</p>
+<p>For a curve we use one rule, which links areas to slopes: integration undoes differentiation. Find a function <span class="math inline">\(G\)</span> whose derivative is <span class="math inline">\(f\)</span>, that is <span class="math inline">\(G'(x)=f(x)\)</span>. Then <span id="eq-integral-rule"><span class="math display">\[
+\int_a^b f(x)\,dx=G(b)-G(a)=\big[G(x)\big]_a^b .
+\tag{4.3}\]</span></span> Why? Push the right end <span class="math inline">\(x\)</span> of the area a little to the right, by a width <span class="math inline">\(w\)</span>: the area grows by a thin strip of height about <span class="math inline">\(f(x)\)</span>, so by about <span class="math inline">\(f(x)\cdot w\)</span>. The area grows at the rate <span class="math inline">\(f(x)\)</span>: it is a function whose derivative is <span class="math inline">\(f\)</span>. Any other <span class="math inline">\(G\)</span> with <span class="math inline">\(G'=f\)</span> differs from it only by a constant, and the constant cancels in <span class="math inline">\(G(b)-G(a)\)</span>.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="How to read $\int_a^b f(x),dx$ and $\big[G(x)\big]_a^b$">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>How to read <span class="math inline">\(\int_a^b f(x),dx\)</span> and <span class="math inline">\(\big[G(x)\big]_a^b\)</span>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="math inline">\(\int\)</span> is a stretched letter S, for “sum”: the area is a sum of very thin vertical strips. <span class="math inline">\(\int_a^b f(x)\,dx\)</span> reads “the integral from a to b of f of x, d x”. The number at the bottom (<span class="math inline">\(a\)</span>) is where the area starts, the number on top (<span class="math inline">\(b\)</span>) is where it stops. <span class="math inline">\(dx\)</span> says that <span class="math inline">\(x\)</span> is the variable along the horizontal axis; think of it as the width of one thin strip, whose height is <span class="math inline">\(f(x)\)</span>.</p>
+<p><span class="math inline">\(\big[G(x)\big]_a^b\)</span> reads “G of x, from a to b”. It is short for <span class="math inline">\(G(b)-G(a)\)</span>: put in the top number, put in the bottom number, subtract.</p>
+<p>One instance of both: <span class="math inline">\(\int_2^5 3\,dx\)</span> is the area under the flat line at height 3 from <span class="math inline">\(x=2\)</span> to <span class="math inline">\(x=5\)</span>, a rectangle of width <span class="math inline">\(5-2=3\)</span> and height 3, so the area is <span class="math inline">\(3\cdot3=9\)</span>. With the rule: <span class="math inline">\(G(x)=3x\)</span> has <span class="math inline">\(G'(x)=3\)</span>, and <span class="math inline">\(\big[3x\big]_2^5=3\cdot5-3\cdot2=15-6=9\)</span>. Same answer.</p>
+</div>
+</div>
+<p>To find <span class="math inline">\(G\)</span>, read the derivative table backwards (and check by taking the derivative of the right-hand column):</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Function <span class="math inline">\(f(x)\)</span></th>
+<th style="text-align: left;">A function <span class="math inline">\(G(x)\)</span> with <span class="math inline">\(G'(x)=f(x)\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">a number <span class="math inline">\(c\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(c\,x\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(x^n\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(x^{n+1}/(n+1)\)</span>; so <span class="math inline">\(x\)</span> gives <span class="math inline">\(x^2/2\)</span>, and <span class="math inline">\(x^2\)</span> gives <span class="math inline">\(x^3/3\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(c\)</span> times a function</td>
+<td style="text-align: left;"><span class="math inline">\(c\)</span> times its <span class="math inline">\(G\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sum or difference</td>
+<td style="text-align: left;">sum or difference of the <span class="math inline">\(G\)</span>’s</td>
+</tr>
+</tbody>
+</table>
+<p>The one worked integral of this section is <span class="math inline">\(\int_0^1 2(1-x)\,dx\)</span>. Write <span class="math inline">\(2(1-x)=2-2x\)</span>. By the table, <span class="math inline">\(G(x)=2x-2\cdot\frac{x^2}{2}=2x-x^2\)</span>; check: <span class="math inline">\(G'(x)=2-2x\)</span>. Then <span class="math display">\[
+\int_0^1 (2-2x)\,dx=\big[2x-x^2\big]_0^1=(2\cdot1-1^2)-(2\cdot0-0^2)=1 .
+\]</span> Check with geometry: the graph of <span class="math inline">\(2-2x\)</span> falls in a straight line from height 2 at <span class="math inline">\(x=0\)</span> to 0 at <span class="math inline">\(x=1\)</span>, and the triangle under it has area <span class="math inline">\(\frac12\cdot1\cdot2=1\)</span> (<a href="#fig-areas" class="quarto-xref">Figure&nbsp;<span>4.4</span></a>). This function comes back in a moment as a density.</p>
+<div id="cell-fig-areas" class="cell" data-execution_count="5">
+<div class="cell-output cell-output-display">
+<div id="fig-areas" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H" alt="Two panels. Left: a horizontal line at height 3; the region under it from x = 2 to x = 5 is shaded, area 9. Right: a line falling from height 2 at x = 0 to 0 at x = 1; the triangle under it is shaded, area 1.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-areas-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="L04-poisson-and-continuous_files/figure-html/fig-areas-output-1.png" data-fig-pos="H" alt="Two panels. Left: a horizontal line at height 3; the region under it from x = 2 to x = 5 is shaded, area 9. Right: a line falling from height 2 at x = 0 to 0 at x = 1; the triangle under it is shaded, area 1." width="939" height="243" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-areas-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.4: Integrals as areas. Left: <span class="math inline">\(\int_2^5 3\,dx=9\)</span>, a rectangle. Right: <span class="math inline">\(\int_0^1 2(1-x)\,dx=1\)</span>, a triangle with base 1 and height 2.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="sec-L04-continuous" class="level2" data-number="4.6">
+<h2 data-number="4.6" class="anchored" data-anchor-id="sec-L04-continuous"><span class="header-section-number">4.6</span> Continuous random variables</h2>
+<p>Back to Lena’s shuttle, every 12 minutes; let <span class="math inline">\(X\)</span> be her waiting time in minutes. Every moment of arrival is equally likely, so spread the probability evenly: a flat line at height <span class="math inline">\(1/12\)</span> from 0 to 12, and 0 outside (<a href="#fig-shuttle-density" class="quarto-xref">Figure&nbsp;<span>4.5</span></a>). The total area is <span class="math inline">\(12\cdot\frac1{12}=1\)</span>. The probability that she waits more than 5 minutes is the area from 5 to 12, width 7 times height <span class="math inline">\(1/12\)</span>, so <span class="math inline">\(7/12\)</span>: the answer of Seminar 1, Problem 12, read as an area.</p>
+<div id="cell-fig-shuttle-density" class="cell" data-execution_count="6">
+<div class="cell-output cell-output-display">
+<div id="fig-shuttle-density" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H" alt="A horizontal line at height 1/12 from x = 0 to x = 12, and at height 0 outside. The rectangle under the line from 5 to 12 is shaded, labelled area 7/12.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-shuttle-density-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="L04-poisson-and-continuous_files/figure-html/fig-shuttle-density-output-1.png" data-fig-pos="H" alt="A horizontal line at height 1/12 from x = 0 to x = 12, and at height 0 outside. The rectangle under the line from 5 to 12 is shaded, labelled area 7/12." width="878" height="220" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-shuttle-density-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.5: Lena’s waiting time for a shuttle that leaves every 12 minutes. The flat line at height <span class="math inline">\(1/12\)</span> is the density. The shaded area is <span class="math inline">\(\Prob(X&gt;5)=7\cdot\frac1{12}=\frac7{12}\)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div id="def-continuous" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 4.4 (Continuous random variable, density)</strong></span> A random variable <span class="math inline">\(X\)</span> is <strong>continuous</strong> if there is a function <span class="math inline">\(f(x)\)</span>, called its <strong>density</strong> (probability density function), such that</p>
+<ol type="1">
+<li><span class="math inline">\(f(x)\ge0\)</span> for every <span class="math inline">\(x\)</span>;</li>
+<li>the total area under the graph of <span class="math inline">\(f\)</span> is 1;</li>
+<li>for any numbers <span class="math inline">\(a\le b\)</span>, <span class="math inline">\(\Prob(a\le X\le b)=\int_a^b f(x)\,dx\)</span>.</li>
+</ol>
+</div>
+<p>Every density in this lecture is 0 outside one interval of possible values, from a left end <span class="math inline">\(c\)</span> to a right end <span class="math inline">\(d\)</span>. To the left of <span class="math inline">\(c\)</span> there is no area, so we always start integrating at <span class="math inline">\(c\)</span>, and property 2 reads <span class="math inline">\(\int_c^d f(x)\,dx=1\)</span>. For the shuttle, <span class="math inline">\(c=0\)</span>, <span class="math inline">\(d=12\)</span> and <span class="math inline">\(f(x)=1/12\)</span> in between.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="How to read $f(x)$: a height, not a probability">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>How to read <span class="math inline">\(f(x)\)</span>: a height, not a probability
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="math inline">\(f(x)\)</span> reads “f of x” or “the density at x”. It is the <em>height</em> of the curve at <span class="math inline">\(x\)</span>, not a probability. Probabilities are areas: height times a width. So a density can be larger than 1. One instance with the function from the refresher, <span class="math inline">\(f(x)=2(1-x)\)</span> on <span class="math inline">\([0,1]\)</span> (all numbers from 0 to 1): at <span class="math inline">\(x=0\)</span> the height is <span class="math inline">\(f(0)=2\)</span>. If <span class="math inline">\(X\)</span> has this density, the probability of a narrow interval near 0 is height times width, <span class="math inline">\(\Prob(0\le X\le0.01)\approx2\cdot0.01=0.02\)</span>, a perfectly good probability (exactly: <span class="math inline">\(\big[2x-x^2\big]_0^{0.01}=0.0199\)</span>).</p>
+</div>
+</div>
+<p>Now the pitfall, the reverse of Lecture 3. For a continuous <span class="math inline">\(X\)</span>, a single value has no width, so no area: <span class="math inline">\(\Prob(X=x)=0\)</span> for every <span class="math inline">\(x\)</span>. So <span class="math inline">\(\le\)</span> and <span class="math inline">\(&lt;\)</span> give the same answer: <span class="math display">\[
+\Prob(a\le X\le b)=\Prob(a&lt;X\le b)=\Prob(a\le X&lt;b)=\Prob(a&lt;X&lt;b).
+\]</span> This does not contradict Lecture 3. There <span class="math inline">\(X\)</span> was discrete, <span class="math inline">\(\Prob(X=1)=0.432\)</span> for Marat was not 0, and the boundary mattered. Here it carries no probability. As in Lecture 1, probability 0 is not impossible: Lena waits <em>some</em> exact time, but each exact time has probability 0.</p>
+<div id="exm-kiosk" class="theorem example">
+<p><span class="theorem-title"><strong>Example 4.4 (Bakhyt’s first customer)</strong></span> <em>Given:</em> Bakhyt’s coffee kiosk at the river station in Omsk opens at 7:00. The first customer always comes within the first hour, more often early than late; Bakhyt’s model is the density <span class="math inline">\(f(x)=2(1-x)\)</span> for <span class="math inline">\(0\le x\le1\)</span>, and <span class="math inline">\(f(x)=0\)</span> otherwise.</p>
+<p><em>The variable:</em> <span class="math inline">\(X\)</span> = the time in hours from opening to the first customer. A count or a measurement? A measurement: any number from 0 to 1. So <span class="math inline">\(X\)</span> is continuous with density <span class="math inline">\(f(x)=2(1-x)\)</span> on <span class="math inline">\([0,1]\)</span>.</p>
+<p>Check that <span class="math inline">\(f\)</span> is a density, and find the probability that the first customer comes in the first half hour.</p>
+<p><strong>Solution.</strong> <span class="math inline">\(f(x)\ge0\)</span> for <span class="math inline">\(0\le x\le1\)</span>, and the total area is <span class="math inline">\(\int_0^1 2(1-x)\,dx=\big[2x-x^2\big]_0^1=1\)</span> (the refresher). So <span class="math inline">\(f\)</span> is a density. The first half hour is <span class="math inline">\(0\le X\le0.5\)</span>: <span class="math display">\[
+\Prob(X\le0.5)=\int_0^{0.5}(2-2x)\,dx=\big[2x-x^2\big]_0^{0.5}=(1-0.25)-0=0.75 .
+\]</span> Three mornings in four, the first customer comes before 7:30.</p>
+</div>
+<div id="def-cdf-continuous" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 4.5 (CDF of a continuous random variable)</strong></span> Let <span class="math inline">\(X\)</span> be continuous with density <span class="math inline">\(f\)</span>, which is 0 outside the interval from <span class="math inline">\(c\)</span> to <span class="math inline">\(d\)</span>. Its CDF is the same <span class="math inline">\(F\)</span> as in Lecture 3 (<a href="L03-discrete-random-variables.html#def-cdf" class="quarto-xref">Definition&nbsp;<span>3.3</span></a>): <span class="math display">\[
+F(x)=\Prob(X\le x)=\int_c^x f(t)\,dt\qquad\text{for } c\le x\le d,
+\]</span> with <span class="math inline">\(F(x)=0\)</span> for <span class="math inline">\(x&lt;c\)</span> and <span class="math inline">\(F(x)=1\)</span> for <span class="math inline">\(x&gt;d\)</span>. The density is the slope of the CDF: <span class="math inline">\(f(x)=F'(x)\)</span>, except at the few points where <span class="math inline">\(f\)</span> jumps.</p>
+</div>
+<p>In <span class="math inline">\(\int_c^x f(t)\,dt\)</span> the letter <span class="math inline">\(x\)</span> is already taken (it is where the area stops), so the variable along the axis gets another name, <span class="math inline">\(t\)</span>; read it “the integral from c to x of f of t, d t”. It is still the area under <span class="math inline">\(f\)</span> from <span class="math inline">\(c\)</span> up to <span class="math inline">\(x\)</span>. The rule <span class="math inline">\(f=F'\)</span> is <a href="#eq-integral-rule" class="quarto-xref">Equation&nbsp;<span>4.3</span></a> again: the area up to <span class="math inline">\(x\)</span> grows at the rate <span class="math inline">\(f(x)\)</span>. For the kiosk, <span class="math inline">\(F(x)=\big[2t-t^2\big]_0^x=2x-x^2\)</span> for <span class="math inline">\(0\le x\le1\)</span>, 0 to the left and 1 to the right, so <span class="math inline">\(F(0.5)=0.75\)</span> as before; check: <span class="math inline">\(F'(x)=2-2x=f(x)\)</span>. A continuous CDF has no steps: it climbs smoothly from 0 to 1 (<a href="#fig-kiosk" class="quarto-xref">Figure&nbsp;<span>4.6</span></a>).</p>
+<div id="cell-fig-kiosk" class="cell" data-execution_count="7">
+<div class="cell-output cell-output-display">
+<div id="fig-kiosk" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H" alt="Two panels. Left: density equal to 0 left of 0, jumping to 2 at x = 0 and falling in a straight line to 0 at x = 1, then 0. The region under it from 0 to 0.5 is shaded, area 0.75. Right: CDF equal to 0 left of 0, rising in a curve from 0 at x = 0 to 1 at x = 1, flat at 1 after. A dashed line from x = 0.5 up to the curve at 0.75 and across to the vertical axis.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-kiosk-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="L04-poisson-and-continuous_files/figure-html/fig-kiosk-output-1.png" data-fig-pos="H" alt="Two panels. Left: density equal to 0 left of 0, jumping to 2 at x = 0 and falling in a straight line to 0 at x = 1, then 0. The region under it from 0 to 0.5 is shaded, area 0.75. Right: CDF equal to 0 left of 0, rising in a curve from 0 at x = 0 to 1 at x = 1, flat at 1 after. A dashed line from x = 0.5 up to the curve at 0.75 and across to the vertical axis." width="939" height="259" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-kiosk-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.6: Bakhyt’s kiosk. Left: the density <span class="math inline">\(f(x)=2(1-x)\)</span>; the shaded area is <span class="math inline">\(\Prob(X\le0.5)=0.75\)</span>. Right: the CDF <span class="math inline">\(F(x)=2x-x^2\)</span>; the dashed line reads off the same number, <span class="math inline">\(F(0.5)=0.75\)</span>, as a height.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Expected value and variance follow Lecture 3: the sum becomes an integral, and <span class="math inline">\(p(x_i)\)</span> becomes <span class="math inline">\(f(x)\,dx\)</span>, the area of a thin strip.</p>
+<div id="def-moments-continuous" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 4.6 (Expected value and variance of a continuous random variable)</strong></span> Let <span class="math inline">\(X\)</span> be continuous with density <span class="math inline">\(f\)</span>, which is 0 outside the interval from <span class="math inline">\(c\)</span> to <span class="math inline">\(d\)</span>. Then <span class="math display">\[
+\E[X]=\mu=\int_c^d x\,f(x)\,dx,\qquad \Var(X)=\int_c^d (x-\mu)^2f(x)\,dx,
+\]</span> and <span class="math inline">\(\operatorname{SD}(X)=\sqrt{\Var(X)}\)</span>. More generally, <span class="math inline">\(\E[g(X)]=\int_c^d g(x)\,f(x)\,dx\)</span>, for example <span class="math inline">\(\E[X^2]=\int_c^d x^2f(x)\,dx\)</span>.</p>
+</div>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: left;">Discrete (Lecture 3)</th>
+<th style="text-align: left;">Continuous</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">probabilities</td>
+<td style="text-align: left;"><span class="math inline">\(p(x)=\Prob(X=x)\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(\Prob(a\le X\le b)=\int_a^b f(x)\,dx\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">expected value</td>
+<td style="text-align: left;"><span class="math inline">\(\sum_i x_i\,p(x_i)\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(\int_c^d x\,f(x)\,dx\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">variance</td>
+<td style="text-align: left;"><span class="math inline">\(\sum_i (x_i-\mu)^2p(x_i)\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(\int_c^d (x-\mu)^2f(x)\,dx\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>The results of Lecture 3 still hold, with the same proofs and <span class="math inline">\(\sum\)</span> replaced by <span class="math inline">\(\int\)</span>: the shortcut <span class="math inline">\(\Var(X)=\E[X^2]-\mu^2\)</span> (<a href="L03-discrete-random-variables.html#thm-var-shortcut" class="quarto-xref">Theorem&nbsp;<span>3.2</span></a>) and the rules for <span class="math inline">\(aX+b\)</span> (<a href="L03-discrete-random-variables.html#thm-linear" class="quarto-xref">Theorem&nbsp;<span>3.3</span></a>).</p>
+<p>Back to the kiosk. <em>Given:</em> <span class="math inline">\(f(x)=2-2x\)</span> for <span class="math inline">\(0\le x\le1\)</span>, 0 otherwise; <span class="math inline">\(X\)</span> is the time in hours to the first customer. Multiply out first: <span class="math inline">\(x\,f(x)=2x-2x^2\)</span> and <span class="math inline">\(x^2f(x)=2x^2-2x^3\)</span>. Then <span class="math display">\[
+\begin{aligned}
+\E[X]&amp;=\int_0^1(2x-2x^2)\,dx=\Big[x^2-\frac{2x^3}{3}\Big]_0^1=1-\frac23=\frac13,\\
+\E[X^2]&amp;=\int_0^1(2x^2-2x^3)\,dx=\Big[\frac{2x^3}{3}-\frac{x^4}{2}\Big]_0^1=\frac23-\frac12=\frac16 .
+\end{aligned}
+\]</span> On average the first customer comes after <span class="math inline">\(1/3\)</span> hour, 20 minutes. By the shortcut, <span class="math inline">\(\Var(X)=\frac16-\big(\frac13\big)^2=\frac16-\frac19=\frac1{18}\approx0.0556\)</span> hours squared. The standard deviation is <span class="math inline">\(\sqrt{1/18}\approx0.236\)</span> hours, about 14 minutes. Hours squared mean nothing to Bakhyt; 20 minutes give or take 14 does.</p>
+</section>
+<section id="sec-L04-uniform" class="level2" data-number="4.7">
+<h2 data-number="4.7" class="anchored" data-anchor-id="sec-L04-uniform"><span class="header-section-number">4.7</span> The uniform distribution</h2>
+<p>The shuttle density was flat, and a flat density has its own name.</p>
+<div id="def-uniform" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 4.7 (Uniform distribution)</strong></span> A random variable <span class="math inline">\(X\)</span> has the <strong>uniform distribution</strong> on the interval from <span class="math inline">\(a\)</span> to <span class="math inline">\(b\)</span>, where <span class="math inline">\(a&lt;b\)</span>, written <span class="math inline">\(X\sim\operatorname{U}(a,b)\)</span>, if its density is <span class="math display">\[
+f(x)=\frac{1}{b-a}\quad\text{for } a\le x\le b,\qquad f(x)=0\ \text{otherwise}.
+\]</span> Its CDF is <span class="math inline">\(F(x)=\dfrac{x-a}{b-a}\)</span> for <span class="math inline">\(a\le x\le b\)</span>, with <span class="math inline">\(F(x)=0\)</span> for <span class="math inline">\(x&lt;a\)</span> and <span class="math inline">\(F(x)=1\)</span> for <span class="math inline">\(x&gt;b\)</span>.</p>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="How to read $X\sim\operatorname{U}(a,b)$">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>How to read <span class="math inline">\(X\sim\operatorname{U}(a,b)\)</span>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="math inline">\(X\sim\operatorname{U}(a,b)\)</span> reads “X is uniform on the interval from a to b”. The height <span class="math inline">\(\frac1{b-a}\)</span> makes the rectangle’s area width times height equal to 1. For the shuttle, <span class="math inline">\(X\sim\operatorname{U}(0,12)\)</span>, the height is <span class="math inline">\(\frac1{12-0}=\frac1{12}\)</span>, and <span class="math inline">\(F(x)=\frac{x-0}{12-0}=\frac{x}{12}\)</span>.</p>
+</div>
+</div>
+<p>The CDF comes from <a href="#def-cdf-continuous" class="quarto-xref">Definition&nbsp;<span>4.5</span></a> with left end <span class="math inline">\(a\)</span>: <span class="math inline">\(F(x)=\int_a^x\frac1{b-a}\,dt=\big[\frac{t}{b-a}\big]_a^x=\frac{x-a}{b-a}\)</span>, the share of the interval left of <span class="math inline">\(x\)</span>. This is Lecture 1’s geometric probability on a segment (<a href="L01-probability-basics.html#def-geometric" class="quarto-xref">Definition&nbsp;<span>1.9</span></a>), written as a random variable.</p>
+<div id="exm-shuttle" class="theorem example">
+<p><span class="theorem-title"><strong>Example 4.5 (Waiting for the shuttle)</strong></span> <em>Given:</em> the shuttle leaves every 12 minutes; Lena comes to the stop at a random moment, every moment equally likely.</p>
+<p><em>The variable:</em> <span class="math inline">\(X\)</span> = Lena’s waiting time in minutes. A count or a measurement? A measurement, any number from 0 to 12. Every value equally likely? Yes. So <span class="math inline">\(X\sim\operatorname{U}(0,12)\)</span>.</p>
+<p>Find <span class="math inline">\(F(x)\)</span> and the probability that Lena waits more than 8 minutes.</p>
+<p><strong>Solution.</strong> Here <span class="math inline">\(a=0\)</span>, <span class="math inline">\(b=12\)</span>, so <span class="math inline">\(f(x)=1/12\)</span> and <span class="math inline">\(F(x)=x/12\)</span> for <span class="math inline">\(0\le x\le12\)</span>. By the complement rule, <span class="math display">\[
+\Prob(X&gt;8)=1-\Prob(X\le8)=1-F(8)=1-\frac{8}{12}=\frac13 ,
+\]</span> the rectangle from 8 to 12: width 4 times height <span class="math inline">\(1/12\)</span>.</p>
+</div>
+<div id="thm-uniform-moments" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 4.4 (Mean and variance of the uniform distribution)</strong></span> If <span class="math inline">\(X\sim\operatorname{U}(a,b)\)</span>, then <span class="math display">\[
+\E[X]=\frac{a+b}{2},\qquad \Var(X)=\frac{(b-a)^2}{12}.
+\]</span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>The density is the constant <span class="math inline">\(\frac1{b-a}\)</span> from <span class="math inline">\(a\)</span> to <span class="math inline">\(b\)</span>, and a constant factor comes out of the integral. For the mean, <span class="math display">\[
+\E[X]=\int_a^b x\cdot\frac{1}{b-a}\,dx=\frac{1}{b-a}\Big[\frac{x^2}{2}\Big]_a^b=\frac{b^2-a^2}{2(b-a)}=\frac{(b-a)(b+a)}{2(b-a)}=\frac{a+b}{2},
+\]</span> using <span class="math inline">\(b^2-a^2=(b-a)(b+a)\)</span> from school. For the variance, use the shortcut (<a href="L03-discrete-random-variables.html#thm-var-shortcut" class="quarto-xref">Theorem&nbsp;<span>3.2</span></a>): <span class="math display">\[
+\E[X^2]=\int_a^b x^2\cdot\frac{1}{b-a}\,dx=\frac{1}{b-a}\Big[\frac{x^3}{3}\Big]_a^b=\frac{b^3-a^3}{3(b-a)}=\frac{a^2+ab+b^2}{3},
+\]</span> using <span class="math inline">\(b^3-a^3=(b-a)(a^2+ab+b^2)\)</span> (multiply out the right side to check). Then <span class="math display">\[
+\begin{aligned}
+\Var(X)&amp;=\frac{a^2+ab+b^2}{3}-\frac{(a+b)^2}{4}=\frac{4a^2+4ab+4b^2-3a^2-6ab-3b^2}{12}\\
+&amp;=\frac{a^2-2ab+b^2}{12}=\frac{(b-a)^2}{12}.
+\end{aligned}
+\]</span></p>
+</div>
+<p>For the shuttle, <span class="math inline">\(a=0\)</span> and <span class="math inline">\(b=12\)</span>: <span class="math inline">\(\E[X]=\frac{0+12}{2}=6\)</span> minutes, the middle of the interval, as you’d guess. <span class="math inline">\(\Var(X)=\frac{12^2}{12}=12\)</span> minutes squared, and <span class="math inline">\(\operatorname{SD}(X)=\sqrt{12}\approx3.46\)</span> minutes.</p>
+<p>Lecture 5 adds one more continuous distribution for waiting times, the exponential, together with its strange “memoryless” property, and then the normal distribution.</p>
+</section>
+<section id="exercises" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="exercises">Exercises</h2>
+<ol type="1">
+<li>Tomas sells insurance by phone for an agency in Novosibirsk. Each call ends with a booked meeting with probability 0.2, independently of the other calls. Count the calls Tomas makes up to and including the first one that books a meeting. Find the probability that this count is 3, the probability that it is more than 5, and its expected value.</li>
+<li>A bike-rental point on the Sochi seafront gets on average 4 rentals per hour, one at a time and independently. Let <span class="math inline">\(X\)</span> be the number of rentals in the next 30 minutes. Name the distribution of <span class="math inline">\(X\)</span> with its parameter, and find <span class="math inline">\(\Prob(X=0)\)</span> and <span class="math inline">\(\Prob(X\ge2)\)</span>.</li>
+<li>An online bookshop in Krasnodar sends 1,000 parcels in a week; each is lost by the courier with probability 0.003, independently. Let <span class="math inline">\(X\)</span> be the number of lost parcels. Which distribution does <span class="math inline">\(X\)</span> have exactly, and which one approximates it? Find <span class="math inline">\(\Prob(X=0)\)</span> and <span class="math inline">\(\Prob(X\le2)\)</span> approximately.</li>
+<li>Polina, who schedules repair technicians in Vladimir, models the length <span class="math inline">\(X\)</span> of a repair visit, in hours, by the density <span class="math inline">\(f(x)=Cx\)</span> for <span class="math inline">\(0\le x\le2\)</span> and <span class="math inline">\(f(x)=0\)</span> otherwise. Find the number <span class="math inline">\(C\)</span>, then <span class="math inline">\(\Prob(X\le1)\)</span> and <span class="math inline">\(\E[X]\)</span>.</li>
+<li>Arman’s food-delivery app promises delivery “in 30 to 50 minutes”. Assume the delivery time <span class="math inline">\(X\)</span> in minutes is <span class="math inline">\(\operatorname{U}(30,50)\)</span>. Find <span class="math inline">\(\Prob(X&gt;45)\)</span>, <span class="math inline">\(\E[X]\)</span> and <span class="math inline">\(\operatorname{SD}(X)\)</span>.</li>
+</ol>
+<p>Answers: (1) <span class="math inline">\(\operatorname{Geom}(0.2)\)</span>: <span class="math inline">\(0.8^2\cdot0.2=0.128\)</span>; <span class="math inline">\(0.8^5\approx0.328\)</span>; <span class="math inline">\(1/0.2=5\)</span> calls. (2) 4 per hour is 2 per 30 minutes, so <span class="math inline">\(X\sim\operatorname{Pois}(2)\)</span>; <span class="math inline">\(e^{-2}\approx0.135\)</span>; <span class="math inline">\(1-e^{-2}(1+2)=1-3e^{-2}\approx0.594\)</span>. (3) Exactly <span class="math inline">\(\operatorname{Bin}(1000,\,0.003)\)</span>; <span class="math inline">\(n\ge100\)</span> and <span class="math inline">\(np=3\le10\)</span>, so <span class="math inline">\(\approx\operatorname{Pois}(3)\)</span>; <span class="math inline">\(\Prob(X=0)\approx e^{-3}\approx0.050\)</span>; <span class="math inline">\(\Prob(X\le2)\approx e^{-3}(1+3+4.5)=8.5e^{-3}\approx0.423\)</span>. (4) The area is <span class="math inline">\(\int_0^2Cx\,dx=C\big[x^2/2\big]_0^2=2C=1\)</span>, so <span class="math inline">\(C=0.5\)</span>; <span class="math inline">\(\Prob(X\le1)=\big[x^2/4\big]_0^1=0.25\)</span>; <span class="math inline">\(\E[X]=\int_0^2 0.5x^2\,dx=\big[x^3/6\big]_0^2=8/6\approx1.33\)</span> hours. (5) <span class="math inline">\((50-45)/(50-30)=0.25\)</span>; <span class="math inline">\(\E[X]=40\)</span> minutes; <span class="math inline">\(\operatorname{SD}(X)=20/\sqrt{12}\approx5.77\)</span> minutes. Seminar 4 practises the geometric and Poisson distributions; Seminar 5 does densities and the uniform distribution, and adds the exponential after Lecture 5.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../lectures/L03-discrete-random-variables.html" class="pagination-link" aria-label="Discrete random variables">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Discrete random variables</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../seminars/S01-counting.html" class="pagination-link" aria-label="Seminar 1: events, counting, classical and geometric probability">
+        <span class="nav-page-text">Seminar 1: events, counting, classical and geometric probability</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

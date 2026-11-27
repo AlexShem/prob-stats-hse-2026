@@ -1,0 +1,2251 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="L04-poisson-and-continuous_files/libs/clipboard/clipboard.min.js"></script>
+<script src="L04-poisson-and-continuous_files/libs/quarto-html/tabby.min.js"></script>
+<script src="L04-poisson-and-continuous_files/libs/quarto-html/popper.min.js"></script>
+<script src="L04-poisson-and-continuous_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="L04-poisson-and-continuous_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="L04-poisson-and-continuous_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="L04-poisson-and-continuous_files/libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.18">
+
+  <meta name="dcterms.date" content="2026-11-25">
+  <title>Counting events and measuring time</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="L04-poisson-and-continuous_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="L04-poisson-and-continuous_files/libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="L04-poisson-and-continuous_files/libs/revealjs/dist/theme/quarto-163e8e93e1b23b4468d8c093fdfe744f.css">
+  <link href="L04-poisson-and-continuous_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="L04-poisson-and-continuous_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="L04-poisson-and-continuous_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="L04-poisson-and-continuous_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="L04-poisson-and-continuous_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="L04-poisson-and-continuous_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Counting events and measuring time</h1>
+  <p class="subtitle">Lecture 4 · Probability Theory and Mathematical Statistics</p>
+
+<div class="quarto-title-authors">
+</div>
+
+  <p class="date">2026-11-25</p>
+</section>
+<section id="marats-walk-in-saturday" class="slide level2">
+<h2>Marat’s walk-in Saturday</h2>
+<!-- Math macros for HTML/revealjs (MathJax). PDF gets the same ones from _shared/preamble.tex. Keep both in sync. -->
+<div class="hidden">
+<p><span class="math display">\[
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\Corr}{\operatorname{Corr}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\R}{\mathbb{R}}
+\]</span></p>
+</div>
+<!--
+PLAN  NN (slide number = PDF page - 1) | title | pattern | chapter item | visual
+01 | Marat's walk-in Saturday | hook | intro | strips O / NO / NNO / NNNO with counts
+02 | Marat's first order: one path for each value | worked | Ex 4.1 (X = 1, 2, 3) | strips with products
+03 | Marat's first order: more than 3 customers | worked | Ex 4.1 (X > 3) | bars 1, 2, 3, "more than 3" (sum 1)
+04 | Counting trials, not successes | compare | after Ex 4.1 (Y ~ Bin(3, 0.4)) | table + NNN? strip
+05 | Geometric distribution | item | Def 4.1, Eq 4.1, Fig 4.1 | Geom(0.4) bars
+06 | How to read Geom(p) and k = 1, 2, 3, ... | notation | callout 1 | write / say / Marat table
+07 | More than k trials, and the name | item + explain | P(X > k) = (1-p)^k, name, failures convention | tail bars in orange
+08 | Mean and variance of the geometric | item | Thm 4.1 (first-step idea) | first-trial branch diagram
+09 | What 2.5 customers means | explain | after Thm 4.1 | bars with mode and mean
+10 | Your turn: phone sales in Novosibirsk | your turn | Exercise 1 | none
+11 | Drawing without putting back | worked | Sec 4.2 bulbs | 66-pair grid (from the L02 deck)
+12 | Hypergeometric distribution | item | Def 4.2, mean, 5% rule | none (box)
+13 | Dina's parcel pickup point | hook | Sec 4.3 intro | simulated hour, counts per 10 minutes
+14 | How to read lambda, Pois(lambda) and e^-3 | notation | callout 2 (part 1) | table
+15 | How to read k! and the Poisson formula | notation | callout 2 (part 2) | factorial table, one instance
+16 | Poisson distribution | item | Def 4.3, Eq 4.2 | conditions vs Dina table
+17 | Customers at Dina's point: 0 to 3 | worked | Ex 4.2 (part 1) | computation table
+18 | Customers at Dina's point: at least 4 | worked | Ex 4.2 (part 2), Fig 4.2 | Pois(3) bars, X >= 4 orange
+19 | Pitfall: lambda belongs to the interval | pitfall | after Fig 4.2 | Pois(3) vs Pois(6) panels
+20 | Your turn: bikes on the Sochi seafront | your turn | Exercise 2 | none
+21 | Poisson approximation to the binomial | item | Thm 4.2 (idea) | Bin(1000, 0.003) vs Pois(3) bars
+22 | Mean and variance of the Poisson | item | Thm 4.3 | Pois(3) bars, mean and SD band
+23 | Returned parcels: is it Poisson? | worked | Ex 4.3 (set-up, rule check) | rule table
+24 | Returned parcels: binomial against Poisson | picture | Ex 4.3 (table) | table + paired bars
+25 | Which discrete distribution? | picture | Tbl 4.1 | table
+26 | Break | break | cue after Sec 4.4 |
+27 | Lena's shuttle: one value has probability 0 | hook | Sec 4.5 intro | point vs interval on a time line
+28 | Derivative: a slope | item + notation | derivative, callout 3 (F'(x)), Fig 4.3 | tangent at x = 3
+29 | The derivative rules we need | picture | derivative table | table
+30 | Integral: an area | item | integral as area, rectangle | Fig 4.4 left
+31 | How to read the integral sign | notation | callout 4 (part 1) | parts table + strips
+32 | The rule: integration undoes differentiation | item + explain | Eq 4.3 and the "why" | area up to x with a new strip
+33 | How to read [G(x)]_a^b | notation + compare | callout 4 (part 2), rectangle both ways | two boxes
+34 | Finding G: the derivative table backwards | picture | G table | table
+35 | One worked integral | worked | int_0^1 2(1-x) dx | Fig 4.4 right
+36 | Lena's shuttle as a density | picture | Sec 4.6 intro, Fig 4.5 | Fig 4.5
+37 | Continuous random variable, density | item | Def 4.4, interval c to d | shaded area a to b
+38 | How to read f(x): a height | notation | callout 5 | density with a thin strip at 0
+39 | Pitfall: <= or < no longer matters | pitfall | after callout 5 | discrete bar vs continuous line
+40 | Bakhyt's first customer: is it a density? | worked | Ex 4.4 (part 1) | triangle, total area 1
+41 | Bakhyt's first customer: the first half hour | worked | Ex 4.4 (part 2), Fig 4.6 left | shaded 0 to 0.5
+42 | CDF of a continuous random variable | item + notation | Def 4.5, dummy variable t | area up to x
+43 | Bakhyt's CDF | worked | after Def 4.5, Fig 4.6 right | CDF with F(0.5)
+44 | Expected value and variance: sums become integrals | item + compare | Def 4.6, discrete/continuous table | table
+45 | Bakhyt: the first customer on average | worked | kiosk E[X] | density with mean and 30 min
+46 | Bakhyt: variance and standard deviation | worked | kiosk E[X^2], Var, SD | none (full-width steps)
+47 | Your turn: repair visits in Vladimir | your turn | Exercise 4 | none
+48 | Uniform distribution | item | Def 4.7 | f and F panels
+49 | How to read X ~ U(a, b) | notation | callout 6 | table + 12 x 1/12 rectangle
+50 | The uniform CDF is a share of the interval | explain | derivation of F, geometric probability | area up to x
+51 | Waiting for the shuttle | worked | Ex 4.5 | rectangle 8 to 12
+52 | Mean and variance of the uniform | item | Thm 4.4 (idea), shuttle numbers | mean and SD band
+53 | Your turn: delivery in 30 to 50 minutes | your turn | Exercise 5 | none
+
+Visuals: 45 of 53 slides have a figure, a table or a diagram.
+
+CUT: Thm 4.1 proof kept as the first-step idea; the variance part points to the book. Thm 4.2 and Thm 4.3
+proofs kept as one-line ideas with a pointer to Sec 4.4. Thm 4.4 proof (visible in the chapter): only the
+mean line is shown, the variance algebra (b^3 - a^3 factorisation) points to Sec 4.7. Exercise 3 (Krasnodar
+bookshop, approximation) is left to S04: Ex 4.3 already works the same steps. The coffee-machine aside from
+the opening, the Poisson pronunciation (speaker notes) and "textbooks use other rules of thumb" (notes)
+are dropped from the slides. The closing promise of Lecture 5 (exponential, memorylessness) is in the
+notes of the last slide.
+-->
+<div class="columns">
+<div class="column" style="width:52%;">
+<p>Marat’s optician’s shop in Kazan again. This Saturday nobody has booked a free eye test.</p>
+<div class="fragment">
+<p>Walk-ins come one at a time. Each orders glasses with probability 0.4, independently. No coffee for Marat until the first pair is sold.</p>
+</div>
+<div class="fragment">
+<p>He counts the customers he tests <strong>up to and including</strong> the first one who orders.</p>
+<p>Is the first order most likely from customer 1, 2 or 3? How many should he expect to test?</p>
+</div>
+</div><div class="column" style="width:48%;">
+<div id="ba48ace0" class="cell" data-fig-height="3.6" data-fig-width="5" data-execution_count="3">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L04-poisson-and-continuous_files/figure-revealjs/cell-4-output-1.png" width="694" height="507"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+<aside class="notes">
+<p>Timing. Slot 1: 0:00-0:30 Marat, geometric; 0:30-0:40 hypergeometric; 0:40-1:05 Poisson; 1:05-1:20 approximation, “which distribution?” table. Short of time: cut the hypergeometric to one sentence and the formula (S04 practises it). Break. Slot 2: 0:00-0:25 derivatives and integrals; 0:25-0:55 density, CDF, kiosk; 0:55-1:15 uniform; 5 min slack.</p>
+<p>Board: side strip “Marat: walk-ins, P(order) = 0.4 each, independent”. After the break: “Bakhyt: f(x) = 2(1-x), 0 &lt;= x &lt;= 1 (hours)”, kept to the end.</p>
+<p>Ask first: “Customer 1, 2 or 3: where is the first order most likely?” Most say 2 or 3.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="marats-first-order-one-path-for-each-value-ex-4.1" class="slide level2">
+<h2>Marat’s first order: one path for each value <span class="tag">Ex 4.1</span></h2>
+<div class="muted small">
+<p>Given: walk-ins one after another; each orders (O) with 0.4, does not (N) with 0.6; independent</p>
+</div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><span class="math inline">\(X\)</span> = customers tested up to and including the first order. Number of trials fixed? No: Marat keeps testing until someone orders. So <span class="math inline">\(X\)</span> is <span class="answer">not binomial</span>.</p>
+<div class="fragment">
+<p>Each value of <span class="math inline">\(X\)</span> comes from exactly one path: some N’s, then one O. The customers are independent (Def 2.3), so multiply along the path.</p>
+</div>
+</div><div class="column" style="width:50%;">
+<div id="447e7834" class="cell" data-fig-height="3.4" data-fig-width="5" data-execution_count="4">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L04-poisson-and-continuous_files/figure-revealjs/cell-5-output-1.png" width="717" height="477"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="marats-first-order-more-than-3-customers-ex-4.1" class="slide level2">
+<h2>Marat’s first order: more than 3 customers <span class="tag">Ex 4.1</span></h2>
+<div class="muted small">
+<p>Given: each walk-in orders with 0.4, does not with 0.6, independently; <span class="math inline">\(\Prob(X=1)=0.4\)</span>, <span class="math inline">\(\Prob(X=2)=0.24\)</span>, <span class="math inline">\(\Prob(X=3)=0.144\)</span></p>
+</div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><span class="math inline">\(X&gt;3\)</span> means the first three customers all say no: NNN, whatever comes after.</p>
+<p><span class="math display">\[\Prob(X&gt;3)=0.6^3=0.216\]</span></p>
+<div class="fragment">
+<p>The four pieces cover everything: <span class="math inline">\(0.4+0.24+0.144+0.216=1\)</span>.</p>
+</div>
+<div class="fragment">
+<p>The first order is most likely to come from <span class="answer">customer 1</span>. Each later step multiplies by 0.6.</p>
+</div>
+</div><div class="column" style="width:50%;">
+<div id="e67665fe" class="cell" data-fig-height="3.6" data-fig-width="5" data-execution_count="5">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L04-poisson-and-continuous_files/figure-revealjs/cell-6-output-1.png" width="718" height="507"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="counting-trials-not-successes-ex-4.1" class="slide level2">
+<h2>Counting trials, not successes <span class="tag">Ex 4.1</span></h2>
+<div class="muted small">
+<p>Given: Lecture 3: <span class="math inline">\(Y\)</span> = orders among 3 booked customers, <span class="math inline">\(Y\sim\operatorname{Bin}(3,\,0.4)\)</span>, <span class="math inline">\(\Prob(Y=0)=0.216\)</span>, <span class="math inline">\(\Prob(Y=1)=0.432\)</span>, <span class="math inline">\(\Prob(Y=2)=0.288\)</span>, <span class="math inline">\(\Prob(Y=3)=0.064\)</span>. Today: <span class="math inline">\(X\)</span> = customers up to the first order</p>
+</div>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: left;">Lecture 3: <span class="math inline">\(Y\)</span></th>
+<th style="text-align: left;">Today: <span class="math inline">\(X\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">number of trials</td>
+<td style="text-align: left;">fixed: 3 customers</td>
+<td style="text-align: left;">random: 1, 2, 3, …</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">number of successes</td>
+<td style="text-align: left;">random: 0, 1, 2 or 3</td>
+<td style="text-align: left;">fixed: 1, the first order</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">distribution</td>
+<td style="text-align: left;">binomial</td>
+<td style="text-align: left;">geometric (next slide)</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:55%;">
+<p>One link between them: <span class="math inline">\(X&gt;3\)</span> and <span class="math inline">\(Y=0\)</span> are the same story, three noes in a row. <span class="math display">\[\Prob(X&gt;3)=\Prob(Y=0)=0.6^3=0.216\]</span></p>
+</div><div class="column" style="width:45%;">
+<div id="3fea7cff" class="cell" data-fig-height="1.7" data-fig-width="5" data-execution_count="6">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L04-poisson-and-continuous_files/figure-revealjs/cell-7-output-1.png" width="717" height="222"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</div>
+</section>
+<section id="geometric-distribution-def-4.1-eq-4.1-fig-4.1" class="slide level2">
+<h2>Geometric distribution <span class="tag">Def 4.1, Eq 4.1, Fig 4.1</span></h2>
+<div class="box-def">
+<p>Independent trials, each a success with the same probability <span class="math inline">\(p\)</span> (<span class="math inline">\(0&lt;p\le1\)</span>). <span class="math inline">\(X\)</span> = the number of the trial with the first success has the <strong>geometric distribution</strong>, <span class="math inline">\(X\sim\operatorname{Geom}(p)\)</span>: <span class="math display">\[\Prob(X=k)=(1-p)^{k-1}\,p,\qquad k=1,2,3,\dots\]</span></p>
+</div>
+<div class="columns">
+<div class="column" style="width:36%;">
+<p>Marat: <span class="math inline">\(p=0.4\)</span>, so <span class="math inline">\(X\sim\operatorname{Geom}(0.4)\)</span>.</p>
+<p><span class="muted small">Each bar is 0.6 times the one before. The bars go on for ever, too small to see.</span></p>
+</div><div class="column" style="width:64%;">
+<div id="c083865f" class="cell" data-fig-height="1.8" data-fig-width="6.6" data-execution_count="7">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L04-poisson-and-continuous_files/figure-revealjs/cell-8-output-1.png" width="958" height="237"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="how-to-read-xsimoperatornamegeomp-and-k123dots-sec-4.1" class="slide level2">
+<h2>How to read <span class="math inline">\(X\sim\operatorname{Geom}(p)\)</span> and <span class="math inline">\(k=1,2,3,\dots\)</span> <span class="tag">Sec 4.1</span></h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Write</th>
+<th style="text-align: left;">Say</th>
+<th style="text-align: left;">For Marat</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(X\sim\operatorname{Geom}(p)\)</span></td>
+<td style="text-align: left;">“X has the geometric distribution with parameter p”</td>
+<td style="text-align: left;"><span class="math inline">\(X\sim\operatorname{Geom}(0.4)\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(k=1,2,3,\dots\)</span></td>
+<td style="text-align: left;">“k equals one, two, three, and so on”</td>
+<td style="text-align: left;">the list has no last value: there is no largest possible <span class="math inline">\(X\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\((1-p)^{k-1}\,p\)</span></td>
+<td style="text-align: left;">“<span class="math inline">\(k-1\)</span> failures, then a success”</td>
+<td style="text-align: left;"><span class="math inline">\(k=3\)</span>: <span class="math inline">\((1-0.4)^{3-1}\cdot0.4=0.6^2\cdot0.4=0.144\)</span></td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p>Could the first order come only from customer 20? In principle, yes: <span class="math display">\[\Prob(X=20)=0.6^{19}\cdot0.4\approx0.00002\]</span> <span class="answer">Tiny, but not zero.</span></p>
+</div>
+</section>
+<section id="more-than-k-trials-and-the-name-sec-4.1" class="slide level2">
+<h2>More than <span class="math inline">\(k\)</span> trials, and the name <span class="tag">Sec 4.1</span></h2>
+<div class="columns">
+<div class="column" style="width:52%;">
+<div class="box-thm">
+<p><span class="math inline">\(X&gt;k\)</span> means the first <span class="math inline">\(k\)</span> trials all fail: <span class="math display">\[\Prob(X&gt;k)=(1-p)^k\]</span></p>
+</div>
+<p>Marat, <span class="math inline">\(X\sim\operatorname{Geom}(0.4)\)</span>: <span class="math inline">\(\Prob(X&gt;3)=0.6^3=0.216\)</span>, the orange bars.</p>
+<div class="fragment">
+<p><span class="math inline">\(p,\ (1-p)p,\ (1-p)^2p,\dots\)</span> is a geometric progression, hence the name. Not geometric probability (Def 1.9).</p>
+</div>
+</div><div class="column" style="width:48%;">
+<div id="9dcaf0c3" class="cell" data-fig-height="3.2" data-fig-width="5" data-execution_count="8">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L04-poisson-and-continuous_files/figure-revealjs/cell-9-output-1.png" width="718" height="447"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><span class="muted small">Some books count the <em>failures</em> before the first success, from 0. We count trials, from 1.</span></p>
+</div></div>
+</section>
+<section id="mean-and-variance-of-the-geometric-thm-4.1" class="slide level2">
+<h2>Mean and variance of the geometric <span class="tag">Thm 4.1</span></h2>
+<div class="box-thm">
+<p>If <span class="math inline">\(X\sim\operatorname{Geom}(p)\)</span>, then <span class="math inline">\(\quad\E[X]=\dfrac1p,\qquad \Var(X)=\dfrac{1-p}{p^2}.\)</span></p>
+</div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>Idea: write <span class="math inline">\(m=\E[X]\)</span>; look at the first trial only.</p>
+<div class="fragment">
+<p><span class="math display">\[
+\begin{aligned}
+m&amp;=p\cdot1+(1-p)(1+m)\\
+&amp;=1+(1-p)\,m
+\end{aligned}
+\]</span> Subtract <span class="math inline">\((1-p)m\)</span>: <span class="math inline">\(p\,m=1\)</span>, <span class="math inline">\(m=1/p\)</span>.</p>
+</div>
+</div><div class="column" style="width:50%;">
+<div id="2689d0c9" class="cell" data-fig-height="2.2" data-fig-width="5" data-execution_count="9">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L04-poisson-and-continuous_files/figure-revealjs/cell-10-output-1.png" width="717" height="297"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><span class="muted small">Variance: similar; see Section 4.1.</span></p>
+</div></div>
+</section>
+<section id="what-2.5-customers-means-thm-4.1" class="slide level2">
+<h2>What 2.5 customers means <span class="tag">Thm 4.1</span></h2>
+<div class="muted small">
+<p>Given: <span class="math inline">\(X\sim\operatorname{Geom}(0.4)\)</span>, the customers Marat tests up to and including the first order</p>
+</div>
+<div class="columns">
+<div class="column" style="width:52%;">
+<p><span class="math display">\[
+\begin{aligned}
+\E[X]&amp;=\frac1{0.4}=2.5\\
+\Var(X)&amp;=\frac{0.6}{0.4^2}=3.75\\
+\operatorname{SD}(X)&amp;=\sqrt{3.75}\approx1.94
+\end{aligned}
+\]</span></p>
+<div class="fragment">
+<p>Among 1,000 customers about 400 order: one order per <span class="math inline">\(1000/400=2.5\)</span> customers.</p>
+</div>
+<div class="fragment">
+<p>Most likely 1, mean 2.5, SD almost as large. <span class="answer">Some mornings the coffee comes late.</span></p>
+</div>
+</div><div class="column" style="width:48%;">
+<div id="a42298ab" class="cell" data-fig-height="3.6" data-fig-width="5" data-execution_count="10">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L04-poisson-and-continuous_files/figure-revealjs/cell-11-output-1.png" width="718" height="507"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="your-turn-phone-sales-in-novosibirsk-exercise-1" class="slide level2 yourturn">
+<h2>Your turn: phone sales in Novosibirsk <span class="tag">Exercise 1</span></h2>
+<p>Tomas sells insurance by phone. Each call books a meeting with probability 0.2, independently of the other calls. <span class="math inline">\(X\)</span> = the calls he makes up to and including the first booked meeting.</p>
+<p>Find <span class="math inline">\(\Prob(X=3)\)</span>, <span class="math inline">\(\Prob(X&gt;5)\)</span> and <span class="math inline">\(\E[X]\)</span>.</p>
+<div class="fragment">
+<p><span class="math inline">\(X\sim\operatorname{Geom}(0.2)\)</span>, so each call fails with <span class="math inline">\(1-0.2=0.8\)</span>.</p>
+<p><span class="math inline">\(\Prob(X=3)=0.8^2\cdot0.2=\)</span> <span class="answer">0.128</span></p>
+</div>
+<div class="fragment">
+<p><span class="math inline">\(\Prob(X&gt;5)=0.8^5\approx\)</span> <span class="answer">0.328</span> (five failures in a row)</p>
+</div>
+<div class="fragment">
+<p><span class="math inline">\(\E[X]=1/0.2=\)</span> <span class="answer">5 calls</span></p>
+</div>
+</section>
+<section id="drawing-without-putting-back-sec-4.2" class="slide level2">
+<h2>Drawing without putting back <span class="tag">Sec 4.2</span></h2>
+<div class="muted small">
+<p>Given: L02’s box: 12 LED bulbs, 3 of them faulty; Oksana takes 2 without putting the first back</p>
+</div>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p><span class="math inline">\(X\)</span> = faulty bulbs among the 2. Trials fixed? Yes, 2. Same probability each draw? No: the second is <span class="math inline">\(2/11\)</span> or <span class="math inline">\(3/11\)</span>. So <span class="answer">not binomial</span>.</p>
+<div class="fragment">
+<p>Count (Lecture 1): <span class="math inline">\(\binom{12}{2}=66\)</span> equal pairs; one faulty = one of the 3 and one of the 9 good: <span class="math display">\[\Prob(X=1)=\frac{\binom31\binom91}{\binom{12}2}=\frac{27}{66}\approx0.409\]</span></p>
+</div>
+</div><div class="column" style="width:45%;">
+<div id="787b9592" class="cell" data-fig-height="2.7" data-fig-width="4.6" data-execution_count="11">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L04-poisson-and-continuous_files/figure-revealjs/cell-12-output-1.png" width="349" height="372"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><span class="small">Same way: <span class="math inline">\(\Prob(X=0)=\binom92/66=36/66\)</span>, <span class="math inline">\(\Prob(X=2)=\binom32/66=3/66\)</span>.</span></p>
+</div></div>
+</section>
+<section id="hypergeometric-distribution-def-4.2" class="slide level2">
+<h2>Hypergeometric distribution <span class="tag">Def 4.2</span></h2>
+<div class="box-def">
+<p>A box has <span class="math inline">\(N\)</span> items, <span class="math inline">\(M\)</span> of them special. Take <span class="math inline">\(n\)</span> without putting back, all sets of <span class="math inline">\(n\)</span> equally likely. <span class="math inline">\(X\)</span> = special items taken has the <strong>hypergeometric distribution</strong>: <span class="math display">\[\Prob(X=k)=\frac{\binom{M}{k}\binom{N-M}{n-k}}{\binom{N}{n}},\qquad \E[X]=n\,\frac{M}{N}.\]</span></p>
+</div>
+<p>Bulbs: <span class="math inline">\(N=12\)</span> in the box, <span class="math inline">\(M=3\)</span> faulty, <span class="math inline">\(n=2\)</span> taken. So <span class="math inline">\(\E[X]=2\cdot\frac{3}{12}=\)</span> <span class="answer">0.5</span> faulty bulbs.</p>
+<p>Each bulb taken is faulty with probability <span class="math inline">\(M/N\)</span>, and expected values add (Lecture 6).</p>
+<p><span class="muted small">Our rule: sample under about 5% of the box? Then <span class="math inline">\(\operatorname{Bin}(n,\,M/N)\)</span> is a fine approximation.</span></p>
+</section>
+<section id="dinas-parcel-pickup-point" class="slide level2">
+<h2>Dina’s parcel pickup point</h2>
+<div class="columns">
+<div class="column" style="width:48%;">
+<p>Dina runs a parcel pickup point in Perm; it shares a ground-floor room with a key-cutting stall. On weekday afternoons it gets on average <strong>3 customers per 10 minutes</strong>, one at a time, and they don’t coordinate.</p>
+<div class="fragment">
+<p>How many will come in the next 10 minutes? There is no list of <span class="math inline">\(n\)</span> people who might come, so the binomial doesn’t fit, and there is no upper limit.</p>
+<p>What we know is the average rate.</p>
+</div>
+</div><div class="column" style="width:52%;">
+<div id="44c07590" class="cell" data-fig-height="3.4" data-fig-width="5.4" data-execution_count="12">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L04-poisson-and-continuous_files/figure-revealjs/cell-13-output-1.png" width="775" height="477"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+<aside class="notes">
+<p>The distribution is named after Simeon Denis Poisson, say “pwa-SON”.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="how-to-read-lambda-operatornamepoislambda-and-e-3-sec-4.3" class="slide level2">
+<h2>How to read <span class="math inline">\(\lambda\)</span>, <span class="math inline">\(\operatorname{Pois}(\lambda)\)</span> and <span class="math inline">\(e^{-3}\)</span> <span class="tag">Sec 4.3</span></h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Write</th>
+<th style="text-align: left;">Say</th>
+<th style="text-align: left;">For Dina</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(\lambda\)</span></td>
+<td style="text-align: left;">“lambda” (LAM-da), a Greek letter</td>
+<td style="text-align: left;">the average number of events in the interval: <span class="math inline">\(\lambda=3\)</span> customers per 10 minutes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(X\sim\operatorname{Pois}(3)\)</span></td>
+<td style="text-align: left;">“X has the Poisson distribution with parameter 3”</td>
+<td style="text-align: left;"><span class="math inline">\(X\)</span> = customers in the next 10 minutes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(e\)</span></td>
+<td style="text-align: left;">“e”, a fixed number like <span class="math inline">\(\pi\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(e\approx2.718\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(e^{-3}\)</span></td>
+<td style="text-align: left;">“e to the minus three”</td>
+<td style="text-align: left;"><span class="math inline">\(e^{-3}=1/e^3=1/20.09\approx0.0498\)</span></td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p>On a calculator: the <span class="math inline">\(e^x\)</span> key (often Shift + ln), then enter <span class="math inline">\(-3\)</span>. Try it now: you should see 0.0498.</p>
+</div>
+</section>
+<section id="how-to-read-k-and-the-poisson-formula-sec-4.3" class="slide level2">
+<h2>How to read <span class="math inline">\(k!\)</span> and the Poisson formula <span class="tag">Sec 4.3</span></h2>
+<div class="columns">
+<div class="column" style="width:45%;">
+<p><span class="math inline">\(k!\)</span> reads “k factorial” (Lecture 1): multiply the whole numbers from <span class="math inline">\(k\)</span> down to 1.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: center;"><span class="math inline">\(k\)</span></th>
+<th style="text-align: left;"><span class="math inline">\(k!\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">0</td>
+<td style="text-align: left;"><span class="math inline">\(1\)</span> (by agreement)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1</td>
+<td style="text-align: left;"><span class="math inline">\(1\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">2</td>
+<td style="text-align: left;"><span class="math inline">\(2\cdot1=2\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">3</td>
+<td style="text-align: left;"><span class="math inline">\(3\cdot2\cdot1=6\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">4</td>
+<td style="text-align: left;"><span class="math inline">\(4\cdot3\cdot2\cdot1=24\)</span></td>
+</tr>
+</tbody>
+</table>
+</div><div class="column" style="width:55%;">
+<div class="fragment">
+<p>Both together, one instance: <span class="math display">\[e^{-3}\cdot\frac{3^2}{2!}=0.0498\cdot\frac{9}{2}\approx0.224\]</span></p>
+</div>
+<div class="fragment">
+<p>Read it from the right: <span class="math inline">\(3^2\)</span> is “three squared” <span class="math inline">\(=9\)</span>, divided by <span class="math inline">\(2!=2\)</span>, times <span class="math inline">\(e^{-3}\approx0.0498\)</span>.</p>
+<p>This is exactly the shape of the formula on the next slide, with <span class="math inline">\(\lambda=3\)</span> and <span class="math inline">\(k=2\)</span>.</p>
+</div>
+</div></div>
+</section>
+<section id="poisson-distribution-def-4.3-eq-4.2" class="slide level2">
+<h2>Poisson distribution <span class="tag">Def 4.3, Eq 4.2</span></h2>
+<div class="box-def">
+<p><span class="math inline">\(X\)</span> has the <strong>Poisson distribution</strong> with parameter <span class="math inline">\(\lambda&gt;0\)</span>, written <span class="math inline">\(X\sim\operatorname{Pois}(\lambda)\)</span>, if <span class="math display">\[\Prob(X=k)=e^{-\lambda}\,\frac{\lambda^k}{k!},\qquad k=0,1,2,\dots\]</span></p>
+</div>
+<div class="columns">
+<div class="column" style="width:45%;">
+<p>The usual model for the number of events in a fixed interval of time. Then <span class="math inline">\(\lambda\)</span> is the average number of events in that interval.</p>
+<p><span class="muted small">Values start at 0: nobody may come.</span></p>
+</div><div class="column" style="width:55%;">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">The events happen …</th>
+<th style="text-align: left;">Dina’s customers</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">one at a time</td>
+<td style="text-align: left;">yes, one at a time</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">independently of each other</td>
+<td style="text-align: left;">yes, they don’t coordinate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">at a constant average rate</td>
+<td style="text-align: left;">yes, 3 per 10 minutes</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</section>
+<section id="customers-at-dinas-point-0-to-3-ex-4.2" class="slide level2">
+<h2>Customers at Dina’s point: 0 to 3 <span class="tag">Ex 4.2</span></h2>
+<div class="muted small">
+<p>Given: on average 3 customers per 10 minutes; one at a time, independent, steady rate</p>
+</div>
+<div class="columns">
+<div class="column" style="width:45%;">
+<p><span class="math inline">\(X\)</span> = customers in the next 10 minutes. Number of trials fixed? No, and no upper limit. Steady average rate? Yes, 3 per 10 minutes.</p>
+<p>So <span class="math inline">\(X\sim\operatorname{Pois}(3)\)</span>.</p>
+<div class="fragment">
+<p>Put <span class="math inline">\(\lambda=3\)</span> into Eq 4.2, with <span class="math inline">\(e^{-3}\approx0.0498\)</span>.</p>
+</div>
+</div><div class="column" style="width:55%;">
+<div class="fragment">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: center;"><span class="math inline">\(k\)</span></th>
+<th style="text-align: left;"><span class="math inline">\(e^{-3}\cdot3^k/k!\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(\Prob(X=k)\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">0</td>
+<td style="text-align: left;"><span class="math inline">\(e^{-3}\cdot 1/1\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\approx0.050\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1</td>
+<td style="text-align: left;"><span class="math inline">\(e^{-3}\cdot 3/1\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\approx0.149\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">2</td>
+<td style="text-align: left;"><span class="math inline">\(e^{-3}\cdot 9/2\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\approx0.224\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">3</td>
+<td style="text-align: left;"><span class="math inline">\(e^{-3}\cdot 27/6\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\approx0.224\)</span></td>
+</tr>
+</tbody>
+</table>
+<p><span class="muted small">2 and 3 customers are equally likely.</span></p>
+</div>
+</div></div>
+</section>
+<section id="customers-at-dinas-point-at-least-4-ex-4.2-fig-4.2" class="slide level2">
+<h2>Customers at Dina’s point: at least 4 <span class="tag">Ex 4.2, Fig 4.2</span></h2>
+<div class="muted small">
+<p>Given: <span class="math inline">\(X\sim\operatorname{Pois}(3)\)</span>; <span class="math inline">\(\Prob(X=0)\approx0.050\)</span>, <span class="math inline">\(\Prob(X=1)\approx0.149\)</span>, <span class="math inline">\(\Prob(X=2)\approx0.224\)</span>, <span class="math inline">\(\Prob(X=3)\approx0.224\)</span></p>
+</div>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p>“At least 4” has no last value: 4, 5, 6, … So use the complement rule (Thm 1.2).</p>
+<div class="fragment">
+<p><span class="math display">\[
+\begin{aligned}
+\Prob(X\le3)&amp;\approx0.050+0.149\\
+&amp;\quad+0.224+0.224=0.647\\
+\Prob(X\ge4)&amp;=1-\Prob(X\le3)\approx0.353
+\end{aligned}
+\]</span></p>
+</div>
+<div class="fragment">
+<p>About <span class="answer">one 10-minute stretch in three</span> brings 4 or more customers.</p>
+</div>
+</div><div class="column" style="width:45%;">
+<div id="5c00cbc8" class="cell" data-fig-height="3.4" data-fig-width="4.6" data-execution_count="13">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L04-poisson-and-continuous_files/figure-revealjs/cell-14-output-1.png" width="658" height="477"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="pitfall-lambda-belongs-to-the-interval-sec-4.3" class="slide level2">
+<h2>Pitfall: <span class="math inline">\(\lambda\)</span> belongs to the interval <span class="tag">Sec 4.3</span></h2>
+<div class="muted small">
+<p>Given: Dina’s point gets on average 3 customers per 10 minutes</p>
+</div>
+<div class="columns">
+<div class="column" style="width:45%;">
+<div class="box-ex">
+<p><strong>Wrong.</strong> Customers in the next 20 minutes: <span class="math inline">\(\operatorname{Pois}(3)\)</span>.</p>
+</div>
+<div class="fragment">
+<div class="box-def">
+<p><strong>Right.</strong> 3 per 10 minutes is 6 per 20 minutes, so the count for 20 minutes is <span class="math inline">\(\operatorname{Pois}(6)\)</span>.</p>
+</div>
+</div>
+<div class="fragment">
+<p>Nobody in 20 minutes: <span class="math inline">\(\Prob(X=0)=e^{-6}\approx\)</span> <span class="answer">0.0025</span>.</p>
+</div>
+</div><div class="column" style="width:55%;">
+<div id="f9dd503d" class="cell" data-fig-height="3.8" data-fig-width="5.6" data-execution_count="14">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L04-poisson-and-continuous_files/figure-revealjs/cell-15-output-1.png" width="808" height="536"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="your-turn-bikes-on-the-sochi-seafront-exercise-2" class="slide level2 yourturn">
+<h2>Your turn: bikes on the Sochi seafront <span class="tag">Exercise 2</span></h2>
+<p>A bike-rental point gets on average 4 rentals per hour, one at a time and independently. <span class="math inline">\(X\)</span> = rentals in the next <strong>30 minutes</strong>.</p>
+<p>Name the distribution of <span class="math inline">\(X\)</span> with its parameter. Find <span class="math inline">\(\Prob(X=0)\)</span> and <span class="math inline">\(\Prob(X\ge2)\)</span>.</p>
+<div class="fragment">
+<p>4 per hour is 2 per 30 minutes, so <span class="math inline">\(X\sim\)</span> <span class="answer"><span class="math inline">\(\operatorname{Pois}(2)\)</span></span>.</p>
+</div>
+<div class="fragment">
+<p><span class="math inline">\(\Prob(X=0)=e^{-2}\approx\)</span> <span class="answer">0.135</span></p>
+</div>
+<div class="fragment">
+<p><span class="math inline">\(\Prob(X\ge2)=1-\Prob(X=0)-\Prob(X=1)=1-e^{-2}(1+2)=1-3e^{-2}\approx\)</span> <span class="answer">0.594</span></p>
+</div>
+</section>
+<section id="poisson-approximation-to-the-binomial-thm-4.2" class="slide level2">
+<h2>Poisson approximation to the binomial <span class="tag">Thm 4.2</span></h2>
+<div class="columns">
+<div class="column" style="width:58%;">
+<div class="box-thm">
+<p>Let <span class="math inline">\(X\sim\operatorname{Bin}(n,p)\)</span>. If <span class="math inline">\(n\)</span> is large and <span class="math inline">\(p\)</span> is small, then <span class="math display">\[\Prob(X=k)\approx e^{-\lambda}\,\frac{\lambda^k}{k!}\quad\text{with }\lambda=np,\]</span> for <span class="math inline">\(k=0,1,2,\dots\)</span> Our rule of thumb: good when <span class="math inline">\(n\ge100\)</span> and <span class="math inline">\(np\le10\)</span>.</p>
+</div>
+</div><div class="column" style="width:42%;">
+<div id="249a2693" class="cell" data-fig-height="3" data-fig-width="4.4" data-execution_count="15">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L04-poisson-and-continuous_files/figure-revealjs/cell-16-output-1.png" width="628" height="417"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+<p>Idea: <span class="math inline">\(p=\lambda/n\)</span>, and <span class="math inline">\((1-\lambda/n)^n\)</span> gets close to <span class="math inline">\(e^{-\lambda}\)</span>: <span class="math inline">\(0.997^{1000}\approx0.0496\)</span>, <span class="math inline">\(e^{-3}\approx0.0498\)</span>. <span class="muted small">Proof: the book, Sec 4.4.</span></p>
+<aside class="notes">
+<p>Textbooks use slightly different rules of thumb; this is ours.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="mean-and-variance-of-the-poisson-thm-4.3" class="slide level2">
+<h2>Mean and variance of the Poisson <span class="tag">Thm 4.3</span></h2>
+<div class="box-thm">
+<p>If <span class="math inline">\(X\sim\operatorname{Pois}(\lambda)\)</span>, then <span class="math inline">\(\E[X]=\lambda\)</span> and <span class="math inline">\(\Var(X)=\lambda\)</span>.</p>
+</div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>Idea: <span class="math inline">\(\operatorname{Pois}(\lambda)\)</span> is what <span class="math inline">\(\operatorname{Bin}(n,\lambda/n)\)</span> turns into for large <span class="math inline">\(n\)</span>. That binomial has mean <span class="math inline">\(n\cdot\frac{\lambda}{n}=\lambda\)</span> and variance <span class="math inline">\(\lambda\big(1-\frac{\lambda}{n}\big)\)</span>, which gets closer and closer to <span class="math inline">\(\lambda\)</span> (Thm 3.4).</p>
+<div class="fragment">
+<p>Dina, <span class="math inline">\(X\sim\operatorname{Pois}(3)\)</span>: she expects <span class="answer">3 customers</span> per 10 minutes, where we started, with <span class="math inline">\(\operatorname{SD}(X)=\sqrt3\approx1.73\)</span>.</p>
+</div>
+</div><div class="column" style="width:50%;">
+<div id="b4431bdf" class="cell" data-fig-height="3.4" data-fig-width="5" data-execution_count="16">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L04-poisson-and-continuous_files/figure-revealjs/cell-17-output-1.png" width="718" height="477"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="returned-parcels-is-it-poisson-ex-4.3" class="slide level2">
+<h2>Returned parcels: is it Poisson? <span class="tag">Ex 4.3</span></h2>
+<div class="muted small">
+<p>Given: Dina’s point hands out 500 parcels a day; each is returned to the seller with probability 0.004, independently</p>
+</div>
+<div class="columns">
+<div class="column" style="width:52%;">
+<p><span class="math inline">\(X\)</span> = returned parcels in a day. Number of trials fixed? Yes, <span class="math inline">\(n=500\)</span>. So <span class="math inline">\(X\sim\operatorname{Bin}(500,\,0.004)\)</span>.</p>
+<div class="fragment">
+<p>The binomial needs powers like <span class="math inline">\(0.996^{500}\)</span>. The Poisson needs only <span class="math inline">\(e^{-2}\approx0.1353\)</span>: <span class="math display">\[\Prob(X=2)\approx e^{-2}\,\frac{2^2}{2!}=2e^{-2}\approx0.2707\]</span></p>
+</div>
+</div><div class="column" style="width:48%;">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Rule</th>
+<th style="text-align: left;">Returns</th>
+<th style="text-align: center;">OK?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(n\ge100\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(n=500\)</span></td>
+<td style="text-align: center;">yes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(np\le10\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(500\cdot0.004=2\)</span></td>
+<td style="text-align: center;">yes</td>
+</tr>
+</tbody>
+</table>
+<p>So <span class="math inline">\(X\approx\operatorname{Pois}(2)\)</span>, with <span class="math inline">\(\lambda=np=2\)</span>.</p>
+</div></div>
+</section>
+<section id="returned-parcels-binomial-against-poisson-ex-4.3" class="slide level2">
+<h2>Returned parcels: binomial against Poisson <span class="tag">Ex 4.3</span></h2>
+<div class="muted small">
+<p>Given: <span class="math inline">\(X\sim\operatorname{Bin}(500,\,0.004)\)</span>, approximated by <span class="math inline">\(\operatorname{Pois}(2)\)</span>; the binomial row is exact</p>
+</div>
+<table class="caption-top">
+<colgroup>
+<col style="width: 21%">
+<col style="width: 15%">
+<col style="width: 15%">
+<col style="width: 15%">
+<col style="width: 15%">
+<col style="width: 15%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"><span class="math inline">\(k\)</span></th>
+<th style="text-align: center;">0</th>
+<th style="text-align: center;">1</th>
+<th style="text-align: center;">2</th>
+<th style="text-align: center;">3</th>
+<th style="text-align: center;">4</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(\operatorname{Bin}(500,\,0.004)\)</span></td>
+<td style="text-align: center;">0.1348</td>
+<td style="text-align: center;">0.2707</td>
+<td style="text-align: center;">0.2712</td>
+<td style="text-align: center;">0.1808</td>
+<td style="text-align: center;">0.0902</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(\operatorname{Pois}(2)\)</span></td>
+<td style="text-align: center;">0.1353</td>
+<td style="text-align: center;">0.2707</td>
+<td style="text-align: center;">0.2707</td>
+<td style="text-align: center;">0.1804</td>
+<td style="text-align: center;">0.0902</td>
+</tr>
+</tbody>
+</table>
+<div class="columns">
+<div class="column" style="width:45%;">
+<div class="fragment">
+<p>The two rows differ by <span class="answer">less than 0.001</span> everywhere.</p>
+<p>The probability of a day with no returns is about 0.135.</p>
+</div>
+</div><div class="column" style="width:55%;">
+<div id="ed8689f5" class="cell" data-fig-height="2.5" data-fig-width="5.4" data-execution_count="17">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L04-poisson-and-continuous_files/figure-revealjs/cell-18-output-1.png" width="778" height="342"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+<aside class="notes">
+<p>Short of time: write only the k = 0 and k = 2 columns.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="which-discrete-distribution-tbl-4.1" class="slide level2">
+<h2>Which discrete distribution? <span class="tag">Tbl 4.1</span></h2>
+<p>Find what <span class="math inline">\(X\)</span> counts, then ask what is fixed in advance.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 19%">
+<col style="width: 49%">
+<col style="width: 14%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Distribution</th>
+<th style="text-align: left;">What <span class="math inline">\(X\)</span> counts</th>
+<th style="text-align: left;">Fixed</th>
+<th style="text-align: left;">Values</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Bernoulli(<span class="math inline">\(p\)</span>)</td>
+<td style="text-align: left;">success in one trial</td>
+<td style="text-align: left;"><span class="math inline">\(p\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(0,1\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(\operatorname{Bin}(n,p)\)</span></td>
+<td style="text-align: left;">successes in <span class="math inline">\(n\)</span> trials</td>
+<td style="text-align: left;"><span class="math inline">\(n\)</span>, <span class="math inline">\(p\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(0,\dots,n\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(\operatorname{Geom}(p)\)</span></td>
+<td style="text-align: left;">trials up to and including the first success</td>
+<td style="text-align: left;"><span class="math inline">\(p\)</span> only</td>
+<td style="text-align: left;"><span class="math inline">\(1,2,3,\dots\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Hypergeometric</td>
+<td style="text-align: left;">special items, no putting back</td>
+<td style="text-align: left;"><span class="math inline">\(N\)</span>, <span class="math inline">\(M\)</span>, <span class="math inline">\(n\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(0,\dots,n\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(\operatorname{Pois}(\lambda)\)</span></td>
+<td style="text-align: left;">events in an interval</td>
+<td style="text-align: left;">rate <span class="math inline">\(\lambda\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(0,1,2,\dots\)</span></td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p><span class="muted">Marat’s walk-ins: geometric. Oksana’s bulbs: hypergeometric. Dina’s customers: Poisson. Dina’s returns: binomial, close to Poisson.</span></p>
+<aside class="notes">
+<p>Point at the table before the break: “When you read a story, find X first, then ask what is fixed.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section>
+<section id="break" class="slide level2">
+<h2>Break</h2>
+<p>Back in 10 minutes.</p>
+<aside class="notes">
+<p>Break after Section 4.4 (80 min). After it: 10 min derivative, 15 min integral; rectangle with the bracket first, then the triangle; leave [2x - x^2] from 0 to 1 = 1 on the board.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="lenas-shuttle-one-value-has-probability-0-sec-4.5" class="slide level2">
+<h2>Lena’s shuttle: one value has probability 0 <span class="tag">Sec 4.5</span></h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>Lena’s office shuttle leaves every 12 minutes (Seminar 1, Problem 12). Her waiting time can be any number from 0 to 12.</p>
+<div class="fragment">
+<p>Each single value has probability 0, so a PMF would be 0 everywhere. Instead we give probabilities to <strong>intervals</strong>, as areas under a curve.</p>
+</div>
+<div class="fragment">
+<p>For that we need two tools from school, and only the parts we use: the derivative (a slope) and the integral (an area).</p>
+</div>
+</div><div class="column" style="width:50%;">
+<div id="59f582e7" class="cell" data-fig-height="3.2" data-fig-width="5" data-execution_count="18">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L04-poisson-and-continuous_files/figure-revealjs/cell-19-output-1.png" width="717" height="447"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="derivative-a-slope-sec-4.5-fig-4.3" class="slide level2">
+<h2>Derivative: a slope <span class="tag">Sec 4.5, Fig 4.3</span></h2>
+<div class="columns">
+<div class="column" style="width:48%;">
+<p>The <strong>derivative</strong> of a function <span class="math inline">\(F\)</span> at a point <span class="math inline">\(x\)</span>, written <span class="math inline">\(F'(x)\)</span>, is the slope of the graph of <span class="math inline">\(F\)</span> at <span class="math inline">\(x\)</span>.</p>
+<p><span class="tag">How to read <span class="math inline">\(F'(x)\)</span></span></p>
+<p>“F prime of x”: how many units <span class="math inline">\(F\)</span> rises per one unit to the right, at the point <span class="math inline">\(x\)</span>.</p>
+<div class="fragment">
+<p>For <span class="math inline">\(F(x)=x^2\)</span> the derivative is <span class="math inline">\(F'(x)=2x\)</span>. At <span class="math inline">\(x=3\)</span> the slope is <span class="math inline">\(F'(3)=2\cdot3=\)</span> <span class="answer">6</span>.</p>
+</div>
+</div><div class="column" style="width:52%;">
+<div id="dbdbd4ca" class="cell" data-fig-height="3.6" data-fig-width="5" data-execution_count="19">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L04-poisson-and-continuous_files/figure-revealjs/cell-20-output-1.png" width="691" height="495"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="the-derivative-rules-we-need-sec-4.5" class="slide level2">
+<h2>The derivative rules we need <span class="tag">Sec 4.5</span></h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Function (<span class="math inline">\(c\)</span> a number, <span class="math inline">\(n\)</span> a whole number)</th>
+<th style="text-align: left;">Derivative</th>
+<th style="text-align: left;">Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">a number <span class="math inline">\(c\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(0\)</span></td>
+<td style="text-align: left;"><span class="math inline">\((5)'=0\)</span>: a flat line has slope 0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(x^n\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(n\,x^{n-1}\)</span></td>
+<td style="text-align: left;"><span class="math inline">\((x)'=1\)</span>, <span class="math inline">\((x^2)'=2x\)</span>, <span class="math inline">\((x^3)'=3x^2\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(c\)</span> times a function</td>
+<td style="text-align: left;"><span class="math inline">\(c\)</span> times its derivative</td>
+<td style="text-align: left;"><span class="math inline">\((4x^3)'=4\cdot3x^2=12x^2\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sum or difference</td>
+<td style="text-align: left;">sum or difference of the derivatives</td>
+<td style="text-align: left;"><span class="math inline">\((2x-x^2)'=2-2x\)</span></td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p>The last line comes back three times today: <span class="math inline">\((2x)'=2\)</span> and <span class="math inline">\((x^2)'=2x\)</span>, so <span class="math inline">\((2x-x^2)'=2-2x\)</span>.</p>
+</div>
+</section>
+<section id="integral-an-area-sec-4.5-fig-4.4" class="slide level2">
+<h2>Integral: an area <span class="tag">Sec 4.5, Fig 4.4</span></h2>
+<div class="columns">
+<div class="column" style="width:52%;">
+<div class="box-def">
+<p>Let <span class="math inline">\(f\)</span> be never negative, and <span class="math inline">\(a&lt;b\)</span>. The <strong>integral</strong> of <span class="math inline">\(f\)</span> from <span class="math inline">\(a\)</span> to <span class="math inline">\(b\)</span>, written <span class="math inline">\(\int_a^b f(x)\,dx\)</span>, is the area between the graph of <span class="math inline">\(f\)</span> and the <span class="math inline">\(x\)</span>-axis, from <span class="math inline">\(x=a\)</span> to <span class="math inline">\(x=b\)</span>.</p>
+</div>
+<div class="fragment">
+<p>A flat line at height 3, from 2 to 5, gives a rectangle: width <span class="math inline">\(5-2=3\)</span>, height 3. <span class="math display">\[\int_2^5 3\,dx=3\cdot3=9\]</span></p>
+</div>
+</div><div class="column" style="width:48%;">
+<div id="22bdfaff" class="cell" data-fig-height="3.4" data-fig-width="5" data-execution_count="20">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L04-poisson-and-continuous_files/figure-revealjs/cell-21-output-1.png" width="717" height="477"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="how-to-read-int_ab-fxdx-sec-4.5" class="slide level2">
+<h2>How to read <span class="math inline">\(\int_a^b f(x)\,dx\)</span> <span class="tag">Sec 4.5</span></h2>
+<div class="columns">
+<div class="column" style="width:42%;">
+<div class="big">
+<p><span class="math display">\[\int_a^b f(x)\,dx\]</span></p>
+</div>
+<p>Say: “the integral from a to b of f of x, d x”.</p>
+<div id="ae76aaa4" class="cell" data-fig-height="1.8" data-fig-width="4.6" data-execution_count="21">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L04-poisson-and-continuous_files/figure-revealjs/cell-22-output-1.png" width="657" height="237"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:58%;">
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Part</th>
+<th style="text-align: left;">What it means</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(\int\)</span></td>
+<td style="text-align: left;">a stretched S, for “sum”: the area is a sum of very thin strips</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(a\)</span> at the bottom</td>
+<td style="text-align: left;">where the area starts</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(b\)</span> on top</td>
+<td style="text-align: left;">where the area stops</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(f(x)\)</span></td>
+<td style="text-align: left;">the height of the strip at <span class="math inline">\(x\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(dx\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(x\)</span> runs along the horizontal axis; think of <span class="math inline">\(dx\)</span> as the width of one thin strip</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</section>
+<section id="the-rule-integration-undoes-differentiation-eq-4.3" class="slide level2">
+<h2>The rule: integration undoes differentiation <span class="tag">Eq 4.3</span></h2>
+<div class="box-thm">
+<p>Find a function <span class="math inline">\(G\)</span> with <span class="math inline">\(G'(x)=f(x)\)</span>. Then <span class="math display">\[\int_a^b f(x)\,dx=G(b)-G(a)=\big[G(x)\big]_a^b\]</span></p>
+</div>
+<div class="columns">
+<div class="column" style="width:52%;">
+<div class="fragment">
+<p>Why? Push the right end <span class="math inline">\(x\)</span> a little, by a width <span class="math inline">\(w\)</span>. The area grows by a thin strip, about <span class="math inline">\(f(x)\cdot w\)</span>. So the area grows at the rate <span class="math inline">\(f(x)\)</span>: its derivative is <span class="math inline">\(f\)</span>.</p>
+<p><span class="muted small">Another <span class="math inline">\(G\)</span> with <span class="math inline">\(G'=f\)</span> differs by a constant; it cancels.</span></p>
+</div>
+</div><div class="column" style="width:48%;">
+<div id="f13b6bde" class="cell" data-fig-height="2.4" data-fig-width="5" data-execution_count="22">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L04-poisson-and-continuous_files/figure-revealjs/cell-23-output-1.png" width="717" height="327"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="how-to-read-biggxbig_ab-sec-4.5" class="slide level2">
+<h2>How to read <span class="math inline">\(\big[G(x)\big]_a^b\)</span> <span class="tag">Sec 4.5</span></h2>
+<p><span class="math inline">\(\big[G(x)\big]_a^b\)</span> reads “G of x, from a to b”. It is short for <span class="math inline">\(G(b)-G(a)\)</span>: put in the top number, put in the bottom number, subtract.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="fragment">
+<div class="box-ex">
+<p><strong>By geometry.</strong> Under the flat line at height 3, from 2 to 5: width 3, height 3. <span class="math display">\[\int_2^5 3\,dx=3\cdot3=9\]</span></p>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="fragment">
+<div class="box-def">
+<p><strong>By the rule.</strong> <span class="math inline">\(G(x)=3x\)</span> has <span class="math inline">\(G'(x)=3\)</span>, so <span class="math display">\[
+\begin{aligned}
+\int_2^5 3\,dx&amp;=\big[3x\big]_2^5=3\cdot5-3\cdot2\\
+&amp;=15-6=9
+\end{aligned}
+\]</span></p>
+</div>
+</div>
+</div></div>
+<div class="fragment">
+<p><span class="answer">Same answer.</span> The rule also works when the shape is not a rectangle.</p>
+</div>
+</section>
+<section id="finding-g-the-derivative-table-backwards-sec-4.5" class="slide level2">
+<h2>Finding <span class="math inline">\(G\)</span>: the derivative table backwards <span class="tag">Sec 4.5</span></h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Function <span class="math inline">\(f(x)\)</span></th>
+<th style="text-align: left;">A function <span class="math inline">\(G(x)\)</span> with <span class="math inline">\(G'(x)=f(x)\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">a number <span class="math inline">\(c\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(c\,x\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(x^n\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(\dfrac{x^{n+1}}{n+1}\)</span>: so <span class="math inline">\(x\)</span> gives <span class="math inline">\(\dfrac{x^2}{2}\)</span>, and <span class="math inline">\(x^2\)</span> gives <span class="math inline">\(\dfrac{x^3}{3}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(c\)</span> times a function</td>
+<td style="text-align: left;"><span class="math inline">\(c\)</span> times its <span class="math inline">\(G\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sum or difference</td>
+<td style="text-align: left;">sum or difference of the <span class="math inline">\(G\)</span>’s</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p>Always check by taking the derivative of your <span class="math inline">\(G\)</span>. For example, <span class="math inline">\(\big(\frac{x^2}{2}\big)'=\frac{2x}{2}=x\)</span>. Correct.</p>
+</div>
+</section>
+<section id="one-worked-integral-sec-4.5-fig-4.4" class="slide level2">
+<h2>One worked integral <span class="tag">Sec 4.5, Fig 4.4</span></h2>
+<div class="columns">
+<div class="column" style="width:58%;">
+<p>Find <span class="math inline">\(\int_0^1 2(1-x)\,dx\)</span>.</p>
+<div class="fragment">
+<p>Multiply out: <span class="math inline">\(2(1-x)=2-2x\)</span>. By the table, <span class="math inline">\(G(x)=2x-x^2\)</span>. Check: <span class="math inline">\(G'(x)=2-2x\)</span>.</p>
+</div>
+<div class="fragment">
+<p><span class="math display">\[
+\begin{aligned}
+\int_0^1 (2-2x)\,dx&amp;=\big[2x-x^2\big]_0^1\\
+&amp;=(2-1)-(0-0)=1
+\end{aligned}
+\]</span></p>
+</div>
+<div class="fragment">
+<p>Geometry: a triangle, base 1, height 2, area <span class="math inline">\(\frac12\cdot1\cdot2=\)</span> <span class="answer">1</span>.</p>
+</div>
+</div><div class="column" style="width:42%;">
+<div id="3093b586" class="cell" data-fig-height="3.4" data-fig-width="4.4" data-execution_count="23">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L04-poisson-and-continuous_files/figure-revealjs/cell-24-output-1.png" width="628" height="477"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+<aside class="notes">
+<p>Leave [2x - x^2] from 0 to 1 = 1 on the board. This function comes back in a moment as a density.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="lenas-shuttle-as-a-density-sec-4.6-fig-4.5" class="slide level2">
+<h2>Lena’s shuttle as a density <span class="tag">Sec 4.6, Fig 4.5</span></h2>
+<div class="muted small">
+<p>Given: a shuttle every 12 minutes; <span class="math inline">\(X\)</span> = Lena’s waiting time in minutes; every moment of arrival equally likely</p>
+</div>
+<p>Spread the probability evenly: a flat line at height <span class="math inline">\(1/12\)</span> from 0 to 12, and 0 outside. Total area: <span class="math inline">\(12\cdot\frac1{12}=1\)</span>.</p>
+<div id="e24e2d49" class="cell" data-fig-height="2" data-fig-width="10" data-execution_count="24">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L04-poisson-and-continuous_files/figure-revealjs/cell-25-output-1.png" width="1468" height="267"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Waiting more than 5 minutes: width 7 times height <span class="math inline">\(1/12\)</span>. <span class="answer">Seminar 1, Problem 12, as an area.</span></p>
+</section>
+<section id="continuous-random-variable-density-def-4.4" class="slide level2">
+<h2>Continuous random variable, density <span class="tag">Def 4.4</span></h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<div class="box-def">
+<p><span class="math inline">\(X\)</span> is <strong>continuous</strong> if there is a function <span class="math inline">\(f(x)\)</span>, its <strong>density</strong>, with</p>
+<ol type="1">
+<li><span class="math inline">\(f(x)\ge0\)</span> for every <span class="math inline">\(x\)</span>;</li>
+<li>total area under <span class="math inline">\(f\)</span> equal to 1;</li>
+<li><span class="math inline">\(\Prob(a\le X\le b)=\int_a^b f(x)\,dx\)</span>.</li>
+</ol>
+</div>
+</div><div class="column" style="width:40%;">
+<div id="f367f82b" class="cell" data-fig-height="2.5" data-fig-width="4.2" data-execution_count="25">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L04-poisson-and-continuous_files/figure-revealjs/cell-26-output-1.png" width="597" height="342"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+<div class="fragment">
+<p>Today every density is 0 outside one interval, from <span class="math inline">\(c\)</span> to <span class="math inline">\(d\)</span>. So we start integrating at the left end <span class="math inline">\(c\)</span>, and property 2 reads <span class="math inline">\(\int_c^d f(x)\,dx=1\)</span>. <span class="muted">Shuttle: <span class="math inline">\(c=0\)</span>, <span class="math inline">\(d=12\)</span>.</span></p>
+</div>
+</section>
+<section id="how-to-read-fx-a-height-not-a-probability-sec-4.6" class="slide level2">
+<h2>How to read <span class="math inline">\(f(x)\)</span>: a height, not a probability <span class="tag">Sec 4.6</span></h2>
+<div class="columns">
+<div class="column" style="width:52%;">
+<p><span class="math inline">\(f(x)\)</span> reads “f of x”: the <strong>height</strong> of the curve at <span class="math inline">\(x\)</span>. Probabilities are areas, height times width, so a density can be larger than 1.</p>
+<div class="fragment">
+<p><span class="math inline">\(f(x)=2(1-x)\)</span> on <span class="math inline">\([0,1]\)</span> (all numbers from 0 to 1): <span class="math inline">\(f(0)=2\)</span>. Near 0: <span class="math display">\[\Prob(0\le X\le0.01)\approx2\cdot0.01=0.02\]</span> <span class="answer">A good probability.</span> <span class="muted small">Exactly: <span class="math inline">\(\big[2x-x^2\big]_0^{0.01}=0.0199\)</span>.</span></p>
+</div>
+</div><div class="column" style="width:48%;">
+<div id="96ba2bcf" class="cell" data-fig-height="3.3" data-fig-width="5" data-execution_count="26">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L04-poisson-and-continuous_files/figure-revealjs/cell-27-output-1.png" width="718" height="462"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><span class="muted small">The strip is drawn wider so you can see it.</span></p>
+</div></div>
+</section>
+<section id="pitfall-le-or-no-longer-matters-sec-4.6" class="slide level2">
+<h2>Pitfall: <span class="math inline">\(\le\)</span> or <span class="math inline">\(&lt;\)</span> no longer matters <span class="tag">Sec 4.6</span></h2>
+<div class="columns">
+<div class="column" style="width:48%;">
+<div id="1bbb3d05" class="cell" data-fig-height="3.8" data-fig-width="5" data-execution_count="27">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L04-poisson-and-continuous_files/figure-revealjs/cell-28-output-1.png" width="733" height="537"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:52%;">
+<p>For a continuous <span class="math inline">\(X\)</span> a single value has no width, so no area: <span class="math inline">\(\Prob(X=x)=0\)</span> for every <span class="math inline">\(x\)</span>.</p>
+<div class="fragment">
+<p>So <span class="math inline">\(\le\)</span> and <span class="math inline">\(&lt;\)</span> give the same answer: <span class="math display">\[
+\begin{aligned}
+\Prob(a\le X\le b)&amp;=\Prob(a&lt;X\le b)\\
+=\Prob(a\le X&lt;b)&amp;=\Prob(a&lt;X&lt;b)
+\end{aligned}
+\]</span></p>
+</div>
+<div class="fragment">
+<p>Not a contradiction with Lecture 3: there <span class="math inline">\(X\)</span> was discrete and the boundary mattered. And as in Lecture 1, probability 0 is not impossible. Lena waits <em>some</em> exact time.</p>
+</div>
+</div></div>
+</section>
+<section id="bakhyts-first-customer-is-it-a-density-ex-4.4" class="slide level2">
+<h2>Bakhyt’s first customer: is it a density? <span class="tag">Ex 4.4</span></h2>
+<div class="muted small">
+<p>Given: Bakhyt’s coffee kiosk at the Omsk river station opens at 7:00; the first customer always comes within the hour, more often early than late; model: <span class="math inline">\(f(x)=2(1-x)\)</span> for <span class="math inline">\(0\le x\le1\)</span>, 0 otherwise</p>
+</div>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p><span class="math inline">\(X\)</span> = hours from opening to the first customer. A count or a measurement? A measurement, any number from 0 to 1: continuous.</p>
+<div class="fragment">
+<p>Check Def 4.4: <span class="math inline">\(f(x)\ge0\)</span> on <span class="math inline">\([0,1]\)</span>, and the total area is <span class="math display">\[\int_0^1 2(1-x)\,dx=\big[2x-x^2\big]_0^1=1.\]</span> So <span class="math inline">\(f\)</span> <span class="answer">is a density</span>.</p>
+</div>
+</div><div class="column" style="width:45%;">
+<div id="2f18fabe" class="cell" data-fig-height="3.2" data-fig-width="4.6" data-execution_count="28">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L04-poisson-and-continuous_files/figure-revealjs/cell-29-output-1.png" width="658" height="447"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="bakhyts-first-customer-the-first-half-hour-ex-4.4-fig-4.6" class="slide level2">
+<h2>Bakhyt’s first customer: the first half hour <span class="tag">Ex 4.4, Fig 4.6</span></h2>
+<div class="muted small">
+<p>Given: <span class="math inline">\(X\)</span> = hours from 7:00 to the first customer; <span class="math inline">\(f(x)=2-2x\)</span> for <span class="math inline">\(0\le x\le1\)</span>, 0 otherwise; <span class="math inline">\(G(x)=2x-x^2\)</span> has <span class="math inline">\(G'(x)=2-2x\)</span></p>
+</div>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p>The first half hour is <span class="math inline">\(0\le X\le0.5\)</span>.</p>
+<div class="fragment">
+<p><span class="math display">\[
+\begin{aligned}
+\Prob(X\le0.5)&amp;=\int_0^{0.5}(2-2x)\,dx\\
+&amp;=\big[2x-x^2\big]_0^{0.5}\\
+&amp;=(1-0.25)-0=0.75
+\end{aligned}
+\]</span></p>
+</div>
+<div class="fragment">
+<p><span class="answer">Three mornings in four</span>, the first customer comes before 7:30.</p>
+</div>
+</div><div class="column" style="width:45%;">
+<div id="ea69153d" class="cell" data-fig-height="3.3" data-fig-width="4.6" data-execution_count="29">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L04-poisson-and-continuous_files/figure-revealjs/cell-30-output-1.png" width="658" height="462"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="cdf-of-a-continuous-random-variable-def-4.5" class="slide level2">
+<h2>CDF of a continuous random variable <span class="tag">Def 4.5</span></h2>
+<div class="box-def">
+<p><span class="math inline">\(X\)</span> continuous, density <span class="math inline">\(f\)</span> zero outside <span class="math inline">\(c\)</span> to <span class="math inline">\(d\)</span>. Its CDF, as in Def 3.3: <span class="math display">\[F(x)=\Prob(X\le x)=\int_c^x f(t)\,dt\quad\text{for } c\le x\le d,\]</span> 0 for <span class="math inline">\(x&lt;c\)</span>, 1 for <span class="math inline">\(x&gt;d\)</span>. The density is the slope of the CDF: <span class="math inline">\(f(x)=F'(x)\)</span>, except where <span class="math inline">\(f\)</span> jumps.</p>
+</div>
+<div class="columns">
+<div class="column" style="width:58%;">
+<p><span class="tag">How to read <span class="math inline">\(\int_c^x f(t)\,dt\)</span></span></p>
+<p><span class="math inline">\(x\)</span> is taken: it is where the area stops. So the axis variable is called <span class="math inline">\(t\)</span>. Say “the integral from c to x of f of t, d t”.</p>
+</div><div class="column" style="width:42%;">
+<div id="a9fcd168" class="cell" data-fig-height="1.7" data-fig-width="4.4" data-execution_count="30">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L04-poisson-and-continuous_files/figure-revealjs/cell-31-output-1.png" width="627" height="222"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="bakhyts-cdf-def-4.5-fig-4.6" class="slide level2">
+<h2>Bakhyt’s CDF <span class="tag">Def 4.5, Fig 4.6</span></h2>
+<div class="muted small">
+<p>Given: <span class="math inline">\(f(x)=2-2x\)</span> for <span class="math inline">\(0\le x\le1\)</span>, 0 otherwise; <span class="math inline">\(\Prob(X\le0.5)=0.75\)</span></p>
+</div>
+<div class="columns">
+<div class="column" style="width:52%;">
+<p>For <span class="math inline">\(0\le x\le1\)</span>: <span class="math display">\[F(x)=\big[2t-t^2\big]_0^x=2x-x^2,\]</span> 0 to the left, 1 to the right.</p>
+<div class="fragment">
+<p><span class="math inline">\(F(0.5)=1-0.25=0.75\)</span>, <span class="answer">as before</span>, now read as a height. Check: <span class="math inline">\(F'(x)=2-2x=f(x)\)</span>.</p>
+</div>
+<div class="fragment">
+<p>No steps: a continuous CDF climbs smoothly from 0 to 1.</p>
+</div>
+</div><div class="column" style="width:48%;">
+<div id="9f532b84" class="cell" data-fig-height="3.4" data-fig-width="5" data-execution_count="31">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L04-poisson-and-continuous_files/figure-revealjs/cell-32-output-1.png" width="718" height="477"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="expected-value-and-variance-sums-become-integrals-def-4.6" class="slide level2">
+<h2>Expected value and variance: sums become integrals <span class="tag">Def 4.6</span></h2>
+<div class="box-def">
+<p><span class="math inline">\(X\)</span> continuous, density <span class="math inline">\(f\)</span> zero outside <span class="math inline">\(c\)</span> to <span class="math inline">\(d\)</span>; <span class="math inline">\(p(x_i)\)</span> becomes <span class="math inline">\(f(x)\,dx\)</span>: <span class="math display">\[\E[X]=\mu=\int_c^d x\,f(x)\,dx,\qquad \Var(X)=\int_c^d (x-\mu)^2f(x)\,dx.\]</span></p>
+</div>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: left;">Discrete (Lecture 3)</th>
+<th style="text-align: left;">Continuous</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">probabilities</td>
+<td style="text-align: left;"><span class="math inline">\(p(x)=\Prob(X=x)\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(\Prob(a\le X\le b)=\int_a^b f(x)\,dx\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">expected value</td>
+<td style="text-align: left;"><span class="math inline">\(\sum_i x_i\,p(x_i)\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(\int_c^d x\,f(x)\,dx\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(\E[g(X)]\)</span>, e.g.&nbsp;<span class="math inline">\(\E[X^2]\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(\sum_i g(x_i)\,p(x_i)\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(\int_c^d g(x)\,f(x)\,dx\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">variance (<span class="math inline">\(\operatorname{SD}=\sqrt{\Var}\)</span>)</td>
+<td style="text-align: left;"><span class="math inline">\(\sum_i (x_i-\mu)^2p(x_i)\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(\int_c^d (x-\mu)^2f(x)\,dx\)</span></td>
+</tr>
+</tbody>
+</table>
+<aside class="notes">
+<p>Say: the results of Lecture 3 still hold with the same proofs, sum replaced by integral: the shortcut Var = E[X^2] - mu^2 (Thm 3.2) and the rules for aX + b (Thm 3.3). The variance slide for Bakhyt uses the shortcut.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="bakhyt-the-first-customer-on-average-def-4.6" class="slide level2">
+<h2>Bakhyt: the first customer on average <span class="tag">Def 4.6</span></h2>
+<div class="muted small">
+<p>Given: <span class="math inline">\(X\)</span> = hours from 7:00 to the first customer; <span class="math inline">\(f(x)=2-2x\)</span> for <span class="math inline">\(0\le x\le1\)</span>, 0 otherwise</p>
+</div>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p>Guess first: after 30 minutes, more, or less?</p>
+<div class="fragment">
+<p>Multiply out: <span class="math inline">\(x\,f(x)=2x-2x^2\)</span>. Then <span class="math display">\[
+\begin{aligned}
+\E[X]&amp;=\int_0^1(2x-2x^2)\,dx=\Big[x^2-\frac{2x^3}{3}\Big]_0^1\\
+&amp;=1-\frac23=\frac13\ \text{hour}
+\end{aligned}
+\]</span></p>
+</div>
+<div class="fragment">
+<p>On average after <span class="answer">20 minutes</span>, before 7:30.</p>
+</div>
+</div><div class="column" style="width:45%;">
+<div id="c004e64d" class="cell" data-fig-height="3.3" data-fig-width="4.6" data-execution_count="32">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L04-poisson-and-continuous_files/figure-revealjs/cell-33-output-1.png" width="658" height="462"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+<aside class="notes">
+<p>Ask: “Bakhyt’s first customer, on average: after 30 minutes, more, or less?” The density falls, so less.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="bakhyt-variance-and-standard-deviation-def-4.6-thm-3.2" class="slide level2">
+<h2>Bakhyt: variance and standard deviation <span class="tag">Def 4.6, Thm 3.2</span></h2>
+<div class="muted small">
+<p>Given: <span class="math inline">\(f(x)=2-2x\)</span> for <span class="math inline">\(0\le x\le1\)</span> (hours), 0 otherwise; <span class="math inline">\(\E[X]=\frac13\)</span></p>
+</div>
+<p>Multiply out: <span class="math inline">\(x^2f(x)=2x^2-2x^3\)</span>, so <span class="math display">\[\E[X^2]=\int_0^1(2x^2-2x^3)\,dx=\Big[\frac{2x^3}{3}-\frac{x^4}{2}\Big]_0^1=\frac23-\frac12=\frac16\]</span></p>
+<div class="fragment">
+<p>By the shortcut (Thm 3.2, it still holds for densities): <span class="math display">\[\Var(X)=\E[X^2]-\mu^2=\frac16-\Big(\frac13\Big)^2=\frac16-\frac19=\frac1{18}\approx0.0556\ \text{hours}^2\]</span></p>
+</div>
+<div class="fragment">
+<p><span class="math inline">\(\operatorname{SD}(X)=\sqrt{1/18}\approx0.236\)</span> hours, about 14 minutes. Hours squared mean nothing to Bakhyt. <span class="answer">20 minutes, give or take 14</span>, does.</p>
+</div>
+</section>
+<section id="your-turn-repair-visits-in-vladimir-exercise-4" class="slide level2 yourturn">
+<h2>Your turn: repair visits in Vladimir <span class="tag">Exercise 4</span></h2>
+<p>Polina, who schedules repair technicians, models the length <span class="math inline">\(X\)</span> of a visit, in hours, by the density <span class="math inline">\(f(x)=Cx\)</span> for <span class="math inline">\(0\le x\le2\)</span>, and <span class="math inline">\(f(x)=0\)</span> otherwise. Find the number <span class="math inline">\(C\)</span>, then <span class="math inline">\(\Prob(X\le1)\)</span> and <span class="math inline">\(\E[X]\)</span>.</p>
+<div class="fragment">
+<p>Total area 1: <span class="math inline">\(\int_0^2 Cx\,dx=C\big[\frac{x^2}{2}\big]_0^2=2C=1\)</span>, so <span class="math inline">\(C=\)</span> <span class="answer">0.5</span></p>
+</div>
+<div class="fragment">
+<p><span class="math inline">\(\Prob(X\le1)=\int_0^1 0.5x\,dx=\big[\frac{x^2}{4}\big]_0^1=\)</span> <span class="answer">0.25</span></p>
+</div>
+<div class="fragment">
+<p><span class="math inline">\(\E[X]=\int_0^2 x\cdot0.5x\,dx=\big[\frac{x^3}{6}\big]_0^2=\frac86\approx\)</span> <span class="answer">1.33 hours</span></p>
+</div>
+</section>
+<section id="uniform-distribution-def-4.7" class="slide level2">
+<h2>Uniform distribution <span class="tag">Def 4.7</span></h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<div class="box-def">
+<p><span class="math inline">\(X\sim\operatorname{U}(a,b)\)</span>, the <strong>uniform distribution</strong> on the interval from <span class="math inline">\(a\)</span> to <span class="math inline">\(b\)</span> (<span class="math inline">\(a&lt;b\)</span>), has density and CDF <span class="math display">\[f(x)=\frac{1}{b-a},\qquad F(x)=\frac{x-a}{b-a}\]</span> for <span class="math inline">\(a\le x\le b\)</span>. Outside: <span class="math inline">\(f=0\)</span>; <span class="math inline">\(F=0\)</span> left of <span class="math inline">\(a\)</span>, <span class="math inline">\(F=1\)</span> right of <span class="math inline">\(b\)</span>.</p>
+</div>
+</div><div class="column" style="width:40%;">
+<div id="ffb27a68" class="cell" data-fig-height="3.4" data-fig-width="4.4" data-execution_count="33">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L04-poisson-and-continuous_files/figure-revealjs/cell-34-output-1.png" width="629" height="477"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="how-to-read-xsimoperatornameuab-sec-4.7" class="slide level2">
+<h2>How to read <span class="math inline">\(X\sim\operatorname{U}(a,b)\)</span> <span class="tag">Sec 4.7</span></h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Write</th>
+<th style="text-align: left;">Say</th>
+<th style="text-align: left;">For Lena’s shuttle</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(X\sim\operatorname{U}(a,b)\)</span></td>
+<td style="text-align: left;">“X is uniform on the interval from a to b”</td>
+<td style="text-align: left;"><span class="math inline">\(X\sim\operatorname{U}(0,12)\)</span>, minutes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(\dfrac{1}{b-a}\)</span></td>
+<td style="text-align: left;">“one over b minus a”: the height</td>
+<td style="text-align: left;"><span class="math inline">\(\dfrac{1}{12-0}=\dfrac1{12}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(\dfrac{x-a}{b-a}\)</span></td>
+<td style="text-align: left;">the share of the interval left of <span class="math inline">\(x\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(F(x)=\dfrac{x-0}{12-0}=\dfrac{x}{12}\)</span></td>
+</tr>
+</tbody>
+</table>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p>Why that height? Width times height must be 1: <span class="math inline">\((b-a)\cdot\frac{1}{b-a}=1\)</span>.</p>
+</div><div class="column" style="width:45%;">
+<div id="2761d3e8" class="cell" data-fig-height="1.4" data-fig-width="4.6" data-execution_count="34">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L04-poisson-and-continuous_files/figure-revealjs/cell-35-output-1.png" width="658" height="177"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="the-uniform-cdf-is-a-share-of-the-interval-def-4.7" class="slide level2">
+<h2>The uniform CDF is a share of the interval <span class="tag">Def 4.7</span></h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p>Where does <span class="math inline">\(F\)</span> come from? Def 4.5, starting at the left end <span class="math inline">\(a\)</span>: <span class="math display">\[F(x)=\int_a^x\frac{1}{b-a}\,dt=\Big[\frac{t}{b-a}\Big]_a^x=\frac{x-a}{b-a}\]</span></p>
+<div class="fragment">
+<p>The rectangle from <span class="math inline">\(a\)</span> to <span class="math inline">\(x\)</span>: width <span class="math inline">\(x-a\)</span> times height <span class="math inline">\(\frac1{b-a}\)</span>. It is the share of the interval left of <span class="math inline">\(x\)</span>: Lecture 1’s geometric probability on a segment (Def 1.9), written as a random variable.</p>
+</div>
+</div><div class="column" style="width:45%;">
+<div id="368dbdb7" class="cell" data-fig-height="2.8" data-fig-width="4.6" data-execution_count="35">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L04-poisson-and-continuous_files/figure-revealjs/cell-36-output-1.png" width="659" height="387"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="waiting-for-the-shuttle-ex-4.5" class="slide level2">
+<h2>Waiting for the shuttle <span class="tag">Ex 4.5</span></h2>
+<div class="muted small">
+<p>Given: the shuttle leaves every 12 minutes; Lena comes at a random moment, every moment equally likely</p>
+</div>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p><span class="math inline">\(X\)</span> = Lena’s wait in minutes, any number from 0 to 12, all equally likely. So <span class="math inline">\(X\sim\operatorname{U}(0,12)\)</span>: <span class="math inline">\(f(x)=\frac1{12}\)</span>, <span class="math inline">\(F(x)=\frac{x}{12}\)</span>.</p>
+<div class="fragment">
+<p>More than 8 minutes, by the complement rule: <span class="math display">\[\Prob(X&gt;8)=1-F(8)=1-\frac{8}{12}=\frac13\]</span></p>
+</div>
+<div class="fragment">
+<p>The rectangle from 8 to 12: width 4 times height <span class="math inline">\(\frac1{12}\)</span>, <span class="answer">1/3</span>.</p>
+</div>
+</div><div class="column" style="width:45%;">
+<div id="d1046463" class="cell" data-fig-height="3.3" data-fig-width="4.6" data-execution_count="36">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L04-poisson-and-continuous_files/figure-revealjs/cell-37-output-1.png" width="658" height="462"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="mean-and-variance-of-the-uniform-thm-4.4" class="slide level2">
+<h2>Mean and variance of the uniform <span class="tag">Thm 4.4</span></h2>
+<div class="box-thm">
+<p>If <span class="math inline">\(X\sim\operatorname{U}(a,b)\)</span>, then <span class="math inline">\(\quad\E[X]=\dfrac{a+b}{2},\qquad \Var(X)=\dfrac{(b-a)^2}{12}.\)</span></p>
+</div>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p>Idea: <span class="math inline">\(\frac1{b-a}\)</span> comes out of the integral: <span class="math display">\[\E[X]=\frac{1}{b-a}\Big[\frac{x^2}{2}\Big]_a^b=\frac{b^2-a^2}{2(b-a)}=\frac{a+b}{2}\]</span></p>
+<div class="fragment">
+<p>Shuttle, <span class="math inline">\(\operatorname{U}(0,12)\)</span>: <span class="math inline">\(\E[X]=\)</span> <span class="answer">6 min</span>; <span class="math inline">\(\Var(X)=\frac{12^2}{12}=12\)</span> min²; <span class="math inline">\(\operatorname{SD}\approx3.46\)</span> min.</p>
+</div>
+</div><div class="column" style="width:45%;">
+<div id="9f17b8f7" class="cell" data-fig-height="1.9" data-fig-width="4.6" data-execution_count="37">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="L04-poisson-and-continuous_files/figure-revealjs/cell-38-output-1.png" width="658" height="257"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><span class="muted small">Uses <span class="math inline">\(b^2-a^2=(b-a)(b+a)\)</span>. Variance: same with <span class="math inline">\(x^2\)</span>, then the shortcut. Proof: Sec 4.7.</span></p>
+</div></div>
+</section>
+<section id="your-turn-delivery-in-30-to-50-minutes-exercise-5" class="slide level2 yourturn">
+<h2>Your turn: delivery in 30 to 50 minutes <span class="tag">Exercise 5</span></h2>
+<p>Arman’s food-delivery app promises delivery “in 30 to 50 minutes”. Assume the delivery time <span class="math inline">\(X\)</span> in minutes is <span class="math inline">\(\operatorname{U}(30,50)\)</span>. Find <span class="math inline">\(\Prob(X&gt;45)\)</span>, <span class="math inline">\(\E[X]\)</span> and <span class="math inline">\(\operatorname{SD}(X)\)</span>.</p>
+<div class="fragment">
+<p>The rectangle from 45 to 50: <span class="math inline">\(\Prob(X&gt;45)=\dfrac{50-45}{50-30}=\dfrac{5}{20}=\)</span> <span class="answer">0.25</span></p>
+</div>
+<div class="fragment">
+<p><span class="math inline">\(\E[X]=\dfrac{30+50}{2}=\)</span> <span class="answer">40 minutes</span></p>
+</div>
+<div class="fragment">
+<p><span class="math inline">\(\operatorname{SD}(X)=\sqrt{\dfrac{(50-30)^2}{12}}=\dfrac{20}{\sqrt{12}}\approx\)</span> <span class="answer">5.77 minutes</span></p>
+<aside class="notes">
+<p>Lecture 5 adds the exponential distribution for waiting times, with its “memoryless” property, and then the normal. Seminar 4: geometric and Poisson. Seminar 5: densities and the uniform, plus the exponential after Lecture 5.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+
+</div>
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="img/logo-hse-wide.png" class="slide-logo"></p>
+<div class="footer footer-default">
+<p>Probability Theory and Mathematical Statistics · HSE 2026/27</p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="L04-poisson-and-continuous_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="L04-poisson-and-continuous_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="L04-poisson-and-continuous_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="L04-poisson-and-continuous_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="L04-poisson-and-continuous_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="L04-poisson-and-continuous_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="L04-poisson-and-continuous_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="L04-poisson-and-continuous_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="L04-poisson-and-continuous_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="L04-poisson-and-continuous_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="L04-poisson-and-continuous_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":false},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1280,
+
+        height: 720,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 6.0e-2,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

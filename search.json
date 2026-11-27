@@ -339,6 +339,105 @@
     ]
   },
   {
+    "objectID": "lectures/L04-poisson-and-continuous.html",
+    "href": "lectures/L04-poisson-and-continuous.html",
+    "title": "4  Counting events and measuring time",
+    "section": "",
+    "text": "4.1 The geometric distribution: waiting for the first success\nBack to Marat’s optician’s shop on Bauman Street in Kazan. This Saturday nobody has booked the free eye test. Walk-in customers come in one at a time, Marat tests each of them, and each orders glasses with probability 0.4, independently of the others. Marat doesn’t make his first coffee until the first pair is sold. (The waiting-room machine has been repaired, so the habit now costs him something.)\nSo the number he cares about this morning is: count the customers Marat tests up to and including the first one who orders. Lecture 3 (Exercise 3c) said this count is not binomial. Is the first order most likely to come from customer 1, 2 or 3? How many customers should Marat expect to test before his coffee?\nCompare with Lecture 3, where we counted the orders among 3 booked customers; call that count \\(Y\\sim\\operatorname{Bin}(3,\\,0.4)\\). For \\(Y\\) the number of trials is fixed and the number of successes is random. For \\(X\\) it is the other way round: one success, a random number of trials. And \\(\\Prob(X&gt;3)=\\Prob(Y=0)=0.216\\): both are “three noes in a row”.\nAs for \\(X&gt;3\\), \\(X&gt;k\\) means the first \\(k\\) trials all fail, so \\(\\Prob(X&gt;k)=(1-p)^k\\). The probabilities \\(p,\\ (1-p)p,\\ (1-p)^2p,\\dots\\) form a geometric progression, hence the name; it has nothing to do with geometric probability (Definition 1.9). Some books and some software count the failures before the first success, starting at 0. We count the trials, including the success, starting at 1.\nFigure 4.1: PMF of \\(X\\sim\\operatorname{Geom}(0.4)\\), the number of customers Marat tests up to and including the first order. Each bar is 0.6 times the one before it. The bars go on to the right for ever, too small to see.\nFor Marat, \\(p=0.4\\): \\(\\E[X]=1/0.4=2.5\\) customers, \\(\\Var(X)=0.6/0.4^2=3.75\\) and \\(\\operatorname{SD}(X)=\\sqrt{3.75}\\approx1.94\\) customers. As with Lecture 3’s 1,000 Saturdays: among 1,000 customers about 400 order, one order per \\(1000/400=2.5\\) customers. The most likely value is 1, the mean 2.5, and the SD almost as large as the mean: some mornings the coffee comes late.",
+    "crumbs": [
+      "Lectures",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Counting events and measuring time</span>"
+    ]
+  },
+  {
+    "objectID": "lectures/L04-poisson-and-continuous.html#sec-L04-geometric",
+    "href": "lectures/L04-poisson-and-continuous.html#sec-L04-geometric",
+    "title": "4  Counting events and measuring time",
+    "section": "",
+    "text": "Example 4.1 (Marat’s first order) Given: walk-in customers come one after another; each orders glasses with probability 0.4 and does not with probability 0.6; they decide independently.\nThe variable: \\(X\\) = the number of customers Marat tests up to and including the first one who orders. Number of trials fixed? No: Marat keeps testing until someone orders. So \\(X\\) is not binomial. It is geometric (Definition 4.1, right after this example).\nFind \\(\\Prob(X=1)\\), \\(\\Prob(X=2)\\), \\(\\Prob(X=3)\\) and \\(\\Prob(X&gt;3)\\).\nSolution. Write O for “orders” and N for “does not”, as in Lecture 3. Each value of \\(X\\) comes from one path: some N’s, then an O. The customers are independent (Definition 2.3), so we multiply along the path.\n\n\\(X=1\\): path O, \\(\\Prob(X=1)=0.4\\).\n\\(X=2\\): path NO, \\(\\Prob(X=2)=0.6\\cdot0.4=0.24\\).\n\\(X=3\\): path NNO, \\(\\Prob(X=3)=0.6\\cdot0.6\\cdot0.4=0.144\\).\n\n\\(X&gt;3\\) means that the first three customers all say no: NNN, whatever comes after. So \\(\\Prob(X&gt;3)=0.6^3=0.216\\).\nThe first order is most likely to come from customer 1; each later step multiplies by 0.6.\n\n\n\nDefinition 4.1 (Geometric distribution) Repeat independent trials, each a success with the same probability \\(p\\), where \\(0&lt;p\\le1\\). Let \\(X\\) be the number of the trial on which the first success happens. Then \\(X\\) has the geometric distribution with parameter \\(p\\), written \\(X\\sim\\operatorname{Geom}(p)\\), and \\[\n\\Prob(X=k)=(1-p)^{k-1}p,\\qquad k=1,2,3,\\dots\n\\tag{4.1}\\]\n\n\n\n\n\n\n\nNoteHow to read \\(X\\sim\\operatorname{Geom}(p)\\) and \\(k=1,2,3,\\dots\\)\n\n\n\n\\(X\\sim\\operatorname{Geom}(p)\\) reads “X has the geometric distribution with parameter p”. Marat’s \\(X\\) is \\(\\operatorname{Geom}(0.4)\\).\n\\(k=1,2,3,\\dots\\) reads “k equals one, two, three, and so on”. The list has no last value: there is no largest possible \\(X\\). Marat could, in principle, test 20 customers before the first order. That has probability \\(0.6^{19}\\cdot0.4\\approx0.00002\\), tiny but not zero.\nIn Equation 4.1, \\((1-p)^{k-1}p\\) means “\\(k-1\\) failures, then a success”. For Marat and \\(k=3\\): \\((1-0.4)^{3-1}\\cdot0.4=0.6^2\\cdot0.4=0.144\\), as in Example 4.1.\n\n\n\n\n\nTheorem 4.1 (Mean and variance of the geometric distribution) If \\(X\\sim\\operatorname{Geom}(p)\\), then \\[\n\\E[X]=\\frac1p,\\qquad \\Var(X)=\\frac{1-p}{p^2}.\n\\]\n\nProof\nWrite \\(m=\\E[X]\\) and look at the first trial. With probability \\(p\\) it is a success, and then \\(X=1\\). With probability \\(1-p\\) it is a failure. Then one trial is used up, and because the trials are independent, the waiting starts again from scratch: on average \\(m\\) more trials. So \\[\nm=p\\cdot1+(1-p)(1+m)=1+(1-p)\\,m .\n\\] Subtract \\((1-p)m\\) from both sides: \\(p\\,m=1\\), so \\(m=1/p\\). A similar first-step argument for \\(\\E[X^2]\\), followed by Theorem 3.2, gives the variance. We skip that algebra.",
+    "crumbs": [
+      "Lectures",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Counting events and measuring time</span>"
+    ]
+  },
+  {
+    "objectID": "lectures/L04-poisson-and-continuous.html#sec-L04-hypergeometric",
+    "href": "lectures/L04-poisson-and-continuous.html#sec-L04-hypergeometric",
+    "title": "4  Counting events and measuring time",
+    "section": "4.2 Drawing without putting back: the hypergeometric distribution",
+    "text": "4.2 Drawing without putting back: the hypergeometric distribution\nLecture 3, Exercise 3b, came back to Lecture 2’s box of LED bulbs.\nGiven: 12 bulbs, 3 of them faulty; Oksana takes 2 without putting the first one back.\nThe variable: \\(X\\) = the number of faulty bulbs among the 2. Number of trials fixed? Yes, 2. Same probability on every draw? No: after the first draw it is \\(2/11\\) or \\(3/11\\). So \\(X\\) is not binomial.\nWe count instead, as in Example 1.7. There are \\(\\binom{12}{2}=66\\) equally likely pairs, and one faulty bulb means one of the 3 faulty and one of the 9 good: \\[\n\\Prob(X=1)=\\frac{\\binom31\\binom91}{\\binom{12}2}=\\frac{27}{66}\\approx0.409 .\n\\] In the same way \\(\\Prob(X=0)=\\binom92/66=36/66\\) and \\(\\Prob(X=2)=\\binom32/66=3/66\\).\n\nDefinition 4.2 (Hypergeometric distribution) A box has \\(N\\) items, \\(M\\) of them special (faulty, say). Take \\(n\\) items without putting them back, all sets of \\(n\\) items equally likely. The number \\(X\\) of special items in the sample has the hypergeometric distribution: \\[\n\\Prob(X=k)=\\frac{\\binom{M}{k}\\binom{N-M}{n-k}}{\\binom{N}{n}} .\n\\] Its mean is \\(\\E[X]=n\\,\\dfrac{M}{N}\\).\n\nFor the bulbs, \\(N=12\\), \\(M=3\\), \\(n=2\\), and \\(\\E[X]=2\\cdot3/12=0.5\\) faulty bulbs. The idea behind \\(nM/N\\): each of the \\(n\\) items taken is special with probability \\(M/N\\), and expected values add up (we prove that in Lecture 6). In this course we use the rule: if the sample is under about 5% of the box, taking items out hardly changes the rest, and \\(\\operatorname{Bin}(n,\\,M/N)\\) is a fine approximation.",
+    "crumbs": [
+      "Lectures",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Counting events and measuring time</span>"
+    ]
+  },
+  {
+    "objectID": "lectures/L04-poisson-and-continuous.html#sec-L04-poisson",
+    "href": "lectures/L04-poisson-and-continuous.html#sec-L04-poisson",
+    "title": "4  Counting events and measuring time",
+    "section": "4.3 The Poisson distribution: counting events in time",
+    "text": "4.3 The Poisson distribution: counting events in time\nDina runs a parcel pickup point in Perm, in a ground-floor room it shares with a key-cutting stall. On weekday afternoons it gets on average 3 customers per 10 minutes, one at a time, and they don’t coordinate. How many will come in the next 10 minutes? There is no list of \\(n\\) people who might come, so the binomial doesn’t fit, and there is no upper limit. What we know is the average rate. The distribution for this is named after Siméon Denis Poisson (say “pwa-SON”).\n\n\n\n\n\n\nNoteHow to read \\(\\lambda\\), \\(\\operatorname{Pois}(\\lambda)\\), \\(e^{-3}\\) and \\(k!\\)\n\n\n\n\\(\\lambda\\) is the small Greek letter lambda (“LAM-da”): here, the average number of events in the interval we look at. For Dina, \\(\\lambda=3\\) customers per 10 minutes. \\(X\\sim\\operatorname{Pois}(3)\\) reads “X has the Poisson distribution with parameter 3”.\n\\(e\\approx2.718\\) is a fixed number, like \\(\\pi\\approx3.14\\). \\(e^{-3}\\) reads “e to the minus three” and means \\(1/e^3=1/20.09\\approx0.0498\\). On a calculator use the \\(e^x\\) key (often Shift + ln) and enter \\(-3\\).\n\\(k!\\) reads “k factorial” (Lecture 1): multiply the whole numbers from \\(k\\) down to 1, so \\(4!=4\\cdot3\\cdot2\\cdot1=24\\), \\(1!=1\\), and by agreement \\(0!=1\\). With both: \\(e^{-3}\\cdot3^2/2!=0.0498\\cdot9/2\\approx0.224\\).\n\n\n\nDefinition 4.3 (Poisson distribution) A random variable \\(X\\) has the Poisson distribution with parameter \\(\\lambda&gt;0\\), written \\(X\\sim\\operatorname{Pois}(\\lambda)\\), if \\[\n\\Prob(X=k)=e^{-\\lambda}\\,\\frac{\\lambda^k}{k!},\\qquad k=0,1,2,\\dots\n\\tag{4.2}\\] It is the usual model for the number of events in a fixed interval of time when the events happen one at a time, independently of each other, at a constant average rate. Then \\(\\lambda\\) is that average number of events in the interval.\n\n\nExample 4.2 (Customers at Dina’s pickup point) Given: on average 3 customers per 10 minutes; they come one at a time, independently, at a steady rate.\nThe variable: \\(X\\) = the number of customers in the next 10 minutes. Number of trials fixed? No, and no upper limit. Steady average rate? Yes, 3 per 10 minutes. So \\(X\\sim\\operatorname{Pois}(3)\\).\nFind \\(\\Prob(X=k)\\) for \\(k=0,1,2,3\\), and the probability of at least 4 customers.\nSolution. Put \\(\\lambda=3\\) into Equation 4.2, with \\(e^{-3}\\approx0.0498\\):\n\n\\(\\Prob(X=0)=e^{-3}\\cdot3^0/0!=e^{-3}\\approx0.050\\);\n\\(\\Prob(X=1)=e^{-3}\\cdot3^1/1!=3e^{-3}\\approx0.149\\);\n\\(\\Prob(X=2)=e^{-3}\\cdot3^2/2!=4.5e^{-3}\\approx0.224\\);\n\\(\\Prob(X=3)=e^{-3}\\cdot3^3/3!=4.5e^{-3}\\approx0.224\\).\n\n“At least 4” has no last value, so use the complement rule (Theorem 1.2): \\[\n\\Prob(X\\ge4)=1-\\Prob(X\\le3)\\approx1-(0.050+0.149+0.224+0.224)=1-0.647=0.353 .\n\\] About one 10-minute stretch in three brings 4 or more customers.\n\n\n\n\n\n\n\n\n\nFigure 4.2: PMF of \\(X\\sim\\operatorname{Pois}(3)\\), Dina’s customers in 10 minutes. The values 2 and 3 are equally likely. The bars go on to the right for ever, too small to see.\n\n\n\n\n\nThe parameter belongs to the interval: 3 customers per 10 minutes is 6 per 20 minutes. So the count for the next 20 minutes is \\(\\operatorname{Pois}(6)\\), and nobody comes in 20 minutes with probability \\(e^{-6}\\approx0.0025\\). A common mistake is to keep \\(\\lambda=3\\) for every interval length.",
+    "crumbs": [
+      "Lectures",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Counting events and measuring time</span>"
+    ]
+  },
+  {
+    "objectID": "lectures/L04-poisson-and-continuous.html#sec-L04-approx",
+    "href": "lectures/L04-poisson-and-continuous.html#sec-L04-approx",
+    "title": "4  Counting events and measuring time",
+    "section": "4.4 When the binomial looks like the Poisson",
+    "text": "4.4 When the binomial looks like the Poisson\nThe Poisson is also a shortcut for the binomial when there are many trials and success is rare.\n\nTheorem 4.2 (Poisson approximation to the binomial) Let \\(X\\sim\\operatorname{Bin}(n,p)\\). If \\(n\\) is large and \\(p\\) is small, then \\[\n\\Prob(X=k)\\approx e^{-\\lambda}\\,\\frac{\\lambda^k}{k!}\\quad\\text{with }\\lambda=np,\\qquad k=0,1,2,\\dots\n\\] Our rule of thumb (textbooks use slightly different ones): the approximation is good when \\(n\\ge100\\) and \\(np\\le10\\).\n\nProof\nIdea. Put \\(\\lambda=np\\), so \\(p=\\lambda/n\\), and write \\(\\binom nk=\\frac{n(n-1)\\cdots(n-k+1)}{k!}\\) (Theorem 1.4). Then \\[\n\\Prob(X=k)=\\frac{n(n-1)\\cdots(n-k+1)}{n^k}\\cdot\\frac{\\lambda^k}{k!}\\cdot\\Big(1-\\frac\\lambda n\\Big)^{n}\\Big/\\Big(1-\\frac\\lambda n\\Big)^{k}.\n\\] Keep \\(k\\) and \\(\\lambda\\) fixed and let \\(n\\) grow. The first fraction is a product of \\(k\\) fractions \\(\\frac nn,\\frac{n-1}n,\\dots\\), each close to 1, and so is the last factor. And \\((1-\\lambda/n)^n\\) gets closer and closer to \\(e^{-\\lambda}\\): for \\(\\lambda=3\\) and \\(n=1000\\) it is \\(0.997^{1000}\\approx0.0496\\), against \\(e^{-3}\\approx0.0498\\). What is left is \\(e^{-\\lambda}\\lambda^k/k!\\).\n\n\nTheorem 4.3 (Mean and variance of the Poisson distribution) If \\(X\\sim\\operatorname{Pois}(\\lambda)\\), then \\(\\E[X]=\\lambda\\) and \\(\\Var(X)=\\lambda\\).\n\nProof\nIdea. By Theorem 4.2, \\(\\operatorname{Pois}(\\lambda)\\) is what \\(\\operatorname{Bin}(n,\\lambda/n)\\) turns into for large \\(n\\). By Theorem 3.4 that binomial has mean \\(n\\cdot\\frac\\lambda n=\\lambda\\) and variance \\(\\lambda\\big(1-\\frac\\lambda n\\big)\\), which gets closer and closer to \\(\\lambda\\). A full proof adds up infinite sums; we skip it.\n\nSo Dina expects 3 customers per 10 minutes, where we started, with standard deviation \\(\\sqrt3\\approx1.73\\).\n\nExample 4.3 (Returned parcels) Given: Dina’s point hands out 500 parcels a day; each parcel is returned to the seller with probability 0.004, independently of the others.\nThe variable: \\(X\\) = the number of returned parcels in a day. Number of trials fixed? Yes, \\(n=500\\). So \\(X\\sim\\operatorname{Bin}(500,\\,0.004)\\). Since \\(n=500\\ge100\\) and \\(np=500\\cdot0.004=2\\le10\\), \\(X\\approx\\operatorname{Pois}(2)\\). Compare the two for \\(k=0,\\dots,4\\).\nSolution. The binomial needs powers like \\(0.996^{500}\\). The Poisson needs only \\(e^{-2}\\approx0.1353\\) and Equation 4.2, for example \\(\\Prob(X=2)\\approx e^{-2}\\cdot2^2/2!=2e^{-2}\\approx0.2707\\). The binomial row is computed exactly:\n\n\n\n\n\n\n\n\n\n\n\n\\(k\\)\n0\n1\n2\n3\n4\n\n\n\n\n\\(\\operatorname{Bin}(500,\\,0.004)\\)\n0.1348\n0.2707\n0.2712\n0.1808\n0.0902\n\n\n\\(\\operatorname{Pois}(2)\\)\n0.1353\n0.2707\n0.2707\n0.1804\n0.0902\n\n\n\nThe two rows differ by less than 0.001 everywhere. The probability of a day with no returns is about 0.135.\n\nWhich distribution? Find what \\(X\\) counts, then ask what is fixed in advance (Table 4.1).\n\n\n\nTable 4.1: Which discrete distribution?\n\n\n\n\n\n\n\n\n\n\n\nDistribution\nWhat \\(X\\) counts\nFixed\nValues\n\n\n\n\nBernoulli(\\(p\\))\nsuccess in one trial\n\\(p\\)\n\\(0,1\\)\n\n\n\\(\\operatorname{Bin}(n,p)\\)\nsuccesses in \\(n\\) trials\n\\(n\\), \\(p\\)\n\\(0,\\dots,n\\)\n\n\n\\(\\operatorname{Geom}(p)\\)\ntrials up to and including the first success\n\\(p\\) only\n\\(1,2,3,\\dots\\)\n\n\nHypergeometric\nspecial items, no putting back\n\\(N\\), \\(M\\), \\(n\\)\n\\(0,\\dots,n\\)\n\n\n\\(\\operatorname{Pois}(\\lambda)\\)\nevents in an interval\nrate \\(\\lambda\\)\n\\(0,1,2,\\dots\\)",
+    "crumbs": [
+      "Lectures",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Counting events and measuring time</span>"
+    ]
+  },
+  {
+    "objectID": "lectures/L04-poisson-and-continuous.html#sec-L04-calculus",
+    "href": "lectures/L04-poisson-and-continuous.html#sec-L04-calculus",
+    "title": "4  Counting events and measuring time",
+    "section": "4.5 Slopes and areas: a refresher on derivatives and integrals",
+    "text": "4.5 Slopes and areas: a refresher on derivatives and integrals\nLena’s waiting time for her office shuttle (Seminar 1, Problem 12) can be any number from 0 to 12 minutes, and each single value has probability 0, so a PMF would be 0 everywhere. Instead we give probabilities to intervals, as areas under a curve. For that we need two tools from school, the derivative (a slope) and the integral (an area), and only the parts we use.\n\nDerivatives: slopes\nThe derivative of a function \\(F\\) at a point \\(x\\), written \\(F'(x)\\), is the slope of the graph of \\(F\\) at \\(x\\): how fast \\(F\\) grows there.\n\n\n\n\n\n\nNoteHow to read \\(F'(x)\\)\n\n\n\n\\(F'(x)\\) reads “F prime of x” or “the derivative of F at x”. It is the slope of the graph at the point \\(x\\): how many units \\(F\\) rises per one unit to the right. One instance: for \\(F(x)=x^2\\) the derivative is \\(F'(x)=2x\\), so at \\(x=3\\) the slope is \\(F'(3)=2\\cdot3=6\\).\n\n\n\n\n\n\n\n\n\n\nFigure 4.3: The graph of \\(F(x)=x^2\\) and its tangent line at \\(x=3\\). The slope of the tangent is \\(F'(3)=6\\): one step to the right, six steps up.\n\n\n\n\n\nWe need only these rules (\\(c\\) is a number, \\(n\\) a whole number):\n\n\n\n\n\n\n\n\nFunction\nDerivative\nExample\n\n\n\n\na number \\(c\\)\n\\(0\\)\n\\((5)'=0\\): a flat line has slope 0\n\n\n\\(x^n\\)\n\\(n\\,x^{n-1}\\)\n\\((x)'=1\\), \\((x^2)'=2x\\), \\((x^3)'=3x^2\\)\n\n\n\\(c\\) times a function\n\\(c\\) times its derivative\n\\((4x^3)'=12x^2\\)\n\n\nsum or difference\nsum or difference of the derivatives\n\\((2x-x^2)'=2-2x\\)\n\n\n\n\n\nIntegrals: areas\nNow the other direction. Take a function \\(f\\) that is never negative, and two numbers \\(a&lt;b\\). The integral of \\(f\\) from \\(a\\) to \\(b\\), written \\(\\int_a^b f(x)\\,dx\\), is the area between the graph of \\(f\\) and the \\(x\\)-axis, from \\(x=a\\) to \\(x=b\\).\nFor a curve we use one rule, which links areas to slopes: integration undoes differentiation. Find a function \\(G\\) whose derivative is \\(f\\), that is \\(G'(x)=f(x)\\). Then \\[\n\\int_a^b f(x)\\,dx=G(b)-G(a)=\\big[G(x)\\big]_a^b .\n\\tag{4.3}\\] Why? Push the right end \\(x\\) of the area a little to the right, by a width \\(w\\): the area grows by a thin strip of height about \\(f(x)\\), so by about \\(f(x)\\cdot w\\). The area grows at the rate \\(f(x)\\): it is a function whose derivative is \\(f\\). Any other \\(G\\) with \\(G'=f\\) differs from it only by a constant, and the constant cancels in \\(G(b)-G(a)\\).\n\n\n\n\n\n\nNoteHow to read \\(\\int_a^b f(x),dx\\) and \\(\\big[G(x)\\big]_a^b\\)\n\n\n\n\\(\\int\\) is a stretched letter S, for “sum”: the area is a sum of very thin vertical strips. \\(\\int_a^b f(x)\\,dx\\) reads “the integral from a to b of f of x, d x”. The number at the bottom (\\(a\\)) is where the area starts, the number on top (\\(b\\)) is where it stops. \\(dx\\) says that \\(x\\) is the variable along the horizontal axis; think of it as the width of one thin strip, whose height is \\(f(x)\\).\n\\(\\big[G(x)\\big]_a^b\\) reads “G of x, from a to b”. It is short for \\(G(b)-G(a)\\): put in the top number, put in the bottom number, subtract.\nOne instance of both: \\(\\int_2^5 3\\,dx\\) is the area under the flat line at height 3 from \\(x=2\\) to \\(x=5\\), a rectangle of width \\(5-2=3\\) and height 3, so the area is \\(3\\cdot3=9\\). With the rule: \\(G(x)=3x\\) has \\(G'(x)=3\\), and \\(\\big[3x\\big]_2^5=3\\cdot5-3\\cdot2=15-6=9\\). Same answer.\n\n\nTo find \\(G\\), read the derivative table backwards (and check by taking the derivative of the right-hand column):\n\n\n\n\n\n\n\nFunction \\(f(x)\\)\nA function \\(G(x)\\) with \\(G'(x)=f(x)\\)\n\n\n\n\na number \\(c\\)\n\\(c\\,x\\)\n\n\n\\(x^n\\)\n\\(x^{n+1}/(n+1)\\); so \\(x\\) gives \\(x^2/2\\), and \\(x^2\\) gives \\(x^3/3\\)\n\n\n\\(c\\) times a function\n\\(c\\) times its \\(G\\)\n\n\nsum or difference\nsum or difference of the \\(G\\)’s\n\n\n\nThe one worked integral of this section is \\(\\int_0^1 2(1-x)\\,dx\\). Write \\(2(1-x)=2-2x\\). By the table, \\(G(x)=2x-2\\cdot\\frac{x^2}{2}=2x-x^2\\); check: \\(G'(x)=2-2x\\). Then \\[\n\\int_0^1 (2-2x)\\,dx=\\big[2x-x^2\\big]_0^1=(2\\cdot1-1^2)-(2\\cdot0-0^2)=1 .\n\\] Check with geometry: the graph of \\(2-2x\\) falls in a straight line from height 2 at \\(x=0\\) to 0 at \\(x=1\\), and the triangle under it has area \\(\\frac12\\cdot1\\cdot2=1\\) (Figure 4.4). This function comes back in a moment as a density.\n\n\n\n\n\n\n\n\nFigure 4.4: Integrals as areas. Left: \\(\\int_2^5 3\\,dx=9\\), a rectangle. Right: \\(\\int_0^1 2(1-x)\\,dx=1\\), a triangle with base 1 and height 2.",
+    "crumbs": [
+      "Lectures",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Counting events and measuring time</span>"
+    ]
+  },
+  {
+    "objectID": "lectures/L04-poisson-and-continuous.html#sec-L04-continuous",
+    "href": "lectures/L04-poisson-and-continuous.html#sec-L04-continuous",
+    "title": "4  Counting events and measuring time",
+    "section": "4.6 Continuous random variables",
+    "text": "4.6 Continuous random variables\nBack to Lena’s shuttle, every 12 minutes; let \\(X\\) be her waiting time in minutes. Every moment of arrival is equally likely, so spread the probability evenly: a flat line at height \\(1/12\\) from 0 to 12, and 0 outside (Figure 4.5). The total area is \\(12\\cdot\\frac1{12}=1\\). The probability that she waits more than 5 minutes is the area from 5 to 12, width 7 times height \\(1/12\\), so \\(7/12\\): the answer of Seminar 1, Problem 12, read as an area.\n\n\n\n\n\n\n\n\nFigure 4.5: Lena’s waiting time for a shuttle that leaves every 12 minutes. The flat line at height \\(1/12\\) is the density. The shaded area is \\(\\Prob(X&gt;5)=7\\cdot\\frac1{12}=\\frac7{12}\\).\n\n\n\n\n\n\nDefinition 4.4 (Continuous random variable, density) A random variable \\(X\\) is continuous if there is a function \\(f(x)\\), called its density (probability density function), such that\n\n\\(f(x)\\ge0\\) for every \\(x\\);\nthe total area under the graph of \\(f\\) is 1;\nfor any numbers \\(a\\le b\\), \\(\\Prob(a\\le X\\le b)=\\int_a^b f(x)\\,dx\\).\n\n\nEvery density in this lecture is 0 outside one interval of possible values, from a left end \\(c\\) to a right end \\(d\\). To the left of \\(c\\) there is no area, so we always start integrating at \\(c\\), and property 2 reads \\(\\int_c^d f(x)\\,dx=1\\). For the shuttle, \\(c=0\\), \\(d=12\\) and \\(f(x)=1/12\\) in between.\n\n\n\n\n\n\nNoteHow to read \\(f(x)\\): a height, not a probability\n\n\n\n\\(f(x)\\) reads “f of x” or “the density at x”. It is the height of the curve at \\(x\\), not a probability. Probabilities are areas: height times a width. So a density can be larger than 1. One instance with the function from the refresher, \\(f(x)=2(1-x)\\) on \\([0,1]\\) (all numbers from 0 to 1): at \\(x=0\\) the height is \\(f(0)=2\\). If \\(X\\) has this density, the probability of a narrow interval near 0 is height times width, \\(\\Prob(0\\le X\\le0.01)\\approx2\\cdot0.01=0.02\\), a perfectly good probability (exactly: \\(\\big[2x-x^2\\big]_0^{0.01}=0.0199\\)).\n\n\nNow the pitfall, the reverse of Lecture 3. For a continuous \\(X\\), a single value has no width, so no area: \\(\\Prob(X=x)=0\\) for every \\(x\\). So \\(\\le\\) and \\(&lt;\\) give the same answer: \\[\n\\Prob(a\\le X\\le b)=\\Prob(a&lt;X\\le b)=\\Prob(a\\le X&lt;b)=\\Prob(a&lt;X&lt;b).\n\\] This does not contradict Lecture 3. There \\(X\\) was discrete, \\(\\Prob(X=1)=0.432\\) for Marat was not 0, and the boundary mattered. Here it carries no probability. As in Lecture 1, probability 0 is not impossible: Lena waits some exact time, but each exact time has probability 0.\n\nExample 4.4 (Bakhyt’s first customer) Given: Bakhyt’s coffee kiosk at the river station in Omsk opens at 7:00. The first customer always comes within the first hour, more often early than late; Bakhyt’s model is the density \\(f(x)=2(1-x)\\) for \\(0\\le x\\le1\\), and \\(f(x)=0\\) otherwise.\nThe variable: \\(X\\) = the time in hours from opening to the first customer. A count or a measurement? A measurement: any number from 0 to 1. So \\(X\\) is continuous with density \\(f(x)=2(1-x)\\) on \\([0,1]\\).\nCheck that \\(f\\) is a density, and find the probability that the first customer comes in the first half hour.\nSolution. \\(f(x)\\ge0\\) for \\(0\\le x\\le1\\), and the total area is \\(\\int_0^1 2(1-x)\\,dx=\\big[2x-x^2\\big]_0^1=1\\) (the refresher). So \\(f\\) is a density. The first half hour is \\(0\\le X\\le0.5\\): \\[\n\\Prob(X\\le0.5)=\\int_0^{0.5}(2-2x)\\,dx=\\big[2x-x^2\\big]_0^{0.5}=(1-0.25)-0=0.75 .\n\\] Three mornings in four, the first customer comes before 7:30.\n\n\nDefinition 4.5 (CDF of a continuous random variable) Let \\(X\\) be continuous with density \\(f\\), which is 0 outside the interval from \\(c\\) to \\(d\\). Its CDF is the same \\(F\\) as in Lecture 3 (Definition 3.3): \\[\nF(x)=\\Prob(X\\le x)=\\int_c^x f(t)\\,dt\\qquad\\text{for } c\\le x\\le d,\n\\] with \\(F(x)=0\\) for \\(x&lt;c\\) and \\(F(x)=1\\) for \\(x&gt;d\\). The density is the slope of the CDF: \\(f(x)=F'(x)\\), except at the few points where \\(f\\) jumps.\n\nIn \\(\\int_c^x f(t)\\,dt\\) the letter \\(x\\) is already taken (it is where the area stops), so the variable along the axis gets another name, \\(t\\); read it “the integral from c to x of f of t, d t”. It is still the area under \\(f\\) from \\(c\\) up to \\(x\\). The rule \\(f=F'\\) is Equation 4.3 again: the area up to \\(x\\) grows at the rate \\(f(x)\\). For the kiosk, \\(F(x)=\\big[2t-t^2\\big]_0^x=2x-x^2\\) for \\(0\\le x\\le1\\), 0 to the left and 1 to the right, so \\(F(0.5)=0.75\\) as before; check: \\(F'(x)=2-2x=f(x)\\). A continuous CDF has no steps: it climbs smoothly from 0 to 1 (Figure 4.6).\n\n\n\n\n\n\n\n\nFigure 4.6: Bakhyt’s kiosk. Left: the density \\(f(x)=2(1-x)\\); the shaded area is \\(\\Prob(X\\le0.5)=0.75\\). Right: the CDF \\(F(x)=2x-x^2\\); the dashed line reads off the same number, \\(F(0.5)=0.75\\), as a height.\n\n\n\n\n\nExpected value and variance follow Lecture 3: the sum becomes an integral, and \\(p(x_i)\\) becomes \\(f(x)\\,dx\\), the area of a thin strip.\n\nDefinition 4.6 (Expected value and variance of a continuous random variable) Let \\(X\\) be continuous with density \\(f\\), which is 0 outside the interval from \\(c\\) to \\(d\\). Then \\[\n\\E[X]=\\mu=\\int_c^d x\\,f(x)\\,dx,\\qquad \\Var(X)=\\int_c^d (x-\\mu)^2f(x)\\,dx,\n\\] and \\(\\operatorname{SD}(X)=\\sqrt{\\Var(X)}\\). More generally, \\(\\E[g(X)]=\\int_c^d g(x)\\,f(x)\\,dx\\), for example \\(\\E[X^2]=\\int_c^d x^2f(x)\\,dx\\).\n\n\n\n\n\n\n\n\n\n\nDiscrete (Lecture 3)\nContinuous\n\n\n\n\nprobabilities\n\\(p(x)=\\Prob(X=x)\\)\n\\(\\Prob(a\\le X\\le b)=\\int_a^b f(x)\\,dx\\)\n\n\nexpected value\n\\(\\sum_i x_i\\,p(x_i)\\)\n\\(\\int_c^d x\\,f(x)\\,dx\\)\n\n\nvariance\n\\(\\sum_i (x_i-\\mu)^2p(x_i)\\)\n\\(\\int_c^d (x-\\mu)^2f(x)\\,dx\\)\n\n\n\nThe results of Lecture 3 still hold, with the same proofs and \\(\\sum\\) replaced by \\(\\int\\): the shortcut \\(\\Var(X)=\\E[X^2]-\\mu^2\\) (Theorem 3.2) and the rules for \\(aX+b\\) (Theorem 3.3).\nBack to the kiosk. Given: \\(f(x)=2-2x\\) for \\(0\\le x\\le1\\), 0 otherwise; \\(X\\) is the time in hours to the first customer. Multiply out first: \\(x\\,f(x)=2x-2x^2\\) and \\(x^2f(x)=2x^2-2x^3\\). Then \\[\n\\begin{aligned}\n\\E[X]&=\\int_0^1(2x-2x^2)\\,dx=\\Big[x^2-\\frac{2x^3}{3}\\Big]_0^1=1-\\frac23=\\frac13,\\\\\n\\E[X^2]&=\\int_0^1(2x^2-2x^3)\\,dx=\\Big[\\frac{2x^3}{3}-\\frac{x^4}{2}\\Big]_0^1=\\frac23-\\frac12=\\frac16 .\n\\end{aligned}\n\\] On average the first customer comes after \\(1/3\\) hour, 20 minutes. By the shortcut, \\(\\Var(X)=\\frac16-\\big(\\frac13\\big)^2=\\frac16-\\frac19=\\frac1{18}\\approx0.0556\\) hours squared. The standard deviation is \\(\\sqrt{1/18}\\approx0.236\\) hours, about 14 minutes. Hours squared mean nothing to Bakhyt; 20 minutes give or take 14 does.",
+    "crumbs": [
+      "Lectures",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Counting events and measuring time</span>"
+    ]
+  },
+  {
+    "objectID": "lectures/L04-poisson-and-continuous.html#sec-L04-uniform",
+    "href": "lectures/L04-poisson-and-continuous.html#sec-L04-uniform",
+    "title": "4  Counting events and measuring time",
+    "section": "4.7 The uniform distribution",
+    "text": "4.7 The uniform distribution\nThe shuttle density was flat, and a flat density has its own name.\n\nDefinition 4.7 (Uniform distribution) A random variable \\(X\\) has the uniform distribution on the interval from \\(a\\) to \\(b\\), where \\(a&lt;b\\), written \\(X\\sim\\operatorname{U}(a,b)\\), if its density is \\[\nf(x)=\\frac{1}{b-a}\\quad\\text{for } a\\le x\\le b,\\qquad f(x)=0\\ \\text{otherwise}.\n\\] Its CDF is \\(F(x)=\\dfrac{x-a}{b-a}\\) for \\(a\\le x\\le b\\), with \\(F(x)=0\\) for \\(x&lt;a\\) and \\(F(x)=1\\) for \\(x&gt;b\\).\n\n\n\n\n\n\n\nNoteHow to read \\(X\\sim\\operatorname{U}(a,b)\\)\n\n\n\n\\(X\\sim\\operatorname{U}(a,b)\\) reads “X is uniform on the interval from a to b”. The height \\(\\frac1{b-a}\\) makes the rectangle’s area width times height equal to 1. For the shuttle, \\(X\\sim\\operatorname{U}(0,12)\\), the height is \\(\\frac1{12-0}=\\frac1{12}\\), and \\(F(x)=\\frac{x-0}{12-0}=\\frac{x}{12}\\).\n\n\nThe CDF comes from Definition 4.5 with left end \\(a\\): \\(F(x)=\\int_a^x\\frac1{b-a}\\,dt=\\big[\\frac{t}{b-a}\\big]_a^x=\\frac{x-a}{b-a}\\), the share of the interval left of \\(x\\). This is Lecture 1’s geometric probability on a segment (Definition 1.9), written as a random variable.\n\nExample 4.5 (Waiting for the shuttle) Given: the shuttle leaves every 12 minutes; Lena comes to the stop at a random moment, every moment equally likely.\nThe variable: \\(X\\) = Lena’s waiting time in minutes. A count or a measurement? A measurement, any number from 0 to 12. Every value equally likely? Yes. So \\(X\\sim\\operatorname{U}(0,12)\\).\nFind \\(F(x)\\) and the probability that Lena waits more than 8 minutes.\nSolution. Here \\(a=0\\), \\(b=12\\), so \\(f(x)=1/12\\) and \\(F(x)=x/12\\) for \\(0\\le x\\le12\\). By the complement rule, \\[\n\\Prob(X&gt;8)=1-\\Prob(X\\le8)=1-F(8)=1-\\frac{8}{12}=\\frac13 ,\n\\] the rectangle from 8 to 12: width 4 times height \\(1/12\\).\n\n\nTheorem 4.4 (Mean and variance of the uniform distribution) If \\(X\\sim\\operatorname{U}(a,b)\\), then \\[\n\\E[X]=\\frac{a+b}{2},\\qquad \\Var(X)=\\frac{(b-a)^2}{12}.\n\\]\n\n\nProof. The density is the constant \\(\\frac1{b-a}\\) from \\(a\\) to \\(b\\), and a constant factor comes out of the integral. For the mean, \\[\n\\E[X]=\\int_a^b x\\cdot\\frac{1}{b-a}\\,dx=\\frac{1}{b-a}\\Big[\\frac{x^2}{2}\\Big]_a^b=\\frac{b^2-a^2}{2(b-a)}=\\frac{(b-a)(b+a)}{2(b-a)}=\\frac{a+b}{2},\n\\] using \\(b^2-a^2=(b-a)(b+a)\\) from school. For the variance, use the shortcut (Theorem 3.2): \\[\n\\E[X^2]=\\int_a^b x^2\\cdot\\frac{1}{b-a}\\,dx=\\frac{1}{b-a}\\Big[\\frac{x^3}{3}\\Big]_a^b=\\frac{b^3-a^3}{3(b-a)}=\\frac{a^2+ab+b^2}{3},\n\\] using \\(b^3-a^3=(b-a)(a^2+ab+b^2)\\) (multiply out the right side to check). Then \\[\n\\begin{aligned}\n\\Var(X)&=\\frac{a^2+ab+b^2}{3}-\\frac{(a+b)^2}{4}=\\frac{4a^2+4ab+4b^2-3a^2-6ab-3b^2}{12}\\\\\n&=\\frac{a^2-2ab+b^2}{12}=\\frac{(b-a)^2}{12}.\n\\end{aligned}\n\\]\n\nFor the shuttle, \\(a=0\\) and \\(b=12\\): \\(\\E[X]=\\frac{0+12}{2}=6\\) minutes, the middle of the interval, as you’d guess. \\(\\Var(X)=\\frac{12^2}{12}=12\\) minutes squared, and \\(\\operatorname{SD}(X)=\\sqrt{12}\\approx3.46\\) minutes.\nLecture 5 adds one more continuous distribution for waiting times, the exponential, together with its strange “memoryless” property, and then the normal distribution.",
+    "crumbs": [
+      "Lectures",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Counting events and measuring time</span>"
+    ]
+  },
+  {
+    "objectID": "lectures/L04-poisson-and-continuous.html#exercises",
+    "href": "lectures/L04-poisson-and-continuous.html#exercises",
+    "title": "4  Counting events and measuring time",
+    "section": "Exercises",
+    "text": "Exercises\n\nTomas sells insurance by phone for an agency in Novosibirsk. Each call ends with a booked meeting with probability 0.2, independently of the other calls. Count the calls Tomas makes up to and including the first one that books a meeting. Find the probability that this count is 3, the probability that it is more than 5, and its expected value.\nA bike-rental point on the Sochi seafront gets on average 4 rentals per hour, one at a time and independently. Let \\(X\\) be the number of rentals in the next 30 minutes. Name the distribution of \\(X\\) with its parameter, and find \\(\\Prob(X=0)\\) and \\(\\Prob(X\\ge2)\\).\nAn online bookshop in Krasnodar sends 1,000 parcels in a week; each is lost by the courier with probability 0.003, independently. Let \\(X\\) be the number of lost parcels. Which distribution does \\(X\\) have exactly, and which one approximates it? Find \\(\\Prob(X=0)\\) and \\(\\Prob(X\\le2)\\) approximately.\nPolina, who schedules repair technicians in Vladimir, models the length \\(X\\) of a repair visit, in hours, by the density \\(f(x)=Cx\\) for \\(0\\le x\\le2\\) and \\(f(x)=0\\) otherwise. Find the number \\(C\\), then \\(\\Prob(X\\le1)\\) and \\(\\E[X]\\).\nArman’s food-delivery app promises delivery “in 30 to 50 minutes”. Assume the delivery time \\(X\\) in minutes is \\(\\operatorname{U}(30,50)\\). Find \\(\\Prob(X&gt;45)\\), \\(\\E[X]\\) and \\(\\operatorname{SD}(X)\\).\n\nAnswers: (1) \\(\\operatorname{Geom}(0.2)\\): \\(0.8^2\\cdot0.2=0.128\\); \\(0.8^5\\approx0.328\\); \\(1/0.2=5\\) calls. (2) 4 per hour is 2 per 30 minutes, so \\(X\\sim\\operatorname{Pois}(2)\\); \\(e^{-2}\\approx0.135\\); \\(1-e^{-2}(1+2)=1-3e^{-2}\\approx0.594\\). (3) Exactly \\(\\operatorname{Bin}(1000,\\,0.003)\\); \\(n\\ge100\\) and \\(np=3\\le10\\), so \\(\\approx\\operatorname{Pois}(3)\\); \\(\\Prob(X=0)\\approx e^{-3}\\approx0.050\\); \\(\\Prob(X\\le2)\\approx e^{-3}(1+3+4.5)=8.5e^{-3}\\approx0.423\\). (4) The area is \\(\\int_0^2Cx\\,dx=C\\big[x^2/2\\big]_0^2=2C=1\\), so \\(C=0.5\\); \\(\\Prob(X\\le1)=\\big[x^2/4\\big]_0^1=0.25\\); \\(\\E[X]=\\int_0^2 0.5x^2\\,dx=\\big[x^3/6\\big]_0^2=8/6\\approx1.33\\) hours. (5) \\((50-45)/(50-30)=0.25\\); \\(\\E[X]=40\\) minutes; \\(\\operatorname{SD}(X)=20/\\sqrt{12}\\approx5.77\\) minutes. Seminar 4 practises the geometric and Poisson distributions; Seminar 5 does densities and the uniform distribution, and adds the exponential after Lecture 5.",
+    "crumbs": [
+      "Lectures",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Counting events and measuring time</span>"
+    ]
+  },
+  {
     "objectID": "seminars/S01-counting.html",
     "href": "seminars/S01-counting.html",
     "title": "Seminar 1: events, counting, classical and geometric probability",
@@ -655,6 +754,215 @@
     "crumbs": [
       "Seminars",
       "Seminar 2: conditional probability, independence and Bayes"
+    ]
+  },
+  {
+    "objectID": "seminars/S03-discrete-random-variables.html",
+    "href": "seminars/S03-discrete-random-variables.html",
+    "title": "Seminar 3: discrete random variables, expected value, variance and the binomial",
+    "section": "",
+    "text": "Problem 1\nMaterial from Lecture 3 (3  Discrete random variables). The firms and people on this sheet are made up, and so are their numbers. In Problems 1 to 6 the sheet tells you what \\(X\\) is and what its distribution is. In Problem 7 you write \\(X\\), \\(n\\) and \\(p\\) down yourself, and Problem 8 asks whether a story is binomial at all. The starred Problem 9* is harder: it is for a strong group or to take home. As before, work by hand first and let the Python check you.\nShort drill.\nPavel sells bicycle spare parts on an online marketplace and ships every order from his garage in Tula. Let \\(X\\) be the delivery time of one parcel, in days. From last season’s records, \\(X\\) takes the values 2, 5 and 7 with probabilities 0.5, 0.3 and 0.2. (Seven days is Sakhalin and the Far East. Pavel has stopped apologising for it.)",
+    "crumbs": [
+      "Seminars",
+      "Seminar 3: discrete random variables, expected value, variance and the binomial"
+    ]
+  },
+  {
+    "objectID": "seminars/S03-discrete-random-variables.html#problem-1",
+    "href": "seminars/S03-discrete-random-variables.html#problem-1",
+    "title": "Seminar 3: discrete random variables, expected value, variance and the binomial",
+    "section": "",
+    "text": "\\(x\\)\n2\n5\n7\n\n\n\n\n\\(p(x)=\\Prob(X=x)\\)\n0.5\n0.3\n0.2\n\n\n\n\nThe values of \\(X\\) in a list are \\(x_1, x_2, x_3\\). Write down \\(x_1\\), \\(x_2\\), \\(x_3\\) and \\(p(x_1)\\), \\(p(x_2)\\), \\(p(x_3)\\). Then write \\(\\sum_{i=1}^{3}p(x_i)\\) out term by term and find it.\nFind \\(F(4)\\) and \\(F(7)\\). Say in words what \\(F(4)\\) means for Pavel’s customers.\nFind \\(\\E[X]\\). Write the sum out before you add.\nFind \\(\\Var(X)\\) with the shortcut formula, and \\(\\operatorname{SD}(X)\\). Give the units.",
+    "crumbs": [
+      "Seminars",
+      "Seminar 3: discrete random variables, expected value, variance and the binomial"
+    ]
+  },
+  {
+    "objectID": "seminars/S03-discrete-random-variables.html#problem-2",
+    "href": "seminars/S03-discrete-random-variables.html#problem-2",
+    "title": "Seminar 3: discrete random variables, expected value, variance and the binomial",
+    "section": "Problem 2",
+    "text": "Problem 2\nMain problem.\nMadina makes soap by hand in Makhachkala and sells it through her own online shop. Lavender soap sells out every December; the rest of the year is calmer. Let \\(X\\) be the number of orders she gets on one day. From last year’s records,\n\n\n\n\\(x\\)\n0\n1\n2\n3\n4\n5\n\n\n\n\n\\(p(x)=\\Prob(X=x)\\)\n0.23\n0.20\n0.18\n0.17\n0.13\n0.09\n\n\n\nand she never gets more than 5 orders a day.\n\nCheck that this table is a valid PMF. What two things do you check?\nMake a table of the CDF, \\(F(x)\\) for \\(x=0,1,\\dots,5\\). Then find \\(F(2.5)\\) and say what it means.\nFind the probability that Madina gets more than 1 but at most 4 orders. Write the event with \\(X\\), list the values it contains, and use the CDF. Then find the probability of 1 to 4 orders, both included.\nFind \\(\\E[X]\\).\nFind \\(\\E[X^2]\\), \\(\\Var(X)\\) and \\(\\operatorname{SD}(X)\\).",
+    "crumbs": [
+      "Seminars",
+      "Seminar 3: discrete random variables, expected value, variance and the binomial"
+    ]
+  },
+  {
+    "objectID": "seminars/S03-discrete-random-variables.html#problem-3",
+    "href": "seminars/S03-discrete-random-variables.html#problem-3",
+    "title": "Seminar 3: discrete random variables, expected value, variance and the binomial",
+    "section": "Problem 3",
+    "text": "Problem 3\nChanging units.\nMadina’s shop again. Given: \\(X\\) = the number of orders on one day, with\n\n\n\n\\(x\\)\n0\n1\n2\n3\n4\n5\n\n\n\n\n\\(p(x)\\)\n0.23\n0.20\n0.18\n0.17\n0.13\n0.09\n\n\n\n\\(\\E[X]=2.04\\), \\(\\Var(X)=2.6184\\) and \\(\\operatorname{SD}(X)\\approx1.618\\) (Problem 2). Each order leaves Madina 450 rubles after materials and postage. The platform that hosts her shop charges 600 rubles a day, orders or no orders. Her daily profit in rubles is \\[\nY=450X-600 .\n\\]\n\nWhat is \\(Y\\) on a day with no orders? With 5 orders?\nFind \\(\\E[Y]\\), \\(\\Var(Y)\\) and \\(\\operatorname{SD}(Y)\\).\nWhere did the 600 rubles go in \\(\\Var(Y)\\)? Explain in one or two sentences.\nOn what share of days does Madina lose money?",
+    "crumbs": [
+      "Seminars",
+      "Seminar 3: discrete random variables, expected value, variance and the binomial"
+    ]
+  },
+  {
+    "objectID": "seminars/S03-discrete-random-variables.html#problem-4",
+    "href": "seminars/S03-discrete-random-variables.html#problem-4",
+    "title": "Seminar 3: discrete random variables, expected value, variance and the binomial",
+    "section": "Problem 4",
+    "text": "Problem 4\nFind the mistake.\nThe problem was:\n\nThe number of customers \\(W\\) of a food truck on one day has \\(\\E[W]=50\\) and \\(\\Var(W)=16\\). Each customer pays 300 rubles, and the spot costs 4,000 rubles a day, so the daily profit is \\(300W-4000\\) rubles. Find the expected value and the standard deviation of the daily profit.\n\nDmitri wrote this solution.\n\n\\(\\E[300W-4000]=300\\cdot50-4000=11{,}000\\) rubles.\n\\(\\Var(300W-4000)=300^2\\cdot\\Var(W)-4000^2=90{,}000\\cdot16-16{,}000{,}000=1{,}440{,}000-16{,}000{,}000=-14{,}560{,}000\\).\nYou can’t take the square root of a negative number, so I drop the minus: \\(\\operatorname{SD}=\\sqrt{14{,}560{,}000}\\approx3{,}816\\) rubles.\n\n\nWhich line is right? Find the mistakes in the other two.\nWhy can a variance never be negative? Answer from the definition, in one sentence.\nGive the correct variance and standard deviation.",
+    "crumbs": [
+      "Seminars",
+      "Seminar 3: discrete random variables, expected value, variance and the binomial"
+    ]
+  },
+  {
+    "objectID": "seminars/S03-discrete-random-variables.html#problem-5",
+    "href": "seminars/S03-discrete-random-variables.html#problem-5",
+    "title": "Seminar 3: discrete random variables, expected value, variance and the binomial",
+    "section": "Problem 5",
+    "text": "Problem 5\nShort drill.\nRavil manages a pharmacy in Cheboksary. Since October the cashiers offer every customer a free loyalty card at the till. One customer accepts it with probability 0.9. Let \\(X=1\\) if the customer accepts and \\(X=0\\) if not. So \\(X\\) has the Bernoulli distribution with \\(p=0.9\\).\n\nWrite the PMF of \\(X\\) as a table.\nFind \\(\\E[X]\\), \\(\\E[X^2]\\), \\(\\Var(X)\\) and \\(\\operatorname{SD}(X)\\) from the definitions. Check \\(\\Var(X)\\) with the formula \\(p(1-p)\\).\nWhat does \\(\\E[X]=0.9\\) mean for 1,000 customers?",
+    "crumbs": [
+      "Seminars",
+      "Seminar 3: discrete random variables, expected value, variance and the binomial"
+    ]
+  },
+  {
+    "objectID": "seminars/S03-discrete-random-variables.html#problem-6",
+    "href": "seminars/S03-discrete-random-variables.html#problem-6",
+    "title": "Seminar 3: discrete random variables, expected value, variance and the binomial",
+    "section": "Problem 6",
+    "text": "Problem 6\nMain problem.\nRavil’s pharmacy again. Given: each customer accepts the free loyalty card with probability 0.9, independently of the others. On Monday morning 10 customers come to the till. Let \\(X\\) be the number of them who accept the card. Then \\(X\\sim\\operatorname{Bin}(10,\\,0.9)\\).\n\nRavil’s head office wants 80% of customers to accept. Find the probability that exactly 80% of the 10 accept.\nFind the probability that at least 9 of the 10 accept.\nFind the probability that at most 8 accept. Use (b).\nFind \\(\\E[X]\\), \\(\\Var(X)\\) and \\(\\operatorname{SD}(X)\\).",
+    "crumbs": [
+      "Seminars",
+      "Seminar 3: discrete random variables, expected value, variance and the binomial"
+    ]
+  },
+  {
+    "objectID": "seminars/S03-discrete-random-variables.html#problem-7",
+    "href": "seminars/S03-discrete-random-variables.html#problem-7",
+    "title": "Seminar 3: discrete random variables, expected value, variance and the binomial",
+    "section": "Problem 7",
+    "text": "Problem 7\nName \\(X\\) yourself.\nAlina does e-mail marketing for an online electronics shop in Tomsk. On Tuesday, 100 customers left items in their basket without paying, and the shop sends each of them one reminder e-mail. The e-mails go out at 9 pm, when, Alina says, people feel guilty about their baskets. Each reminder leads to a purchase with probability 0.25, independently of the others.\n\nWrite “\\(X\\) = …” in words. Check the four conditions of the binomial distribution one by one, then write \\(n=\\dots\\), \\(p=\\dots\\) and \\(X\\sim\\dots\\).\nFind \\(\\E[X]\\), \\(\\Var(X)\\) and \\(\\operatorname{SD}(X)\\). What do they say to Alina?\nFind the probability that none of the 100 reminders leads to a purchase. If that happened one Tuesday, what would you tell Alina?",
+    "crumbs": [
+      "Seminars",
+      "Seminar 3: discrete random variables, expected value, variance and the binomial"
+    ]
+  },
+  {
+    "objectID": "seminars/S03-discrete-random-variables.html#problem-8",
+    "href": "seminars/S03-discrete-random-variables.html#problem-8",
+    "title": "Seminar 3: discrete random variables, expected value, variance and the binomial",
+    "section": "Problem 8",
+    "text": "Problem 8\nBinomial or not?\nFor each story, either write \\(X\\sim\\operatorname{Bin}(n,p)\\) with the numbers, or say which condition of the binomial distribution fails, in one line.\n\nA wholesale bakery supplier in Ivanovo sends out 20 invoices this month. Each invoice is paid late with probability 0.1, independently of the others. \\(X\\) = the number of invoices paid late.\nAt an office party, each player is dealt 5 cards from one shuffled pack of 52 cards, 13 of which are hearts. \\(X\\) = the number of hearts a player gets.\nA flower shop has 8 regular corporate customers. The chance that a customer orders next week is 0.2 for a small dental clinic, 0.9 for a hotel, and something in between for the other six. \\(X\\) = the number of the 8 who order next week.\n\\(X\\) = the number of visitors to Madina’s soap shop website between 8 and 9 pm tonight.\nA team of 12 sales consultants in a furniture store in Voronezh can get a quarterly bonus. The team lead decides once, for the whole team: either all 12 get it or nobody does, with probability 0.5 each way. \\(X\\) = the number of consultants who get a bonus.",
+    "crumbs": [
+      "Seminars",
+      "Seminar 3: discrete random variables, expected value, variance and the binomial"
+    ]
+  },
+  {
+    "objectID": "seminars/S03-discrete-random-variables.html#problem-9",
+    "href": "seminars/S03-discrete-random-variables.html#problem-9",
+    "title": "Seminar 3: discrete random variables, expected value, variance and the binomial",
+    "section": "Problem 9*",
+    "text": "Problem 9*\nIf time allows.\nNargiz is a sales manager at a firm in Irkutsk that installs security cameras in shops. This month she has 4 negotiations, and each ends with a signed contract with probability 0.3, independently of the others. Let \\(X\\) be the number of contracts she signs, so \\(X\\sim\\operatorname{Bin}(4,\\,0.3)\\). Her bonus is 5,000 rubles per signed contract, plus an extra 10,000 rubles if she signs all 4.\n\nMake the PMF table of \\(X\\).\nWrite down the bonus for each value of \\(X\\). Why can we not use \\(\\E[aX+b]=a\\E[X]+b\\) here?\nFind the expected bonus.\nA colleague says: “She expects \\(\\E[X]=1.2\\) contracts, so her expected bonus is \\(5000\\cdot1.2=6000\\) rubles.” What did the colleague leave out? How much does the extra 10,000 rubles cost the firm per month, on average?",
+    "crumbs": [
+      "Seminars",
+      "Seminar 3: discrete random variables, expected value, variance and the binomial"
+    ]
+  },
+  {
+    "objectID": "seminars/S04-geometric-poisson.html",
+    "href": "seminars/S04-geometric-poisson.html",
+    "title": "Seminar 4: the geometric and Poisson distributions",
+    "section": "",
+    "text": "Problem 1\nMaterial from Lecture 4 (4  Counting events and measuring time), Sections 4.1, 4.3 and 4.4: the geometric distribution, the Poisson distribution and the Poisson approximation to the binomial. The firms and people on this sheet are made up, and so are their numbers. Start every problem the way the lecture did: write “\\(X\\) = …” in words, ask what is fixed in advance, and only then name the distribution (Table 4.1). The starred Problem 8* is a longer case for a strong group or to take home. You will need the \\(e^x\\) key on your calculator (often Shift + ln).\nShort drill.\nFatima works at the reception of a hotel in Yaroslavl. At check-in she offers every guest an upgrade to a room with a view of the Volga for 1,500 rubles a night. Each guest says yes with probability 0.15, independently of the others. (Most say they will think about it and never come back to the desk.) Let \\(X\\) be the number of the guest, counting from the start of her shift, who gives Fatima her first yes.",
+    "crumbs": [
+      "Seminars",
+      "Seminar 4: the geometric and Poisson distributions"
+    ]
+  },
+  {
+    "objectID": "seminars/S04-geometric-poisson.html#problem-1",
+    "href": "seminars/S04-geometric-poisson.html#problem-1",
+    "title": "Seminar 4: the geometric and Poisson distributions",
+    "section": "",
+    "text": "Which values can \\(X\\) take? Write \\(X\\sim\\dots\\) with the parameter.\nFind \\(\\Prob(X=3)\\). Write the path of yes and no answers first.\nFind the probability that Fatima needs more than 5 guests to get her first yes.\nHow many guests does she need on average to get the first yes?",
+    "crumbs": [
+      "Seminars",
+      "Seminar 4: the geometric and Poisson distributions"
+    ]
+  },
+  {
+    "objectID": "seminars/S04-geometric-poisson.html#problem-2",
+    "href": "seminars/S04-geometric-poisson.html#problem-2",
+    "title": "Seminar 4: the geometric and Poisson distributions",
+    "section": "Problem 2",
+    "text": "Problem 2\nShort drill.\nThe support line of a car-sharing service in Krasnoyarsk gets on average 5 calls per hour on weekday evenings. The calls come one at a time and independently of each other. Most of them are about a car whose doors will not open. Let \\(X\\) be the number of calls between 19:00 and 20:00 on one evening.\n\nWrite \\(X\\sim\\dots\\) with the parameter. Find the probability of exactly 1 call in that hour.\nFind the probability of at least 2 calls in that hour.\nLet \\(Y\\) be the number of calls between 19:00 and 19:30. Write \\(Y\\sim\\dots\\) and find the probability of no call in those 30 minutes.",
+    "crumbs": [
+      "Seminars",
+      "Seminar 4: the geometric and Poisson distributions"
+    ]
+  },
+  {
+    "objectID": "seminars/S04-geometric-poisson.html#problem-3",
+    "href": "seminars/S04-geometric-poisson.html#problem-3",
+    "title": "Seminar 4: the geometric and Poisson distributions",
+    "section": "Problem 3",
+    "text": "Problem 3\nFind the mistake.\nThe problem was:\n\nA factory in Zelenograd makes phone chargers. Each charger is defective with probability 0.05, independently of the others. An inspector tests chargers from the line one at a time until she finds the first defective one. How many chargers does she test on average, the defective one included?\n\nKirill wrote this solution.\n\nLet \\(X\\) be the number of chargers tested up to and including the first defective one. Then \\(X\\) is geometric.\nIts PMF is \\(\\Prob(X=k)=(1-p)^k\\) for \\(k=1,2,3,\\dots\\)\nThe mean of the geometric distribution is \\(p\\), so \\(\\E[X]=0.05\\).\nThat can’t be right, it’s less than one charger. A charger is good with probability 0.95, so I take \\(p=0.95\\) instead: \\(\\E[X]=1/0.95\\approx1.05\\), which rounds to 1.\nAnswer: about 1 charger. This makes sense, because \\(X=1\\) is the most likely value.\n\n\nKirill’s first line is right. What is the “success” here, and what is \\(p\\)?\nTest the PMF line with \\(k=1\\). What should \\(\\Prob(X=1)\\) be, and what does Kirill’s formula give?\nFind the two mistakes in his expected value.\nGive the correct answer, one number. Is the last sentence of his answer a good argument?",
+    "crumbs": [
+      "Seminars",
+      "Seminar 4: the geometric and Poisson distributions"
+    ]
+  },
+  {
+    "objectID": "seminars/S04-geometric-poisson.html#problem-4",
+    "href": "seminars/S04-geometric-poisson.html#problem-4",
+    "title": "Seminar 4: the geometric and Poisson distributions",
+    "section": "Problem 4",
+    "text": "Problem 4\nMain problem.\nAn online pizzeria in Petrozavodsk gets on average 3 orders per 5 minutes on Friday evenings. The orders come one at a time and independently of each other. The kitchen has two ovens, and the owner wants to know how busy a typical 5 minutes is. Let \\(X\\) be the number of orders in one 5-minute stretch on a Friday evening, so \\(X\\sim\\operatorname{Pois}(3)\\).\n\nFind the probability that the pizzeria gets from 1 to 4 orders in 5 minutes, both ends included. First list the values of \\(X\\) that are in the event.\nTrue or false? Give the reason in one line each.\n\n\nThe mean number of orders in 15 minutes is 9.\nThe variance of the number of orders in 5 minutes is 9.\nThe probability of no order in 10 minutes is \\(e^{-6}\\approx0.0025\\).\nThe probability of no order in 10 minutes is \\(2e^{-3}\\approx0.100\\), twice the probability of no order in 5 minutes.",
+    "crumbs": [
+      "Seminars",
+      "Seminar 4: the geometric and Poisson distributions"
+    ]
+  },
+  {
+    "objectID": "seminars/S04-geometric-poisson.html#problem-5",
+    "href": "seminars/S04-geometric-poisson.html#problem-5",
+    "title": "Seminar 4: the geometric and Poisson distributions",
+    "section": "Problem 5",
+    "text": "Problem 5\nApproximation.\nAn online bookshop in Krasnodar sends 1,000 parcels in a week. Each parcel is lost by the courier with probability 0.003, independently of the others. Let \\(X\\) be the number of lost parcels in a week.\n\nWhich distribution does \\(X\\) have exactly? Check the rule of thumb from Lecture 4 and name the distribution that approximates it.\nFind, approximately, the probability that no parcel is lost in a week, and the probability that at most 2 parcels are lost.\nThe shop tries a cheaper courier firm, which loses each parcel with probability 0.03, ten times as often. With 1,000 parcels a week, is the rule of thumb still met?",
+    "crumbs": [
+      "Seminars",
+      "Seminar 4: the geometric and Poisson distributions"
+    ]
+  },
+  {
+    "objectID": "seminars/S04-geometric-poisson.html#problem-6",
+    "href": "seminars/S04-geometric-poisson.html#problem-6",
+    "title": "Seminar 4: the geometric and Poisson distributions",
+    "section": "Problem 6",
+    "text": "Problem 6\nMain problem.\nYegor drives a bakery’s delivery van in Yekaterinburg. He leaves at 5:40, before the shops open, and his route crosses many traffic lights. Every light runs the same 60-second cycle, and then the cycle starts again:\n\n\n\ngreen\nyellow\nred\nyellow\n\n\n\n\n42 s\n3 s\n12 s\n3 s\n\n\n\nYegor stops if he reaches a light during the yellow that comes after green, or during red. During the yellow that comes after red he drives on. The moment at which he reaches a light is equally likely to be any moment of its 60-second cycle, and different lights are independent. Let \\(X\\) be the number of the light (first, second, …) at which Yegor stops for the first time.\n\nFind the probability \\(p\\) that Yegor stops at one particular light.\nName the distribution of \\(X\\). Find \\(\\E[X]\\), \\(\\Var(X)\\) and \\(\\operatorname{SD}(X)\\).\nYegor’s manager asks: “On average, how many lights does he get through before his first stop?” Find this number. Does the variance change if we count the lights he gets through instead of \\(X\\)?",
+    "crumbs": [
+      "Seminars",
+      "Seminar 4: the geometric and Poisson distributions"
+    ]
+  },
+  {
+    "objectID": "seminars/S04-geometric-poisson.html#problem-7",
+    "href": "seminars/S04-geometric-poisson.html#problem-7",
+    "title": "Seminar 4: the geometric and Poisson distributions",
+    "section": "Problem 7",
+    "text": "Problem 7\nA decision.\nKamila runs a car-rental desk at Mineralnye Vody airport. Most cars are booked online, but she also keeps some cars for walk-in customers, who come to the desk without a booking. Walk-in requests come one at a time, independently, on average 4 per day, and each needs one car. Every car kept for walk-ins costs the desk parking and insurance whether it is rented or not, so Kamila does not want to keep more than she needs. Let \\(X\\) be the number of walk-in requests on one day.\nThe table gives \\(\\Prob(X=k)\\), rounded to four decimals, with one value missing:\n\n\n\n\\(k\\)\n\\(\\Prob(X=k)\\)\n\n\n\n\n0\n0.0183\n\n\n1\n0.0733\n\n\n2\n0.1465\n\n\n3\n0.1954\n\n\n4\n?\n\n\n5\n0.1563\n\n\n6\n0.1042\n\n\n7\n0.0595\n\n\n8\n0.0298\n\n\n9\n0.0132\n\n\n\n\nName the distribution of \\(X\\) with its parameter. Find the missing value \\(\\Prob(X=4)\\).\nAdd a column \\(\\Prob(X\\le k)\\) for \\(k=0,1,\\dots,9\\), adding the probabilities from the top.\nWhat is the smallest number of cars Kamila should keep so that, with probability at least 0.95, every walk-in customer on a day gets a car?",
+    "crumbs": [
+      "Seminars",
+      "Seminar 4: the geometric and Poisson distributions"
+    ]
+  },
+  {
+    "objectID": "seminars/S04-geometric-poisson.html#problem-8",
+    "href": "seminars/S04-geometric-poisson.html#problem-8",
+    "title": "Seminar 4: the geometric and Poisson distributions",
+    "section": "Problem 8*",
+    "text": "Problem 8*\nLonger case.\nA plant in Lipetsk makes ceramic floor tiles in batches of 2,000 tiles. Vera, the quality engineer, checks every batch before it goes to the warehouse. The number of critical defects she finds in one batch (a crack through a tile, the wrong glaze colour) has the Poisson distribution with \\(\\lambda=0.8\\). A batch is rejected if it has at least one critical defect. Different batches are independent. The line was started in September and has not settled yet, which is why rejections are so frequent.\n\nFind the probability that a batch is rejected.\nOn Monday the plant makes two batches. Find the probability that both are rejected.\nLet \\(Y\\) be the number of the batch, counting from Monday’s first, at which the first accepted batch appears. Name the distribution of \\(Y\\) with its parameter, and find \\(\\E[Y]\\).",
+    "crumbs": [
+      "Seminars",
+      "Seminar 4: the geometric and Poisson distributions"
     ]
   },
   {
