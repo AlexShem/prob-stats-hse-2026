@@ -35,8 +35,30 @@ local function read_meta(meta)
   root = input:match("^(.*)[/\\]book[/\\]")
 end
 
-local function is_released()
+-- `chapter` is the SNN prefix a sol block was tagged with (see tag_chapters); without a tag,
+-- fall back to the file being rendered (HTML renders one chapter per file).
+local function is_released(chapter)
+  if chapter then return lecturer_copy or released[chapter] end
   return lecturer_copy or released[stem] or released[stem:sub(1, 3)]
+end
+
+-- The book PDF is one combined document, so the file name says nothing about which seminar
+-- a sol block is in. Walk the blocks in order and tag each sol with the SNN of the last
+-- level-1 heading `{#sec-SNN}` before it.
+local function tag_chapters(doc)
+  local current = nil
+  return doc:walk({
+    traverse = "topdown",
+    Header = function(h)
+      if h.level == 1 then current = h.identifier:match("^sec%-([LS]%d%d)$") end
+    end,
+    Div = function(div)
+      if current and div.classes:includes("sol") then
+        div.attributes["data-chapter"] = current
+        return div
+      end
+    end,
+  })
 end
 
 local function box(div, ctype, default_title)
@@ -71,7 +93,7 @@ local function handle_div(div)
     return handle_proof(div)
   end
   if div.classes:includes("sol") then
-    if is_released() then return box(div, "note", "Solution") end
+    if is_released(div.attributes["data-chapter"]) then return box(div, "note", "Solution") end
     return {}
   end
   if div.classes:includes("lecturer") then
@@ -101,6 +123,7 @@ end
 
 return {
   { Meta = read_meta },
+  { Pandoc = tag_chapters },
   { Div = handle_div },
   { Pandoc = add_downloads },
 }

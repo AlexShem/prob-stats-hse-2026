@@ -96,10 +96,14 @@ for qmd in sorted(Path("book/lectures").glob("L[0-9][0-9]*.qmd")):
 # leaks: unreleased solutions
 rel = released()
 for qmd in sorted(Path("book/seminars").glob("S[0-9][0-9]*.qmd")):
-    if qmd.stem in rel or qmd.stem[:3] in rel:
-        report("PASS", f"{qmd.stem} solutions released (shown on purpose)")
-        continue
     outs = [p for p in (BOOK / "seminars" / f"{qmd.stem}.html", BOOK / "pdf" / f"{qmd.stem}.pdf") if p.exists()]
+    if qmd.stem in rel or qmd.stem[:3] in rel:
+        # Released: the solutions must be in every student output, the PDF included.
+        # Lenient on purpose (PDF line breaks split some phrases): one phrase found is enough.
+        sol_phrases = [ph for b in blocks(qmd, "sol") for ph in phrases(b)]
+        missing = [p.name for p in outs if not any(ph in (html_text(p) if p.suffix == ".html" else pdf_text(p)) for ph in sol_phrases)]
+        report("FAIL" if missing else "PASS", f"{qmd.stem} solutions released and shown" + (f": missing from {', '.join(missing)}" if missing else ""))
+        continue
     texts = [html_text(p) if p.suffix == ".html" else pdf_text(p) for p in outs]
     sols = blocks(qmd, "sol")
     leaked = [ph for b in sols for ph in phrases(b) if any(ph in t for t in texts)]
