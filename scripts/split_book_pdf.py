@@ -47,16 +47,22 @@ def title_key(title):
     return " ".join(norm(title).split()[:4])
 
 
-# A chapter that follows another unnumbered chapter can be bookmarked on the last page of the
-# previous one. If its title is not on the bookmarked page but is on the next, start there. Do
-# this on the bookmarks themselves, so the previous chapter also ends one page later.
-fixed = []
+# A chapter that follows another unnumbered chapter can be bookmarked a page or two before its
+# title (seen: S04 bookmarked two pages early, on S03's last problems). If the title is not on
+# the bookmarked page, take the first of the next LOOKAHEAD pages that has it. Do this on the
+# bookmarks themselves, so the previous chapter also ends later.
+LOOKAHEAD = 3
+fixed, starts = [], {}
 for title, page in marks[:-1]:
     name = titles.get(re.sub(r"^[\dA-Z]+(\.\d+)*\s+", "", title).strip()) or titles.get(title.strip())
-    if name and page + 1 < len(reader.pages):
+    if name:
         k = title_key(next(t for t, n in titles.items() if n == name))
-        if k not in norm(reader.pages[page].extract_text()) and k in norm(reader.pages[page + 1].extract_text()):
-            page += 1
+        if k not in norm(reader.pages[page].extract_text()):
+            for d in range(1, LOOKAHEAD + 1):
+                if page + d < len(reader.pages) and k in norm(reader.pages[page + d].extract_text()):
+                    page += d
+                    break
+        starts[name] = k
     fixed.append((title, page))
 marks = fixed + [marks[-1]]
 
@@ -67,6 +73,8 @@ for (title, a), (_, b) in zip(marks, marks[1:]):
         a += 1
     if not name or b <= a:
         continue
+    if starts.get(name) and starts[name] not in norm(reader.pages[a].extract_text()):
+        print(f"WARNING: {name}.pdf does not start with its title (page {a + 1})")
     w = PdfWriter()
     for i in range(a, b):
         w.add_page(reader.pages[i])
